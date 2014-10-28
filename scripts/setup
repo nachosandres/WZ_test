@@ -1,0 +1,48 @@
+if [ -z $MPAF ]; then
+
+export MPAF=${PWD}
+echo MPAF=${MPAF}
+export PATH=${MPAF}/scripts:${PATH}
+if [ -z $ROOTSYS ]; then
+    echo "----------------------------------------------"
+    echo "Warning ROOTSYS is not yet defined."
+    echo "If you do not have a user independent"
+    echo "ROOT installation, please set ROOTSYS."
+    echo "Do not expect a working environment otherwise."
+    echo "----------------------------------------------"
+    #return
+else    
+    echo "ROOTSYS="$ROOTSYS
+fi
+pkglist=${MPAF}/scripts/package_list
+echo tools > $pkglist
+echo `cat $pkglist` analysis > $pkglist
+echo `cat $pkglist` display  > $pkglist
+list=`cat $pkglist`
+echo setup all packages: $list
+for i in $list; do
+   source ${MPAF}/scripts/setup_package $i
+done
+
+list="root"
+for i in $list; do
+if [ -d ${MPAF}/workdir/$i ]; then
+    echo "workdir/$i directory exists"
+else
+    mkdir ${MPAF}/workdir/$i
+fi
+done
+
+if [ -d ${MPAF}/workdir/data ]; then
+    echo "workdir/data link exists"
+else
+    echo "link workir/data does not exist -- please set it."
+    echo "-- data is a link to the location of ntuple files --"
+fi
+
+
+fi 
+
+
+
+

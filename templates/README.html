@@ -1,0 +1,67 @@
+<html>
+<body>
+This readme briefly gives an overview on the different outputs produced by the macro.
+Grouped in different folders in different levels these outputs depict different quantities, 
+or the same quantities but with different cuts applied or datasets used.<br />
+<br />
+<b>LEVE1 - Cut Definition (*)</b>
+<br />(1) <b>ETH</b> - 'normal' ETH set of cuts
+<br />(2) <b>UFL</b> - ETH set of cuts, additionally also btag cut (0.679) and delta-phi cut (2.0) on away-jet according to UFL
+<br />
+<br />
+<b>LEVEL 2 - Jet Pt Correction (*)</b>
+<br />(1) <b>corrected_jet</b> - using corrected JetPt, rest unchanged
+<br />(2) <b>corrected_jetd0</b> - changed DO cut (50 microns) and using corrected JetPt, rest unchanged
+<br />(3) <b>corrected_tot</b> - changed D0 cut (50 microns), relative ISO (5%) and using corrected JetPt
+<br />(4) <b>uncorrected</b> - 'normal' D0 cut (100 microns), relative ISO (10%) and using JetRawPt
+<br />
+<br />
+<b>LEVEL 3 - Pile Up Reweighting (*)</b>
+<br />(1) <b>PUweight</b> - using PUWeight from total run applied to run D only <b>[DON'T USE]</b>
+<br />(2) <b>PUweight_complete</b> - using PUWeight from total run applied to total run
+<br />(3) <b>PUweight_runD</b> - using PUWeight from run D applied to run D only
+<br />(4) <b>noPUweight</b> - no PUWeight used at all for run D
+<br />(5) <b>runOld</b> - ''old'' dataset from run D used <b>[DON'T USE]</b>
+<br />(6) <b>runOldB</b> - ''old'' datasets from run B used <b>[DON'T USE]</b>
+<br />
+<br />
+<b>LEVEL 4 - High-Level Trigger (*)</b>
+<br />(1)  <b>Ele8J</b> - using HLT ELE8_JET30_TIGHT on data only <b>[ELECTRONS]</b>
+<br />(2)  <b>Ele8JMC</b> - using HLT ELE17_JET30_TIGHT on data and MC <b>[ELECTRONS]</b>
+<br />(3)  <b>Ele17J</b> - using HLT ELE17_JET30_TIGHT on data only <b>[ELECTRONS]</b>
+<br />(4)  <b>Ele17JMC</b> - using HLT ELE17_JET30_TIGHT on data and MC <b>[ELECTRONS]</b>
+<br />(5)  <b>Mu17</b> - using HLT Mu17 on data only, <b>current version</b> (including jet-lepton cleaning, veto cut) <b>[MUONS]</b>
+<br />(6)  <b>Mu17_jec</b> - using HLT Mu17 on data only, including jet-lepton cleaning, veto cut, jet-energy correction <b>[MUONS]</b>
+<br />(7)  <b>Mu17_jlc</b> - using HLT Mu17 on data only, including jet-lepton cleaning <b>[MUONS]</b>
+<br />(8)  <b>Mu17_nojlcvetojec</b> - using HLT Mu17 on data only <b>[MUONS]</b>
+<br />(9)  <b>Mu17_veto</b> - using HLT Mu17 on data only, including jet-lepton cleaning and veto cut <b>[MUONS]</b>
+<br />(10) <b>Mu17MC</b> - using HLT Mu17 on data and MC <b>[MUONS]</b>
+<br />(11) <b>Mu40</b> - using HLT Mu40 on data only <b>[MUONS]</b>
+<br />(12) <b>Mu40MC</b> - using HLT Mu40 on data and MC <b>[MUONS]</b>
+<br />(13) <b>none</b> - no Trigger used (mainly testing) <b>[ELECTRONS]</b>
+<br />
+<br />
+<b>LEVEL 5 - Scaling (+)</b>
+<br />(1) <b>fit_weighted</b> - scaling QCD + EWK to data via RooFit
+<br />(2) <b>qcd_weighted</b> - scaling QCD to data
+<br />(3) <b>qcdwjets_weighted</b> - scaling QCD + WJets to data
+<br />(4) <b>unweighted</b> - no scaling at all
+<br />
+<br />
+<b>LEVEL 6 - Modules (+)</b>
+<br />(1) <b>adhoc</b> - some hard-coded ad hoc stuff, testing, etc.
+<br />(2) <b>compare</b> - all normalized comparison plots, i.e. comparing one quantity for two datasets (normalized)
+<br />(3) <b>fakerates_1d</b> - all fake rate plots in one variable, also projections from 2dmap
+<br />(4) <b>fakerates_2d</b> - all fake rate plots in two variables (2dmaps, e.g. JetPt differences)
+<br />(5) <b>fakerates_2dct</b> - all fake rate plots in two variables (2dmaps) for closure test
+<br />(6) <b>plots_1d</b> - all 'normal' plots in one variable
+<br />(7) <b>plots_2d</b> - all 'normal' plots in two variables
+<br />(8) <b>zoom_jpt</b> - 1d projections for relative and absolute differences in JetPt
+<br />(9) <b>zoom_met</b> - 1d projections for MET
+<br />
+<br />
+<br />(*)... created by c++ Fakerates script
+<br />(+)... created by python macro
+<br />
+</body>
+</html>
