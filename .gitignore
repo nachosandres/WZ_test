@@ -4,5 +4,7 @@
 */*/*/*.[a,o,pdf,png,pyc,root,so,swo,swp]
 */*/*_dict_*
 analysis/bin/analysis
-workdir/root
-workdir/stats
+analysis/lib
+display/lib
+tools/lib
+workdir

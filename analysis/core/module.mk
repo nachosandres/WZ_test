@@ -1,5 +1,4 @@
 #Source files to compile
-#FILES := Base
 FILES += MPAF
 FILES += VarClass
 
