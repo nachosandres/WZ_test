@@ -16,6 +16,14 @@
 #include "analysis/core/MPAF.hh"
 
 
+struct CandStruct{
+  float eta;
+  float phi;
+  float pt;
+  int charge;
+  int pdgId;
+};
+
 
 
 class SUSYSSDL: public MPAF {
@@ -27,6 +35,10 @@ public:
 
 	SUSYSSDL(std::string);
 	virtual ~SUSYSSDL();
+
+
+private:
+
 	void initialize();
 
 	void run();
@@ -57,12 +69,16 @@ public:
 	void fillLeptonPlots(std::string);
 	void fillJetPlots(std::string);
 
+  int genMatchCateg(CandStruct);
 
 
 
 private:
 
-	float _valCutHTSR;
+  enum {kNoGenMatch=0, kMisMatchPdgId,
+	kMisChargePdgId, kGenMatched};
+
+  float _valCutHTSR;
 	float _valCutMETSR;
 	float _valCutNJetsSR;
 	float _valCutNBJetsSR;
@@ -100,10 +116,9 @@ private:
 	float _upValCutNJetsBR;
 	float _upValCutNBJetsBR;
 	float _upValCutCHBR;
-
-
-
 	
+  std::vector<CandStruct> _leptons;
+
 };
 
 

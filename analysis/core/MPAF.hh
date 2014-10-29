@@ -115,7 +115,8 @@ protected:
 	//counters and selection functions
 	template <typename T> inline
 	bool makeCut(T value, T valcut, string type, string cName, T seccut=0, string eCateg = "global") {
-		return _au -> makeCut<T>(value, valcut, type, _SampleName, cName, _EventWeight, seccut, eCateg, false);
+	  return _au -> makeCut<T>(value, valcut, type, _SampleName+_SampleOption[_SampleName]
+				   , cName, _EventWeight, seccut, eCateg, false);
 	};
 	bool makeCut(bool decision, string cName, string type = "=", string eCateg = "global");
 	void counter(string cName, string eCateg = "global");
@@ -191,6 +192,7 @@ protected:
 	HistoManager* _hm;
   AnaUtils* _au;
 
+  string _option;
 
 	// Private Members
 
@@ -200,7 +202,8 @@ private:
 	int _inds;
 	bool _TestNEvt;
 	unsigned int _TestNEvtMax; 
- 
+
+  std::map<std::string, std::string> _SampleOption;
 };
 
 
