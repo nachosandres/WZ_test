@@ -87,6 +87,7 @@ void SUSYSSDL::initialize(){
 	_vc -> registerVar("el_eta"        , "AF");
 	_vc -> registerVar("el_phi"        , "AF");
 	_vc -> registerVar("el_charge"     , "AI");
+	_vc -> registerVar("el_pdgId"      , "AI");
 	_vc -> registerVar("el_relIso03"   , "AF");
 	_vc -> registerVar("el_relIso04"   , "AF");
 	_vc -> registerVar("el_dxy"        , "AF");
@@ -98,6 +99,7 @@ void SUSYSSDL::initialize(){
 	_vc -> registerVar("mu_eta"        , "AF");
 	_vc -> registerVar("mu_phi"        , "AF");
 	_vc -> registerVar("mu_charge"     , "AI");
+	_vc -> registerVar("mu_pdgId"      , "AI");
 	_vc -> registerVar("mu_relIso03"   , "AF");
 	_vc -> registerVar("mu_relIso04"   , "AF");
 	_vc -> registerVar("mu_dxy"        , "AF");
@@ -115,6 +117,12 @@ void SUSYSSDL::initialize(){
 	_vc -> registerVar("jet_phi"       , "AF");
 	_vc -> registerVar("jet_mass"      , "AF");
 	_vc -> registerVar("jet_btagCSV"   , "AF");
+
+	//generator informations
+	_vc -> registerVar("ngenLep"       , "I");
+	_vc -> registerVar("genLep_eta"    , "AF");
+	_vc -> registerVar("genLep_phi"    , "AF");
+	_vc -> registerVar("genLep_pdgId"  , "AI");
 
 }
 
@@ -147,21 +155,32 @@ void SUSYSSDL::run(){
 	// basic event selection (triggers, 2 ss leptons, veto)
 	if(!baseSelection()) return;
 
-
+	//cout<<" ************************************************** new event "<<_SampleName<<"  "<<_EntryIterator<<endl;
 	//splitting the samples into categories
+	// cout<<"============= lepton 1"<<endl;
+	// cout<<" ==> "<<genMatchCateg( _leptons[0] )<<endl;
+	// cout<<"============= lepton 2"<<endl;
+	// cout<<" ==> "<<genMatchCateg( _leptons[1] )<<endl;
+
+	int lep1Id = genMatchCateg( _leptons[0] );
+	int lep2Id = genMatchCateg( _leptons[1] );
+	
 	if(_SampleName.find("misId")!=(size_t)-1) {
-	  if( genMatchCateg( _leptons[0] ) != kMisChargePdgId &&
-	      genMatchCateg( _leptons[1] ) != kMisChargePdgId ) return;
+	  if( ! ( (lep1Id == kMisChargePdgId && lep2Id >= kMisChargePdgId) || 
+		  (lep2Id == kMisChargePdgId && lep1Id >= kMisChargePdgId) ) ) return;
 	}
 	if(_SampleName.find("fake")!=(size_t)-1) {
-	  if( genMatchCateg( _leptons[0] ) > kMisMatchPdgId &&
-	      genMatchCateg( _leptons[1] ) > kMisMatchPdgId ) return;
+	  if( lep1Id > kMisMatchPdgId &&
+	      lep2Id > kMisMatchPdgId ) return;
 	}
 	if(_SampleName.find("prompt")!=(size_t)-1) {
 	  if( genMatchCateg( _leptons[0] ) != kGenMatched ||
 	      genMatchCateg( _leptons[1] ) != kGenMatched ) return;
 	}
+	counter("genCateg selection");
 	
+	//cout<<" ============> selected"<<endl;
+
 	// br event selection
 	if(brSelection()){
 
@@ -530,9 +549,9 @@ void SUSYSSDL::setBaselineRegion(){
 	parameters: none
 	return: none
 	*/
-
+  
  	if(_BR == "BR00" && _PT == "lowpt") {
-		setCut("HTBR"     ,  250, ">" );
+	        setCut("HTBR"     ,  250, ">" );
 		setCut("HTCondBR" ,  500, "<" );
 		setCut("METHighBR",   30, ">=");
 		setCut("METLowBR" ,    0, ">=");
@@ -1197,14 +1216,17 @@ void SUSYSSDL::fillJetPlots(std::string kr){
 int SUSYSSDL::genMatchCateg(CandStruct cand) {
 
   //loop over the 
-  int nGenL = _vc->getI("ngenlep");
+  int nGenL = _vc->getI("ngenLep");
   for(int ig=0;ig<nGenL;ig++) {
 
     if(Tools::dR(cand.eta, _vc->getF("genLep_eta", ig),
-		 cand.phi, _vc->getF("genLep_phi", ig) )<0.1 ) { //to be tuned
+		 cand.phi, _vc->getF("genLep_phi", ig) )<0.05 ) { //to be tuned
       
-      if(abs(cand.pdgId)!= (_vc->getF("genLep_pdgId",ig) && abs(_vc->getF("genLep_pdgId",ig))!=13 ) ) return kMisMatchPdgId; //taus are exception to the rule
-      else if(cand.pdgId*_vc->getF("genLep_pdgId",ig) < 0 ) return kMisChargePdgId; //+*- = -...
+      // cout<<"matched lepton "<<cand.pdgId<<"  with "<<_vc->getI("genLep_pdgId",ig)<<" !!! "<<cand.pt<<"  "<<cand.eta<<"   "<<cand.phi<<"   "<<Tools::dR(cand.eta, _vc->getF("genLep_eta", ig),
+      // cand.phi, _vc->getF("genLep_phi", ig) )<<endl;
+
+      if( (abs(cand.pdgId)!= abs(_vc->getI("genLep_pdgId",ig)) ) && abs(_vc->getI("genLep_pdgId",ig))!=13 ) return kMisMatchPdgId; //taus are exception to the rule
+      else if(cand.pdgId*_vc->getI("genLep_pdgId",ig) < 0 ) return kMisChargePdgId; //+*- = -...
       else return kGenMatched;
 	
       break;

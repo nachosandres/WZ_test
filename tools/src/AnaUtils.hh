@@ -190,7 +190,7 @@ private:
       accept = !(value > valcut && value < seccut );
     }
     else {
-      accept =false; cout<<" Warning cut "<<type<<endl;
+      accept =false; cout<<" Warning cut :"<<type<<":"<<" for selection "<<cName<<endl;
     }  
     
     if(!noRegister || ds.find("GHO")!=(size_t)-1 ) {

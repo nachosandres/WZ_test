@@ -257,7 +257,9 @@ void AnaUtils::saveNumbers(string anName, string conName) {
     TDatime datime_;
     cout << "File " << ofilename_ << " already exists, save it." << endl;
     string command_ = "mv " + ofilename_ + " " + ofilename_ + "_"; 
-    command_ += datime_.Get();
+    ostringstream os;
+    os <<datime_.Get();
+    command_ += os.str();
     assert( system( command_.c_str() ) == 0 );
   }
 
@@ -394,7 +396,7 @@ void AnaUtils::printNumbers() {
     
     cout<<endl<<endl;
     cout<<" ===================================================================== "<<endl;
-    cout<<" ============ Efficiency category : "<<setw(17)<<categ<<" =============== "<<endl;
+    cout<<" ============= Efficiency category : "<<setw(17)<<categ<<" =============== "<<endl;
     cout<<" ===================================================================== "<<endl;
 
   for(size_t ids=0;ids<dsNames.size();ids++) { //datasets
@@ -458,7 +460,7 @@ void AnaUtils::printNumbers() {
       //cout<<" (+ "<<systH<<" - "<<systL;
       cout<<" \t\t "<<_itEIMap->second.sumw<<"  / "
 	  <<((tmpswtot==-1)?_itEIMap->second.sumwTot:tmpswtot);
-      cout<<"  ("<<_itEIMap->second.N<<" / "<<_itEIMap->second.NTot<<")";
+      cout<<"  ("<<_itEIMap->second.N<<" / "<<((tmpNTot==-1)?_itEIMap->second.NTot:tmpNTot)<<")";
       cout<<"  ---> \t = "<<globEff*100<<" +- "<<globErr*100<<endl;
       
       tmpswtot =  _itEIMap->second.sumw;

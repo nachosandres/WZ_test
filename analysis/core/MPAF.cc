@@ -76,6 +76,8 @@ void MPAF::initialize(){
 	_dbm = new DataBaseManager();
 	_au  = new AnaUtils();
 
+	_option="";
+
 }
 
 
@@ -249,7 +251,7 @@ void MPAF::loadConfigurationFile(std::string configuration_file){
 	*/
 
 	char buffer[300];
-	char symbol_char[1], variable_char[100], value_char[200], option_char[100];
+	char symbol_char[1]="", variable_char[100]="", value_char[200]="", option_char[100]="";
 
 	_TestNEvt    = false;
 	_TestNEvtMax = 0;
@@ -263,8 +265,11 @@ void MPAF::loadConfigurationFile(std::string configuration_file){
 		if(buffer[0] == '#') continue;
 		if(buffer[0] == ' ') continue;
 
+		//option reset
+		strcpy(option_char,"");
+		
 		if(sscanf(buffer, "%s\t%s\t%s\t%s", symbol_char, variable_char, value_char, option_char) < 3) continue;
-
+		
 		std::string symbol   = symbol_char;
 		std::string variable = variable_char;
 		std::string value    = value_char;
@@ -310,11 +315,12 @@ void MPAF::loadConfigurationFile(std::string configuration_file){
 
 		// loading data samples
 		if(symbol == "s" && variable != ""){	
-			_Samples.push_back(new Dataset(variable_char));
-			string sname=variable_char;
-			cout<<option<<endl;
-			if(option!="") sname+"_"+option;
-			_Samples.back() -> addSample(sname, _InputPath, value_char, "treeProducerSusySSDL", "", 1.0, 1.0, 1.0, 1.0);
+		  string dsName=variable;
+		  dsName+=option;
+
+		  _Samples.push_back(new Dataset(dsName));
+		  _Samples.back() -> addSample(variable, _InputPath, value_char, "treeProducerSusySSDL", "", 1.0, 1.0, 1.0, 1.0);
+		  //_SampleOption[ variable ] = opt;
 		}
 				
 	}
@@ -354,9 +360,13 @@ void MPAF::startExecution(std::string configuration_file){
 	//createOutputStructure();
 
 	std::vector<std::string> dsNames;
-	for(unsigned int i = 0; i < _Samples.size(); ++i)
+	for(unsigned int i = 0; i < _Samples.size(); ++i) {
 		dsNames.push_back(_Samples[i] -> getName());
 	
+		// if(_SampleOption[ _Samples[i] -> getName() ]!="") //MM FIXME, ugly
+		//   dsNames.back() += _SampleOption[ _Samples[i] -> getName() ];
+	}
+
 	_hm -> configAnalysis( dsNames );
 
 }
@@ -739,7 +749,7 @@ bool MPAF::makeCut(bool decision, string cName, string type, string eCateg) {
 	parameters: 
 	return: 
 	*/
-
+  //MM FIXME, option stuff is ugly
 	return _au -> makeCut(decision, _SampleName, cName, _EventWeight, type, eCateg, false);
 
 }
@@ -752,7 +762,7 @@ void MPAF::counter(string cName, string eCateg) {
 	parameters: 
 	return: 
 	*/
-
+//MM FIXME, option stuff is ugly+_SampleOption[_SampleName]
 	_au -> makeCut(true, _SampleName, cName, _EventWeight, "=", eCateg, false);
 
 }

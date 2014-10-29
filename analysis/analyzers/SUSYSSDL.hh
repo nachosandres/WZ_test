@@ -75,7 +75,8 @@ private:
 
 private:
 
-  enum {kNoGenMatch=0, kMisMatchPdgId, kMisChargePdgId, kGenMatched};
+  enum {kNoGenMatch=0, kMisMatchPdgId,
+	kMisChargePdgId, kGenMatched};
 
   float _valCutHTSR;
 	float _valCutMETSR;

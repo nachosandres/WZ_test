@@ -565,7 +565,9 @@ void HistoManager::saveHistos(string anName, string conName) {
 		TDatime datime_;
 		cout << "File " << ofilename_ << " already exists, save it." << endl;;
 		string command_ = "mv " + ofilename_ + " " + ofilename_ + "_"; 
-		command_ += datime_.Get();
+		ostringstream os;
+		os <<datime_.Get();
+		command_ += os.str();
 		assert( system( command_.c_str() ) == 0 );
 	}
 
