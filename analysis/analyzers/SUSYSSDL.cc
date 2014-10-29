@@ -141,6 +141,13 @@ void SUSYSSDL::run(){
 	resetKinematicObjects();
 	collectKinematicObjects();
 
+	//kinematic, 3l lepton veto selection
+
+	//baseline
+
+	//signal re
+
+
 	// parse br event selection
 	if(brEventSelection()){
 
@@ -155,7 +162,7 @@ void SUSYSSDL::run(){
 
 
 		// parse sr event selection
-		if(srEventSelection()){
+		if(srSelection( HT("GoodJet"), _vc -> getF("met_pt"), _NumKinObj["GoodJet"], _NumKinObj["BJet"], )){
 
 		
 			// fill event list
@@ -763,5 +770,343 @@ void SUSYSSDL::fillJetPlots(std::string kr){
 }
 
 
+void SUSYSSDL::setSignalRegion(string sr) {
+
+  if(sr=="SR01") {
+    setCut("HT", 200, "[]", 400 );
+    setCut("MET", 50, "[]", 120 );
+    setCut("NJets", 2, "[]", 3 );
+    setCut("NBJets", 0, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR02") {
+    setCut("HT", 400, ">" );
+    setCut("MET", 50, "[]", 120 );
+    setCut("NJets", 2, "[]", 3 );
+    setCut("NBJets", 0, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR03") {
+    setCut("HT", 200, "[]", 400 );
+    setCut("MET", 50, "[]", 120 );
+    setCut("NJets", 4, ">=" );
+    setCut("NBJets", 0, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR04") {
+    setCut("HT", 400, ">" );
+    setCut("MET", 50, "[]", 120 );
+    setCut("NJets", 4, ">=" );
+    setCut("NBJets", 0, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+  if(sr=="SR05") {
+    setCut("HT", 200, "[]", 400 );
+    setCut("MET", 120, ">" );
+    setCut("NJets", 2, "[]", 3 );
+    setCut("NBJets", 0, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR06") {
+    setCut("HT", 400, ">" );
+    setCut("MET", 120, ">" );
+    setCut("NJets", 2, "[]", 3 );
+    setCut("NBJets", 0, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR07") {
+    setCut("HT", 200, "[]", 400 );
+    setCut("MET", 120, ">" );
+    setCut("NJets", 4, ">=" );
+    setCut("NBJets", 0, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR08") {
+    setCut("HT", 400, ">" );
+    setCut("MET", 120, ">" );
+    setCut("NJets", 4, ">=" );
+    setCut("NBJets", 0, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
 
 
+  if(sr=="SR11") {
+    setCut("HT", 200, "[]", 400 );
+    setCut("MET", 50, "[]", 120 );
+    setCut("NJets", 2, "[]", 3 );
+    setCut("NBJets", 1, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR12") {
+    setCut("HT", 400, ">" );
+    setCut("MET", 50, "[]", 120 );
+    setCut("NJets", 2, "[]", 3 );
+    setCut("NBJets", 1, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR13") {
+    setCut("HT", 200, "[]", 400 );
+    setCut("MET", 50, "[]", 120 );
+    setCut("NJets", 4, ">=" );
+    setCut("NBJets", 1, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR14") {
+    setCut("HT", 400, ">" );
+    setCut("MET", 50, "[]", 120 );
+    setCut("NJets", 4, ">=" );
+    setCut("NBJets", 1, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+  if(sr=="SR15") {
+    setCut("HT", 200, "[]", 400 );
+    setCut("MET", 120, ">" );
+    setCut("NJets", 2, "[]", 3 );
+    setCut("NBJets", 1, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR16") {
+    setCut("HT", 400, ">" );
+    setCut("MET", 120, ">" );
+    setCut("NJets", 2, "[]", 3 );
+    setCut("NBJets", 1, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR17") {
+    setCut("HT", 200, "[]", 400 );
+    setCut("MET", 120, ">" );
+    setCut("NJets", 4, ">=" );
+    setCut("NBJets", 1, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR18") {
+    setCut("HT", 400, ">" );
+    setCut("MET", 120, ">" );
+    setCut("NJets", 4, ">=" );
+    setCut("NBJets", 1, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+
+
+  if(sr=="SR21") {
+    setCut("HT", 200, "[]", 400 );
+    setCut("MET", 50, "[]", 120 );
+    setCut("NJets", 2, "[]", 3 );
+    setCut("NBJets", 2, ">=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR22") {
+    setCut("HT", 400, ">" );
+    setCut("MET", 50, "[]", 120 );
+    setCut("NJets", 2, "[]", 3 );
+    setCut("NBJets", 2, ">=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR23") {
+    setCut("HT", 200, "[]", 400 );
+    setCut("MET", 50, "[]", 120 );
+    setCut("NJets", 4, ">=" );
+    setCut("NBJets", 2, ">=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR24") {
+    setCut("HT", 400, ">" );
+    setCut("MET", 50, "[]", 120 );
+    setCut("NJets", 4, ">=" );
+    setCut("NBJets", 2, ">=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+  if(sr=="SR25") {
+    setCut("HT", 200, "[]", 400 );
+    setCut("MET", 120, ">" );
+    setCut("NJets", 2, "[]", 3 );
+    setCut("NBJets", 2, ">=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR26") {
+    setCut("HT", 400, ">" );
+    setCut("MET", 120, ">" );
+    setCut("NJets", 2, "[]", 3 );
+    setCut("NBJets", 2, ">=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR27") {
+    setCut("HT", 200, "[]", 400 );
+    setCut("MET", 120, ">" );
+    setCut("NJets", 4, ">=" );
+    setCut("NBJets", 2, ">=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SR28") {
+    setCut("HT", 400, ">" );
+    setCut("MET", 120, ">" );
+    setCut("NJets", 4, ">=" );
+    setCut("NBJets", 2, ">=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+
+ if(sr=="SRRPV0") {
+    setCut("HT", 500, ">" );
+    setCut("MET", 0, ">=" );
+    setCut("NJets", 2, ">=" );
+    setCut("NBJets", 0, ">=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SRRPV2") {
+    setCut("HT", 500, ">" );
+    setCut("MET", 0, ">=" );
+    setCut("NJets", 2, ">=" );
+    setCut("NBJets", 2, ">=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SRSStop1") {
+    setCut("HT", 80, ">" );
+    setCut("MET", 30, ">=" );
+    setCut("NJets", 2, ">=" );
+    setCut("NBJets", 1, "=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SRSStop1++") {
+    setCut("HT", 80, ">" );
+    setCut("MET", 30, ">=" );
+    setCut("NJets", 2, ">=" );
+    setCut("NBJets", 1, "=" );
+    setCut("CH", 2, "=" );
+    _srName = sr;
+  }
+ if(sr=="SRSStop2") {
+    setCut("HT", 80, ">" );
+    setCut("MET", 30, ">=" );
+    setCut("NJets", 2, ">=" );
+    setCut("NBJets", 2, ">=" );
+    setCut("CH", -100, ">" );
+    _srName = sr;
+  }
+ if(sr=="SRSStop2++") {
+    setCut("HT", 80, ">" );
+    setCut("MET", 30, ">=" );
+    setCut("NJets", 2, ">=" );
+    setCut("NBJets", 2, ">=" );
+    setCut("CH", 2, "=" );
+    _srName = sr;
+  }
+
+  // if(sr=="SRXX") {
+  //   setCut("HT", 80, ">" );
+  //   setCut("MET", 30, ">=" );
+  //   setCut("NJets", 2, ">=" );
+  //   setCut("NBJets", 2, ">=" );
+  //   setCut("CH", 2, "=" );
+  //   _srName = sr;
+  // }
+
+}
+
+
+bool SUSYSSDL::srSelection(float HT,float MET, int NJets, int NBJets, int ch ) {
+
+  //  counter("denominator",_srName);
+  if(!makeCut<float>( HT, _valCutHT, _cTypeHT, "HT selection", _upValCutHT) ) return false;
+  if(!makeCut<float>( MET, _valCutMET, _cTypeMET, "MET selection", _upValCutMET) ) return false;
+  if(!makeCut<float>( NJets, _valCutHT, _cTypeHT, "jet multiplicity", _upValCutHT) ) return false;
+  if(!makeCut<float>( NBJets, _valCutHT, _cTypeHT, "bjet multiplicity", _upValCutHT) ) return false;
+  if(!makeCut<float>( ch, _valCutHT, _cTypeHT, "charge selection", _upValCutHT) ) return false;
+  return true;
+} 
+
+
+
+void SUSYSSDL::setCut(string var, float valCut, string cType, float upValCut=0) {
+
+  //Signal region
+
+  if(var=="HTSR") {
+    _valCutHTSR = valCut;
+    _cTypeHTSR = cType;
+    _upValCutHTSR = upValCut;
+  } 
+
+  if(var=="METSR") {
+    _valCutMETSR = valCut;
+    _cTypeMETSR = cType;
+    _upValCutMETSR = upValCut;
+  } 
+
+  if(var=="NJetsSR") {
+    _valCutNJetsSR = valCut;
+    _cTypeNJetsSR = cType;
+    _upValCutNJetsSR = upValCut;
+  } 
+
+  if(var=="NBJetsSR") {
+    _valCutNBJetsSR = valCut;
+    _cTypeNBJetsSR = cType;
+    _upValCutNBJetsSR = upValCut;
+  } 
+
+  if(var=="CHSR") {
+    _valCutCHSR = valCut;
+    _cTypeCHSR = cType;
+    _upValCutCHSR = upValCut;
+  } 
+
+
+  //baseline region
+  if(var=="HTBR") {
+    _valCutHTBR = valCut;
+    _cTypeHTBR = cType;
+    _upValCutHTBR = upValCut;
+  } 
+
+  if(var=="METBR") {
+    _valCutMETBR = valCut;
+    _cTypeMETBR = cType;
+    _upValCutMETBR = upValCut;
+  } 
+
+  if(var=="NJetsBR") {
+    _valCutNJetsBR = valCut;
+    _cTypeNJetsBR = cType;
+    _upValCutNJetsBR = upValCut;
+  } 
+
+  if(var=="NBJetsBR") {
+    _valCutNBJetsBR = valCut;
+    _cTypeNBJetsBR = cType;
+    _upValCutNBJetsBR = upValCut;
+  } 
+
+  if(var=="CHBR") {
+    _valCutCHBR = valCut;
+    _cTypeCHBR = cType;
+    _upValCutCHBR = upValCut;
+  } 
+
+}
