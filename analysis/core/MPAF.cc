@@ -249,7 +249,7 @@ void MPAF::loadConfigurationFile(std::string configuration_file){
 	*/
 
 	char buffer[300];
-	char symbol_char[1], variable_char[100], value_char[200];
+	char symbol_char[1], variable_char[100], value_char[200], option_char[100];
 
 	_TestNEvt    = false;
 	_TestNEvtMax = 0;
@@ -263,11 +263,12 @@ void MPAF::loadConfigurationFile(std::string configuration_file){
 		if(buffer[0] == '#') continue;
 		if(buffer[0] == ' ') continue;
 
-		if(sscanf(buffer, "%s\t%s\t%s", symbol_char, variable_char, value_char) < 3) continue;
+		if(sscanf(buffer, "%s\t%s\t%s\t%s", symbol_char, variable_char, value_char, option_char) < 3) continue;
 
 		std::string symbol   = symbol_char;
 		std::string variable = variable_char;
 		std::string value    = value_char;
+		std::string option    = option_char;
 
 		// non-configuration variables
 		if(symbol == "n"){
@@ -310,7 +311,10 @@ void MPAF::loadConfigurationFile(std::string configuration_file){
 		// loading data samples
 		if(symbol == "s" && variable != ""){	
 			_Samples.push_back(new Dataset(variable_char));
-			_Samples[_Samples.size() - 1] -> addSample(variable_char, _InputPath, value_char, "treeProducerSusySSDL", "", 1.0, 1.0, 1.0, 1.0);
+			string sname=variable_char;
+			cout<<option<<endl;
+			if(option!="") sname+"_"+option;
+			_Samples.back() -> addSample(sname, _InputPath, value_char, "treeProducerSusySSDL", "", 1.0, 1.0, 1.0, 1.0);
 		}
 				
 	}

@@ -137,6 +137,8 @@ void SUSYSSDL::modifyWeight() {
 //____________________________________________________________________________
 void SUSYSSDL::run(){
 
+  _leptons.clear();
+
 	// prepare event selection
 	resetKinematicObjects();
 	collectKinematicObjects();
@@ -146,6 +148,20 @@ void SUSYSSDL::run(){
 	if(!baseSelection()) return;
 
 
+	//splitting the samples into categories
+	if(_SampleName.find("misId")!=(size_t)-1) {
+	  if( genMatchCateg( _leptons[0] ) != kMisChargePdgId &&
+	      genMatchCateg( _leptons[1] ) != kMisChargePdgId ) return;
+	}
+	if(_SampleName.find("fake")!=(size_t)-1) {
+	  if( genMatchCateg( _leptons[0] ) > kMisMatchPdgId &&
+	      genMatchCateg( _leptons[1] ) > kMisMatchPdgId ) return;
+	}
+	if(_SampleName.find("prompt")!=(size_t)-1) {
+	  if( genMatchCateg( _leptons[0] ) != kGenMatched ||
+	      genMatchCateg( _leptons[1] ) != kGenMatched ) return;
+	}
+	
 	// br event selection
 	if(brSelection()){
 
@@ -1002,14 +1018,30 @@ bool SUSYSSDL::ssEventSelection(std::string electron_label, std::string muon_lab
 
 	int charge = 0;
 
-	for(int el = 0; el < _NumKinObj[electron_label]; ++el){
-		if(charge == 0) charge = _vc -> getI("el_charge", _KinObj[electron_label][el]);
-		if(_vc -> getI("el_charge", _KinObj[electron_label][el]) != charge) return false;
+	for(int ie = 0; ie < _NumKinObj[electron_label]; ++ie){
+		if(charge == 0) charge = _vc -> getI("el_charge", _KinObj[electron_label][ie]);
+		if(_vc -> getI("el_charge", _KinObj[electron_label][ie]) != charge) return false;
+
+		CandStruct el;
+		el.eta = _vc -> getF("el_eta", _KinObj[electron_label][ie]);
+		el.phi = _vc -> getF("el_phi", _KinObj[electron_label][ie]);
+		el.pt = _vc -> getF("el_pt", _KinObj[electron_label][ie]);
+		el.charge = _vc -> getI("el_charge", _KinObj[electron_label][ie]);
+		el.pdgId = _vc -> getI("el_pdgId", _KinObj[electron_label][ie]);
+		_leptons.push_back(el);
 	}
 	
-	for(int mu = 0; mu < _NumKinObj[muon_label]; ++mu){
-		if(charge == 0) charge = _vc -> getI("mu_charge", _KinObj[muon_label][mu]);
-		if(_vc -> getI("mu_charge", _KinObj[muon_label][mu]) != charge) return false;
+	for(int im = 0; im < _NumKinObj[muon_label]; ++im){
+		if(charge == 0) charge = _vc -> getI("mu_charge", _KinObj[muon_label][im]);
+		if(_vc -> getI("mu_charge", _KinObj[muon_label][im]) != charge) return false;
+
+		CandStruct mu;
+		mu.eta = _vc -> getF("mu_eta", _KinObj[muon_label][im]);
+		mu.phi = _vc -> getF("mu_phi", _KinObj[muon_label][im]);
+		mu.pt = _vc -> getF("mu_pt", _KinObj[muon_label][im]);
+		mu.charge = _vc -> getI("mu_charge", _KinObj[muon_label][im]);
+		mu.pdgId = _vc -> getI("mu_pdgId", _KinObj[muon_label][im]);
+		_leptons.push_back(mu);
 	}
 
 	return true;
@@ -1159,4 +1191,25 @@ void SUSYSSDL::fillJetPlots(std::string kr){
 		fill(kr + "_JetCSVBTag", _vc -> getF("jet_btagCSV", i)                                       , _EventWeight);
 	}
 
+}
+
+
+int SUSYSSDL::genMatchCateg(CandStruct cand) {
+
+  //loop over the 
+  int nGenL = _vc->getI("ngenlep");
+  for(int ig=0;ig<nGenL;ig++) {
+
+    if(Tools::dR(cand.eta, _vc->getF("genLep_eta", ig),
+		 cand.phi, _vc->getF("genLep_phi", ig) )<0.1 ) { //to be tuned
+      
+      if(abs(cand.pdgId)!= (_vc->getF("genLep_pdgId",ig) && abs(_vc->getF("genLep_pdgId",ig))!=13 ) ) return kMisMatchPdgId; //taus are exception to the rule
+      else if(cand.pdgId*_vc->getF("genLep_pdgId",ig) < 0 ) return kMisChargePdgId; //+*- = -...
+      else return kGenMatched;
+	
+      break;
+    } //dr matching
+  } //gen loop
+
+  return kNoGenMatch;
 }
