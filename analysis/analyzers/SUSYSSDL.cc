@@ -141,15 +141,13 @@ void SUSYSSDL::run(){
 	resetKinematicObjects();
 	collectKinematicObjects();
 
-	//kinematic, 3l lepton veto selection
 
-	//baseline
-
-	//signal re
+	// basic event selection (triggers, 2 ss leptons, veto)
+	if(!baseSelection()) return;
 
 
-	// parse br event selection
-	if(brEventSelection()){
+	// br event selection
+	if(brSelection()){
 
 		// fill event list
 		fillEventList();
@@ -160,10 +158,8 @@ void SUSYSSDL::run(){
 		if(Tools::findInVector(_Modules, (std::string) "fillBRLeptonPlots")) fillLeptonPlots("BR");
 
 
-
-		// parse sr event selection
-		if(srSelection( HT("GoodJet"), _vc -> getF("met_pt"), _NumKinObj["GoodJet"], _NumKinObj["BJet"], )){
-
+		// sr event selection
+		if(srSelection()){
 		
 			// fill event list
 			fillEventList();
@@ -194,7 +190,11 @@ void SUSYSSDL::defineOutput(){
   	return: none
   	*/ 
 
-	//_RootFile = new TFile(Tools::toTString(_OutputDir + "histos.root"), "RECREATE");
+
+	// this is now here but should be somewhere else!!!
+	setSignalRegion();
+	setBaselineRegion();
+
 
 	// Baseline Region
 
@@ -284,224 +284,18 @@ void SUSYSSDL::writeOutput(){
 
 
 //____________________________________________________________________________
-bool SUSYSSDL::bJetSelection(int jet_index){
+bool SUSYSSDL::bJetSelection(int jetIdx){
 	/*
   	does the selection of  b-jets
-  	parameters: jet_index
+  	parameters: jetIdx
   	return: true (if the jet is a b-jet), false (else)
   	*/
-
-	if(!goodJetSelection(jet_index)) return false;
-	if(_UsedCuts["BJetBTag"] && _vc -> getF("jet_btagCSV", jet_index) < _Cuts["BJetBTag"]) return false;
 	
-	return true;
+	counter("BJetDenominator", "b-jet Id");
 
-}
-
-
-//____________________________________________________________________________
-bool SUSYSSDL::goodJetSelection(int jet_index){
-	/*
-  	does the selection of good jets, i.e. minimum selection of jets 
-  	parameters: jet_index
-  	return: true (if the jet is good), false (else)
-  	*/
-
-	if(_UsedCuts["GoodJetPt"]     && (_JEC == 1 ? _vc -> getF("jet_pt", jet_index) : _vc -> getF("jet_rawPt", jet_index)) < _Cuts["GoodJetPt"]     ) return false;
-	if(_UsedCuts["GoodJetEtaUL"]  && fabs(_vc -> getF("jet_eta", jet_index))                                              > _Cuts["GoodJetEtaUL"]  ) return false;
-	if(_UsedCuts["GoodJetEtaLL"]  && fabs(_vc -> getF("jet_eta", jet_index))                                              < _Cuts["GoodJetEtaLL"]  ) return false;
-
-	// this is the implementation of jet lepton cleaning
-	// maybe we find a better way => matthieu's library?
-
-	if(_UsedCuts["GoodJetJLCdR"]){
-
-		bool is_closest = false;
-			
-		// clean w/r/t loose electrons
-		for(int el = 0; el < _NumKinObj["Electrons"]; ++el){
-							
-			float closest_dr  = 99.;
-			int   closest_jet =  -1;
-			
-			for(int jet = 0; jet < _vc -> getI("njet"); ++jet){
-				float dr = Tools::dR(_vc -> getF("el_eta", _KinObj["Electrons"][el]), _vc -> getF("jet_eta", jet), _vc -> getF("el_phi", _KinObj["Electrons"][el]), _vc -> getF("jet_phi", jet));
-				if(dr < closest_dr) {
-					closest_dr  = dr;
-					closest_jet = jet;
-				}
-			}
-			
-			if(closest_jet == jet_index && closest_dr < _Cuts["GoodJetJLCdR"]) is_closest = true;
-		
-		}
-		
-		if(is_closest) return false; 
-		
-		// clean w/r/t loose muons 
-		for(int mu = 0; mu < _NumKinObj["Muons"]; ++mu){
-			
-			float closest_dr  = 99.; 
-			int   closest_jet =  -1; 
-			
-			for(int jet = 0; jet < _vc -> getI("njet"); ++jet){ 
-				float dr = Tools::dR(_vc -> getF("mu_eta", _KinObj["Muons"][mu]), _vc -> getF("jet_eta", jet), _vc -> getF("mu_phi", _KinObj["Muons"][mu]), _vc -> getF("jet_phi", jet)); 
-				if(dr < closest_dr) { 
-					closest_dr  = dr; 
-					closest_jet = jet; 
-				} 
-			} 
-			
-			if(closest_jet == jet_index && closest_dr < _Cuts["GoodJetJLCdR"]) is_closest = true; 
-		
-		} 
-		
-		if(is_closest) return false;
- 
-	}
-
-	return true;
-
-}
-
-
-//____________________________________________________________________________
-bool SUSYSSDL::electronSelection(int electron_index){
-	/*
-  	does the selection of electrons
-  	parameters: electron_index
-  	return: true (if the electron is an electron), false (else)
-  	*/
-
-	if( _UsedCuts["ElectronTightId"]    && _vc -> getI("el_tightId" , electron_index)  != _Cuts["ElectronTightId"]) return false;
-	if( _UsedCuts["ElectronPt"]         && _vc -> getF("el_pt"      , electron_index)   < _Cuts["ElectronPt"]     ) return false;
-	if( _UsedCuts["ElectronEtaUL"]      && fabs(_vc -> getF("el_eta", electron_index))  > _Cuts["ElectronEtaUL"] ) return false;
-	if( _UsedCuts["ElectronEtaLL"]      && fabs(_vc -> getF("el_eta", electron_index))  < _Cuts["ElectronEtaLL"] ) return false;
-	if((_UsedCuts["ElectronEtaExclUL"]  && fabs(_vc -> getF("el_eta", electron_index)) <= _Cuts["ElectronEtaExclUL"]) && (_UsedCuts["ElectronEtaExclLL"] && fabs(_vc -> getF("el_eta", electron_index)) >= _Cuts["ElectronEtaExclLL"])) return false;
-	if( _UsedCuts["ElectronPtDXY"]      && fabs(_vc -> getF("el_dxy", electron_index))  < _Cuts["ElectronPtDXY"]  ) return false;
-
-	return true;
-
-}
-
-
-//____________________________________________________________________________
-bool SUSYSSDL::muonSelection(int muon_index){
-	/*
-  	does the selection of muons
-  	parameters: muon_index
-  	return: true (if the muon is a muon), false (else)
-  	*/
-
-
-	if(_UsedCuts["MuonTightId"] && _vc -> getI("mu_tightId" , muon_index) != _Cuts["MuonTightId"]) return false;
-	if(_UsedCuts["MuonPt"]      && _vc -> getF("mu_pt"      , muon_index)  < _Cuts["MuonPt"]     ) return false;
-	if(_UsedCuts["MuonEtaUL"]   && fabs(_vc -> getF("mu_eta", muon_index)) > _Cuts["MuonEtaUL"] ) return false;
-	if(_UsedCuts["MuonEtaLL"]   && fabs(_vc -> getF("mu_eta", muon_index)) < _Cuts["MuonEtaLL"] ) return false;
-	if(_UsedCuts["MuonPtDXY"]   && fabs(_vc -> getF("mu_dxy", muon_index)) < _Cuts["MuonPtDXY"]  ) return false;
-
-	return true;
-
-}
-
-
-//____________________________________________________________________________
-bool SUSYSSDL::vetoElectronSelection(int elIdx){
-	/*
-  	does the selection of veto electrons
-  	parameters: electron_index
-  	return: true (if the electron is a veto electron), false (else)
-  	*/
-
-	counter("elIdDenominator", "elIDs");
-
-	if(electronSelection(elIdx)) return false;
-	if(_UsedCuts["VetoElectronTightId"] && !makeCut<int>(   _vc -> getI("el_tightId", elIdx), _Cuts["VetoElectronTightId"], "=", "elId sel", 0, "elIDs" ) ) return false;
-	if(_UsedCuts["VetoElectronPtLow"]   && !makeCut<float>( _vc -> getF("el_pt"     , elIdx), _Cuts["VetoElectronPtLow"]  , ">", "elPt sel", 0, "elIDs" ) ) return false;
-  
-	// if(_UsedCuts["VetoElectronTightId"] && _vc -> getI("el_tightId", electron_index) != _Cuts["VetoElectronTightId"]) return false;
-	// if(_UsedCuts["VetoElectronPtLow"]   && _vc -> getF("el_pt"     , electron_index)  < _Cuts["VetoElectronPtLow"]  ) return false;
-
-	return true;
-
-}
-
-
-//____________________________________________________________________________
-bool SUSYSSDL::vetoMuonSelection(int muIdx){
-	/*
-  	does the selection of veto muons
-  	parameters: muon_index
-  	return: true (if the muon is a veto muon), false (else)
-  	*/
-
-	counter("muIdDenominator", "muon IDs");
-
-	if(muonSelection(muIdx)) return false;
-	if(_UsedCuts["VetoMuonTightId"] && !makeCut<int>(   _vc -> getI("mu_tightId", muIdx), _Cuts["VetoMuonTightId"], "=", "muId sel", 0, "muon IDs" ) ) return false;
-	if(_UsedCuts["VetoMuonPtLow"]   && !makeCut<float>( _vc -> getF("mu_pt"     , muIdx), _Cuts["VetoMuonPtLow"]  , ">", "muPt sel", 0, "muon IDs" ) ) return false;
-
-	return true;
-
-}
-
-
-
-
-
-
-/*****************************************************************************
-******************************************************************************
-** EVENT SELECTIONS                                                         **
-******************************************************************************
-*****************************************************************************/
-
-
-//____________________________________________________________________________
-bool SUSYSSDL::brEventSelection(){
-	/*
-  	does the event selection in the baseline region for the SUSYSSDL class
-  	parameters: none
-  	return: true (if the event passes the selection), false (else)
-  	*/
-
-	counter("denominator");
-
-	//std::cout << "br selection with " << (_NumKinObj["Electron"] + _NumKinObj["Muon"]) << " selected leptons and " << (_NumKinObj["VetoElectron"] + _NumKinObj["VetoMuon"]) << " leptons in the veto" << std::endl;
-
-
-	if(_isData && _UsedCuts["BRHLT_DoubleMu"] && !makeCut<int>(_vc -> getI("HLT_DoubleMu"), _Cuts["BRHLT_DoubleMu"], "=", "BR HLT DoubleMu") ) return false;	
-	if(_isData && _UsedCuts["BRHLT_DoubleEl"] && !makeCut<int>(_vc -> getI("HLT_DoubleEl"), _Cuts["BRHLT_DoubleEl"], "=", "BR HLT DoubleEl") ) return false;	
-	if(_isData && _UsedCuts["BRHLT_MuEG"]     && !makeCut<int>(_vc -> getI("HLT_MuEG")    , _Cuts["BRHLT_MuEG"]    , "=", "BR HLT MuEG"    ) ) return false;	
-
- 	bool is_3l_event = vetoLeptonSelection("Electron", "Muon", "BR");
-	bool is_ss_event = ssLeptonSelection("Electron", "Muon", "BR");
-
- 	//if(!makeCut<int>(_NumKinObj["Electron"] + _NumKinObj["Muon"], 2, "=", "lep multiplicity") ) return false;
-
-	if(_UsedCuts["BRNumSSLeptons"] && !makeCut<int>( _NumKinObj["Electron"] + _NumKinObj["Muon"], _Cuts["BRNumSSLeptons"], "=", "BR lep mult user" ) ) return false; 
-	if(_UsedCuts["BRNumSSLeptons"] && !makeCut( is_ss_event , "BR SS"     , "=") ) return false;
-	if(_UsedCuts["BRNumSSLeptons"] && !makeCut( !is_3l_event, "BR veto 3l", "=") ) return false;
-	   
-	if(_UsedCuts["BRNumJetsLL"]    && !makeCut<int>( _NumKinObj["GoodJet"], _Cuts["BRNumJetsLL"] , ">=", "BR good jet mult ll" ) ) return false;
-
-	if(_UsedCuts["BRNumBJets"]     && !makeCut<int>( _NumKinObj["BJet"]   , _Cuts["BRNumBJets"]  , "=" , "BR bjet mult"        ) ) return false;
-	if(_UsedCuts["BRNumBJetsLL"]   && !makeCut<int>( _NumKinObj["BJet"]   , _Cuts["BRNumBJetsLL"], ">=", "BR bjet mult ll"     ) ) return false;
-
-	if(_UsedCuts["BRHTLL"]         && !makeCut<float>( HT("GoodJet")      , _Cuts["BRHTLL"]      , ">" , "BR HT ll"            ) ) return false;
+	if(!makeCut(goodJetSelection(jetIdx), "jet Id", "=", "b-jet Id") ) return false;
+	if(!makeCut<float>(_vc -> getF("jet_btagCSV", jetIdx), 0.679, ">=", "csv btag selection", 0, "b-jet Id") ) return false;
 	
-	if(_UsedCuts["BRMETIF0"] && _UsedCuts["BRMETIF1"] && _UsedCuts["BRMETIFHT"]){
-
-		if( HT("GoodJet") < _Cuts["BRMETIFHT"] ){
-			if(!makeCut<float>(_vc -> getF("met_pt"), _Cuts["BRMETIF0"], ">", "BR MET requirement") ) return false;
-		}
-		else{
-			if(!makeCut<float>(_vc -> getF("met_pt"), _Cuts["BRMETIF1"], ">", "BR MET requirement") ) return false;
-		}
-	}
-
-	if(_UsedCuts["BRMLL"] && !makeCut<float>(findMLL("Electron", "Muon"), _Cuts["BRMLL"], ">", "BR MLL" )                    ) return false; 
-
 	return true;
 
 }
@@ -549,7 +343,657 @@ void SUSYSSDL::collectKinematicObjects(){
 
 
 //____________________________________________________________________________
-bool SUSYSSDL::ssLeptonSelection(std::string electron_label, std::string muon_label, std::string kr){
+bool SUSYSSDL::goodJetSelection(int jetIdx){
+	/*
+  	does the selection of good jets, i.e. minimum selection of jets 
+  	parameters: jetIdx
+  	return: true (if the jet is good), false (else)
+  	*/
+
+	float min_dR = 0.4;
+	float jet_pt = (_JEC == 1 ? _vc -> getF("jet_pt", jetIdx) : _vc -> getF("jet_rawPt", jetIdx));
+
+	counter("JetDenominator", "jet Id");
+
+	if(!makeCut<float>(jet_pt                              , 40.0, ">", "pt selection" , 0, "jet Id") ) return false;
+	if(!makeCut<float>(fabs(_vc -> getF("jet_eta", jetIdx)),  2.4, "<", "eta selection", 0, "jet Id") ) return false;
+
+
+	// this is the implementation of jet lepton cleaning
+	// maybe we find a better way => matthieu's library?
+
+	bool is_closest = false;
+		
+	// clean w/r/t loose electrons
+	for(int el = 0; el < _NumKinObj["Electrons"]; ++el){
+						
+		float closest_dr  = 99.;
+		int   closest_jet =  -1;
+		
+		for(int jet = 0; jet < _vc -> getI("njet"); ++jet){
+			float dr = Tools::dR(_vc -> getF("el_eta", _KinObj["Electrons"][el]), _vc -> getF("jet_eta", jet), _vc -> getF("el_phi", _KinObj["Electrons"][el]), _vc -> getF("jet_phi", jet));
+			if(dr < closest_dr) {
+				closest_dr  = dr;
+				closest_jet = jet;
+			}
+		}
+		
+		if(closest_jet == jetIdx && closest_dr < min_dR) is_closest = true;
+	
+	}
+
+	if(makeCut(is_closest, "jet-lepton cleaning (el)", "=", "jet Id")) return false;
+	
+	// clean w/r/t loose muons 
+	for(int mu = 0; mu < _NumKinObj["Muons"]; ++mu){
+		
+		float closest_dr  = 99.; 
+		int   closest_jet =  -1; 
+		
+		for(int jet = 0; jet < _vc -> getI("njet"); ++jet){ 
+			float dr = Tools::dR(_vc -> getF("mu_eta", _KinObj["Muons"][mu]), _vc -> getF("jet_eta", jet), _vc -> getF("mu_phi", _KinObj["Muons"][mu]), _vc -> getF("jet_phi", jet)); 
+			if(dr < closest_dr) { 
+				closest_dr  = dr; 
+				closest_jet = jet; 
+			} 
+		} 
+		
+		if(closest_jet == jetIdx && closest_dr < min_dR) is_closest = true; 
+	
+	} 
+		
+	if(makeCut(is_closest, "jet-lepton cleaning (mu)", "=", "jet Id")) return false;
+
+	return true;
+
+}
+
+
+//____________________________________________________________________________
+bool SUSYSSDL::electronSelection(int elIdx){
+	/*
+  	does the selection of electrons
+  	parameters: elIdx
+  	return: true (if the electron is an electron), false (else)
+  	*/
+
+	counter("ElectronDenominator", "el ID");
+
+	float pt_cut = 10.;
+	if(_PT == "highpt") pt_cut = 20.;
+
+	if(!makeCut<int>(       _vc -> getI("el_tightId", elIdx) ,  1     , "=", "POG MVA Tight Id ", 0    , "el ID")) return false;
+	if(!makeCut<float>(     _vc -> getF("el_pt"     , elIdx) , pt_cut , ">", "pt selection"     , 0    , "el ID")) return false;
+	if(!makeCut<float>(fabs(_vc -> getF("el_eta"    , elIdx)),  2.4   , "<", "eta selection"    , 0    , "el ID")) return false;
+	if(!makeCut<float>(fabs(_vc -> getF("el_eta"    , elIdx)),  1.4442, "[!]", "eta selection"  , 1.566, "el ID")) return false;
+	if(!makeCut<float>(fabs(_vc -> getF("el_dz"     , elIdx)),  0.2   , "<", "dz selection"     , 0    , "el ID")) return false;
+	if(!makeCut<float>(fabs(_vc -> getF("el_dxy"    , elIdx)),  0.01  , "<", "dxy selection"    , 0    , "el ID")) return false;  
+
+	return true;
+
+}
+
+
+//____________________________________________________________________________
+bool SUSYSSDL::muonSelection(int muIdx){
+	/*
+  	does the selection of muons
+  	parameters: muIdx
+  	return: true (if the muon is a muon), false (else)
+  	*/
+
+	counter("MuonDenominator", "muon ID");
+	
+	float pt_cut = 10.;
+	if(_PT == "highpt") pt_cut = 20.;
+
+	if(!makeCut<int>(       _vc -> getI("mu_tightId", muIdx) ,  1    , "=", "POG Tight Id ", 0, "muon ID")) return false;
+	if(!makeCut<float>(     _vc -> getF("mu_pt"     , muIdx) , pt_cut, ">", "pt selection" , 0, "muon ID")) return false;
+	if(!makeCut<float>(fabs(_vc -> getF("mu_eta"    , muIdx)),  2.4  , "<", "eta selection", 0, "muon ID")) return false;
+	if(!makeCut<float>(fabs(_vc -> getF("mu_dz"     , muIdx)),  0.2  , "<", "dz selection" , 0, "muon ID")) return false;
+	if(!makeCut<float>(fabs(_vc -> getF("mu_dxy"    , muIdx)),  0.005, "<", "dxy selection", 0, "muon ID")) return false;  
+
+	return true;
+
+}
+
+
+//____________________________________________________________________________
+bool SUSYSSDL::vetoElectronSelection(int elIdx){
+	/*
+  	does the selection of veto electrons
+  	parameters: elIdx
+  	return: true (if the electron is a veto electron), false (else)
+  	*/
+
+	counter("vetoElDenominator", "veto el");
+
+	if(!makeCut(!electronSelection(elIdx), "no veto electron", "=", "veto el") ) return false;
+	if(!makeCut<int>(   _vc -> getI("el_tightId", elIdx), 1  , "=", "POG MVA Tight Id", 0, "veto el" ) ) return false;
+	if(!makeCut<float>( _vc -> getF("el_pt"     , elIdx), 5.0, ">", "pt selection"    , 0, "veto el" ) ) return false;
+  
+	return true;
+
+}
+
+
+//____________________________________________________________________________
+bool SUSYSSDL::vetoMuonSelection(int muIdx){
+	/*
+  	does the selection of veto muons
+  	parameters: muIdx     
+  	return: true (if the muon is a veto muon), false (else)
+  	*/
+
+	counter("VetoMuonDenominator", "veto mu");
+
+	if(!makeCut(!muonSelection(muIdx), "no veto muon", "=", "veto mu") ) return false;
+	if(!makeCut<int>(   _vc -> getI("mu_tightId", muIdx), 1  , "=", "POG Tight Id", 0, "veto mu" ) ) return false;
+	if(!makeCut<float>( _vc -> getF("mu_pt"     , muIdx), 5.0, ">", "pt selection", 0, "veto mu" ) ) return false;
+
+	return true;
+
+}
+
+
+
+
+
+
+/*****************************************************************************
+******************************************************************************
+** KINEMATIC REGION DEFINITIONS                                             **
+******************************************************************************
+*****************************************************************************/
+
+
+//____________________________________________________________________________
+void SUSYSSDL::setBaselineRegion(){
+	/*
+	sets the cuts of the baseline region (_BR) for high- and low-pt analyses (_PT)
+	parameters: none
+	return: none
+	*/
+
+ 	if(_BR == "BR00" && _PT == "lowpt") {
+		setCut("HTBR"     ,  250, ">" );
+		setCut("HTCondBR" ,  500, "<" );
+		setCut("METHighBR",   30, ">=");
+		setCut("METLowBR" ,    0, ">=");
+		setCut("NJetsBR"  ,    2, ">=");
+		setCut("NBJetsBR" ,    0, "=" );
+		setCut("CHBR"     , -100, ">" );
+	}	
+	else if(_BR == "BR01" && _PT == "lowpt") {
+		setCut("HTBR"     ,  250, ">" );
+		setCut("HTCondBR" ,  500, "<" );
+		setCut("METHighBR",   30, ">=");
+		setCut("METLowBR" ,    0, ">=");
+		setCut("NJetsBR"  ,    2, ">=");
+		setCut("NBJetsBR" ,    1, "=" );
+		setCut("CHBR"     , -100, ">" );
+	}
+	else if(_BR == "BR02" && _PT == "lowpt") {
+		setCut("HTBR"     ,  250, ">" );
+		setCut("HTCondBR" ,  500, "<" );
+		setCut("METHighBR",   30, ">=");
+		setCut("METLowBR" ,    0, ">=");
+		setCut("NJetsBR"  ,    2, ">=");
+		setCut("NBJetsBR" ,    2, ">=");
+		setCut("CHBR"     , -100, ">" );
+	}
+
+ 	else if(_BR == "BR00" && _PT == "highpt") {
+		setCut("HTBR"     ,   80, ">" );
+		setCut("HTCondBR" ,  500, "<" );
+		setCut("METHighBR",   30, ">=");
+		setCut("METLowBR" ,    0, ">=");
+		setCut("NJetsBR"  ,    2, ">=");
+		setCut("NBJetsBR" ,    0, "=" );
+		setCut("CHBR"     , -100, ">" );
+	}	
+	else if(_BR == "BR01" && _PT == "highpt") {
+		setCut("HTBR"     ,   80, ">" );
+		setCut("HTCondBR" ,  500, "<" );
+		setCut("METHighBR",   30, ">=");
+		setCut("METLowBR" ,    0, ">=");
+		setCut("NJetsBR"  ,    2, ">=");
+		setCut("NBJetsBR" ,    1, "=" );
+		setCut("CHBR"     , -100, ">" );
+	}
+	else if(_BR == "BR02" && _PT == "highpt") {
+		setCut("HTBR"     ,   80, ">" );
+		setCut("HTCondBR" ,  500, "<" );
+		setCut("METHighBR",   30, ">=");
+		setCut("METLowBR" ,    0, ">=");
+		setCut("NJetsBR"  ,    2, ">=");
+		setCut("NBJetsBR" ,    2, ">=");
+		setCut("CHBR"     , -100, ">" );
+	}
+}
+
+
+//____________________________________________________________________________
+void SUSYSSDL::setCut(std::string var, float valCut, std::string cType, float upValCut) {
+	/*
+	sets the parameters (valCut, cType, upValCut) for a specific cut on a variable (var)
+	parameters: var, valCut (the cut value), cType (the cut type), upValCut (the upper value
+	            in case one cuts the variable in a range)
+	return: none
+	*/
+
+
+	// signal region
+	
+	if(var == "HTSR") {
+		_valCutHTSR   = valCut;
+		_cTypeHTSR    = cType;
+		_upValCutHTSR = upValCut;
+	} 
+	
+	else if(var == "METSR") {
+		_valCutMETSR   = valCut;
+		_cTypeMETSR    = cType;
+		_upValCutMETSR = upValCut;
+	} 
+	
+	else if(var == "NJetsSR") {
+		_valCutNJetsSR   = valCut;
+		_cTypeNJetsSR    = cType;
+		_upValCutNJetsSR = upValCut;
+	} 
+	
+	else if(var == "NBJetsSR") {
+		_valCutNBJetsSR   = valCut;
+		_cTypeNBJetsSR    = cType;
+		_upValCutNBJetsSR = upValCut;
+	} 
+	
+	else if(var == "CHSR") {
+		_valCutCHSR   = valCut;
+		_cTypeCHSR    = cType;
+		_upValCutCHSR = upValCut;
+	} 
+
+
+	// baseline region
+
+	else if(var == "HTBR") {
+		_valCutHTBR   = valCut;
+		_cTypeHTBR    = cType;
+		_upValCutHTBR = upValCut;
+	} 
+
+	else if(var == "HTCondBR") {
+		_valCutHTCondBR   = valCut;
+		_cTypeHTCondBR    = cType;
+		_upValCutHTCondBR = upValCut;
+	} 
+	
+	else if(var == "METLowBR") {
+		_valCutMETLowBR   = valCut;
+		_cTypeMETLowBR    = cType;
+		_upValCutMETLowBR = upValCut;
+	} 
+	
+	else if(var == "METHighBR") {
+		_valCutMETHighBR   = valCut;
+		_cTypeMETHighBR    = cType;
+		_upValCutMETHighBR = upValCut;
+	} 
+	
+	else if(var == "NJetsBR") {
+		_valCutNJetsBR   = valCut;
+		_cTypeNJetsBR    = cType;
+		_upValCutNJetsBR = upValCut;
+	} 
+	
+	else if(var == "NBJetsBR") {
+		_valCutNBJetsBR   = valCut;
+		_cTypeNBJetsBR    = cType;
+		_upValCutNBJetsBR = upValCut;
+	} 
+	
+	else if(var == "CHBR") {
+		_valCutCHBR  = valCut;
+		_cTypeCHBR    = cType;
+		_upValCutCHBR = upValCut;
+	} 
+
+}
+
+
+
+//____________________________________________________________________________
+void SUSYSSDL::setSignalRegion() {
+	/*
+	sets the cuts of the signal region (_SR)
+	parameters: none
+	return: none
+	*/
+
+ 	if(_SR == "SR01") {
+		setCut("HTSR", 200, "[]", 400 );
+		setCut("METSR", 50, "[]", 120 );
+		setCut("NJetsSR", 2, "[]", 3 );
+		setCut("NBJetsSR", 0, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR02") {
+		setCut("HTSR", 400, ">" );
+		setCut("METSR", 50, "[]", 120 );
+		setCut("NJetsSR", 2, "[]", 3 );
+		setCut("NBJetsSR", 0, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR03") {
+		setCut("HTSR", 200, "[]", 400 );
+		setCut("METSR", 50, "[]", 120 );
+		setCut("NJetsSR", 4, ">=" );
+		setCut("NBJetsSR", 0, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR04") {
+		setCut("HTSR", 400, ">" );
+		setCut("METSR", 50, "[]", 120 );
+		setCut("NJetsSR", 4, ">=" );
+		setCut("NBJetsSR", 0, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+ 	else if(_SR == "SR05") {
+		setCut("HTSR", 200, "[]", 400 );
+		setCut("METSR", 120, ">" );
+		setCut("NJetsSR", 2, "[]", 3 );
+		setCut("NBJetsSR", 0, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR06") {
+		setCut("HTSR", 400, ">" );
+		setCut("METSR", 120, ">" );
+		setCut("NJetsSR", 2, "[]", 3 );
+		setCut("NBJetsSR", 0, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR07") {
+		setCut("HTSR", 200, "[]", 400 );
+		setCut("METSR", 120, ">" );
+		setCut("NJetsSR", 4, ">=" );
+		setCut("NBJetsSR", 0, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR08") {
+		setCut("HTSR", 400, ">" );
+		setCut("METSR", 120, ">" );
+		setCut("NJetsSR", 4, ">=" );
+		setCut("NBJetsSR", 0, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+
+
+
+ 	else if(_SR == "SR11") {
+		setCut("HTSR", 200, "[]", 400 );
+		setCut("METSR", 50, "[]", 120 );
+		setCut("NJetsSR", 2, "[]", 3 );
+		setCut("NBJetsSR", 1, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR12") {
+		setCut("HTSR", 400, ">" );
+		setCut("METSR", 50, "[]", 120 );
+		setCut("NJetsSR", 2, "[]", 3 );
+		setCut("NBJetsSR", 1, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR13") {
+		setCut("HTSR", 200, "[]", 400 );
+		setCut("METSR", 50, "[]", 120 );
+		setCut("NJetsSR", 4, ">=" );
+		setCut("NBJetsSR", 1, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR14") {
+		setCut("HTSR", 400, ">" );
+		setCut("METSR", 50, "[]", 120 );
+		setCut("NJetsSR", 4, ">=" );
+		setCut("NBJetsSR", 1, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+ 	else if(_SR == "SR15") {
+		setCut("HTSR", 200, "[]", 400 );
+		setCut("METSR", 120, ">" );
+		setCut("NJetsSR", 2, "[]", 3 );
+		setCut("NBJetsSR", 1, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR16") {
+		setCut("HTSR", 400, ">" );
+		setCut("METSR", 120, ">" );
+		setCut("NJetsSR", 2, "[]", 3 );
+		setCut("NBJetsSR", 1, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR17") {
+		setCut("HTSR", 200, "[]", 400 );
+		setCut("METSR", 120, ">" );
+		setCut("NJetsSR", 4, ">=" );
+		setCut("NBJetsSR", 1, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR18") {
+		setCut("HTSR", 400, ">" );
+		setCut("METSR", 120, ">" );
+		setCut("NJetsSR", 4, ">=" );
+		setCut("NBJetsSR", 1, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+
+
+
+ 	else if(_SR == "SR21") {
+		setCut("HTSR", 200, "[]", 400 );
+		setCut("METSR", 50, "[]", 120 );
+		setCut("NJetsSR", 2, "[]", 3 );
+		setCut("NBJetsSR", 2, ">=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR22") {
+		setCut("HTSR", 400, ">" );
+		setCut("METSR", 50, "[]", 120 );
+		setCut("NJetsSR", 2, "[]", 3 );
+		setCut("NBJetsSR", 2, ">=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR23") {
+		setCut("HTSR", 200, "[]", 400 );
+		setCut("METSR", 50, "[]", 120 );
+		setCut("NJetsSR", 4, ">=" );
+		setCut("NBJetsSR", 2, ">=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR24") {
+		setCut("HTSR", 400, ">" );
+		setCut("METSR", 50, "[]", 120 );
+		setCut("NJetsSR", 4, ">=" );
+		setCut("NBJetsSR", 2, ">=" );
+		setCut("CHSR", -100, ">" );
+	}
+ 	else if(_SR == "SR25") {
+		setCut("HTSR", 200, "[]", 400 );
+		setCut("METSR", 120, ">" );
+		setCut("NJetsSR", 2, "[]", 3 );
+		setCut("NBJetsSR", 2, ">=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR26") {
+		setCut("HTSR", 400, ">" );
+		setCut("METSR", 120, ">" );
+		setCut("NJetsSR", 2, "[]", 3 );
+		setCut("NBJetsSR", 2, ">=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR27") {
+		setCut("HTSR", 200, "[]", 400 );
+		setCut("METSR", 120, ">" );
+		setCut("NJetsSR", 4, ">=" );
+		setCut("NBJetsSR", 2, ">=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SR28") {
+		setCut("HTSR", 400, ">" );
+		setCut("METSR", 120, ">" );
+		setCut("NJetsSR", 4, ">=" );
+		setCut("NBJetsSR", 2, ">=" );
+		setCut("CHSR", -100, ">" );
+	}
+
+
+
+	else if(_SR == "SRRPV0") {
+		setCut("HTSR", 500, ">" );
+		setCut("METSR", 0, ">=" );
+		setCut("NJetsSR", 2, ">=" );
+		setCut("NBJetsSR", 0, ">=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SRRPV2") {
+		setCut("HTSR", 500, ">" );
+		setCut("METSR", 0, ">=" );
+		setCut("NJetsSR", 2, ">=" );
+		setCut("NBJetsSR", 2, ">=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SRSStop1") {
+		setCut("HTSR", 80, ">" );
+		setCut("METSR", 30, ">=" );
+		setCut("NJetsSR", 2, ">=" );
+		setCut("NBJetsSR", 1, "=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SRSStop1++") {
+		setCut("HTSR", 80, ">" );
+		setCut("METSR", 30, ">=" );
+		setCut("NJetsSR", 2, ">=" );
+		setCut("NBJetsSR", 1, "=" );
+		setCut("CHSR", 2, "=" );
+	}
+	else if(_SR == "SRSStop2") {
+		setCut("HTSR", 80, ">" );
+		setCut("METSR", 30, ">=" );
+		setCut("NJetsSR", 2, ">=" );
+		setCut("NBJetsSR", 2, ">=" );
+		setCut("CHSR", -100, ">" );
+	}
+	else if(_SR == "SRSStop2++") {
+		setCut("HTSR", 80, ">" );
+		setCut("METSR", 30, ">=" );
+		setCut("NJetsSR", 2, ">=" );
+		setCut("NBJetsSR", 2, ">=" );
+		setCut("CHSR", 2, "=" );
+	}
+
+
+  // if(sr=="SRXX") {
+  //   setCut("HT", 80, ">" );
+  //   setCut("MET", 30, ">=" );
+  //   setCut("NJets", 2, ">=" );
+  //   setCut("NBJets", 2, ">=" );
+  //   setCut("CH", 2, "=" );
+  //   _srName = sr;
+  // }
+
+}
+
+
+
+
+
+/*****************************************************************************
+******************************************************************************
+** EVENT SELECTIONS                                                         **
+******************************************************************************
+*****************************************************************************/
+
+
+//____________________________________________________________________________
+bool SUSYSSDL::baseSelection(){
+	/*
+	implements the base selection that is fundamental for both the baseline 
+	and the signal region selections
+	parameters: none
+	return: true (if event passes selection), false (else)
+	*/
+
+	counter("denominator");
+
+	if(_isData && !makeCut<int>(_vc -> getI("HLT_DoubleMu"), 1, "=", "HLT DoubleMu") ) return false;	
+	if(_isData && !makeCut<int>(_vc -> getI("HLT_DoubleEl"), 1, "=", "HLT DoubleEl") ) return false;	
+	if(_isData && !makeCut<int>(_vc -> getI("HLT_MuEG")    , 1, "=", "HLT MuEG"    ) ) return false;	
+
+	bool is_3l_event = vetoEventSelection("Electron", "Muon");
+	bool is_ss_event = ssEventSelection  ("Electron", "Muon");
+
+	if(!makeCut<int>( _NumKinObj["Electron"] + _NumKinObj["Muon"], 2, "=", "lepton multiplicity" ) ) return false; 
+	if(!makeCut( is_ss_event , "same-sign selection", "=") ) return false;
+	if(!makeCut( !is_3l_event, "veto on 3 leptons"  , "=") ) return false;
+
+	return true;
+
+}
+
+
+//____________________________________________________________________________
+bool SUSYSSDL::brSelection(){
+	/*
+	implements the baseline region selection provided that the base selection
+	already has been applied, i.e. here we just cut on the variables that are
+	different among the baseline region selections
+	parameters: none
+	return: true (if event passes selection), false (else)
+	*/
+
+	if(!makeCut<float>( HT("GoodJet")                 , _valCutHTBR    , _cTypeHTBR , "BR HT selection"       , _upValCutHTBR      ) ) return false;
+	if(_au -> simpleCut(HT("GoodJet"), _valCutHTCondBR, _cTypeHTCondBR) ) {
+		if(!makeCut<float>( _vc -> getF("met_pt"), _valCutMETHighBR, _cTypeMETHighBR, "BR MET high selection", _upValCutMETHighBR ) ) return false;
+	}
+	else {
+		if(!makeCut<float>( _vc -> getF("met_pt"), _valCutMETLowBR , _cTypeMETLowBR , "BR MET low selection" , _upValCutMETLowBR ) ) return false;
+	}
+
+	if(!makeCut<float>( _NumKinObj["GoodJet"]         , _valCutNJetsBR , _cTypeNJetsBR , "BR jet multiplicity"  , _upValCutNJetsBR ) ) return false;
+	if(!makeCut<float>( _NumKinObj["BJet"]            , _valCutNBJetsBR, _cTypeNBJetsBR, "BR b-jet multiplicity", _upValCutNBJetsBR) ) return false;
+	if(!makeCut<float>( findCharge("Electron", "Muon"), _valCutCHBR    , _cTypeCHBR    , "BR charge selection"  , _upValCutCHBR    ) ) return false;
+
+	return true;
+
+} 
+
+
+//____________________________________________________________________________
+bool SUSYSSDL::srSelection(){
+	/*
+	implements the signal region selection provided that the base selection
+	already has been applied, i.e. here we just cut on the variables that are
+	different among the signal region selections
+	parameters: none
+	return: true (if event passes selection), false (else)
+	*/
+
+
+	//  counter("denominator",_srName);
+	if(!makeCut<float>( HT("GoodJet")                 , _valCutHTSR    , _cTypeHTSR    , "SR HT selection"     , _upValCutHTSR    ) ) return false;
+	if(!makeCut<float>( _vc -> getF("met_pt")         , _valCutMETSR   , _cTypeMETSR   , "SR MET selection"    , _upValCutMETSR   ) ) return false;
+	if(!makeCut<float>( _NumKinObj["GoodJet"]         , _valCutNJetsSR , _cTypeNJetsSR , "SR jet multiplicity" , _upValCutNJetsSR ) ) return false;
+	if(!makeCut<float>( _NumKinObj["BJet"]            , _valCutNBJetsSR, _cTypeNBJetsSR, "SR bjet multiplicity", _upValCutNBJetsSR) ) return false;
+	if(!makeCut<float>( findCharge("Electron", "Muon"), _valCutCHSR    , _cTypeCHSR    , "SR charge selection" , _upValCutCHSR    ) ) return false;
+
+	return true;
+
+} 
+
+
+//____________________________________________________________________________
+bool SUSYSSDL::ssEventSelection(std::string electron_label, std::string muon_label, std::string kr){
 	/*
 	checks, if the leptons that have been found in the kinematic region (kr) are same-sign
   	parameters: electron_label, muon_label (the labels of the selected electron and muon objects), kr
@@ -574,7 +1018,7 @@ bool SUSYSSDL::ssLeptonSelection(std::string electron_label, std::string muon_la
 
 
 //____________________________________________________________________________
-bool SUSYSSDL::vetoLeptonSelection(std::string electron_label, std::string muon_label, std::string kr){
+bool SUSYSSDL::vetoEventSelection(std::string electron_label, std::string muon_label, std::string kr){
 	/*
   	performs an essential part of the event selection in the 3l case, i.e.
   	events are rejected if there are 3 leptons where two leptons form an
@@ -606,18 +1050,8 @@ bool SUSYSSDL::vetoLeptonSelection(std::string electron_label, std::string muon_
 		// there is an os sf pair
 		if(os){	
 			float mll = MLL("electron", _KinObj["VetoElectron"][0], "electron", os_el_index);
-			//std::cout << "os electron with mll " << mll << std::endl;
-			//std::cout << "pt is " << _vc -> getF("el_pt", _KinObj["VetoElectron"][0]) << std::endl;
-			//std::cout << "low cut: " << (_vc -> getF("el_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtLow"]) << std::endl;
-			//std::cout << "high cut: " << (_vc -> getF("el_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtHigh"]) << std::endl;
-			//std::cout << "first mll: " << (mll < _Cuts[kr + "VetoMLLLow"]) << " where " << _Cuts[kr + "VetoMLLLow"] << std::endl;
-			//std::cout << "second mll: " << (mll > _Cuts[kr + "VetoMLLHighLL"] && mll < _Cuts[kr + "VetoMLLHighUL"]) << "where " << _Cuts[kr + "VetoMLLHighLL"] << " and " << _Cuts[kr + "VetoMLLHighUL"] << std::endl;
-			//std::cout << "first: " << (_vc -> getF("el_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtLow"]  && mll < _Cuts[kr + "VetoMLLLow"]) << std::endl;
-			//std::cout << "second: " << (_vc -> getF("el_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtHigh"] && (mll > _Cuts[kr + "VetoMLLHighLL"] && mll < _Cuts[kr + "VetoMLLHighUL"])) << std::endl;
-
 			if(makeCut(_vc -> getF("el_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtLow"]  && mll < _Cuts[kr + "VetoMLLLow"], "electron mll low pt veto", "=", kr + " vetoLepSel") ) return true;
 			if(makeCut(_vc -> getF("el_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtHigh"] && (mll > _Cuts[kr + "VetoMLLHighLL"] && mll < _Cuts[kr + "VetoMLLHighUL"]), "electron mll high pt veto", "=", kr + " vetoLepSel") ) return true;
-			//std::cout << "returning false" << std::endl;
 		}
 	}
 
@@ -651,48 +1085,6 @@ bool SUSYSSDL::vetoLeptonSelection(std::string electron_label, std::string muon_
 
 	return false;
 
-
-}
-
-
-//____________________________________________________________________________
-bool SUSYSSDL::srEventSelection(){
-	/*
-  	does the event selection for the SUSYSSDL class
-  	parameters: none
-  	return: true (if the event passes the selection), false (else)
-  	*/
-
-	if(_isData && _UsedCuts["SRHLT_DoubleMu"] && !makeCut<int>(_vc -> getI("HLT_DoubleMu"), _Cuts["SRHLT_DoubleMu"], "=", "SR HLT DoubleMu") ) return false;	
-	if(_isData && _UsedCuts["SRHLT_DoubleEl"] && !makeCut<int>(_vc -> getI("HLT_DoubleEl"), _Cuts["SRHLT_DoubleEl"], "=", "SR HLT DoubleEl") ) return false;	
-	if(_isData && _UsedCuts["SRHLT_MuEG"]     && !makeCut<int>(_vc -> getI("HLT_MuEG")    , _Cuts["SRHLT_MuEG"]    , "=", "SR HLT MuEG"    ) ) return false;	
-
-	bool is_3l_event = vetoLeptonSelection("Electron", "Muon", "SR");
-	bool is_ss_event = ssLeptonSelection  ("Electron", "Muon", "SR");
-
-	if(_UsedCuts["SRNumSSLeptons"] && !makeCut<int>( _NumKinObj["Electron"] + _NumKinObj["Muon"], _Cuts["SRNumSSLeptons"], "=", "SR lep mult user" ) ) return false; 
-	if(_UsedCuts["SRNumSSLeptons"] && !makeCut( is_ss_event , "SR SS"     , "=") ) return false;
-	if(_UsedCuts["SRNumSSLeptons"] && !makeCut( !is_3l_event, "SR veto 3l", "=") ) return false;
-
-	//std::cout << "event has " << _NumKinObj["GoodJet"] << " good jets" << std::endl;	  
- 
-	if(_UsedCuts["SRNumJetsUL"]    && !makeCut<int>( _NumKinObj["GoodJet"]  , _Cuts["SRNumJetsUL"] , "<=", "SR good jet mult ul") ) return false;
-	if(_UsedCuts["SRNumJetsLL"]    && !makeCut<int>( _NumKinObj["GoodJet"]  , _Cuts["SRNumJetsLL"] , ">=", "SR good jet mult ll") ) return false;
-
-	if(_UsedCuts["SRNumBJets"]     && !makeCut<int>( _NumKinObj["BJet"]     , _Cuts["SRNumBJets"]  , "=" , "SR bjet mult"       ) ) return false;
-	if(_UsedCuts["SRNumBJetsLL"]   && !makeCut<int>( _NumKinObj["BJet"]     , _Cuts["SRNumBJetsLL"], ">=", "SR bjet mult ll"    ) ) return false;
-
-	if(_UsedCuts["SRHT"]           && !makeCut<float>( HT("GoodJet")        , _Cuts["SRHT"]        , ">" , "SR HT"              ) ) return false;
-	if(_UsedCuts["SRHTUL"]         && !makeCut<float>( HT("GoodJet")        , _Cuts["SRHTUL"]      , "<=", "SR HT ul"           ) ) return false;
-	if(_UsedCuts["SRHTLL"]         && !makeCut<float>( HT("GoodJet")        , _Cuts["SRHTLL"]      , ">=", "SR HT ll"           ) ) return false;
-	
-	if(_UsedCuts["SRMET"]          && !makeCut<float>( _vc -> getF("met_pt"), _Cuts["SRMET"]       , ">" , "SR MET"             ) ) return false;
-	if(_UsedCuts["SRMETUL"]        && !makeCut<float>( _vc -> getF("met_pt"), _Cuts["SRMETUL"]     , "<=", "SR MET ul"          ) ) return false;
-	if(_UsedCuts["SRMETLL"]        && !makeCut<float>( _vc -> getF("met_pt"), _Cuts["SRMETLL"]     , ">=", "SR MET ll"          ) ) return false;
-
-	if(_UsedCuts["SRMLL"]          && !makeCut<float>( findMLL("Electron", "Muon"), _Cuts["SRMLL"] , ">" , "SR MLL"             ) ) return false; 
-
-	return true;
 
 }
 
@@ -766,347 +1158,5 @@ void SUSYSSDL::fillJetPlots(std::string kr){
 		fill(kr + "_JetPt"     , (_JEC == 1 ? _vc -> getF("jet_pt", i) : _vc -> getF("jet_rawPt", i)), _EventWeight);
 		fill(kr + "_JetCSVBTag", _vc -> getF("jet_btagCSV", i)                                       , _EventWeight);
 	}
-
-}
-
-
-void SUSYSSDL::setSignalRegion(string sr) {
-
-  if(sr=="SR01") {
-    setCut("HT", 200, "[]", 400 );
-    setCut("MET", 50, "[]", 120 );
-    setCut("NJets", 2, "[]", 3 );
-    setCut("NBJets", 0, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR02") {
-    setCut("HT", 400, ">" );
-    setCut("MET", 50, "[]", 120 );
-    setCut("NJets", 2, "[]", 3 );
-    setCut("NBJets", 0, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR03") {
-    setCut("HT", 200, "[]", 400 );
-    setCut("MET", 50, "[]", 120 );
-    setCut("NJets", 4, ">=" );
-    setCut("NBJets", 0, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR04") {
-    setCut("HT", 400, ">" );
-    setCut("MET", 50, "[]", 120 );
-    setCut("NJets", 4, ">=" );
-    setCut("NBJets", 0, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
-  if(sr=="SR05") {
-    setCut("HT", 200, "[]", 400 );
-    setCut("MET", 120, ">" );
-    setCut("NJets", 2, "[]", 3 );
-    setCut("NBJets", 0, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR06") {
-    setCut("HT", 400, ">" );
-    setCut("MET", 120, ">" );
-    setCut("NJets", 2, "[]", 3 );
-    setCut("NBJets", 0, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR07") {
-    setCut("HT", 200, "[]", 400 );
-    setCut("MET", 120, ">" );
-    setCut("NJets", 4, ">=" );
-    setCut("NBJets", 0, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR08") {
-    setCut("HT", 400, ">" );
-    setCut("MET", 120, ">" );
-    setCut("NJets", 4, ">=" );
-    setCut("NBJets", 0, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
-
-
-  if(sr=="SR11") {
-    setCut("HT", 200, "[]", 400 );
-    setCut("MET", 50, "[]", 120 );
-    setCut("NJets", 2, "[]", 3 );
-    setCut("NBJets", 1, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR12") {
-    setCut("HT", 400, ">" );
-    setCut("MET", 50, "[]", 120 );
-    setCut("NJets", 2, "[]", 3 );
-    setCut("NBJets", 1, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR13") {
-    setCut("HT", 200, "[]", 400 );
-    setCut("MET", 50, "[]", 120 );
-    setCut("NJets", 4, ">=" );
-    setCut("NBJets", 1, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR14") {
-    setCut("HT", 400, ">" );
-    setCut("MET", 50, "[]", 120 );
-    setCut("NJets", 4, ">=" );
-    setCut("NBJets", 1, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
-  if(sr=="SR15") {
-    setCut("HT", 200, "[]", 400 );
-    setCut("MET", 120, ">" );
-    setCut("NJets", 2, "[]", 3 );
-    setCut("NBJets", 1, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR16") {
-    setCut("HT", 400, ">" );
-    setCut("MET", 120, ">" );
-    setCut("NJets", 2, "[]", 3 );
-    setCut("NBJets", 1, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR17") {
-    setCut("HT", 200, "[]", 400 );
-    setCut("MET", 120, ">" );
-    setCut("NJets", 4, ">=" );
-    setCut("NBJets", 1, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR18") {
-    setCut("HT", 400, ">" );
-    setCut("MET", 120, ">" );
-    setCut("NJets", 4, ">=" );
-    setCut("NBJets", 1, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
-
-
-  if(sr=="SR21") {
-    setCut("HT", 200, "[]", 400 );
-    setCut("MET", 50, "[]", 120 );
-    setCut("NJets", 2, "[]", 3 );
-    setCut("NBJets", 2, ">=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR22") {
-    setCut("HT", 400, ">" );
-    setCut("MET", 50, "[]", 120 );
-    setCut("NJets", 2, "[]", 3 );
-    setCut("NBJets", 2, ">=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR23") {
-    setCut("HT", 200, "[]", 400 );
-    setCut("MET", 50, "[]", 120 );
-    setCut("NJets", 4, ">=" );
-    setCut("NBJets", 2, ">=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR24") {
-    setCut("HT", 400, ">" );
-    setCut("MET", 50, "[]", 120 );
-    setCut("NJets", 4, ">=" );
-    setCut("NBJets", 2, ">=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
-  if(sr=="SR25") {
-    setCut("HT", 200, "[]", 400 );
-    setCut("MET", 120, ">" );
-    setCut("NJets", 2, "[]", 3 );
-    setCut("NBJets", 2, ">=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR26") {
-    setCut("HT", 400, ">" );
-    setCut("MET", 120, ">" );
-    setCut("NJets", 2, "[]", 3 );
-    setCut("NBJets", 2, ">=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR27") {
-    setCut("HT", 200, "[]", 400 );
-    setCut("MET", 120, ">" );
-    setCut("NJets", 4, ">=" );
-    setCut("NBJets", 2, ">=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SR28") {
-    setCut("HT", 400, ">" );
-    setCut("MET", 120, ">" );
-    setCut("NJets", 4, ">=" );
-    setCut("NBJets", 2, ">=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
-
- if(sr=="SRRPV0") {
-    setCut("HT", 500, ">" );
-    setCut("MET", 0, ">=" );
-    setCut("NJets", 2, ">=" );
-    setCut("NBJets", 0, ">=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SRRPV2") {
-    setCut("HT", 500, ">" );
-    setCut("MET", 0, ">=" );
-    setCut("NJets", 2, ">=" );
-    setCut("NBJets", 2, ">=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SRSStop1") {
-    setCut("HT", 80, ">" );
-    setCut("MET", 30, ">=" );
-    setCut("NJets", 2, ">=" );
-    setCut("NBJets", 1, "=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SRSStop1++") {
-    setCut("HT", 80, ">" );
-    setCut("MET", 30, ">=" );
-    setCut("NJets", 2, ">=" );
-    setCut("NBJets", 1, "=" );
-    setCut("CH", 2, "=" );
-    _srName = sr;
-  }
- if(sr=="SRSStop2") {
-    setCut("HT", 80, ">" );
-    setCut("MET", 30, ">=" );
-    setCut("NJets", 2, ">=" );
-    setCut("NBJets", 2, ">=" );
-    setCut("CH", -100, ">" );
-    _srName = sr;
-  }
- if(sr=="SRSStop2++") {
-    setCut("HT", 80, ">" );
-    setCut("MET", 30, ">=" );
-    setCut("NJets", 2, ">=" );
-    setCut("NBJets", 2, ">=" );
-    setCut("CH", 2, "=" );
-    _srName = sr;
-  }
-
-  // if(sr=="SRXX") {
-  //   setCut("HT", 80, ">" );
-  //   setCut("MET", 30, ">=" );
-  //   setCut("NJets", 2, ">=" );
-  //   setCut("NBJets", 2, ">=" );
-  //   setCut("CH", 2, "=" );
-  //   _srName = sr;
-  // }
-
-}
-
-
-bool SUSYSSDL::srSelection(float HT,float MET, int NJets, int NBJets, int ch ) {
-
-  //  counter("denominator",_srName);
-  if(!makeCut<float>( HT, _valCutHT, _cTypeHT, "HT selection", _upValCutHT) ) return false;
-  if(!makeCut<float>( MET, _valCutMET, _cTypeMET, "MET selection", _upValCutMET) ) return false;
-  if(!makeCut<float>( NJets, _valCutHT, _cTypeHT, "jet multiplicity", _upValCutHT) ) return false;
-  if(!makeCut<float>( NBJets, _valCutHT, _cTypeHT, "bjet multiplicity", _upValCutHT) ) return false;
-  if(!makeCut<float>( ch, _valCutHT, _cTypeHT, "charge selection", _upValCutHT) ) return false;
-  return true;
-} 
-
-
-
-void SUSYSSDL::setCut(string var, float valCut, string cType, float upValCut=0) {
-
-  //Signal region
-
-  if(var=="HTSR") {
-    _valCutHTSR = valCut;
-    _cTypeHTSR = cType;
-    _upValCutHTSR = upValCut;
-  } 
-
-  if(var=="METSR") {
-    _valCutMETSR = valCut;
-    _cTypeMETSR = cType;
-    _upValCutMETSR = upValCut;
-  } 
-
-  if(var=="NJetsSR") {
-    _valCutNJetsSR = valCut;
-    _cTypeNJetsSR = cType;
-    _upValCutNJetsSR = upValCut;
-  } 
-
-  if(var=="NBJetsSR") {
-    _valCutNBJetsSR = valCut;
-    _cTypeNBJetsSR = cType;
-    _upValCutNBJetsSR = upValCut;
-  } 
-
-  if(var=="CHSR") {
-    _valCutCHSR = valCut;
-    _cTypeCHSR = cType;
-    _upValCutCHSR = upValCut;
-  } 
-
-
-  //baseline region
-  if(var=="HTBR") {
-    _valCutHTBR = valCut;
-    _cTypeHTBR = cType;
-    _upValCutHTBR = upValCut;
-  } 
-
-  if(var=="METBR") {
-    _valCutMETBR = valCut;
-    _cTypeMETBR = cType;
-    _upValCutMETBR = upValCut;
-  } 
-
-  if(var=="NJetsBR") {
-    _valCutNJetsBR = valCut;
-    _cTypeNJetsBR = cType;
-    _upValCutNJetsBR = upValCut;
-  } 
-
-  if(var=="NBJetsBR") {
-    _valCutNBJetsBR = valCut;
-    _cTypeNBJetsBR = cType;
-    _upValCutNBJetsBR = upValCut;
-  } 
-
-  if(var=="CHBR") {
-    _valCutCHBR = valCut;
-    _cTypeCHBR = cType;
-    _upValCutCHBR = upValCut;
-  } 
 
 }

@@ -283,6 +283,9 @@ void MPAF::loadConfigurationFile(std::string configuration_file){
 		else if(symbol == "v"){
 			if      (variable == "JEC"          ) _JEC           = atoi(value.c_str());
 			else if (variable == "PUReweighting") _PUReweighting = (bool) atoi(value.c_str());
+			else if (variable == "SR"           ) _SR            = value;
+			else if (variable == "BR"           ) _BR            = value;
+			else if (variable == "PT"           ) _PT            = value;
 		}
 
 		// event or object selections
@@ -447,6 +450,29 @@ void MPAF::writeOutput(){
 ** METHODS FOR DOING PHYSICS                                                **
 ******************************************************************************
 *****************************************************************************/
+
+
+//____________________________________________________________________________
+int MPAF::findCharge(std::string electron_label, std::string muon_label){
+	/*
+	returns the total charge in the event as calculated from the electrons and
+	leptons that have been selected
+	parameters: electron_label, muon_label
+	return: the total charge as int
+	*/
+
+	int charge = 0;
+
+	for(int i = 0; i < _NumKinObj[electron_label]; ++i)
+		charge += _vc -> getI("el_charge", _KinObj[electron_label][i]);
+
+	for(int i = 0; i < _NumKinObj[muon_label]; ++i)
+		charge += _vc -> getI("mu_charge", _KinObj[muon_label][i]);
+
+	return charge; 
+
+}
+
 
 //____________________________________________________________________________
 float MPAF::findMLL(std::string electron_label, std::string muon_label){
