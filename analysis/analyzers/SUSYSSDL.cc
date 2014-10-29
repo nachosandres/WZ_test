@@ -1027,6 +1027,25 @@ void SUSYSSDL::setSignalRegion(string sr) {
   //   _srName = sr;
   // }
 
+ setCut("HT", 80, ">" );
+ setCut("MET", 0, ">=" );
+ setCut("MET", 30, ">=" );
+ setCut("HTHigh", 500, "<" );
+ 
+}
+
+bool SUSYSSDL::brSelection(float HT, float MET ..) {
+
+  if(!makeCut<float>( HT, _valCutHTBR, _cTypeHT, "HT selection", _upValCutHT) ) return false;
+  if(_au->simpleCut(HT, _valCutHTBR, _cTypeHTHighBR ) ) {
+    if(!makeCut<float>( MET, _valCutMETHigh, _cTypeMET, "MET selection", _upValCutMET) ) return false;
+  }
+  else {
+    if(!makeCut<float>( MET, _valCutMETLow, _cTypeMET, "MET selection", _upValCutMET) ) return false;
+  }
+      
+
+
 }
 
 
@@ -1108,5 +1127,44 @@ void SUSYSSDL::setCut(string var, float valCut, string cType, float upValCut=0) 
     _cTypeCHBR = cType;
     _upValCutCHBR = upValCut;
   } 
+
+}
+
+
+
+int SUSYSSDL::genMatchCateg(float eta, float phi, int pdgId) {
+
+  //loop over the 
+  int nGenL = _vc->getI("ngenlep");
+  for(size_t ig=0;ig<nGenL;ig++) {
+
+    if(Tools::dR(eta, _vc->getF("genLep_eta", ig),
+		 phi, _vc->getF("genLep_phi", ig) )<0.1 ) { //to be tuned
+      
+      if(abs(pdgId)!= (_vc->getF("genLep_pdgId",ig) && abs(_vc->getF("genLep_pdgId",ig))!=13 ) ) return kMisMatchPdgId; //taus are exception to the rule
+      else if(pdgId*_vc->getF("genLep_pdgId",ig) < 0 ) return kMisChargePdgId; //+*- = -...
+      else return kGenMatched;
+	
+      break;
+    } //dr matching
+  } //gen loop
+
+  return kNoGenMatch;
+}
+
+{
+  if(_tag.find("misId")!=(size_t)-1) {
+    if( genMatchCateg( l1.Eta(), l1.Phi(), l1.pdgId() ) != kMisChargePdgId &&
+	genMatchCateg( l2.Eta(), l2.Phi(), l2.pdgId() ) != kMisChargePdgId ) return false;
+  }
+  if(_tag.find("fake")!=(size_t)-1) {
+    if( genMatchCateg( l1.Eta(), l1.Phi(), l1.pdgId() ) > kMisMatchPdgId &&
+	genMatchCateg( l2.Eta(), l2.Phi(), l2.pdgId() ) > kMisMatchPdgId ) return false;
+  }
+  if(_tag.find("prompt")!=(size_t)-1) {
+    if( genMatchCateg( l1.Eta(), l1.Phi(), l1.pdgId() ) != kGenMatched ||
+	genMatchCateg( l2.Eta(), l2.Phi(), l2.pdgId() ) != kGenMatched ) return false;
+  }
+
 
 }

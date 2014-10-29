@@ -52,10 +52,12 @@ public:
 	void fillLeptonPlots(std::string);
 	void fillJetPlots(std::string);
 
-
+  int genMatchCateg(float eta, float phi, int pdgId);
 
 
 private:
+
+  enum {kNoGenMatch=0, kMisMatchPdgId, kMisChargePdgId, kGenMatched};
 
 	std::string _OutputDir;
 	TFile * _RootFile;
