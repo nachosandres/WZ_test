@@ -75,11 +75,13 @@ public:
 
 	void analyze();	
 	void fillEventList();
+	void resetKinematicObjects();
+
+	int findCharge(std::string, std::string);
 	float findMLL(std::string, std::string);
 	float HT(std::string);
 	float MLL(std::string, int, std::string, int);
 	float MT(std::string, int);
-	void resetKinematicObjects();
 
 
 
@@ -110,13 +112,14 @@ protected:
 	                           float v7 = -100000, float v8 = -100000, float v9 = -100000,
 	                           float v10 = -100000);
  
-  //counters and selection functions
-  template <typename T> inline
-  bool makeCut(T value, T valcut, string type, string cName, T seccut=0, string eCateg="global") {
-    return _au->makeCut<T>(value, valcut, type, _SampleName, cName, _EventWeight, seccut, eCateg, false);
-  };
-  bool makeCut(bool decision, string cName, string type="=", string eCateg="global");
-  void counter(string cName, string eCateg="global");
+	//counters and selection functions
+	template <typename T> inline
+	bool makeCut(T value, T valcut, string type, string cName, T seccut=0, string eCateg = "global") {
+		return _au -> makeCut<T>(value, valcut, type, _SampleName, cName, _EventWeight, seccut, eCateg, false);
+	};
+	bool makeCut(bool decision, string cName, string type = "=", string eCateg = "global");
+	void counter(string cName, string eCateg = "global");
+
 
 	// virtual functions for the classes
 	virtual void defineOutput();
@@ -154,6 +157,9 @@ public:
 	float _Luminosity;
 	int _JEC;
 	bool _PUReweighting;
+	std::string _SR;
+	std::string _BR;
+	std::string _PT;
 	std::map <std::string, bool> _UsedCuts;
 	std::map <std::string, float> _Cuts;
 	std::vector <Dataset*> _Samples;

@@ -249,7 +249,7 @@ void MPAF::loadConfigurationFile(std::string configuration_file){
 	*/
 
 	char buffer[300];
-	char symbol_char[1], variable_char[100], value_char[200];
+	char symbol_char[1], variable_char[100], value_char[200], option_char[100];
 
 	_TestNEvt    = false;
 	_TestNEvtMax = 0;
@@ -263,11 +263,12 @@ void MPAF::loadConfigurationFile(std::string configuration_file){
 		if(buffer[0] == '#') continue;
 		if(buffer[0] == ' ') continue;
 
-		if(sscanf(buffer, "%s\t%s\t%s", symbol_char, variable_char, value_char) < 3) continue;
+		if(sscanf(buffer, "%s\t%s\t%s\t%s", symbol_char, variable_char, value_char, option_char) < 3) continue;
 
 		std::string symbol   = symbol_char;
 		std::string variable = variable_char;
 		std::string value    = value_char;
+		std::string option    = option_char;
 
 		// non-configuration variables
 		if(symbol == "n"){
@@ -283,6 +284,9 @@ void MPAF::loadConfigurationFile(std::string configuration_file){
 		else if(symbol == "v"){
 			if      (variable == "JEC"          ) _JEC           = atoi(value.c_str());
 			else if (variable == "PUReweighting") _PUReweighting = (bool) atoi(value.c_str());
+			else if (variable == "SR"           ) _SR            = value;
+			else if (variable == "BR"           ) _BR            = value;
+			else if (variable == "PT"           ) _PT            = value;
 		}
 
 		// event or object selections
@@ -307,7 +311,10 @@ void MPAF::loadConfigurationFile(std::string configuration_file){
 		// loading data samples
 		if(symbol == "s" && variable != ""){	
 			_Samples.push_back(new Dataset(variable_char));
-			_Samples[_Samples.size() - 1] -> addSample(variable_char, _InputPath, value_char, "treeProducerSusySSDL", "", 1.0, 1.0, 1.0, 1.0);
+			string sname=variable_char;
+			cout<<option<<endl;
+			if(option!="") sname+"_"+option;
+			_Samples.back() -> addSample(sname, _InputPath, value_char, "treeProducerSusySSDL", "", 1.0, 1.0, 1.0, 1.0);
 		}
 				
 	}
@@ -447,6 +454,29 @@ void MPAF::writeOutput(){
 ** METHODS FOR DOING PHYSICS                                                **
 ******************************************************************************
 *****************************************************************************/
+
+
+//____________________________________________________________________________
+int MPAF::findCharge(std::string electron_label, std::string muon_label){
+	/*
+	returns the total charge in the event as calculated from the electrons and
+	leptons that have been selected
+	parameters: electron_label, muon_label
+	return: the total charge as int
+	*/
+
+	int charge = 0;
+
+	for(int i = 0; i < _NumKinObj[electron_label]; ++i)
+		charge += _vc -> getI("el_charge", _KinObj[electron_label][i]);
+
+	for(int i = 0; i < _NumKinObj[muon_label]; ++i)
+		charge += _vc -> getI("mu_charge", _KinObj[muon_label][i]);
+
+	return charge; 
+
+}
+
 
 //____________________________________________________________________________
 float MPAF::findMLL(std::string electron_label, std::string muon_label){
