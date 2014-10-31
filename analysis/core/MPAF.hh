@@ -146,6 +146,13 @@ private:
 
 public:
 
+
+	std::string _lep;
+	std::string _lepnum;
+	std::string _jet;
+	std::string _jetnum;
+
+
 	// Configuration File Variables
 
 	std::string _UserName;

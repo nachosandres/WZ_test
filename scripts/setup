@@ -15,9 +15,11 @@ else
     echo "ROOTSYS="$ROOTSYS
 fi
 pkglist=${MPAF}/scripts/package_list
-echo tools > $pkglist
-echo `cat $pkglist` analysis > $pkglist
-echo `cat $pkglist` display  > $pkglist
+#if [ ! -e $pkglist ]; then
+#	echo tools > $pkglist
+#	echo `cat $pkglist` analysis > $pkglist
+#	echo `cat $pkglist` display  > $pkglist
+#fi
 list=`cat $pkglist`
 echo setup all packages: $list
 for i in $list; do

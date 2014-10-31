@@ -70,53 +70,65 @@ void SUSYSSDL::initialize(){
 	*/
 
 
-	_vc -> registerVar("run"           , "I" );
-	_vc -> registerVar("lumi"          , "I" );
-	_vc -> registerVar("event"         , "I" );
-	_vc -> registerVar("HLT_SingleMu"  , "I" );
-	_vc -> registerVar("HLT_MuEG"      , "I" );
-	_vc -> registerVar("HLT_TripleEl"  , "I" );
-	_vc -> registerVar("HLT_DoubleEl"  , "I" );
-	_vc -> registerVar("HLT_DoubleMu"  , "I" );
-	_vc -> registerVar("nVert"         , "I" );
-	_vc -> registerVar("nTrueInt"      , "I" );
-	_vc -> registerVar("puWeight"      , "F" );
-	_vc -> registerVar("genWeight"     , "F" );
-	_vc -> registerVar("nel"           , "I" );
-	_vc -> registerVar("el_pt"         , "AF");
-	_vc -> registerVar("el_eta"        , "AF");
-	_vc -> registerVar("el_phi"        , "AF");
-	_vc -> registerVar("el_charge"     , "AI");
-	_vc -> registerVar("el_pdgId"      , "AI");
-	_vc -> registerVar("el_relIso03"   , "AF");
-	_vc -> registerVar("el_relIso04"   , "AF");
-	_vc -> registerVar("el_dxy"        , "AF");
-	_vc -> registerVar("el_dz"         , "AF");
-	_vc -> registerVar("el_tightId"    , "AI");
-	_vc -> registerVar("el_looseIdSusy", "AI");
-	_vc -> registerVar("nmu"           , "I" );
-	_vc -> registerVar("mu_pt"         , "AF");
-	_vc -> registerVar("mu_eta"        , "AF");
-	_vc -> registerVar("mu_phi"        , "AF");
-	_vc -> registerVar("mu_charge"     , "AI");
-	_vc -> registerVar("mu_pdgId"      , "AI");
-	_vc -> registerVar("mu_relIso03"   , "AF");
-	_vc -> registerVar("mu_relIso04"   , "AF");
-	_vc -> registerVar("mu_dxy"        , "AF");
-	_vc -> registerVar("mu_dz"         , "AF");
-	_vc -> registerVar("mu_tightId"    , "AI");
-	_vc -> registerVar("mu_looseIdSusy", "AI");
-	_vc -> registerVar("met_pt"        , "F" );
-	_vc -> registerVar("met_eta"       , "F" );
-	_vc -> registerVar("met_phi"       , "F" );
-	_vc -> registerVar("met_mass"      , "F" );
-	_vc -> registerVar("njet"          , "I" );
-	_vc -> registerVar("jet_pt"        , "AF");
-	_vc -> registerVar("jet_rawPt"     , "AF");
-	_vc -> registerVar("jet_eta"       , "AF");
-	_vc -> registerVar("jet_phi"       , "AF");
-	_vc -> registerVar("jet_mass"      , "AF");
-	_vc -> registerVar("jet_btagCSV"   , "AF");
+	_vc -> registerVar("run"            , "I" );
+	_vc -> registerVar("lumi"           , "I" );
+	_vc -> registerVar("event"          , "I" );
+	_vc -> registerVar("HLT_SingleMu"   , "I" );
+	_vc -> registerVar("HLT_MuEG"       , "I" );
+	_vc -> registerVar("HLT_TripleEl"   , "I" );
+	_vc -> registerVar("HLT_DoubleEl"   , "I" );
+	_vc -> registerVar("HLT_DoubleMu"   , "I" );
+	_vc -> registerVar("nVert"          , "I" );
+	_vc -> registerVar("nTrueInt"       , "I" );
+	_vc -> registerVar("puWeight"       , "F" );
+	_vc -> registerVar("genWeight"      , "F" );
+	_vc -> registerVar(_lepnum          , "I" );
+	_vc -> registerVar(_lep + "_pt"         , "AF");
+	_vc -> registerVar(_lep + "_eta"        , "AF");
+	_vc -> registerVar(_lep + "_phi"        , "AF");
+	_vc -> registerVar(_lep + "_charge"     , "AI");
+	_vc -> registerVar(_lep + "_pdgId"      , "AI");
+	_vc -> registerVar(_lep + "_relIso03"   , "AF");
+	_vc -> registerVar(_lep + "_relIso04"   , "AF");
+	_vc -> registerVar(_lep + "_dxy"        , "AF");
+	_vc -> registerVar(_lep + "_dz"         , "AF");
+	_vc -> registerVar(_lep + "_tightId"    , "AI");
+	_vc -> registerVar(_lep + "_looseIdSusy", "AI");
+	//_vc -> registerVar("nel"           , "I" );
+	//_vc -> registerVar("el_pt"         , "AF");
+	//_vc -> registerVar("el_eta"        , "AF");
+	//_vc -> registerVar("el_phi"        , "AF");
+	//_vc -> registerVar("el_charge"     , "AI");
+	//_vc -> registerVar("el_pdgId"      , "AI");
+	//_vc -> registerVar("el_relIso03"   , "AF");
+	//_vc -> registerVar("el_relIso04"   , "AF");
+	//_vc -> registerVar("el_dxy"        , "AF");
+	//_vc -> registerVar("el_dz"         , "AF");
+	//_vc -> registerVar("el_tightId"    , "AI");
+	//_vc -> registerVar("el_looseIdSusy", "AI");
+	//_vc -> registerVar("nmu"           , "I" );
+	//_vc -> registerVar("mu_pt"         , "AF");
+	//_vc -> registerVar("mu_eta"        , "AF");
+	//_vc -> registerVar("mu_phi"        , "AF");
+	//_vc -> registerVar("mu_charge"     , "AI");
+	//_vc -> registerVar("mu_pdgId"      , "AI");
+	//_vc -> registerVar("mu_relIso03"   , "AF");
+	//_vc -> registerVar("mu_relIso04"   , "AF");
+	//_vc -> registerVar("mu_dxy"        , "AF");
+	//_vc -> registerVar("mu_dz"         , "AF");
+	//_vc -> registerVar("mu_tightId"    , "AI");
+	//_vc -> registerVar("mu_looseIdSusy", "AI");
+	_vc -> registerVar("met_pt"         , "F" );
+	_vc -> registerVar("met_eta"        , "F" );
+	_vc -> registerVar("met_phi"        , "F" );
+	_vc -> registerVar("met_mass"       , "F" );
+	_vc -> registerVar(_jetnum          , "I" );
+	_vc -> registerVar(_jet + "_pt"         , "AF");
+	_vc -> registerVar(_jet + "_rawPt"      , "AF");
+	_vc -> registerVar(_jet + "_eta"        , "AF");
+	_vc -> registerVar(_jet + "_phi"        , "AF");
+	_vc -> registerVar(_jet + "_mass"       , "AF");
+	_vc -> registerVar(_jet + "_btagCSV"    , "AF");
 
 	//generator informations
 	_vc -> registerVar("ngenLep"       , "I");
@@ -235,19 +247,20 @@ void SUSYSSDL::defineOutput(){
 
 	_hm -> addVariable("BR_HT"        , 1000, 0.0, 1000.0, "H_T [GeV]"            ); 
 	_hm -> addVariable("BR_MET"       , 1000, 0.0, 1000.0, "#slash{E}_T [GeV]"    );
-	_hm -> addVariable("BR_NBJets"    ,    4, 0.0,    4.0, "b-jet multiplicity"   );
-	_hm -> addVariable("BR_NElectrons",    4, 1.0,    5.0, "electron multiplicity");
-	_hm -> addVariable("BR_NJets"     ,    4, 1.0,    5.0, "jet multiplicity"     );
-	_hm -> addVariable("BR_NLeps"     ,    4, 1.0,    5.0, "lepton multiplicity"  );
-	_hm -> addVariable("BR_NMuons"    ,    4, 1.0,    5.0, "muon multiplicity"    );
+	_hm -> addVariable("BR_MLL"       , 1000, 0.0, 1000.0, "m_{ll} [GeV]"         ); 
+	_hm -> addVariable("BR_NBJets"    ,   20, 0.0,   20.0, "b-jet multiplicity"   );
+	_hm -> addVariable("BR_NElectrons",   20, 0.0,   20.0, "electron multiplicity");
+	_hm -> addVariable("BR_NJets"     ,   20, 0.0,   20.0, "jet multiplicity"     );
+	_hm -> addVariable("BR_NLeps"     ,   20, 0.0,   20.0, "lepton multiplicity"  );
+	_hm -> addVariable("BR_NMuons"    ,   20, 0.0,   20.0, "muon multiplicity"    );
 	_hm -> addVariable("BR_NVrtx"     ,   40, 0.0,   40.0, "vertex multiplicity"  );
 	_hm -> addVariable("BR_ElDXY"     ,   50, 0.0,    0.5, "#||{dxy}(e) [cm]"     );
-	_hm -> addVariable("BR_ElEta"     ,   24, 0.0,    2.4, "#||{#eta(e)}"         );
+	_hm -> addVariable("BR_ElEta"     ,  240, 0.0,    2.4, "#||{#eta(e)}"         );
 	_hm -> addVariable("BR_ElIso"     ,   50, 0.0,    1.0, "PF Iso (e)"           );
 	_hm -> addVariable("BR_ElMT"      , 1000, 0.0, 1000.0, "M_T(e) [GeV]"         );
 	_hm -> addVariable("BR_ElPt"      , 1000, 0.0, 1000.0, "P_T(e) [GeV]"         );
 	_hm -> addVariable("BR_MuDXY"     ,   50, 0.0,    0.5, "#||{dxy}(#mu) [cm]"   );
-	_hm -> addVariable("BR_MuEta"     ,   24, 0.0,    2.4, "#||{#eta(#mu)}"       );
+	_hm -> addVariable("BR_MuEta"     ,  240, 0.0,    2.4, "#||{#eta(#mu)}"       );
 	_hm -> addVariable("BR_MuIso"     ,   50, 0.0,    1.0, "PF Iso (#mu)"         );
 	_hm -> addVariable("BR_MuMT"      , 1000, 0.0, 1000.0, "M_T(#mu) [GeV]"       );
 	_hm -> addVariable("BR_MuPt"      , 1000, 0.0, 1000.0, "P_T(#mu) [GeV]"       );
@@ -258,19 +271,20 @@ void SUSYSSDL::defineOutput(){
 
 	_hm -> addVariable("SR_HT"        , 1000, 0.0, 1000.0, "H_T [GeV]"            ); 
 	_hm -> addVariable("SR_MET"       , 1000, 0.0, 1000.0, "#slash{E}_T [GeV]"    );
-	_hm -> addVariable("SR_NBJets"    ,    4, 0.0,    4.0, "b-jet multiplicity"   );
-	_hm -> addVariable("SR_NElectrons",    4, 1.0,    5.0, "electron multiplicity");
-	_hm -> addVariable("SR_NJets"     ,    4, 1.0,    5.0, "jet multiplicity"     );
-	_hm -> addVariable("SR_NLeps"     ,    4, 1.0,    5.0, "lepton multiplicity"  );
-	_hm -> addVariable("SR_NMuons"    ,    4, 1.0,    5.0, "muon multiplicity"    );
+	_hm -> addVariable("SR_MLL"       , 1000, 0.0, 1000.0, "m_{ll} [GeV]"         ); 
+	_hm -> addVariable("SR_NBJets"    ,   20, 0.0,   20.0, "b-jet multiplicity"   );
+	_hm -> addVariable("SR_NElectrons",   20, 0.0,   20.0, "electron multiplicity");
+	_hm -> addVariable("SR_NJets"     ,   20, 0.0,   20.0, "jet multiplicity"     );
+	_hm -> addVariable("SR_NLeps"     ,   20, 0.0,   20.0, "lepton multiplicity"  );
+	_hm -> addVariable("SR_NMuons"    ,   20, 0.0,   20.0, "muon multiplicity"    );
 	_hm -> addVariable("SR_NVrtx"     ,   40, 0.0,   40.0, "vertex multiplicity"  );
 	_hm -> addVariable("SR_ElDXY"     ,   50, 0.0,    0.5, "#||{dxy}(e) [cm]"     );
-	_hm -> addVariable("SR_ElEta"     ,   24, 0.0,    2.4, "#||{#eta(e)}"         );
+	_hm -> addVariable("SR_ElEta"     ,  240, 0.0,    2.4, "#||{#eta(e)}"         );
 	_hm -> addVariable("SR_ElIso"     ,   50, 0.0,    1.0, "PF Iso (e)"           );
 	_hm -> addVariable("SR_ElMT"      , 1000, 0.0, 1000.0, "M_T(e) [GeV]"         );
 	_hm -> addVariable("SR_ElPt"      , 1000, 0.0, 1000.0, "P_T(e) [GeV]"         );
 	_hm -> addVariable("SR_MuDXY"     ,   50, 0.0,    0.5, "#||{dxy}(#mu) [cm]"   );
-	_hm -> addVariable("SR_MuEta"     ,   24, 0.0,    2.4, "#||{#eta(#mu)}"       );
+	_hm -> addVariable("SR_MuEta"     ,  240, 0.0,    2.4, "#||{#eta(#mu)}"       );
 	_hm -> addVariable("SR_MuIso"     ,   50, 0.0,    1.0, "PF Iso (#mu)"         );
 	_hm -> addVariable("SR_MuMT"      , 1000, 0.0, 1000.0, "M_T(#mu) [GeV]"       );
 	_hm -> addVariable("SR_MuPt"      , 1000, 0.0, 1000.0, "P_T(#mu) [GeV]"       );
@@ -329,7 +343,7 @@ bool SUSYSSDL::bJetSelection(int jetIdx){
 	counter("BJetDenominator", "b-jet Id");
 
 	if(!makeCut(goodJetSelection(jetIdx), "jet Id", "=", "b-jet Id") ) return false;
-	if(!makeCut<float>(_vc -> getF("jet_btagCSV", jetIdx), 0.679, ">=", "csv btag selection", 0, "b-jet Id") ) return false;
+	if(!makeCut<float>(_vc -> getF(_jet + "_btagCSV", jetIdx), 0.679, ">=", "csv btag selection", 0, "b-jet Id") ) return false;
 	
 	return true;
 
@@ -352,17 +366,18 @@ void SUSYSSDL::collectKinematicObjects(){
 	_KinObj.insert(std::pair<Label, std::vector<int> >("VetoElectron", empty_vector));
 	_KinObj.insert(std::pair<Label, std::vector<int> >("VetoMuon"    , empty_vector));
 
-	for(int i = 0; i < _vc -> getI("nmu"); ++i){
-		if(muonSelection(i)) _KinObj["Muon"]    .push_back(i);
-		if(vetoMuonSelection(i)) _KinObj["VetoMuon"].push_back(i);
+	for(int i = 0; i < _vc -> getI(_lepnum); ++i){
+		if(fabs(_vc -> getI(_lep + "_pdgId", i)) == 11){
+			if(electronSelection(i))     _KinObj["Electron"]    .push_back(i);
+			if(vetoElectronSelection(i)) _KinObj["VetoElectron"].push_back(i);
+		}
+		if(fabs(_vc -> getI(_lep + "_pdgId", i)) == 13){
+			if(muonSelection(i))     _KinObj["Muon"]    .push_back(i);
+			if(vetoMuonSelection(i)) _KinObj["VetoMuon"].push_back(i);
+		}
 	}
 
-	for(int i = 0; i < _vc -> getI("nel"); ++i){
-		if(electronSelection(i)) _KinObj["Electron"]    .push_back(i);
-		if(vetoElectronSelection(i)) _KinObj["VetoElectron"].push_back(i);
-	}	
-
-	for(int i = 0; i < _vc -> getI("njet"); ++i){
+	for(int i = 0; i < _vc -> getI(_jetnum); ++i){
 		if(bJetSelection(i)   ) _KinObj["BJet"]   .push_back(i);
 		if(goodJetSelection(i)) _KinObj["GoodJet"].push_back(i);
 	}
@@ -386,12 +401,12 @@ bool SUSYSSDL::goodJetSelection(int jetIdx){
   	*/
 
 	float min_dR = 0.4;
-	float jet_pt = (_JEC == 1 ? _vc -> getF("jet_pt", jetIdx) : _vc -> getF("jet_rawPt", jetIdx));
+	float jet_pt = (_JEC == 1 ? _vc -> getF(_jet + "_pt", jetIdx) : _vc -> getF(_jet + "_rawPt", jetIdx));
 
 	counter("JetDenominator", "jet Id");
 
 	if(!makeCut<float>(jet_pt                              , 40.0, ">", "pt selection" , 0, "jet Id") ) return false;
-	if(!makeCut<float>(fabs(_vc -> getF("jet_eta", jetIdx)),  2.4, "<", "eta selection", 0, "jet Id") ) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_jet + "_eta", jetIdx)),  2.4, "<", "eta selection", 0, "jet Id") ) return false;
 
 
 	// this is the implementation of jet lepton cleaning
@@ -405,8 +420,8 @@ bool SUSYSSDL::goodJetSelection(int jetIdx){
 		float closest_dr  = 99.;
 		int   closest_jet =  -1;
 		
-		for(int jet = 0; jet < _vc -> getI("njet"); ++jet){
-			float dr = Tools::dR(_vc -> getF("el_eta", _KinObj["Electrons"][el]), _vc -> getF("jet_eta", jet), _vc -> getF("el_phi", _KinObj["Electrons"][el]), _vc -> getF("jet_phi", jet));
+		for(int jet = 0; jet < _vc -> getI(_jetnum); ++jet){
+			float dr = Tools::dR(_vc -> getF(_lep + "_eta", _KinObj["Electrons"][el]), _vc -> getF(_jet + "_eta", jet), _vc -> getF(_lep + "_phi", _KinObj["Electrons"][el]), _vc -> getF(_jet + "_phi", jet));
 			if(dr < closest_dr) {
 				closest_dr  = dr;
 				closest_jet = jet;
@@ -425,8 +440,8 @@ bool SUSYSSDL::goodJetSelection(int jetIdx){
 		float closest_dr  = 99.; 
 		int   closest_jet =  -1; 
 		
-		for(int jet = 0; jet < _vc -> getI("njet"); ++jet){ 
-			float dr = Tools::dR(_vc -> getF("mu_eta", _KinObj["Muons"][mu]), _vc -> getF("jet_eta", jet), _vc -> getF("mu_phi", _KinObj["Muons"][mu]), _vc -> getF("jet_phi", jet)); 
+		for(int jet = 0; jet < _vc -> getI(_jetnum); ++jet){ 
+			float dr = Tools::dR(_vc -> getF(_lep + "_eta", _KinObj["Muons"][mu]), _vc -> getF(_jet + "_eta", jet), _vc -> getF(_lep + "_phi", _KinObj["Muons"][mu]), _vc -> getF(_jet + "_phi", jet)); 
 			if(dr < closest_dr) { 
 				closest_dr  = dr; 
 				closest_jet = jet; 
@@ -457,12 +472,12 @@ bool SUSYSSDL::electronSelection(int elIdx){
 	float pt_cut = 10.;
 	if(_PT == "highpt") pt_cut = 20.;
 
-	if(!makeCut<int>(       _vc -> getI("el_tightId", elIdx) ,  1     , "=", "POG MVA Tight Id ", 0    , "el ID")) return false;
-	if(!makeCut<float>(     _vc -> getF("el_pt"     , elIdx) , pt_cut , ">", "pt selection"     , 0    , "el ID")) return false;
-	if(!makeCut<float>(fabs(_vc -> getF("el_eta"    , elIdx)),  2.4   , "<", "eta selection"    , 0    , "el ID")) return false;
-	if(!makeCut<float>(fabs(_vc -> getF("el_eta"    , elIdx)),  1.4442, "[!]", "eta selection"  , 1.566, "el ID")) return false;
-	if(!makeCut<float>(fabs(_vc -> getF("el_dz"     , elIdx)),  0.2   , "<", "dz selection"     , 0    , "el ID")) return false;
-	if(!makeCut<float>(fabs(_vc -> getF("el_dxy"    , elIdx)),  0.01  , "<", "dxy selection"    , 0    , "el ID")) return false;  
+	if(!makeCut<int>(       _vc -> getI(_lep + "_tightId", elIdx) ,  1     , "=", "POG MVA Tight Id ", 0    , "el ID")) return false;
+	if(!makeCut<float>(     _vc -> getF(_lep + "_pt"     , elIdx) , pt_cut , ">", "pt selection"     , 0    , "el ID")) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  2.4   , "<", "eta selection"    , 0    , "el ID")) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  1.4442, "[!]", "eta selection"  , 1.566, "el ID")) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dz"     , elIdx)),  0.2   , "<", "dz selection"     , 0    , "el ID")) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dxy"    , elIdx)),  0.01  , "<", "dxy selection"    , 0    , "el ID")) return false;  
 
 	return true;
 
@@ -482,11 +497,11 @@ bool SUSYSSDL::muonSelection(int muIdx){
 	float pt_cut = 10.;
 	if(_PT == "highpt") pt_cut = 20.;
 
-	if(!makeCut<int>(       _vc -> getI("mu_tightId", muIdx) ,  1    , "=", "POG Tight Id ", 0, "muon ID")) return false;
-	if(!makeCut<float>(     _vc -> getF("mu_pt"     , muIdx) , pt_cut, ">", "pt selection" , 0, "muon ID")) return false;
-	if(!makeCut<float>(fabs(_vc -> getF("mu_eta"    , muIdx)),  2.4  , "<", "eta selection", 0, "muon ID")) return false;
-	if(!makeCut<float>(fabs(_vc -> getF("mu_dz"     , muIdx)),  0.2  , "<", "dz selection" , 0, "muon ID")) return false;
-	if(!makeCut<float>(fabs(_vc -> getF("mu_dxy"    , muIdx)),  0.005, "<", "dxy selection", 0, "muon ID")) return false;  
+	if(!makeCut<int>(       _vc -> getI(_lep + "_tightId", muIdx) ,  1    , "=", "POG Tight Id ", 0, "muon ID")) return false;
+	if(!makeCut<float>(     _vc -> getF(_lep + "_pt"     , muIdx) , pt_cut, ">", "pt selection" , 0, "muon ID")) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , muIdx)),  2.4  , "<", "eta selection", 0, "muon ID")) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dz"     , muIdx)),  0.2  , "<", "dz selection" , 0, "muon ID")) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dxy"    , muIdx)),  0.005, "<", "dxy selection", 0, "muon ID")) return false;  
 
 	return true;
 
@@ -504,8 +519,8 @@ bool SUSYSSDL::vetoElectronSelection(int elIdx){
 	counter("vetoElDenominator", "veto el");
 
 	if(!makeCut(!electronSelection(elIdx), "no veto electron", "=", "veto el") ) return false;
-	if(!makeCut<int>(   _vc -> getI("el_tightId", elIdx), 1  , "=", "POG MVA Tight Id", 0, "veto el" ) ) return false;
-	if(!makeCut<float>( _vc -> getF("el_pt"     , elIdx), 5.0, ">", "pt selection"    , 0, "veto el" ) ) return false;
+	if(!makeCut<int>(   _vc -> getI(_lep + "_tightId", elIdx), 1  , "=", "POG MVA Tight Id", 0, "veto el" ) ) return false;
+	if(!makeCut<float>( _vc -> getF(_lep + "_pt"     , elIdx), 5.0, ">", "pt selection"    , 0, "veto el" ) ) return false;
   
 	return true;
 
@@ -523,8 +538,8 @@ bool SUSYSSDL::vetoMuonSelection(int muIdx){
 	counter("VetoMuonDenominator", "veto mu");
 
 	if(!makeCut(!muonSelection(muIdx), "no veto muon", "=", "veto mu") ) return false;
-	if(!makeCut<int>(   _vc -> getI("mu_tightId", muIdx), 1  , "=", "POG Tight Id", 0, "veto mu" ) ) return false;
-	if(!makeCut<float>( _vc -> getF("mu_pt"     , muIdx), 5.0, ">", "pt selection", 0, "veto mu" ) ) return false;
+	if(!makeCut<int>(   _vc -> getI(_lep + "_tightId", muIdx), 1  , "=", "POG Tight Id", 0, "veto mu" ) ) return false;
+	if(!makeCut<float>( _vc -> getF(_lep + "_pt"     , muIdx), 5.0, ">", "pt selection", 0, "veto mu" ) ) return false;
 
 	return true;
 
@@ -971,6 +986,8 @@ bool SUSYSSDL::baseSelection(){
 	if(!makeCut<int>( _NumKinObj["Electron"] + _NumKinObj["Muon"], 2, "=", "lepton multiplicity" ) ) return false; 
 	if(!makeCut( is_ss_event , "same-sign selection", "=") ) return false;
 	if(!makeCut( !is_3l_event, "veto on 3 leptons"  , "=") ) return false;
+	
+	if(!makeCut<float>( findMLL("Electron", "Muon"), 8.0, ">", "MLL selection") ) return false;
 
 	return true;
 
@@ -1038,28 +1055,28 @@ bool SUSYSSDL::ssEventSelection(std::string electron_label, std::string muon_lab
 	int charge = 0;
 
 	for(int ie = 0; ie < _NumKinObj[electron_label]; ++ie){
-		if(charge == 0) charge = _vc -> getI("el_charge", _KinObj[electron_label][ie]);
-		if(_vc -> getI("el_charge", _KinObj[electron_label][ie]) != charge) return false;
+		if(charge == 0) charge = _vc -> getI(_lep + "_charge", _KinObj[electron_label][ie]);
+		if(_vc -> getI(_lep + "_charge", _KinObj[electron_label][ie]) != charge) return false;
 
 		CandStruct el;
-		el.eta = _vc -> getF("el_eta", _KinObj[electron_label][ie]);
-		el.phi = _vc -> getF("el_phi", _KinObj[electron_label][ie]);
-		el.pt = _vc -> getF("el_pt", _KinObj[electron_label][ie]);
-		el.charge = _vc -> getI("el_charge", _KinObj[electron_label][ie]);
-		el.pdgId = _vc -> getI("el_pdgId", _KinObj[electron_label][ie]);
+		el.eta = _vc -> getF(_lep + "_eta", _KinObj[electron_label][ie]);
+		el.phi = _vc -> getF(_lep + "_phi", _KinObj[electron_label][ie]);
+		el.pt = _vc -> getF(_lep + "_pt", _KinObj[electron_label][ie]);
+		el.charge = _vc -> getI(_lep + "_charge", _KinObj[electron_label][ie]);
+		el.pdgId = _vc -> getI(_lep + "_pdgId", _KinObj[electron_label][ie]);
 		_leptons.push_back(el);
 	}
 	
 	for(int im = 0; im < _NumKinObj[muon_label]; ++im){
-		if(charge == 0) charge = _vc -> getI("mu_charge", _KinObj[muon_label][im]);
-		if(_vc -> getI("mu_charge", _KinObj[muon_label][im]) != charge) return false;
+		if(charge == 0) charge = _vc -> getI(_lep + "_charge", _KinObj[muon_label][im]);
+		if(_vc -> getI(_lep + "_charge", _KinObj[muon_label][im]) != charge) return false;
 
 		CandStruct mu;
-		mu.eta = _vc -> getF("mu_eta", _KinObj[muon_label][im]);
-		mu.phi = _vc -> getF("mu_phi", _KinObj[muon_label][im]);
-		mu.pt = _vc -> getF("mu_pt", _KinObj[muon_label][im]);
-		mu.charge = _vc -> getI("mu_charge", _KinObj[muon_label][im]);
-		mu.pdgId = _vc -> getI("mu_pdgId", _KinObj[muon_label][im]);
+		mu.eta = _vc -> getF(_lep + "_eta", _KinObj[muon_label][im]);
+		mu.phi = _vc -> getF(_lep + "_phi", _KinObj[muon_label][im]);
+		mu.pt = _vc -> getF(_lep + "_pt", _KinObj[muon_label][im]);
+		mu.charge = _vc -> getI(_lep + "_charge", _KinObj[muon_label][im]);
+		mu.pdgId = _vc -> getI(_lep + "_pdgId", _KinObj[muon_label][im]);
 		_leptons.push_back(mu);
 	}
 
@@ -1088,11 +1105,11 @@ bool SUSYSSDL::vetoEventSelection(std::string electron_label, std::string muon_l
 	if(_NumKinObj[electron_label] >= 1 && _NumKinObj["VetoElectron"] == 1){
 
 		// checking charge
-		int charge = _vc -> getI("el_charge", _KinObj["VetoElectron"][0]);
+		int charge = _vc -> getI(_lep + "_charge", _KinObj["VetoElectron"][0]);
 		bool os = false;
 		int os_el_index = -1;
 		for(int el = 0; el < _NumKinObj[electron_label]; ++el){
-			if(_vc -> getI("el_charge", _KinObj[electron_label][el]) != charge){
+			if(_vc -> getI(_lep + "_charge", _KinObj[electron_label][el]) != charge){
 				os = true;
 				os_el_index = _KinObj[electron_label][el];
 			}
@@ -1101,8 +1118,8 @@ bool SUSYSSDL::vetoEventSelection(std::string electron_label, std::string muon_l
 		// there is an os sf pair
 		if(os){	
 			float mll = MLL("electron", _KinObj["VetoElectron"][0], "electron", os_el_index);
-			if(makeCut(_vc -> getF("el_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtLow"]  && mll < _Cuts[kr + "VetoMLLLow"], "electron mll low pt veto", "=", kr + " vetoLepSel") ) return true;
-			if(makeCut(_vc -> getF("el_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtHigh"] && (mll > _Cuts[kr + "VetoMLLHighLL"] && mll < _Cuts[kr + "VetoMLLHighUL"]), "electron mll high pt veto", "=", kr + " vetoLepSel") ) return true;
+			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtLow"]  && mll < _Cuts[kr + "VetoMLLLow"], "electron mll low pt veto", "=", kr + " vetoLepSel") ) return true;
+			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtHigh"] && (mll > _Cuts[kr + "VetoMLLHighLL"] && mll < _Cuts[kr + "VetoMLLHighUL"]), "electron mll high pt veto", "=", kr + " vetoLepSel") ) return true;
 		}
 	}
 
@@ -1110,11 +1127,11 @@ bool SUSYSSDL::vetoEventSelection(std::string electron_label, std::string muon_l
 	if(_NumKinObj[muon_label] >= 1 && _NumKinObj["VetoMuon"] == 1){
 
 		// checking charge
-		int charge = _vc -> getI("mu_charge", _KinObj["VetoMuon"][0]);
+		int charge = _vc -> getI(_lep + "_charge", _KinObj["VetoMuon"][0]);
 		bool os = false;
 		int os_mu_index = -1;
 		for(int mu = 0; mu < _NumKinObj[muon_label]; ++mu){
-			if(_vc -> getI("mu_charge", _KinObj[muon_label][mu]) != charge){
+			if(_vc -> getI(_lep + "_charge", _KinObj[muon_label][mu]) != charge){
 				os = true;
 				os_mu_index = _KinObj[muon_label][mu];
 			}
@@ -1124,8 +1141,8 @@ bool SUSYSSDL::vetoEventSelection(std::string electron_label, std::string muon_l
 		if(os){
 			float mll = MLL("muon", _KinObj["VetoMuon"][0], "muon", os_mu_index);
 			//std::cout << "os muon with mll " << mll << std::endl;
-			if(makeCut(_vc -> getF("mu_pt", _KinObj["VetoMuon"][0]) > _Cuts["VetoMuonPtLow"]  && mll < _Cuts[kr + "VetoMLLLow"], "muon mll low pt veto", "=", kr + " vetoLepSel") ) return true;
-			if(makeCut(_vc -> getF("mu_pt", _KinObj["VetoMuon"][0]) > _Cuts["VetoMuonPtHigh"] && (mll > _Cuts[kr + "VetoMLLHighLL"] && mll < _Cuts[kr + "VetoMLLHighUL"]), "muon mll high pt veto", "=", kr + " vetoLepSel") ) return true;
+			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoMuon"][0]) > _Cuts["VetoMuonPtLow"]  && mll < _Cuts[kr + "VetoMLLLow"], "muon mll low pt veto", "=", kr + " vetoLepSel") ) return true;
+			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoMuon"][0]) > _Cuts["VetoMuonPtHigh"] && (mll > _Cuts[kr + "VetoMLLHighLL"] && mll < _Cuts[kr + "VetoMLLHighUL"]), "muon mll high pt veto", "=", kr + " vetoLepSel") ) return true;
 			//std::cout << "returning false" << std::endl;
 		}
 	}
@@ -1159,6 +1176,7 @@ void SUSYSSDL::fillEventPlots(std::string kr){
 
 	fill(kr + "_HT"        , HT("GoodJet")                                    , _EventWeight);
 	fill(kr + "_MET"       , _vc -> getF("met_pt")                            , _EventWeight);
+	fill(kr + "_MLL"       , findMLL("Electron", "Muon")                      , _EventWeight);
 	fill(kr + "_NBJets"    , _NumKinObj["BJet"]                               , _EventWeight);
 	fill(kr + "_NElectrons", _NumKinObj["Electron"]                           , _EventWeight);
 	fill(kr + "_NJets"     , _NumKinObj["GoodJet"]                            , _EventWeight);
@@ -1177,20 +1195,20 @@ void SUSYSSDL::fillLeptonPlots(std::string kr){
   	return: none
   	*/
 
-	for(int i = 0; i < _NumKinObj["Muon"]; ++i){
-		fill(kr + "_ElDXY", fabs(_vc -> getF("el_dxy"))    , _EventWeight);
-		fill(kr + "_ElEta", fabs(_vc -> getF("el_eta"))    , _EventWeight);
-		fill(kr + "_ElIso",      _vc -> getF("el_relIso04"), _EventWeight);
-		fill(kr + "_ElPt" ,      _vc -> getF("el_pt")      , _EventWeight);
-		fill(kr + "_ElMT" , MT("electron", i)              , _EventWeight);
+	for(int i = 0; i < _NumKinObj["Electron"]; ++i){
+		fill(kr + "_ElDXY", fabs(_vc -> getF(_lep + "_dxy"))    , _EventWeight);
+		fill(kr + "_ElEta", fabs(_vc -> getF(_lep + "_eta"))    , _EventWeight);
+		fill(kr + "_ElIso",      _vc -> getF(_lep + "_relIso04"), _EventWeight);
+		fill(kr + "_ElPt" ,      _vc -> getF(_lep + "_pt")      , _EventWeight);
+		fill(kr + "_ElMT" , MT("electron", i)               , _EventWeight);
 	}
 
 	for(int i = 0; i < _NumKinObj["Muon"]; ++i){
-		fill(kr + "_MuDXY", fabs(_vc -> getF("mu_dxy"))    , _EventWeight);
-		fill(kr + "_MuEta", fabs(_vc -> getF("mu_eta"))    , _EventWeight);
-		fill(kr + "_MuIso",      _vc -> getF("mu_relIso04"), _EventWeight);
-		fill(kr + "_MuPt" ,      _vc -> getF("mu_pt")      , _EventWeight);
-		fill(kr + "_MuMT" , MT("muon", i)                  , _EventWeight);
+		fill(kr + "_MuDXY", fabs(_vc -> getF(_lep + "_dxy"))    , _EventWeight);
+		fill(kr + "_MuEta", fabs(_vc -> getF(_lep + "_eta"))    , _EventWeight);
+		fill(kr + "_MuIso",      _vc -> getF(_lep + "_relIso04"), _EventWeight);
+		fill(kr + "_MuPt" ,      _vc -> getF(_lep + "_pt")      , _EventWeight);
+		fill(kr + "_MuMT" , MT("muon", i)                   , _EventWeight);
 	}
 
 }
@@ -1206,8 +1224,8 @@ void SUSYSSDL::fillJetPlots(std::string kr){
 
 
 	for(int i = 0; i < _NumKinObj["GoodJet"]; ++i){
-		fill(kr + "_JetPt"     , (_JEC == 1 ? _vc -> getF("jet_pt", i) : _vc -> getF("jet_rawPt", i)), _EventWeight);
-		fill(kr + "_JetCSVBTag", _vc -> getF("jet_btagCSV", i)                                       , _EventWeight);
+		fill(kr + "_JetPt"     , (_JEC == 1 ? _vc -> getF(_jet + "_pt", i) : _vc -> getF(_jet + "_rawPt", i)), _EventWeight);
+		fill(kr + "_JetCSVBTag", _vc -> getF(_jet + "_btagCSV", i)                                       , _EventWeight);
 	}
 
 }
