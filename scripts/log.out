@@ -1,0 +1,2314 @@
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+MPAF=/shome/cheidegg/MPAF
+MPAF=/shome/cheidegg/MPAF
+MPAF=/shome/cheidegg/MPAF
+--------------------------------------------------------------------Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+----------
+Warning ROOTSYSIf you do not have a Warning ROOTSYS is not yetIf you do Warning ROOTSYS is not yet dROOT insIf you do not have a user indepROOT inIf you do not have a user indDo Do notIf you do not have a user independent
+ROOROOT installation, please set ROOTSYS.
+T instal-----------------------------------ROOT install---------------------------Do not expect a working environment otherwise.
+setup all packages:
+workdir/root directory exists
+workdir/data link exists
+otherwise.
+Do not esetup all packages:
+workdir/root directory exists
+workdir/data link exists
+------------------
+----------------------------------------------
+----------------------------------------------
+s
+setup package is
+workdir/root directory exists
+workdir/data link exists
+setup all packages: tools y analysis display analysis
+setup package tools
+setup package y
+setup package analysis
+setup package display
+setup package analysis
+# ============================workdir/data link exists
+===========
+# JOB Live Resources USAGE for job 5883894: ( don't consider mem values, they are wrong )
+# # ================================================================
+# JOB Live Resources USAGE for job 5883892: ( don't consider mem values, they are wrong )
+# usage    1:                 cpu=00:00:00, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+usage    1:                 cpu=00:00:00, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+892 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883892
+# 
+# JOB ran over queue@host = # ================================================================
+# JOB Live Resources USAGE for job 5883897: ( don't consider mem values, they are wrong )
+# all.q@t3wn50.psi.ch
+Resources USAGE for job 5883894: you have to manually run
+# qacct -j 5883894 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883894
+# 
+# JOB ran over queue@host = setup all packages: analysis isplay
+setup package analysis
+setup all packages:
+workdir/root dirsetup package isplay
+/data link exists
+usage    1:                 cpu=00:00:00, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+ for job 5883896: ( don't consider mem values, they are wrong )
+# setup all packages:
+workdir/root directory exists
+workdir/data link exists
+#
+# removing TMPDIR: /scratch/tmpdir-5883892.1.all.q
+setup all packages:
+setup all packages:
+, mem=0.00000 GBs, io=0.000workdir/root directory exi# JO# 
+# JOB Historical Rworkdir/data link exists
+83896: you have to manually run
+# qacct -j# 
+83896 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883896
+# 
+# JOB ran over queue@host = # JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+y run
+# qacct -j 5883897 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883897
+# 
+# JOB ran over queue@host = workdir/root directory exists
+workdir/data link exists
+===========
+usage    1:                 cpu=00:00:00, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+R: /scratch/tmpdir-5883896.1.all.q
+# ============================workdir/data link exists
+===========
+#
+l.q@t3wn43.psi.ch
+setup all packages: display display display
+# removing TMPDIR: /scratch/tmpdir-5883894.1.all.q
+ackage display
+n[10-29]
+#
+# removing TMPDIR: /scratch/tmpdir-5883897.1.all.q
+setup all packages: display display display
+xists
+t consider mem values, they are wrong )
+=
+# JOB Live Resources USAGE for job 5883901: ( don't consider mem values, they are wrong )
+# setup package display
+setup package display
+( don't consider mem values, they are wrong )
+se# 
+ package display
+==============================================
+# JOB Live Resources USAGE for job 5883905: ( don't consider mem values, they are wrong )
+# # tup package display
+      cpu=00:00:00, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+# JOB Historical Resources USAGE for job 5883902: you have to manually run
+un
+# qacct -j 5883901 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883901
+# 
+# JOB ran over queue@host = usage    1:                 cpu=00:00:00, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+# qacct -j 5883902 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883902
+83905 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883905
+# 
+# JOB ran over queue@host = usage    1:                 cpsetup package display
+=========================================# 
+
+# JOB Live Resources USAGE for job 5883899: ( don't consider mem values, they are wrong )
+# workdir/root directory exists
+40] should run ~1.13 faster than t3wn[10-29]
+#
+# removing TMPDIR: /scratch/tmpdir-5883901.1.all.q
+workdir/data link exists
+=============================================================
+# JOB Live Resources USAGE for job 5883895: ( don't consider mem values, they are wrong )
+# workdir/root directory exists
+u=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+ratch/tmpdir-5883905.1.all.q
+workdir/data link exists
+=========================================
+# JOB Live Resources USAGE for job 5883903: ( don't consider mem values, they are wrong )
+# workdir/data link exists
+      cpu=00:00:00, mem=3.00000 GBs, io=0.00000, v# JOB Historical Resources # JOB Historical Resources USAGE for job 5883899: you have to manually run
+ -f /gridware/sge/default/common/accounting.complete -j 5883898
+# 
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem# JOB ra# qacct -j 5883899 |# 
+acct -f /gridware/sge/default/common/accounting.complete -j 5883899
+all.q@t3wn41.psi.ch
+==============================================
+# JOB Live Resources USAGE for job 5883900: ( don't consider mem values, they are wrong )
+# # J# JOB Historical Resources USAGE for job 5883895: you have to manually run
+ve Resources USAGE for job 5883904: ( don't consider mem values, they are wrong )
+# # 
+ge    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00004, vmem=3.000G, maxvmem=3.000G
+# JOB ran over queue@host = 0] should run ~1.13 faster than t3wn[10-29]
+ Live Resources USAGE for job 5883893: ( don't consider mem values, they are wrong )
+# # qacct -j 5883895 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883895
+83900 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883900
+# 
+# JOB ran over queue@host = # JOB Historical Resources USAGE for job 5883903: you have to manually run
+=3.000G, maxvmem=3.000G
+# 
+emoving TMPDIR: /scratch/tmpdir-5883902.1.all.q
+: you have to manually run
+# qacct -j 5883904 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883904
+# 
+# JOB ran over queue@host = # JOB ran over queue@host = cpu=00:00:00, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+# qacct -j 5883903 |# 
+# 
+t -f /gridware/sge/default/common/accounting.complete -j 5883903
+# JOB Historical Resources USAGE for job 5883893: you have to manually r# JOB ran over queue@host = 0-40] should run ~1.13 faster than t3wn[10-2# 
+all.q@t3wn50.psi.ch
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+omplete -j 5883893
+#
+# 
+oving TMPDIR: /scratch/tmpdir-5883891.1.all.q
+# 
+all.q@t3wn50.psi.ch
+scratch/tmpdir-5883900.1.all.q
+# removing TMPDIR: /scratch/# JOBs executed on t3wn# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+cratch/tmpdir-5883904.1.all.q
+all.q# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+# removing TMPDIR: /scratch/tmpdir-5883895.1.all.q
+faster than t3wn[10-29]
+#
+# removing TMPDIR: /scratch/tmpdir-5883893.1.all.q
+#
+# removing TMPDIR: /scratch/tmpdir-5883903.1.all.q
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+setup all packages:
+setup all packages:
+workdir/root directory exists
+workdir/root directory exists
+workdir/data link exists
+workdir/data link exists
+setup all packages: display analysis display
+setup all packages: display analysis display
+setup all packages: display analysis display
+setup package display
+setup package display
+setup package display
+setup package analysis
+setup package analysis
+setup package analysis
+setup package display
+# ================================================================
+# ================================================================
+setup package display
+setup package display
+workdir/root directory exists
+# JOB Live Resources USAGE for job 5883910: ( don't consider mem values, they are wrong )
+# JOB Live Resources USAGE for job 5883907: ( don't consider mem values, they are wrong )
+workdir/root directory exists
+workdir/root directory exists
+workdir/data link exists
+# # workdir/data link exists
+workdir/data link exists
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+# ================================================================
+# JOB Live Resources USAGE for job 5883922: ( don't consider mem values, they are wrong )
+# # ================================================================
+# JOB Live Resources USAGE for job 5883914: ( don't consider mem values, they are wrong )
+# # ================================================================
+# JOB Live Resources USAGE for job 5883918: ( don't consider mem values, they are wrong )
+# MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+MPAF=/shome/cheidegg/MPAF
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+setup all packages: tools
+Warning ROOTSYS is not yet defined.
+----------------------------------------------
+usage    1:                 cpu=00:00:00, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+usage    1:                 cpu=00:00:00, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+usage    1:                 cpu=00:00:00, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+usage    1:                 cpu=00:00:00, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+Warning ROOTSYS is not yet defined.
+usage    1:                 cpu=00:00:00, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+setup package tools
+If you do not have a user independent
+Warning ROOTSYS is not yet defined.
+MPAF=/shome/cheidegg/MPAF
+# 
+# 
+If you do not have a user independent
+# 
+# 
+workdir/root directory exists
+ROOT installation, please set ROOTSYS.
+MPAF=/shome/cheidegg/MPAF
+If you do not have a user independent
+----------------------------------------------
+# JOB Historical Resources USAGE for job 5883922: you have to manually run
+# JOB Historical Resources USAGE for job 5883918: you have to manually run
+# 
+ROOT installation, please set ROOTSYS.
+# JOB Historical Resources USAGE for job 5883910: you have to manually run
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+WaMPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a worWarning ROOTSYS is not yet defined.
+--------------------------------------
+setup all packages: tools analysis analysis
+setup package tools
+setup package analysis
+setup package analysis
+workdir/root directory exists
+workdir/data link exists
+ault/common/accounting.complete -j 5883918
+g environment otherwise.
+----------------------------------------------
+# JOB Historical Resources USAGE for job 5883907: you have to manually run
+Do not expect a working environment otherwise.
+ge tools
+setup all packagsetup package display
+play display
+# qacct -j 5883910 || qacct -fMPAF=/shome/cheidegg/MPAF
+mon/accounting.complete -j 5883910
+workdir/data link exists
+ct -f /gridware/sge/default/common/accounting.complete -j 5883914
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+rces USAGE for job 5883906: ( don't consider mem values, they are wrong )
+# MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+---------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+Do not expect a working environment ot# ============MPAF=/shome/cheidegg/MPAF
+================setup all pMPAF=/shosetup all packages:
+workdir/root directory exists
+workdir/data link exists
+ve Resources USAGE for job 5883908: ( don't consider mem values, they are wrong )
+# # 
+F=/shome/cheidegg/MPAF
+sts
+workdir/data link exists
+MPAF=/shome/cheidegg/MPAF
+t -f /gridware/sge/default/common/accounting.complete -j 5883907
+A
+# 
+# JOB Historical Resources USAGE for job 588setup package analysis
+lly run
+# qacct -j 5883908 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883908
+# 
+# JOB ran over queue@host = rwise.
+# 
+F=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+--------------------------setup all packages:
+/MPAF
+ng ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+If you do not have a user independent
+--------
+ROOT installation, please set ROOTSYS.
+===========================
+MPAF=/shome/cheidegg/MPAF
+set ROOTSYS.
+-------
+----------------------------------------------
+===================
+# JOB Live Resources USAGE for job 5883909: ( don't consider mem values, they are wrong )
+# MPAF=/shome/cheidegg/MPAF
+# =============================================-------------------------------------------MPAF=/shome/cheidegg/MPAF
+vironment otherwise.
+MPAF=/shome/cheidegg/MPAF
+MPAF=/shomMPAF=/shome/cheidegg/MPAF
+--MPAF=/shome/cheidegg/MPAF
+--# 
+-------------
+Do not expect a working environment otherwise.
+ot have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+# JOB ran over queue@host Warning ROOTSYS is not yet defined.
+i.ch
+00, vmem=3.000G, maxvmem=3.000G
+# JOB Live Resources USAGE for job 5883912: ( don't consider mem values, they are wrong )
+/A
+# JOB ran over queue@host = ------------------
+3909: you have to manually run
+# qacct -j 5883909 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883909
+# 
+# JOB ran over queue@host = Warning ROOTSYS is not yet defined.
+----------
+3906: you have to manually run
+# qacct -j 5883906 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883906
+# 
+# JOB ran over queue@host = MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+-------------------------------
+on't consider mem values, they are wrong )
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+----------
+Warning ROOTSYS is not yet defined.
+----------
+--------------------------all.q@t3wn41.psi.ch
+
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+If you do not have a user independent
+--------
+Warning ROOTSYS is not yet defined.
+Warning ROOTSYS is not yet defined.
+Warning ROOTSYS is not yet defined.
+----------
+all.q@t3wn50.psi.ch
+ot yet defined.
+----------
+Warning ROOTSYS is not yet defined.
+ROOT installation, please set ROOTSYS.Wusage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00004, vmem=3.000G, maxvmem=setup asetup package display
+lysis
+nt
+# ====================================Warning ROOTSYS is not yet defined.
+t
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+# JOBs executed on t3wn[30-40] should If you do not have a user independ--Warning ROOTSYS is not yet defined.
+-----ROOT# 
+# 
+----------------------------------------
+t a working environment otherwise.
+# 
+T installation, please set ROOTSYS.
+ROOT insworkdir/root directory exists
+-# JOB Live Resources USAGE for job 5883934: ( dIf you do not ha-----------------------Do not #
+pect a working ---------------------------------------------------------------------
+m=3.000G
+# 
+-----------------------------------Do not expect a working environment otherwise.
+# JOBs executed on t3wn[30-40] should run ~1.13Do not expect a working e# JOBs executedIf you do not haROOT installation, please set ROOTSYS.
+--Warnin# JOB Historical Resources USAGE for job 5883912: you have to manuallWarnin---------------------# JOBs executed on t3wn[30-------------------Warning ROOTSYS is not yet d-------------------setup all packages: display
+setup all pWarning ROOTSYS is not yet defined.
+.13ROOT installation, pleaseWarning ROOTSYROOT installation, please set ROOTSYS.
+common/accounting.complete -j 5883912
+=3.000G
+Warning ROOTSYS is not yet defined.
+s
+Warning ROOTSYS is not yet defined.
+S.
+83918.1.all.q
+seWarning ROOTSYS is not yet dROOT installation, please set ROOTSYS.
+ing.complete -j 5883926
+workdir/root directory exists
+ROOTSYS.
+===========================
+workdir/data link exists
+ #
+t ROOTSYall.q@t3wn43.psi.ch
+, please set ROOworkdir/---------------------------------------# 
+up pa# JOBs executed on t3wn[30-40] should run ~1.13If you do not have a user independent
+3922.1.all.q
+tch/tmpdir-5883912.1.all.q
+# 
+OBs executed on t3wn[30-40] should run ~1.13Do not expect a working eIf you do not have a user independent
+===
+# JOB Live Resources USAGE for job 5883952: ( don't consider mem values, they are wrong )
+# setup all packages:
+ources USAGE for job 5883911: you have to manually run
+Do not expect a workinIf you do not have a user independent
+ mem values, they are wrong )
+If you do not have a# removing TMPDIR:If you do not have a user indepen# removing TMPDIR: /scratcIf you do not have a user# setup all pIf you do not have a user independent
+ consider mem values, they are wrong )
+# If you do not have a us# JOB HistoricaIf you doDo not expect a working environment otherwise.
+run
+Ifworkdir/root directory exists
+ndent
+3908.1.all.q
+===============
+# JOB Live Resources USAGE for job 5883960: ( don't consider mem values, they are wrong )
+# setup all packages:
+workdir/root directory exisworkdir/root directory exists
+----------------
+-------------------------# qacct -j 5883934 || qacct -f /gridwar---------------------------------------#
+-----
+3934
+ROOT installation, please setworkdir/daworkdir/root disetup all packages:
+plete -j 5883911
+setup package is
+, please set ROOTSYS.
+========workdir/data link exists
+ Live Resources USAGE for job 5883944: ( don't consider mem values, they are wrong )
+# ----------------------------------------------
+ts
+workdir/data link exists
+---setup package analysis
+-------------ROOT installation, please set ROOTSYwo--------------------------sesetup package analy-set# JOB ran over queue@host = ROOT installati# 
+kdir/root directory eworkdiworkdir/root directory exists
+S.
+workdir/root directory ex# ===workdir/data link exists
+# ================================================================
+h/tmpdir-5883909.1.all.q
+===============
+# JOB Live Resources USAGE for job 5883915: ( don't consider mem values, they are wrong )
+# MPAF=/shome/cheidegg/MPAF
+--setup all packages:w# JOB Live Resources USAGE for job 5883920: ( don't consider mem values, they are wrong )
+ependent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+setup package tools
+ing environment otherwise.
+on't consider mem values, they are wrong )
+AGE for job 5883935: ( don't consider mem values, they are wrong )
+# setup all packages: # ols is analysis
+herwise.
+# =============================================workdir/data link exists
+nvironment otherwise.
+# =============================================setup all packages: setup package is
+therwise.
+setup package y
+rces USAGE for job 5883938: ( dsetup package tools
+=======================# ======================setup package tools
+ing environment otherwi# JOsetup all packages:
+scratch/tmpdir-5883906.1.all.q
+sider mem values, they are wrong )
+-----------------------workdir/root directory e# JOB Live Resources USAGE for setup package is-------------------------------------------setuworkdir/root# =================================workdir/data link exists
+======
+workdir/root di# -------------# ==============================-----------------------------------setup packag-----------# ==================================----------------------------------------------
+===================
+# JOB Live Resources USAGE for job 5883950: ( don't consider mem values, they are wrong )
+# ----------------------------------------------
+on't consider mem values, they are wrong )
+# JOB Live Resources USAGE for job 5883921: ( do# JOB Live Resources USAGE for job 5883948MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT install# rkdir/data link exists
+.
+Do not expect a working environment otherwise.
+----------------------------------------------
+# JOB Live Resources USAGE for job 5883940: ( don't consider mem values, thsetup all packa# s:
+ry exists
+workdir/root directory exists
+workdir/data linkusage   # :                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# rkdir/data link exists
+workdir/data link exists
+t defined.
+==============================
+# JOB Live Resources USAGE for job 5883923: ( don't consider mem values, they are wrong )
+# # ================================================================
+nually run
+If you do not have a user independent
+----------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+# qacct -j 5883921 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883921
+ E for job 5883955: ( don't consider mem values, they are wrong )
+# MPAF=/shome/cheidegg/MPAF
+ROOT installation, please set ROOTSYS.
+---------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+# ================================================================
+# JOB Live Resources USAGE for job 5883936: ( don't consider mem values, they are wrong )
+# MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT install# =========================Do not expect a working environment othe# 
+se.
+----------------------------------------------
+----------------------------------------------
+-------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+Warning ROOTSYS is not yet----------------------------------------------
+
+ROOT installation, please set ROOTSYS.
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+ob 5883932: ( don't consider mem values, they are wrong )
+# usage    1:               # JOB Live Resources USAGE for job 5883917: ( don't consider mem values, usage    1:      # JOB ran over queue@host = =3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+Do not expect a working environment otherwise.
+.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+MPAF=/shome/cheidegg/MPAF
+Warning ROOTSYS is not yet defined.
+MPAF=/shome/cheideggMPAF=/shome/cheidegg/MPAF
+-----------------# 
+------MPAF=/shome/cheidegg/MPAF
+ng ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+setup all packages: tools y
+setup package tools
+setup package y
+workdir/root directory exists
+workdir/data link exists
+--
+workdir/root directory exists
+----------------
+MPAF=/shome/cheidegg/MPAF
+--------------------
+# JOB Historical Resources----------------------------------------------
+n
+# 
+acct -j 5883915 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883915
+# 
+MPAF=/shome/cheidegg/MPAF
+ USAGE for job 5883955: you have to manually run
+---setup all packages:
+-----------------------
+setup all packages:
+/MPAF
+Warning ROOTSYS is not yet defined.
+setup all packages: tools
+--------------------
+# JOB Historical Resources USAGE forWarning ROOTSYS is not yet defined.
+===ROOT installation, please set ROOTSYS.
+Resources USAGE for job 5883962: ( don't consider mem values, they are wrong )
+# setup all packages:
+ot yet defined.
+workdir/data link exists
+---------------------
+workdir/data link exists
+t defined.
+# 
+F=/shome/cheidegg/MPAF
+--------------------------------------------------------------------------------------------
+not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+---------------------# qacct -j 5883955 || qacct -f /gridwausage    1:                 cpu=00:00:00, mem=3.00000# JOB Historical Resources USAGE for job 58839If you do not have a user indsetup allIf you do nMPAF=/shome/cheidegg/MPAF
+---------------------------------------MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+-------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+MPAF=/shome/cheidegg/MPAF
+------------MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+-------------------------------------------------------
+fault/common/accounting.complete -j 5883935
+ not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+setup all packages:
+ing environment otherwise.
+workdir/root directory exists
+ing ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+ROOT installation, please set ROOTSYS.
+un ~1.13 faster than t3wn[10-29]
+
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+all.q@t3wn50.psi.ch
+lease sesetup all packROOT i----------------------------------------------
+.13 faster than t3wn[10-29]
+#
+Warning ROOTSYS is not yet defined.
+S.
+926.1.all.q
+# 
+you do not have a user independent
+setup all packages:
+--------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+# qacct -j 5883923 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883923
+----------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+workdir/root directory exists
+tup package displ----workdir/data link exists
+ists
+--------ROOT installation, please set ROOTSYS.
+.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+setup all packages:
+--------------------------
+.00000 GBs, io=0.00004, vmem=3.000G, maxvmem=3.000G
+workdir/root directousageusage    1:   workdir/root directory exists
+m=12.00000 GBs, io=0.00004, vmem=3.000G, maxvmem=3setup workdir/root directory exists
+----------
+# 
+-------------------------------------------
+.00000 GBs, io=0.00003, vmem=3.000G, maxvmem=3.000G
+# 
+---------------------------------------# JOB Historical Resources USAGE for job 5883952: you have to manually run
+=3.000G, maxvmem=3.000G
+# qacct -j 5883952 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883952
+=3.000G
+If you do not have a user independent
+herwise.
+.00000 GBs, io=0.00002, vmem=3.000G, maxvmem=3.000G
+setup package display
+============================================
+lly run
+=3.000G, maxvmem=3.000G
+workdir/root directory exists
+ job 5883968: ( don't consider mem values, they are wrong )
+m=3.000G
+# =============================================setup package tools
+If you do not have a user indepen# 
+kd# =======================# 
+up all packages: tools y
+=============
+all.q@t3wn44.psi.ch
+0004, vmem=3.000G, maxvmem=3.000G
+# 
+OB ran over queue@host = # nment otherwise.
+# 
+------------------------------------workdir/# 
+a link exists
+egg/MPAF
+t otherwise.
+# JOBs executed on t# 
+kdir/data linDo not exworkdir/root directory exists
+OB Histosetup all packages:
+@host = setup all packages: tools analysis i# JOB Historical ResourcesMPAF=/shome/cheidegg/MPAF
+u # ================================================================
+# removing TMPDIR: /setup package tools
+ources USAGsetup all packages:
+ou have to manually run
+# qacct -j 5883930 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883930
+ROOT installation, psetup package to-----------------------------------------------# JOB Historical Resources USAGE for job 5883960: you have to manuaworkdir/data link exists
+ct -f /gridware/sge/default/common/accounting.comp# JOB Historical Resourcworkdir/data link exists
+---------------------
+2.00#
+0 GBs, io=0.00004, vmem=3.000G, maxvmem=3.000G
+# JOB Live Resources USAGE for job 5883947: ( dDo not expect a working environment otherwis# Jworkdir/data link exists
+SAGE for job 5883962: you have to manually run
+efined.
+setup package tools
+--------------------------
+War# qacct -j 5883942 || qacct -f /gMPAF=/s-------------------# JOB Live Resourc# 
+USAGE for j# JOB ran over queue@host = ronment otherwise.
+re wrong )
+# qacct -j 5883954 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883954
+m=3.000G
+----------------------------------------------
+2.00000 GBs, io=0.00004, vmem=3.000G, maxvmem=3.000G
+workdir/root directory exists
+========Warning ROOTSYS is not yet desetup all packages:
+950
+----------------------------------------------
+fault/common/accounting.complete -j 5883946
+all.q@t3wn44.psi.ch
+ry exists
+ /gridware/sge/default/common/accounting.complete -j 5883958
+# 
+up all packages: analysis display analysis lay
+
+setup package tools
+ry exists
+ /gridware/sge/default/common/accounting.complete -j 5883938
+# JOB Live Resources USAGE for job 5883927: ( don't consider mem values, they are wrong )
+
+setup package analysis
+se set ROOTSYS.
+Do not expect a working environment otherwise.
+# ================================================================
+004, vmem=3.000G, maxvmem=3.000G
+workdir/root directory exists
+Do not expect a working e# 
+ronment osetup package analysis
+em=3.000G
+# ====================================# JOB ran over queueMPAF=/shome/cheidegg/MPAF
+ces USAGE for job 5883959: ( don't consider mem values, they are wrong )
+--Do not expect a working environment otherwise# JOB ran over queue@host = --------------------
+MPsetup package tools
+PAF
+--------------------
+# JOBs executed on t3wn[30-40] should run ~1.13 faster # ===========================================#
+age    1:           ROOT installation, please set ROOTSYS.
+o=0.00004, vmem=3.000G, maxvmem=3.000G
+workdir/data link exists
+   cpu=00:00:02, mem=12.00000 GBs, io=0.00005, vmem=3.000G, maxvmem=3.000G
+workdir/data link exists
+nvironment otherwise.
+2.00000 GBs, io=0.00005, vmem=3.000G, maxvmem=3.000G
+# JOB ran over queue@host = s
+ job 5883963: ( don't consider mem values, they are wrong )
+m=3.000G
+workdir/root directoRO# JOB ra# ===========================# JOB ran over queue@host = dependent
+setup all packages: display splay display display display display analysis
+ey are wrong )
+all.q@t3wn50.psi.ch
+----------# JOB ran over qusetup all packages:
+ USAGE fworkdir/root directory exists
+==========================================
+a --------------------# JOB ran over queue@host =# 
+00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+all.q@t3wn41.psi.ch
+ USAGE for job 5883966: ( donworkdir/root directory exists
+u=00:00:00, m# JOB ran over queue@host = vmem=3.000G, maxvmem=3.000G
+all.q@t3wn50.psi.ch
+up all packages: analysis
+
+Warning ROOTSYS is nusage    1:     ----------------------------------------------
+0:00:00, mem=3.00000 GBs, io=0.00000Warning ROOTSYS is not yet defsetup package display
+consider mem values, they are wrong )
+m=3.000G
+If you do not have a user independent
+3915.1.all.q
+ROOT installation, p------# =======================================# =======================
+---------------------------------------
+# =======================usageall.q@t3wn50.psi.ch
+   cpu=00:00:00, workdir/data link exists
+00, vmem=3# 
+# 
+r/data link exis# 
+ge    1:                 cpu=00:00:00, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+ for job 5883913: ( don't consider mem values, they are wrong )
+# # JOB Live Resources U# JOB Historical Resources USAGE for job 5883932: you have to manually run
+ackage is
+ch
+woDo not expect a workingsetup all packages:
+toryROOT installation, pleaseal# 
+@t3wn50.psi.ch
+        cpu=00:00:00, mem=3.00000 GBs, io# 
+ning ROOTSYS is not yet defined.
+G
+all.q@t3wn43.psi.ch
+y
+r# ==================================================# qacct -j 5883944 || usage    1:                 cpu=00:00:00, memworkdir/root directory e# JOB Historical Resources USA# ===========================================# 
+=================# 
+ JOB Live Resources USAGE for job 5883957: ( don't consider mem values, they are wrong )
+# Do not expect a working environment otherwise.
+7: you have to manua--------# 
+====================================workdir/data link exists
+   # 
+=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+Warning ROOTSYS is not yet defined.
+ job 5883959: you have to manually run
+ey are wrong )
+If you do not have a usetup all packages:
+ installation, please set ROOTSYS.
+If you do not# JOBs executed on t3wn[3#workdir/data link exists
+ USAGE for job 588394# 
+you have to manually ru# wor# JOB Historical Res#
+rces # JOB Historical Resources USAGE for job 5883966# 
+ou have to manually r# JOB Historical R# JOB Live Resources USAGE for job 5883961: ( don# JOB Live Resources USAGE for job 5883974: ( don't consider mem values, they are wrong )
+m=3.000G
+# 
+kdir/data link exists
+ct -f /gridware/sge/default/common/accounting.complete -j 5883927
+# 
+# JOB ran over queue@host = # 
+workdir/root directory exists
+GE for job 5883968: you have to masetup package display
+5setup all packages: tools
+re/sge/default/common/accounting.complete -j 5883968
+# 
+# JOB ran over queue@host = # ================================================================
+-29]
+omplete -j 5883932
+# 
+# 
+OB Live Resources USAGE for job 5883983: ( d# =========================================workIf you do not have aworkd#setup all packages:
+sts
+ation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+usa# qacct -j 5883916 || qacct -f /gridware/sge/defworkdir/root directory exists
+e -j 58839# JOB Liusage    1:               wor# JOB Historical Resources USAGE for job 5883920: you have to manually#
+un
+JOB Historical Resources USAGE for job 5883937: you have to manually run
+# qacct -j 5883937 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883937
+# J# JOB Historical Resources USAGE for job 588Do not expect a working environment otherwis# ----------------------------------------------
+a#
+
+T installation, plesetup all package# 
+# 
+r/data link exists
+ct -f /gridware/sge/default/common/accounting.complete -j 5883940
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem# AF=/shome/cheidegg/MPAsetup package analysis
+fault/common/accounting.complete -j 5883924
+# removing TMPDIR: /scratch/tmpdir-5883935.1.all.q
+ou have to manually run
+# ================================================================
+ing.complete -j 5883936
+# 
+# JOB Live Resources USAGE for job 5883971: ( don't consider mem vausage    1:              # JOB Historical Resources USAGE for job 5883931: you have to manuworkdir/sworkdir/data link exists
+uld run ~1.13 faster than t3wn[10-29]
+#
+#  you do not have a user inusage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvme# JOB ransetup all pac#
+ges:MPAF=/shome/cheidegg/MPAF
+===============================
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+mem=3.000G, maxvmeworkdir/d#
+
+OBs executed # 
+t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+#
+# qacct -j 5883920 || qacct -f /gridware/sge/default/common/account# JOB ran over queue@hosDo ## JOB Historical Resources USAGE for job 58# 
+45: you have to manuall.q@t3wn43.psi.ch
+58839# qacct -j 5883956 || qacct -f /gridware/sge/default/common/accounting.comp#
+workdir/root directory exists
+===============
+# =# qacct -j 5883964 || qacct -f /grid# removing TMPDIR: /scratch/# JOB # JOBs executed on t3# JOB Historical Resources USAGE for job 5883963# J--------------------------------packages: tools# ========================================# qacct -j 5883913 || q# removing TMPDIR: /scratch/tmpdir-5883952.1.all.q
+plete -j 5883913
+# 
+# JOB ran over queuesetup alusage    1:                 cpu=00:00:00, mem=3setup all packages: tools---------------------------# Jall.q@t3wn44.psi.----------------------------------------------
+lues, they are wrong )
+# # 
+workdir/root directory exists
+ROOT installation, please set ROOTSYS.
+mem=3.000G, maxvmem=3.000G
+# JOB Historical Resources USAGE for job 5883943: ysetup package display
+n
+# qacct -j 5883# 3 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883943
+# 
+# JOB Historical Resources U-----------------------# removing TMPDIR: /scra# JOB ran over queue@host = sage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.# qacct -j 5883919 || qacct -f /gri# removing TMPDIR: /scratch/tmpdir-5883917.1.all.q
+3919
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+te -j 5883974
+# 
+usa# JOB ran over queue@host = or job 5883994: ( don't consider mem values, they are wrong# J# ====all.q@t3wn43.psi.chIf you# ==================================# =============================# JOB Live Resourcesall.q@t3wn43.psi# qacct -j 5883963 || qacct -f /gridware/sge/default/common/accounting.com#
+removing TMPDIRWarning ROOTSYS is not yet defined----------------------------------------all.q@t3wn43.psi.ch
+# JO# JOB Historical Resources USAGE for job 5883972: you have to manually Warn# 
+ ROOTSYS is n# JOB rausage    1: # JOB Hiall.q@t3wn43.psi.ch
+SAGE for job 5883971: you have to manually run
+vmem=3.000GW# JOB ran over queue@host = ronment#
+therwise.
+----------------------------------------------
+# J# s executed on t3wn[30-4# JOB Historical Resources USAGE for job 588# JOB ran over queueall.q@t3wn43.psi.ch
+ packages: tools y splay display display display diall.q@t3wn43.psi.ch
+ USAGE for job 5883986: ( don't cons# removing TMPDIR: /scratch/tmpdir-5883923.1.all.q
+ display
+# removing TMPDIR: /scratch/tmpdir-5883960.1.all.q
+===============
+If you do not have a user in# JOB ran over queue@host = t ROOTSYS.
+b 5883978: you have to manually run
+vironment otherwise.
+----------------------------------------------
+Do not expect a working environment otherwise.
+.13 faster than t3wn[10-29]
+#
+# removing TMPDIR: /scratch/tmpdir-5883932.1.all.q
+all.q@t3wn44.psi.ch
+ USAGE for job 5883970: ( don't consider mem values, they are wrong )
+
+all.q@t3wn44.psi.ch
+3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+#
+# JOB Live Resources USAGE for job 5# ====================================================all.q@t3wn43.setup p# 
+age y
+mpdir-5883958.1.all.q
+If you do not have a user independent
+y are wrong )
+# 
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+omplete -j 5883925
+# 
+ge    1:           If you do not have a user independent
+o=0.00000, vmem=3.000G, maxvmem=3.000G
+# 
+emoving TMPDIR: /scratch/tmpdir-5883938.1.all.q
+===============
+# removing TMPDIR: /scratch/tmpdir-5883916.1.all.q
+ou have to manually run
+If you do not have a user # JOBs execu# d on t# ==================================================# removing TMPDIR: # 
+up package analys# ==========# JOB Historical Resources USAGE for job 5884005: you have to manually run
+ 
+qacct -f /grid# 
+.q@t3wn50.psi.ch
+mon/accounting.complete -j 5883983
+setup package display
+JOB ran over queue@host = 00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# usage    1:       # 
+       cpu=00:00:00, mem=3.00000 GBs, io=0.00000, v# JOB ran over queue@host =## JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+YS.
+mem=3.000G
+# JOB ran over queue@host = #
+------------------workdir/root directory exisusage    1:         #
+
+     cpu=00:00:00, mem=3.00000 GBs, # 
+0.00000, vmem=3.000G, maxvmem=3.000G
+# removing TMPDIR: /scratch/tmpdir-5883936.1.all.q
+or job 5883933: you h# 
+T installation, pall.q@t3wn41.psi.ch
+99: ( don't consider mem values, they are wrong )
+# JOBs executed on t3wn[30-40]# JOB ran over queue@host = n t3wn[10-29]
+setup all packages: tools ys# JOBs executed on t3wn[30-40] should # 
+F=/shome/cheidegg/MPAF
+[10-# 
+
+#
+# JOB ran over queue@host = tmpdir-5883956.1.all.q
+# JOB Live Resources USAGE for job 5884001: ( don't consider mem values,setup all packagesRO# removing TMPDIR: /scratch/tmpdir-5883920.1.all.q
+common/accounting.complete -j 5883961
+# JOB Live Resources USAGE for job 5883967: ( d# removing TMPDIR: /scratch/tmpdir-5883940.1.# 
+.q
+ consider mem values, they are wrong )
+# 
+up all packages:
+        cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmemsetup all packages: dispsetup package y
+y display display display analy# JOB Live Resources USAGE for job 5883982: ( don't consider mem values, they ar# qacct -jDo not expect a working environment otherwise.
+on/accounting.com# JOB Historical # 
+#
+# removing TMPDIR: /scratch/tmpdir-5883948.1.all.q
+n
+setup all packages: display anworkdir/data link#  not expect a working environment otherwise.
+splay display display analysis analysis analysis display
+# JOB ran over queue@host = roworkdir/root directory exists
+t3wn[10-29]
+all.q@t3wn43.psi.ch
+workdir/root directory exists
+000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# qacct -j 5883933 || qacct -f /gridware/sge/default/co# removing TMPDIR: /scratch/tmpdir-5883964.1.all.q
+er queue@host = MPAF=/shome/cheidegg/MPAF
+h/setup package analysis
+setup package y
+-------
+#
+t# JOB Historical Reworkdir/data link exists
+3986: you have to manually run
+000G, maxvmem=3.000G
+worDo not expect a working esetup all packages: to#Warning ROOTSYS is not yet defined.
+job 5883994: you have to manually run
+y display display analysis analysis analysis display display
+-------------------------set# 
+package analysis# 
+rkdir/root directory exists
+000G, maxvmem=3.000G
+set--# qacct -j 5883setup package analysis
+re/sge/# 
+acct -j 5883990 || qacct -f /gridware/sge/d# 
+ult/common/accounting.complete -j 5883990
+# JOBs executed on t3wn[30-40] should run ~1.13setup package play
+      # removing TMPDIR: /ssetup package play
+59.1.all.q
+3.000G, maxvmem=3.000G
+# JOB Historical Resources USAGE for job 588398# JOB Historical Resources Uall.q@t3wn44.psi.ch
+ JOB Historical Resources USAGE for job 5884002: you have to manually run
+s analysis analysis display display display
+# JOB Historical Resources USAusage    1:      ----------------------------# JOBs executed on t3wn[30-40] should run ~1.13 faster#
+han t3wn[10-29]
+e a user independent
+ROOT iWarning ROOTSYS is not yet defined.
+not expect a working environment otherwise.
+----------------------------------------------
+workdir/data link exists
+t defined.
+# 
+-------------------------------------------
+ faster than t3wn[10-29]
+se# JOBs executed on# ================================================================
+83986
+workdir/data link exsetup all packages: tools y display play displa#
+display display an# JOBs executed on t3wn[30-40] setup package analysis
+ than t3wn[10-29]
+is display display
+#
+tup package display
+setup package display
+--
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00003, vmem=3.000G, maxvmemsetup package y
+49 || qacct -f /gridware/sge/default/common/accounting.comp# JOB Live Resou# qacct -j 5884002 || qacct -f /gridware/sge/default/common/accounting.comIf you do not have a user independent
+ue@host = Warning ROOTSYS is # 
+OBs executed oIf you do not have a user independent
+than t3wn[10# removing TMPDIR: /scratch/tmpdir-5883974.1.all.q
+# 
+OB ran over queue@host = package display
+# 
+acct -j 5883987 set# JOB Historical Resources USAGE for job 5883965: you have to manuall# J# q# JOB Live Resources USAGE for job 5884004: ( don't consider mem values, they are wr# qa# 
+ ==================================# 
+===========================
+mplete -j 5883941
+Warning ROOTSYS is not yet defined.
+883937.1.all.q
+# 
+nsider mem values, they are wrong )
+# JOBs executed on t3w# ================================================================
+0
+setup package analysis
+AGE f# JOB Historical Resoursetup package display
+982: you have to setup all pacsetup pworkdir/root directory exists
+
+# ================================================================
+ronment otherwise.
+----------------------------------------------
+# JOB ran over queue@host = s USAGE for job 5883973: you have to manually run
+all.q@t3wn50.psi.ch
+ USAGE for job 5883985: ( don't consider mem values, they are wrong )
+# ses# 
+p package analys# JusaROOT installation, please set ROOTSYS.
+mem=3.00000 GBs, io=0.00000# remo# 
+g TMPDIR: /scratch/tm# removing TMPDIR: /s#
+atch/tmpdir-5883966.1.all.q
+ consider mem values, they are wrong )
+# JOB ran over queue@ho# JOBall.q@t3wn41.psi.ch
+up usage    1:                 cpu=00:00:00, mesetROOT installation, please set ROOTSYS.
+mem=3.00000 G# qacct -j 5883982 || qacct -f /gridware/sge# 
+ge    1:                 cpu=00:00:00, mem=3# JOB Historical Resources USAGE for job 5883999: yoROOT installation, pleaIf you do not haall.q@t3wn50.psi.ch
+t
+ccounting.complete -j 5883965
+all.q@t3wn50.psi.ch
+3w# JOB Historical Resources USAGE for job 5883993: #
+tup package display
+un
+alw# 
+dir/root dir# # 
+==================================# 
+up package display
+ts
+==
+setup all packages:
+scratch/tmpdir-5883943.1.all.q
+00 GBs, io=0.000workdir/data link exists
+3.000G
+# 
+not expect a workin# JOBs executed on t3wnus# 
+# 
+ 1:                 cpu=00:00:00, mem=3.0setup package display
+vmem=3.000G, maxvmem=3.000G
+# JOB ran over queue@host = s USAGE for job 5884000: you have to manually run
+# qacct -j 5884000 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884000
+# 
+# JOB ran over queue@host = # J# JOB ran over queue@host = Historical Resources USAGE for job 588399# 
+Do not expect a working e#
+removing TMPDIR: /sc# JOB Historical Resources USAGE for job 5884001: you# JOB ran over queue@h# 
+ = setup package display
+g environment otherwiseall.q@t3wn41.psi.ch
+ually run
+setup package analysis
+acct -f# JOBs executed on t3wn[30-40] should run ~1.13 faster than t-----------all.q@t3wn41.psi.ch
+lysis
+--#
+-----
+all.q@t3wn43.psi.ch
+3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+#
+# qacct -j 5883992 || qacct -f /gridware/sge/default/common/accounting.c# JOB ran over queue@host =# qacct -j 5884004 || qacct -f /gridware/sge/# JOBs executed on t3wn[30-40]#
+hould run ~1.1setup package display
+29]
+# JOB Historical Resources USA# 
+for job 5883988: you have to manually run
+lete -j 5883993
+# 
+# JOB ran over queue@host = setup package display
+qacct -f /gridware/sge/defaulsetup package display
+ratch/tmpdir-58839# JOB Live # JOBs execute# qacct -j 5883976 || qacct -f /gridware/sge/default/common/accou# JOBs executed on t3wn[30setup package analysis
+aster than t3wn[10-29]
+ they are wrong )
+# 
+emoving TMPDIR: /scratch/tmpdir-5883963.1.all.q
+ter than t3wn[10-29]
+# 
+# 
+ JOBs executed------------setup package display
+------------
+# 
+10-29]
+Do not expect a working environment otherwise.
+fault/common/accounting.complete -j 5883988
+=3.000G
+setup package analysis
+atch/tmpdir-5883951.1.alworkdir/data link exists
+=========================================
+# JOB Live Resources USAGE for job 5883969: ( don't consider mem values, they are wrong )
+# # Jsetup package display
+qacct -f /gridware/sge/default/common/accountin# 
+omplete -j 58840# 
+# 
+# JOB ran over queue@host = # Jsetup package analysis
+= tmpdir-5883971.1.all.q
+#
+JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+ they are wrong )
+# JOB ran over queue@host = ======================================
+# 
+up package analysis
+# 
+h/tmpdir-5883970.1.all.q
+setup package analysis
+setup package display
+============================================
+# JOB ran over queue@host = tmpdir-5884002.1.all.q
+setup package play
+----all.q@t3wn43.psi.ch
+scra# JOBs executed on t3wn[30-setup package display
+aster than t3wn[10-29]
+# J#
+JOB Historical Resourcesetup all packages: display
+ have to manually run
+# JOB ran over queuesesetup all packages:
+DIR: /scratch/tmpdir-588392# JOBs exeusage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.00# =====================# JOB Historical Resources USAGE for job 588workdirsetup package display
+
+#usage    1:                # removing TMPDIR: /scratch/tmpdir-5884000.1.all.q
+000G, maxvm# ==========# JOB ran over queue@host =  should run ~1.13 faster thworkdir/root directory exists
+i.ch
+is
+all.q@t3wn44.psi.ch
+is# qsetup package analysis
+t -f /gridware/sge/defaultalsetup package display
+ete -j 5883975
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+ they are wrong )
+# Jsetup package disworkdir/root directory exists
+ster than t3wn[10-29]
+# removing TMPDIR: /# 
+atch/tmpdir-5883991.1.all.q
+# JOBs executed on t# 
+[30-40] should run ~1.13 faster than t3wn[10-29]
+ they are wrong )
+# 
+up package display
+============================================
+setup package display
+rat# /tmpdir-5883976.1.all.q
+# JOB Live Resources USAGE for job 5884014: ( don't consider mem values, they are wrong )
+m=3.000G
+workdir/root directory exists
+ should run ~1.13 fas# JOBs executed on t3# qacct -j 5883985 || qsetup package analysis
+efaul# 
+up package display
+mplete -j 5883985
+wosetup package display
+
+0-40] should run ~1.13 faster than t3wn[10-29]
+# removing TMPDIR: /scratch/tmsetup package displayw## JOB Live Resources US#
+E f#
+tup all packages:
+n't consider mem values, they are wrong )
+# JOBs executed on t3wnsewoworkdir/data link exists
+ts
+than t3wn[10-29]
+workdir/data link exists
+setup all packages: display display display
+9]
+#
+# removing TMPDIR: /scratch/tmpdir-5883998.1.all.q
+# setup all packages: display display display
+77: you have to manually runsetup package display
+ratch/tmpdir-5884004.1.all.q
+setup package display
+setup package analysis
+orkdir# JOB Historical Resources USAGE for job 5883969setup package display
+ratch# JOBs executed on t3wn[# removing TMPDIR: /scratch/tmpdir-5883988.1.allworsetup package display
+ists
+====================================
+# JOB Live Resources USAGE for job 5883995: ( don't consider mem values, they are wrong )
+# setup package display
+============================================
+# JOB Live Resources USAGE for job 5884016: ( don't consider mem values, they are wrong )
+# workdir/root directory exists
+pdir-5883981.1.all.q
+# removing TMPDIsetup package display
+400# JOB Livewo# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+ive Re# ================================================================
+e wrong )
+# # 
+===============================================================
+setup package display
+SAGE for job 5884007: ( don't consider mem values, they are wrong )
+# setup package display
+============================================
+lues, they are wrong )
+# # JOB Live Resources USAGE for job 5884015: ( don't consider mem values, they are wrong # # cct -j 5883977 || qacct -f# JOB Live Resources USAGE for job 5883984: ( don't consider # JOB ran over queue@host = 
+# workdir/data link exists
+=========================================
+# JOB Live Resources UMPAF=/shome/cheidegg/MPAF
+n't consider mem values, they are wrong )
+# MPAF=/shome/cheidegg/MPAF
+-------------------------------------------# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+ndent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+setup package display
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not y# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+ Live Resources USAGE for job 5884013: ( don't consider mem values, they are wrong )
+# -----------------------
+setup all packages: analysis play
+setup package analysis
+setup package play
+workdir/root directory exists
+workdir/data link exists
+-----------------------------------
+----------------------------------------------
+# removing TMPDIR: /scratch/tmpdir-5883973.1.all.q
+#
+MPAF=/shome/cheidegg/Msetup package display
+----------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+# removing TMPDIR: /scratch/tmpdir-5883993.1.all.q
+===============
+# JOB Live Resources USAGE for job 5884028: ( don't consider mem values, they are wrong )
+# #
+setup package analysis
+AF
+# 
+-------------------------------------------
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning RWarning ROOTSYS is not yetIf you do not have a user independent
+
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+workdir/root directory exists
+ined.
+----------------------------------------------
+l.q
+ROOT installation, please set setup pacworkdir/data # removing TWarning ROOTSYS is not yet defined.
+.q
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet definIf you do not have a user iROOusage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+---------------------------------------------
+setup all packages:
+workdir/root directory exists
+workdir/data link exists
+GE for job 5883979: you have to manually run
+setup package display
+------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+# 
+acct -j 5883979 || qacct -f /griusage    1:                 cpu=00:00:00, mem=3.00000 GBROOT installation, please set ROOTSYS.
+0, m# ======================================================ROOT installation, please set ROOTSYS.
+0, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+allall.q@t3wn44.psi.ch
+AF
+workdir/root directory exists
+ job 5884030: ( don't consider mem values, they are wrong )
+# =setup package display
+PAF
+=====================================
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+mem=3.000G, maxvmem=3.000G
+Do not expect a working en# 
+onment otherwise.
+Do not expect a working environment otherwise.
+3, vmem=3.000G, maxvmem=3.000G
+all.q@t3wn41.psi.ch
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+consider mem values, they are wrong )
+# MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expec# # JOB Historical Resources USAGE for job 5884009: you have to manuallysetup package dispsetup all packages: display
+setup package display
+workdir/root directory exists
+workdir/data link exists
+-----------------------------------
+# JOBs executed on t3wn[30-40] shou# 
+ge    1:                 cpu=00:00# 
+, mem=3.00000 GBs, io=0.00002, vmem=3.000G, maxvmem=3.000G
+#
+--------------------------------------------
+0: you have to manually run
+# qacct -j 5884020 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884020
+# 
+# JOB ran over queue@host = # r# 
+ving TMPDIR: /scratch/tmpdir-5883969.1.all.q
+setup package analysis
+vmem=3.000G, maxvmem=3.000G
+# ================================================================
+03, vmem=3.000G, maxvmem=3.000G
+# removing TMPDIR: /scratch/tmpdir-5883985.1.all.q
+ou have to manually run
+OOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+---# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+mem=3.000G, maxvmem=3.000G
+Warning ROOTSYS is not yet defined.
+0:00, mem=3.00000 GBs, io=0.00003, vmem=3.000G, maxvmem=3.000G
+# JOB Historical Resources USAGE for job 5884016: you have to manually run
+ey are wrong )
+MPAF=/shome/cheidegg/MPAF
+t -f /gridware/sge/defaul#
+common/accounting.complete -j 5884009
+GE for job 5884022: ( don't consider mem values, they are wrong )
+# # =Warning ROOTSYS is not yet defined.
+===========================
+lly run
+workdir/data link exists
+s USAGE for job 5884003: you have to manually run
+# 
+# JOB Historical Resources USAGE for job 5884010: y# JOB Live # JOB Historical Resources USAGE for job 5883995: you have to manually run
+g )
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+-----usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+Warning ROOTSYS is not yet defined.
+ job 5884006: you have to manually run
+------------------------------usage    1:      If you do not have a user independent
+Bs, io=0.00003, vmem=3.000G, maxvmem=3.000If# qacct -j 5884016 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884016
+working environment otherwise.
+----------------------------------------------
+---setup all packages: analysis
+--------------
+7: you have to manually run
+# JOB Historical Resources USAworkdir/data link exists
+ave to manually run
+# qacct -j 58840# 
+acct -j 5884003 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884003
+ not yet defined.
+If you do not have a user independent
+# qacct -j 5883997 || qacct -f /gridware/sge/default/common/accounting.cIf MPAF=/shome/cheidegg# 
+AF
+ta link eDo not# qacct -j 5884015 || qacct -f /gridware/# qacct -j 5883995 || qacct -f /gr# 
+are/sge/default/common/accounting.complete -MPAF=/shome/cheidegg/MPAF
+= SAGE for job 5884028: you have to manually run
+# qacct -j 5884028 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884028
+MPAF=/shome/cheidegg/MPAF
+t -f /gridware/sge/default/common/accounting.complete -j 5884019
+----------------------------------------------
+7: you have to manually run
+Warning ROOTSYS is not yet defined.
+t
+re/sge/default/common/accounting.complete -j 5884006
+# 
+kdir/root directoIf you do not have a user independent
+ob 5884030: you have to manually run
+ROOT installation, plea# qacct -j 58840# 
+|| qacct -f /gridware/sgeall.q@t3wn41.psi.ch
+unting.complete -j 5884014
+------------------
+# ========================# qacct -j# 
+84008 || qacct -f /gridware/workdir/data link exists
+ting.complete -j --------# JOB Live Resources USAGE for job 5884#
+=============================================--------------------# JOB Live Resources USAGE for job 5884046: ( don't consider mesetup allWarning ROOTSYS is#u# JOBs executed on t3wn[30-# 
+ should run ~1.13 faster than t3wn[10-29]
+em=N/A, maxvmem=N/A
+# qacct -j 5884017 |# qacct -f /gridware/sge/defaul# JOB ran over queue@host =  -j 5884017
+A
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+mem=3.000G, maxvmem=3.000G
+ROOT installation, please set ROOTSYS.
+0, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# 
+ge    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# removing TMPDIR: /scratch/tmpdir-5883997.1.alusage    1:                 If you do not have a user independent
+000, vmemworkdir/root directory eusage    1:               MPAF=/shome/cheidegg/# 
+F
+ ran over queue@host = =3.000G, maxvmem=3.000G
+# JOB ran over queue@host = ------------------
+ faster than t3wn[10-29]
+Warning ROOTSYS is not yet defined.
+ job 5884012: you have to manually run
+If you do not have a user independent
+============================
+RO# 
+installation, please# JOB Live Resources USAGE for job 5884039: ( don't consider mem values, they are wrong )
+-----------------
+#
+ you do not have a user independen# JOB ran over queue@host = = pendent
+setup package display
+ Live Resources USAGE for job 5884050: ( don't consider mem values, they are wrong )
+setup package display
+ratch/tmpdir-5884019.1.all.q
+# JOB ran over queue@host = SAGE for job 5884021: you have to manually run
+all.q@t3wn44.psi.ch
+| qacct -f /gridware/sge/default/common/accounting.complete -j 5884021
+# 
+# qacct -j 5884032 || qacct -f /gridware/sge/default/common/accounting.com# qacct -j 588404ROOT installation, please set ROOTSYS.
+mon/accounting.complet# JOBs executDo not expect a working environmen# 
+--------------------------------------------------------------------
+t defined.
+# JOB ran over queueworkdir/data link exists
+stallation, please set ROOTSYS.
+all.q@t3wn50.psi.ch
+ user independent
+ROOT inst# JOB ran over queue@host = .
+# 
+TSYS.
+# 
+emoving TMPDIR: /scratch/tmpdir-5883979.1.all.q
+workdir/root directory exists
+----------------
+# 
+kdir/data link exists
+# 
+# JOB ran over queue@host = wn44.psi.ch
+4020.1.all.q
+# 
+---------------------------ROOT installation, please set ROOTSYSDo# qacct -j 5883996 || qacct -f /gridware/sge/def#
+lt/common/accounting.complete -j 5883996
+#setup package display
+ot yet defined.
+herwise.
+If you do not have a user indep# 
+ent
+ROOT installation, please set ROOTSYS# 
+o not expect a working environment otherwise.
+----------------------------------------------
+workdir/data link exists
+nvironment otherwise.
+----------------------------------------------
+# JOB Live Resources USAGE for job 5884----------------------------------------------
+----# removing TMPDIR: /scratch/tmpdir-5884015.# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+un
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+un
+# qacct -j 5883980 || qacct -f /gridware/sge/default/common/accounting.complete -j 5883980
+# 
+# JOB ran over queue@host = # JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+un
+# JOBs executed on t3wn[30-40] should run ~1.13 fa# JOB Historical Resou#
+
+# JOBs executed on t3wn[30-40] should run ~1.13 faIf you do not have a user independent
+DIR: /scratch/tmpdir-5884030.1.all.q
+RO# 
+installation, please set ROOTSYS.
+011.1.all.q
+# #
+Bs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+---------------------
+#
+=============================================# removing TMPDIR: /scratch/tmpdir-5883995.1.all.q
+t/common/accounting.complete -j 5884013
+# 
+# JOB ran over queue@host = # removing TMPDIR: /scratch/tmpdir-5884003.1.all.q
+t/common/accounting.complete -j 5883984
+# removing TMPDIR: /scratch/tmpdir-5884018.1.alsetusetup all packages: analysis
+===============setup package analysis
+=========================# JOBs executed on # qacct -j 5884022 || qacct -f /gridware/sge/default/cowo# JOB Live Resources USAGE for jobworkdir/data link exists
+rMPAF=/shome/cheidegg/MPAF
+g )
+all.q@t3wn43.psi.ch
+ists
+MPAF=/shome/cheidegg/MPAF
+h/tmpdir-5884006.1.all.q
+----------------------------------------------
+----------------------------------------------
+, they are wrong )
+# removing TMPDIR: /scratch/tmpdir-5884010.1.all.q
+===============
+# JOB Live Resources USAGE for job 5884038: ( don't consider mem values, they are wrong )
+# setall.q@t3wn43.psi.setup all packages:
+28.1.all.q
+sew# JOB Live Resourworkdir/root# irectory exists
+on't consider mem values, they are wrong )
+# wor-----------------workdir/root directory exists
+workdir/root directory exists
+workdir/data link exists
+ROOTSYS is not yet defined.
+==============================
+# JOB Live Resources USAGE for job 5884045: ( don't consider mem values, they are wrong )
+# MPAF=/shome/cheidegg/MPAF
+----workdir/data link exists
+-----------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation, pleas# JOB ran over queue@host =  a working environment otherwise.
+----------------------------------------------
+all.q@t3wn43.psi.ch
+# JOBworkdir/data link exists
+ should run ~1.13 faster than t3wn[10-29]
+# JOB Live Resources USAGE for job 5884036: ( don't consider mem values, they are wrong )
+# MPAF=/shome/cheidegg/MPAF
+--seWarning ROOTSYS isusage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+setup all packages: display alysis display
+setup package display
+setup package alysis
+setup package display
+workd# =MPAF=/shome/cheidegg/MPAF
+=====================usage    1:      setup all packages:
+workdir/root directory exists
+workdir/data link exists
+ome/che# removing TMPDIR: /scratch/tmpdir-5884021.1.all.q
+------
+all.q@t3wn43.psi.ch
+If you do not have a user independent
+============================
+If # 
+ do not have a user independent
+# removing TMPDIR: /scratch/tmpdir-5883996.1.all.q
+===============
+# JOB Live Resources USAGE for job 5884066: ( don't consider mem values, they are wrong )
+# # JOBs executed on t3wn[3# JOB Live Resources USAGE for job 5884048: ( don# 
+consider mem values, they are wrong )
+all.q@t3wn43.psi.ch
+==============================================
+# JOB Live Resources USAGE for job 5884069: ( don't consider mem values, they are wrong )
+# MPAF=/shome/cheidegg/MPAF
+ for job 5884041: ( don't consider mem values, they are wrong )
+MPAF=/shome/cheidegg/MPAF
+ defined.
+If you do not have a user independent
+----------------------------------------------
+on't consider mem values, they are wrong )
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If y# JOB Historical Resources USAGE for job 5884038: you have tROOT installation, please set ROOTSYS.
+vironment otherwise.
+----------------------------------------------
+ROOT installation, please set ROOTSYS.
+un ~1.13 faster than t3wn[10-29]
+# removing TMPDIR: /scratch/tmpdir-5883980.1.all.q
+faster than t3wn[10-29]
+# all.q@t3wn50.psi.ch
+n[30MPAF=/shome/cheidegg/MPAF
+er than t3wn[10-29]
+#
+# removing TMPDIR: /scratch/tmpdir-5884007.1.al# JO# 
+ive Resources USAGE for job 5884052: ( d# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+---------------------
+#
+Osetup package analysis
+set ROOTSYS.
+# Msetup all packages:
+MPA# MPAF=/shome/cheidegg/MPAF
+tmpdir-5884017.1.all.q
+Do not expect a working en---------------------setup all packages: tools
+Do not expect a working environment otherwise.
+00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# removing TMPDIR: /scratcWarning ROOTSYS is not ye# 
+efined.
+----------
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10If you Warning ROOTSYS is not yet defined.
+e/default/common/accounting.complete -j 5884038
+If you do not have a user independent
+----------
+0000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+ROOsetup all packages:
+se set ROOTSYS.
+Do not e---------------------------------------If you d# not have a user independent
+ you do not have a user independent
+Do not expect a working environment otherwise.
+ faster than t3wn[10-29]
+usage    1:           # JOB Historical Resources USAGE for job 5884025: you have to manually run
+G
+workdir/root directory exists
+----------------
+----------------------------------------------
+.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+setup package tools
+        cpu=00:00:00, mem=3.00000 GBs, io=0.00002, vmem=3.000G, maxvmem=3.000G
+ve a user independent
+ROOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+---MPAF=/shome/cheidegg/MPAF
+-ROOT installation#
+removing TMPDIR: /scDo not expect a working envirsetup all packages#
+tools display
+setup package tools
+usage    1:                 cpu=00:00:00, mem=3# JOB Historical Resources USAGE for job 5884039: yo-----------------------usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, #
+em=3.000G, maxvmem=3.000G
+OOT installation, please set ROOTSYS.
+Do not expect a working environment otherwise.
+----------------------------------------------
+setup package splay
+s not yet defined.
+0, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+If you do not have a user independent
+re/sge/default/common/accounting.complete -j 5884025
+=3.000G
+workdir/data link exists
+ workdir/root # JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+ they are wrong )
+usa# removing TMPDIRsetup package display
+016.1.all.q
+Warning ROOTSYS is not yet defined.
+/A
+If you do not have a user independent
+00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+Warning ROOTSYS is not ye# 
+efined.
+883984.1.all.q
+# 
+ning ROOTSYS is not Do not expectsetup all packages: tools
+erwise.
+------------
+workdir/data link exists
+-----------workdir/root directory exists
+/scratch/tmpdir-5884014.1.all.q
+manually run
+# qacct -j 5884052 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884052
+# 
+# ============================workdir/root dire# removing TMPDIR: /setup package display
+.1.all.q
+# 
+------------
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not y-----fined.
+If you do not have a user independent
+ROOT installation, please set ROOTSYS.# 
+ not expect a working environment otherwise.# # JOB ran over queue@host = -----------------
+setup all packages: analysis analysis isplay
+setup package analysis
+setup package analysis
+setup package isplay
+workdir/root directory exists
+workdir/data link exists
+ Resourceworkdir/root directory exists
+pendent
+# 
+ally run
+If you do not have a user independent
+--------
+# JOB ran over queue@host = l packages: analysis
+'t consider mem values, they are wrong )
+# JOB Live Resources USAGE for job 5# JOB Historical Resources USAGE for job 5884041: you have to manually run
+# 
+# JOB Historical Resources USAGE for job 58workdir/root directory exists
+wo-----------------------setup package analysis
+o#  not expect a working environment otherwise.
+ to manually run
+ROOT installation, please set ROOTSYS.
+===========================
+# JOB Li# 
+Resources USAGE for job 5884053: ( don't consider mem values, they are wrong )
+# # ===================================ROOT installation, please set ROOTSYS.
+ete -j 5884033
+# 
+OB Live Resources USAGE for job 5884027: ( don't consider mem values, they are wrong )
+
+# MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+If you do not have a user independent
+ROOT installation# qacct -j 5884049 || qIf you do not have a user independent
+ccountworkdir/data link exists
+-----------------------
+MPAF=/shome/cheidegg/MPAF
+----------------------------------------------
+Warning ROOTSYS is not yet defined.
+ot directo# JOB ran over queue@host = : tools
+mon/accounting.complete -j 5884042
+# 
+===================================-----------------------------# JOB Live Resources USAGE for job 5884037: ( don't consider mDo not expect a working envi# nment otherwise.
+fault/common/accounting.complete -j 5884045
+# JOB Live Resources USAGE for job 5884047: ( don't consider mem values, th# 
+are wrong )
+m=3.000G
+# 
+OB Live Resources USAGE for job 5884031: ( don't consider mem values, they are wrong )
+---
+Do not expect a working environment otherwise.
+ faster than t3wn[10-29]
+y run
+# qacct -j 5884050 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884050
+# 
+# JOB ran over queue@host = #
+OT installation, pall.q@t3wn41.psi.ch# 
+ge/default/common/accounting.complete -j 5884044
+# 
+ge    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+ ran over queue@host = # 
+kdir/data link exists
+nvironment otherwise.
+setup all packages: # JOBs exsetup all packages: analysis
+r# 
+~1.13 faster than t3wn[10-29]
+#
+set# qacct -j 588406# JOB Live Resources USAGE for job 5884026: ( don't consider mem values, they are wrong )
+--------
+# 
+.q@t3wn44.psi.ch
+# 
+setup package analysis
+ U# JOB ran over queue@host = ve to manually run
+# JOB ran over queue@host # ===================Do not expect a working environ-----------------# removing TMPDIR: /scratch# Jsetup all packages:
+workdir/root director----------------------------------------------
+setup packagWarning ROOsetup package analysis
+.
+working env# JOB ran over queueworkdiMPall.q@t3wn44.psi.ch
+# JOB ran over queue@host =#s# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+un
+te -j 5884053
+----------------------------------------------
+----------------------------------------------
+workdir/root directory exists
+ job 5884034: ( don't consider mem values, they are wrong )
+workdir/root directory exists
+u=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# removing TMPDIR: /scratch/tmpdir-5884046.1.all.q
+t/common/accounting.complete -j 5884079#wo# ===========================================MPAF=/shome/cheidegg/MPAF
+e    1:                 cpu=00:00:00# removing TMPDIR: /scratch/tmpdir-5884052.1.all.q
+=3.000G
+MPAF=/shome/cheidegg/MPAF
+sts
+workdir/data link exists
+setup all packages: analysis a----------------------------------------------
+i.ch
+y display
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3Warning ROworkdir/data link # ======setup all packages: analysis analysis display display display
+War# 
+g ROOTSYS is not yet defined.
+isplay display display
+# removing TMPDIR: /scratch/tmpdir-5884038.1.all.q
+ter than t3wn[10-29]
+mem=3.000G, maxvmem=3.000G
+workdir/data linkall.q@t3# ========================MPAF=/shome/cheidegg/MPAF
+==============
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+mem=3.000G, maxvmem=3.000G
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+ they are wrong )
+# J# 
+kdir/data link exists
+# JOBs execsetup packagsetup package analysis
+3 faster thaWarning ROOTSYusage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, v---setup package analysis
+-# JOB Live Resources USAGE for job 5884051: ( don't consider meWarning ROOTSYS is not yet deworkdir# JOB ran over qall.q@t3wn43.psi.ch
+link exi# JO# 
+you do not have a user independent
+~1.13 faster than t3wn[10-29]
+# qacct -j 5884027 || #If you do not have a user independent
+===========================
+7
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+mem=3.000G, maxvmem=3.000G
+#
+#
+------------------------------------------
+MPAFsetup all packages: analys---#
+setup package displaysetup package analysi# JOB Live Resources USAGE for job 5884070: ( d# 
+----------------------------------------# 
+e# ==============# ==# removing TMPDIR: /scratch/tmpdir-5884049.1.alsetup package an# JOBs usage    1:     usage    1:                 cpu=00:00:00, mem=3.0If you do not have a user independ# ==============# removing TMPDIR: /scWarning ROOTSYS is not yet desetup package display
+Warning ROOTSYS is not yet defined.
+=================# 
+==========
+# 
+kdir/root directory exists
+pendent
+4069.1.all.q
+# ================================================================
+lues, they are wrong )#workdir/root directory exists
+/gridware/sge/defaulworkdir/data link exists
+ set ROOTSYS.
+
+# JOB Histousage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.setup package display
+ratch/tmpdir-workdir/root directory exists
+0003, vmem=3.000G, maxvmem=3.000G
+#
+rkdir/data link exists
+up package #
+rkdir/# JOB Historical R# JOB Live Resources USAGE for job 5884087: ( don't consisetup all packages:
+ot yet definesetup package tools
+ have to manually run
+# rsetup package display
+ch/tmpdir-5# JOB Live Reso# JOBs executed on t3usage    1:                 cpu=00:00:00, mem=3.000setup package display
+em=3.000G, maxvme# qacct -# removing TMPDIR: /scratch/tmpdir-588# JOB Historical Resources USAGE for job 5884070: you have to manually r# Jworkdir/If you do no# have a user independent
+ you have to manually run
+# JOB Historical Resources USAGE for job 5884062: you have to manually run
+ey are wrong )
+# qworkdir/root directory exists
+ /gridDo not expect a working environment otherwise.
+5884047
+# JOB ran over queue@host = usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+splay
+Do not expect a working enviro# removing TMPDIR# 
+scratch/tmpdir-5884079.1.all.q
+===============
+# JOB Live Resources USAGE for job 5884088: ( don't consider mem values, they are wrong )
+# If # qacct -j 5884070 || setup all pac------# qacct -j 5884040 || qacct -f /gridware/sge/defau# 
+kdir/data link exists
+t defined.
+4040
+# JOB Historical Resources USAGE for job 5884087: you have to manually run
+=3.000G, maxvmemIf you dsetup package tools
+dependent
+run ~1.13 faster than t3wn[10-29]
+workdir/data link exis# 
+ists
+# qacct # ROOT installation, please set ROOTSYS.
+5884051: you have to manually run
+5884087
+# 
+not expect a workinworkdir/data link exists
+4: you have to manually run
+# qsetup package display
+ct -f /gridwarROOT installation, please se# ======================# =========================================# JOB ran over queue@host = ============================# JOB ran o# JOB Historical Resources USAGE forsetup package analysis
+to manually run
+setup pa# JOB Live Resources U# qacct -j 5884064 || qacct -f /gridware/sge/de# JOBs executed on t3wn[30-40] should run ~1# ==========================# JOB Live Res# 
+ces USAGE for job 5884080: ( don't consider mem values, they are wronWarning ROOTSYS is not yet defined.
+rong )
+# If you do not have a user independent
+4067: ( don't consider mem values, they are wrong )
+ROOT installation, please set ROOTSYS.
+084: ( don't consider mem values, they are wrong )
+ROOT installation, please set # qacct -ROOT installation, please set ROOTSYS.
+ault/common/accounting.complete -j 5884051
+ysis
+0G
+Do not expect a working environment otherwise.
+.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+---# qacct -j 5884082 || qacct -f /gridware/sge/default/common/accountinDo# ot expect a workinworkdir/root directory ex# ts
+all.q@t3wn43.psi.ch
+ster than t3wn[10-29]
+all.q@t3wn43.psi.ch
+Resources USAGE for job 5884083: you have to manually run
+e -j 5884088
+#
+# JOB Historical Res#
+rces USAGE for job 5884075: you have to manually run
+.000G, maxvmem=3.000G
+workdir/root directory exists
+====================================
+# qacct -j 5884083 || usage # removing TMPDIR: If you do not have a user independent
+.00001# removing TMPDIR: /scratch/tmworkdir/root directory exist#
+# 
+884075ROOT installation, please set ROOTSYS.
+on/accounting.complete -j 5884075
+# JOB # ====================all.q@t3wn43.psi.ch
+o not expect a working environment otherwise.
+000G
+# 
+# JOB Live Resources USAGworkdir/data link e----------------------------------------------all.q@t3wn43.psi.ch
+setup package display
+-----
+n't consider mem values, they are wrong )
+# usage    1:                 cpu=00:00:00, mem=3# 
+000 # 
+, io=0.00000, vmem=3.000G, maxvmem=3.000G
+u have to manually run
+workdir/data link exall.q@t3wn# 
+kdir/data link exists
+ch/tmpdir-5884053.1.all.q
+# JOB ran over queue@host = ronment otherwise.
+all.q@t3wn44.psi.ch
+@host = ronment otherwise.
+# 
+OB Historical Resources USAGE for job 588407---------------------------## JOBs executed on setup package display
+ ~1.13 faster than t3wn[10-29]
+n
+# J# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-2# qacct -j 5884072 # 
+OB Historical Resource----------------------------------------------
+# =#
+--------------------------------------------
+================
+# 
+lly run
+# JOBs executed on t# removing TMPDIR: /scratch/tmpdir-5884083.1.all.q
+
+#
+all.q@t3wn43.psi.ch
+m=3.000G, maxvmem=3.000G
+all.q@t3wn43.psi.ch
+scratch/tmpdir-5884075.1.all.q
+ter than t3wn[10-29]
+# JOB ran over queue@host = ct -j 5884080 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884080
+on't consider mem values, they are wrong )
+# # 
+acct -j 5884067 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884067
+all.q@t3wn50.psi.ch
+scratch/tmpdir-5884031.1.all.q
+t/common/accounting.complete -j 5884084
+# 
+acct -j 5884029 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884029
+=3.000G
+# 
+OBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+9]
+#
+# removing TMPDIR: /scratch/tmpdir-5884054.1.all.q
+#
+
+# JOB Historical Resources USAGE for job 5884057: you have to manually run
+# qacct -j 5884057 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884057
+# 
+# JOB ran over queue@host = # 
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+#
+# removing TMPDIR: /scratch/tmpdir-5884072.1.all.q
+# JOB Historical Resources USAGE for job 5884024: you have to manually run
+ve Resources USAGE for job 5884058: ( don't consider mem values, they are wrong )
+# # JOB Live Resources US# 
+ for job 5884086: ( don't consider mem values, they are wrong )
+# removing TMPDIR: /# 
+atch/tmpdir-5884040.1.all.q
+# 
+:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+all.q@t3wn43.psi.ch
+n t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+#
+# J# removing TMPDIR: /scratch/tmpdir-5884057.1.all.q
+# JOB Historical Reso#
+ces USAGE for job 5884058: you have to manually run
+# qacct -j 5884# removing TMPDIR: /scratch/tmpdir-5884070.1.all.q
+ting.complete -j 5884058
+# removing TMPDIR: /scratch/tmpdir-5884027.1.all.q
+# qacct -j 5884024 || qaall.q@t3wn41.psi.ch
+is
+# JOB ran over queue@host = lete -j 5884024
+# # JOBs executed on t3wn[30# JOB ran over queue@host =  than t3wn[10-29]
+# 
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+#
+# removing TMPDIR: /scratch/tmpdir-5884058.1.all.q
+#
+#setup all packages:
+setup all packages:
+e/sge/default/common/accounting.# ==================setup package display
+========================
+# removing TMPDIR: /scratch/tmpdir-5884064.1.all.q
+all.q@t3wn44.psi.c# all.q@t3wn44.psi.ch
+ost = # removing TMPDIR: /scratch/tmpdir-5884088.1.all.q
+00 GBs, io=0.00003, vmem=3.000G, maxvmem=3.000G
+# 
+emoving TMPDIR: /scratch/tmworkdir/data link exisetu# JOB ran over queall.q@t3wn#
+.psi.ch
+# JOBs executed on t3wn[30-4# 
+should run ~1.13 faster than t3wn[10-29]
+# 
+workdir/root directo#
+ exists
+====================================
+# JOB Live Resources USAGE for job 5884078: ( don't consider mem va# JOB Live Resources US# removing TMPDIR: /scratch/tmpdir-5884026.1.all.# JOBs executed on# JOB Live Resources USAGE for job 5884043: ( don't coworkdir/data link exists
+re wrong )
+# # Bs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+y run
+# qacct -j 5884086 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884086
+# 
+setup all packages:
+scratch/tmpdir-5884037.1.all.q
+wo#
+JOBs executed on t3wn[30-4usage    1:                 cpu=00:00:00, me#
+removing TMPDIR: /scratch/tmpdir-5884034.1.all.q
+# G
+# removing TMPDIR: /scratusage    1:               # JOB ran over queue@host = GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# removing TMPDIR: /scratch/tmpdir-5884067.1.all.q
+: you have to manually run
+# qacct -j 5884061 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884061
+# 
+# r# JOB ran over queue@host = dir-5884051.1.all.q
+# usage    1:                 cpu=00:00:00, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+cratch/tmpdir-5884076.1.all.q
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem# ================================================================
+ usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00001, vmem=3setup all packages:
+G
+ratch/tmpdir-5884082.1.all.q
+setup all packages:
+setup all packages:
+Resources USAGE for job 5884073: you have to manually run
+# qacct -j 5884073 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884073
+# 
+# JOB ran over queue@host = all.q@t3wn44.psi.ch
+ USAGE for job 5884077: ( don't# 
+nsider mem values, they are wrong )
+# 
+.q@t3wn41.psi.ch
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+9]
+#
+# removing TMPDIR: /scratch/tmpdir-5884073.1.all.q
+#
+rkdir/root directory exists
+# JOB Historical Resources USAworkdir/root directory exists
+o manually run
+# JOB Historical Resources USAGE for job 5884078: you have to manually run
+set# removing TMPDIR: /scratsetup all packages: displa# # 
+ct -j 5884043 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884043
+workdir/data link exists
+ct -f /gridware/sge/default/common/accounting.complete -j 5884078
+# 
+setup all packages: display
+0] should run ~1.13 faster than t3wn[10-29]
+wor# JOB ran over queue@hall.q@#
+wn41.psi.ch
+# JOB ran over queue@hostset# removing TMPDIR: setup all packages: display
+l.q
+setup package display
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+9]
+#
+# removing TMPDIR: /scratch/tmpdir-5884078.1.all.q
+setup all packages: display
+setup package display
+t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+#
+# removing TMPDIR: /scratch/tmpdir-5884043.1.all.q
+setup all packages: display
+# 
+workdir/root directory exists
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# ================================================================
+setup all packages: display
+setup package display
+workdir/root directory exists
+#
+setup package display
+workdir/root directory exists
+setup package display
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+workdir/data link exists
+# JOB Live Resources USAGE for job 5884060: ( don't consider mem values, they are wrong )
+setup package display
+workdir/root directory exists
+# ================================================================
+workdir/data link exists
+# removing TMPDIR: /scratch/tmpdir-5884061.1.all.q
+workdir/root directory exists
+workdir/data link exists
+# ================================================================
+workdir/root directory exists
+#
+# 
+# workdir/root directory exists
+workdir/data link exists
+# JOB Live Resources USAGE for job 5884063: ( don't consider mem values, they are wrong )
+workdir/data link exists
+# ================================================================
+# JOB Live Resources USAGE for job 5884071: ( don't consider mem values, they are wrong )
+workdir/data link exists
+# removing TMPDIR: /scratch/tmpdir-5884074.1.all.q
+# JOB Historical Resources USAGE for job 5884077: you have to manually run
+workdir/data link exists
+# ================================================================
+# usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# JOB Live Resources USAGE for job 5884055: ( don't consider mem values, they are wrong )
+# # qacct -j 5884077 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884077
+# JOB Live Resources USAGE for job 5884065: ( don't consider mem values, they are wrong )
+# # 
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# 
+# # ================================================================
+# ================================================================
+# JOB ran over queue@host = usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# JOB Historical Resources USAGE for job 5884060: you have to manually run
+# 
+# JOB Live Resources USAGE for job 5884068: ( don't consider mem values, they are wrong )
+# ================================================================
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# ================================================================
+# JOB Live Resources USAGE for job 5884056: ( don't consider mem values, they are wrong )
+# qacct -j 5884060 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884060
+# ================================================================
+# 
+# JOB Historical Resources USAGE for job 5884063: you have to manually run
+# # JOB Live Resources USAGE for job 5884059: ( don't consider mem values, they are wrong )
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# JOB Live Resources USAGE for job 5884085: ( don't consider mem values, they are wrong )
+# 
+# # 
+# JOB Live Resources USAGE for job 5884081: ( don't consider mem values, they are wrong )
+# JOB Historical Resources USAGE for job 5884071: you have to manually run
+all.q@t3wn41.psi.ch
+# qacct -j 5884063 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884063
+# # # 
+# JOB Historical Resources USAGE for job 5884055: you have to manually run
+# JOB ran over queue@host = # # qacct -j 5884071 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884071
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# 
+# 
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# JOB Historical Resources USAGE for job 5884065: you have to manually run
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# qacct -j 5884055 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884055
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+usage    1:                 cpu=00:00:00, mem=3.00000 GBs, io=0.00000, vmem=3.000G, maxvmem=3.000G
+# 
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+# 
+# JOB ran over queue@host = # qacct -j 5884065 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884065
+# 
+all.q@t3wn41.psi.ch
+# 
+# 
+# JOB ran over queue@host = # 
+#
+# 
+# JOB Historical Resources USAGE for job 5884056: you have to manually run
+# 
+# JOB Historical Resources USAGE for job 5884068: you have to manually run
+# JOB ran over queue@host = # 
+# JOB Historical Resources USAGE for job 5884081: you have to manually run
+all.q@t3wn41.psi.ch
+# JOB Historical Resources USAGE for job 5884059: you have to manually run
+# removing TMPDIR: /scratch/tmpdir-5884077.1.all.q
+# JOB Historical Resources USAGE for job 5884085: you have to manually run
+# qacct -j 5884056 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884056
+# JOB ran over queue@host = # qacct -j 5884068 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884068
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+# qacct -j 5884081 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884081
+# qacct -j 5884059 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884059
+# 
+all.q@t3wn41.psi.ch
+# qacct -j 5884085 || qacct -f /gridware/sge/default/common/accounting.complete -j 5884085
+# 
+all.q@t3wn41.psi.ch
+# 
+#
+# 
+# 
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+# 
+# 
+# JOB ran over queue@host = # JOB ran over queue@host = # 
+# removing TMPDIR: /scratch/tmpdir-5884060.1.all.q
+# JOB ran over queue@host = # JOB ran over queue@host = all.q@t3wn41.psi.ch
+#
+# JOB ran over queue@host = # JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+# 
+# removing TMPDIR: /scratch/tmpdir-5884063.1.all.q
+#
+#
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+# removing TMPDIR: /scratch/tmpdir-5884055.1.all.q
+# removing TMPDIR: /scratch/tmpdir-5884071.1.all.q
+#
+# removing TMPDIR: /scratch/tmpdir-5884065.1.all.q
+all.q@t3wn41.psi.ch
+# 
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+#
+# removing TMPDIR: /scratch/tmpdir-5884068.1.all.q
+all.q@t3wn41.psi.ch
+all.q@t3wn41.psi.ch
+# 
+all.q@t3wn41.psi.ch
+all.q@t3wn41.psi.ch
+# 
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+# 
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+#
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+# 
+#
+# removing TMPDIR: /scratch/tmpdir-5884081.1.all.q
+#
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+# removing TMPDIR: /scratch/tmpdir-5884059.1.all.q
+# removing TMPDIR: /scratch/tmpdir-5884056.1.all.q
+#
+# removing TMPDIR: /scratch/tmpdir-5884085.1.all.q

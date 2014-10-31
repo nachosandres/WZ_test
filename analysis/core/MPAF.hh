@@ -71,6 +71,7 @@ public:
 	void endExecution();
 	void loadConfigurationFile(std::string);
 	void setAllModules(std::vector<std::string>);
+	void setConfigName(std::string);
 	void startExecution(std::string);
 
 	void analyze();	
@@ -169,7 +170,7 @@ public:
 
 	// Other Member Variables
 
-
+	std::string _ConfigName;
 	std::vector<std::string> _AllModules;
 	std::map<std::string, std::vector<int> > _KinObj;
 	std::map<std::string, int> _NumKinObj;

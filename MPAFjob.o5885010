@@ -1,0 +1,131 @@
+MPAF=/shome/cheidegg/MPAF
+ROOTSYS=/swshare/ROOT/root_v5.34.18_slc6_amd64
+setup all packages: tools analysis display
+setup package tools
+setup package analysis
+setup package display
+workdir/root directory exists
+workdir/data link exists
+
+[1mRooFit v3.60 -- Developed by Wouter Verkerke and David Kirkby[0m 
+                Copyright (C) 2000-2013 NIKHEF, University of California & Stanford University
+                All rights reserved, please read http://roofit.sourceforge.net/license.txt
+
+>> STARTING MPAF
+ Adding DYJetsM50_HT100to200_PU_S14_POSTLS170  to DYJetsM50_HT100to200_PU_S14_POSTLS170fake   :  nEvt 4063169 (0 gen)  / w (/pb-1) = 1
+ Starting processing dataset : DYJetsM50_HT100to200_PU_S14_POSTLS170fake  (running on 100 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ +++ Execution frequency +++ 
+   Real time = 0.00225749 s/evt  -> 442.969 Hz
+   CPU time = 0.0007 s/evt  -> 1428.57 Hz
+
+Will write histograms in output file /shome/cheidegg/MPAF/workdir/root/SUSYSSDL/sus-13-013_sr01_lowpt.cfg.root
+
+
+ ===================================================================== 
+ ============= Efficiency category :        vetoLepSel =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsM50_HT100to200_PU_S14_POSTLS170fake   3  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 20.133  / 20.133  (100.000 / 100.000)  ---> 	 = 100.000 +- 0.000
+ -->                       lep mult	  = 0.191 +- 0.039 		 3.840  / 20.133  (25.000 / 100.000)  ---> 	 = 19.071 +- 8.755
+ -->                  veto lep mult	  = 0.000 +- 0.000 		 0.000  / 3.840  (0.000 / 25.000)  ---> 	 = 0.000 +- 0.000
+
+
+ ===================================================================== 
+ ============= Efficiency category :          b-jet Id =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsM50_HT100to200_PU_S14_POSTLS170fake   3  ********* 
+ -->                BJetDenominator	  = 1.000 +- 0.000 		 50.312  / 50.312  (293.000 / 293.000)  ---> 	 = 100.000 +- 0.000
+ -->                         jet Id	  = 0.554 +- 0.029 		 27.873  / 50.312  (124.000 / 293.000)  ---> 	 = 55.401 +- 7.008
+ -->             csv btag selection	  = 0.025 +- 0.014 		 0.684  / 27.873  (9.000 / 124.000)  ---> 	 = 1.360 +- 1.633
+
+
+ ===================================================================== 
+ ============= Efficiency category :             el ID =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsM50_HT100to200_PU_S14_POSTLS170fake   6  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 19.542  / 19.542  (106.000 / 106.000)  ---> 	 = 100.000 +- 0.000
+ -->              POG MVA Tight Id 	  = 0.877 +- 0.032 		 17.138  / 19.542  (90.000 / 106.000)  ---> 	 = 87.698 +- 7.430
+ -->                   pt selection	  = 1.000 +- 0.000 		 17.138  / 17.138  (90.000 / 90.000)  ---> 	 = 87.698 +- 7.430
+ -->                  eta selection	  = 1.000 +- 0.000 		 34.250  / 17.138  (178.000 / 90.000)  ---> 	 = 100.000 +- 0.000
+ -->                   dz selection	  = 0.500 +- 0.037 		 17.112  / 34.250  (88.000 / 178.000)  ---> 	 = 87.566 +- 7.464
+ -->                  dxy selection	  = 1.000 +- 0.000 		 17.112  / 17.112  (88.000 / 88.000)  ---> 	 = 87.566 +- 7.464
+
+
+ ===================================================================== 
+ ============= Efficiency category :            jet Id =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsM50_HT100to200_PU_S14_POSTLS170fake   5  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 100.624  / 100.624  (586.000 / 586.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.667 +- 0.019 		 67.115  / 100.624  (344.000 / 586.000)  ---> 	 = 66.699 +- 4.698
+ -->                  eta selection	  = 0.831 +- 0.020 		 55.747  / 67.115  (248.000 / 344.000)  ---> 	 = 55.401 +- 4.955
+ -->       jet-lepton cleaning (el)	  = 0.000 +- 0.000 		 0.000  / 55.747  (0.000 / 248.000)  ---> 	 = 0.000 +- 0.000
+ -->       jet-lepton cleaning (mu)	  = -nan +- 1.000 		 0.000  / 0.000  (0.000 / 0.000)  ---> 	 = 0.000 +- 0.000
+
+
+ ===================================================================== 
+ ============= Efficiency category :           muon ID =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsM50_HT100to200_PU_S14_POSTLS170fake   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 16.195  / 16.195  (78.000 / 78.000)  ---> 	 = 100.000 +- 0.000
+ -->                  POG Tight Id 	  = 0.998 +- 0.005 		 16.169  / 16.195  (76.000 / 78.000)  ---> 	 = 99.841 +- 0.989
+ -->                   pt selection	  = 1.000 +- 0.000 		 16.169  / 16.169  (76.000 / 76.000)  ---> 	 = 99.841 +- 0.989
+ -->                  eta selection	  = 1.000 +- 0.000 		 16.169  / 16.169  (76.000 / 76.000)  ---> 	 = 99.841 +- 0.989
+ -->                   dz selection	  = 1.000 +- 0.000 		 16.169  / 16.169  (76.000 / 76.000)  ---> 	 = 99.841 +- 0.989
+ -->                  dxy selection	  = 1.000 +- 0.000 		 16.169  / 16.169  (76.000 / 76.000)  ---> 	 = 99.841 +- 0.989
+
+
+ ===================================================================== 
+ ============= Efficiency category :           veto el =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsM50_HT100to200_PU_S14_POSTLS170fake   4  ********* 
+ -->              vetoElDenominator	  = 1.000 +- 0.000 		 9.771  / 9.771  (53.000 / 53.000)  ---> 	 = 100.000 +- 0.000
+ -->               no veto electron	  = 0.124 +- 0.045 		 1.215  / 9.771  (9.000 / 53.000)  ---> 	 = 12.434 +- 10.556
+ -->               POG MVA Tight Id	  = 0.011 +- 0.034 		 0.013  / 1.215  (1.000 / 9.000)  ---> 	 = 0.131 +- 1.159
+ -->                   pt selection	  = 1.000 +- 0.000 		 0.013  / 0.013  (1.000 / 1.000)  ---> 	 = 0.131 +- 1.159
+
+
+ ===================================================================== 
+ ============= Efficiency category :           veto mu =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsM50_HT100to200_PU_S14_POSTLS170fake   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 8.098  / 8.098  (39.000 / 39.000)  ---> 	 = 100.000 +- 0.000
+ -->                   no veto muon	  = 0.002 +- 0.006 		 0.013  / 8.098  (1.000 / 39.000)  ---> 	 = 0.159 +- 1.398
+ -->                   POG Tight Id	  = 0.000 +- 0.000 		 0.000  / 0.013  (0.000 / 1.000)  ---> 	 = 0.000 +- 0.000
+
+
+ ===================================================================== 
+ ============= Efficiency category :            global =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsM50_HT100to200_PU_S14_POSTLS170fake   4  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 20.133  / 20.133  (100.000 / 100.000)  ---> 	 = 100.000 +- 0.000
+ -->            lepton multiplicity	  = 0.191 +- 0.039 		 3.840  / 20.133  (25.000 / 100.000)  ---> 	 = 19.071 +- 8.755
+ -->            same-sign selection	  = 0.003 +- 0.012 		 0.013  / 3.840  (1.000 / 25.000)  ---> 	 = 0.064 +- 0.563
+ -->              veto on 3 leptons	  = 1.000 +- 0.000 		 0.013  / 0.013  (1.000 / 1.000)  ---> 	 = 0.064 +- 0.563
+
+
+
+>> CLOSING MPAF
+# ================================================================
+# JOB Live Resources USAGE for job 5885010: ( don't consider mem values, they are wrong )
+# usage    1:                 cpu=00:00:00, mem=0.00000 GBs, io=0.00000, vmem=N/A, maxvmem=N/A
+# 
+# JOB Historical Resources USAGE for job 5885010: you have to manually run
+# qacct -j 5885010 || qacct -f /gridware/sge/default/common/accounting.complete -j 5885010
+# 
+# JOB ran over queue@host = all.q@t3wn41.psi.ch
+# 
+# JOBs executed on t3wn[30-40] should run ~1.13 faster than t3wn[10-29]
+#
+# removing TMPDIR: /scratch/tmpdir-5885010.1.all.q

@@ -347,6 +347,22 @@ void MPAF::setAllModules(std::vector<std::string> all_modules){
 
 
 //____________________________________________________________________________
+void MPAF::setConfigName(std::string configuration_file){
+	/*
+	saves the name of the configuration
+	parameters: configuration_file
+	return: none
+	*/
+
+	size_t p = configuration_file.find_last_of("/");
+	size_t q = configuration_file.find(".txt");
+
+	_ConfigName = configuration_file.substr(p + 1, q - p - 1);
+
+}
+
+
+//____________________________________________________________________________
 void MPAF::startExecution(std::string configuration_file){
 	/*
 	starts MPAF, i.e. loads the configuration file, checks the configuration,
@@ -355,6 +371,7 @@ void MPAF::startExecution(std::string configuration_file){
 	return: none
 	*/
 
+	setConfigName(configuration_file);
 	loadConfigurationFile(configuration_file);
 	//checkConfiguration(); // CH: uncomment again as soon as config file and things are fixed
 	//createOutputStructure();

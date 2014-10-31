@@ -302,8 +302,8 @@ void SUSYSSDL::writeOutput(){
  	return: none
  	*/
 
-	_hm -> saveHistos ("SUSYSSDL", "testconfigname");
-	_au -> saveNumbers("SUSYSSDL", "testconfigname");
+	_hm -> saveHistos ("SUSYSSDL", _ConfigName);
+	_au -> saveNumbers("SUSYSSDL", _ConfigName);
 
 }
 
@@ -551,7 +551,7 @@ void SUSYSSDL::setBaselineRegion(){
 	*/
   
  	if(_BR == "BR00" && _PT == "lowpt") {
-	        setCut("HTBR"     ,  250, ">" );
+		setCut("HTBR"     ,  250, ">" );
 		setCut("HTCondBR" ,  500, "<" );
 		setCut("METHighBR",   30, ">=");
 		setCut("METLowBR" ,    0, ">=");
