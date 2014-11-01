@@ -29,6 +29,7 @@
 #include "TVirtualPad.h"
 #include "TLorentzVector.h"
 #include "TPaveStats.h"
+#include "TStopwatch.h"
 
 #include <algorithm>
 #include <iostream>
@@ -43,6 +44,8 @@
 #include <string>
 #include <map>
 #include <time.h>
+#include <boost/timer.hpp>
+#include <boost/progress.hpp>
 
 #include "analysis/core/VarClass.hh"
 #include "analysis/helper/CustomTypes.cc"
