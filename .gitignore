@@ -5,6 +5,7 @@
 */*/*_dict_*
 analysis/bin/analysis
 analysis/lib
+cfg/tmpFiles
 display/lib
 tools/lib
 workdir
