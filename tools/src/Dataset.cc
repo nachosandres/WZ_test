@@ -190,17 +190,17 @@ Dataset::getNProcEvents(string path, string dir, string fileName, string sname) 
   return nProc;
 }
 
-// int
-// Dataset::getNProcEvent(int evt) {
+ int
+ Dataset::getNProcEvent(int evt) {
   
-//   for(size_t iv=0;iv<_events.size();iv++) {
-//     if(evt>=_events[iv].first && evt<_events[iv].second) {
-//       return _nprocs[iv];
-//     }
-//   }
-//   return 0;
+  for(size_t iv=0;iv<_events.size();iv++) {
+    if(evt>=_events[iv].first && evt<_events[iv].second) {
+      return _nprocs[iv];
+    }
+  }
+  return 0;
 
-// }
+}
 
 // float Dataset::computeWeight(float nEvts, float xSect, float kFact, float lumi, float& eqLumi) {
   

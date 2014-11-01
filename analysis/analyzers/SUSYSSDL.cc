@@ -322,7 +322,9 @@ void SUSYSSDL::writeOutput(){
 }
 
 
-
+// if adding variables int he skimming tree is needed...
+void SUSYSSDL::modifySkimming(){
+}
 
 
 /*****************************************************************************

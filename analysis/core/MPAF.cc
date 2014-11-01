@@ -86,6 +86,8 @@ void MPAF::initialize(){
 
 	_option="";
 
+	_fullSkim=true;
+	_skim=false;
 }
 
 
@@ -142,8 +144,12 @@ void MPAF::analyze(){
 		//Base::Initialize(_RootTree);
 		
 		_vc -> reset();
-		_vc -> buildTree( _Samples[i] -> getTree() , false ); //MM : boolean prepared for skimming
-
+		_vc -> buildTree( _Samples[i] -> getTree() , _skim&&_fullSkim ); //MM : boolean prepared for skimming
+		
+		//prepare skimemd file and tree
+		if(_skim) {
+		  initSkimming();
+		}
 	
 		// loop over entries
 		unsigned int nEvts = _Samples[i] -> getNEvents();
@@ -176,6 +182,11 @@ void MPAF::analyze(){
 			nE++;
 		}
 
+		//write skimmed file
+		if(_skim) {
+		  finalizeSkimming();
+		}
+		
 		//cleaning memory
 		_Samples[i]->freeMemory();
 	}
@@ -322,6 +333,12 @@ void MPAF::loadConfigurationFile(std::string configuration_file){
 			_TestNEvtMax = atoi(value.c_str());
 		}
 
+		// setting skimming option
+		if(symbol == "v" && variable == "Skim"){
+			_skim    = true;
+			if(value=="Limited") _fullSkim=false;
+		}
+		
 
 		// loading data samples
 		if(symbol == "s" && variable != ""){	
@@ -795,3 +812,37 @@ void MPAF::counter(string cName, string eCateg) {
 }
 
 
+
+// skimming functions ======================================
+void MPAF::modifySkimming() {
+}
+
+void MPAF::initSkimming() {
+  
+  string opath = string(getenv ("MPAF"))+"/workdir/Skimming/";
+  _oFile = new TFile( (opath+_SampleName+"_skim.root").c_str(),"RECREATE");
+  _Samples[_inds]->getTree()->LoadTree(0);
+  if(_fullSkim) {
+    _skimTree = (TTree*)_Samples[_inds]->getTree()->CloneTree(0);
+    _hnSkim =new TH1I( "nEvtProc", "nEvtProc", 1, 0, 1);
+    _hnSkim->SetBinContent(1,_Samples[_inds]->getNProcEvent(0) );
+  }
+  else {
+    TString name = _Samples[_inds]->getTree()->GetName();
+    _skimTree = new TTree( name, name );
+  }
+  _skimTree->SetDirectory( _oFile );
+  
+  modifySkimming();
+    
+}
+
+void MPAF::finalizeSkimming() {
+
+   _oFile->cd();
+   _skimTree->Write();
+   if(_hnSkim)
+     _hnSkim->Write();
+   _oFile->Write();
+   _oFile->Close();
+}
