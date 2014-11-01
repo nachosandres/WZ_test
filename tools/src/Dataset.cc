@@ -172,7 +172,9 @@ int
 Dataset::getNProcEvents(string path, string dir, string fileName, string sname) {
   string NameF = path+"/"+dir+"/"+fileName+".root";
   
-  if(dir.find(":")!=(size_t)-1) NameF=path+"/"+fileName+".root";	 
+  if(dir.find(":")!=(size_t)-1) NameF=path+"/"+fileName+".root";
+  if(dir.find("psi.ch")!=(size_t)-1)
+    NameF="dcap://t3se01.psi.ch:22125/"+dir+"/"+sname+".root";
   TFile* file = TFile::Open( NameF.c_str() );
   
   TH1* htmp = (TH1*)file->Get( ("nProcEvts/"+sname).c_str());
@@ -258,6 +260,8 @@ Dataset::loadTree(string path, string dir, string sname, string objName) {
   
   string NameF = path+"/data/"+dir+"/"+sname+".root"; 
   if(path.find(":")!=(size_t)-1) NameF=dir+"/"+sname+".root";
+  if(dir.find("psi.ch")!=(size_t)-1)
+    NameF="dcap://t3se01.psi.ch:22125/"+dir+"/"+sname+".root";
 
   datafile = TFile::Open(NameF.c_str());
   if(datafile==nullptr) { 
@@ -265,11 +269,15 @@ Dataset::loadTree(string path, string dir, string sname, string objName) {
   }
     
   TTree* tmptree = (TTree*)datafile->Get( objName.c_str() );
+  cout<<tmptree<<endl;
 
   if(tmptree != nullptr ) {
     _chain->Add( (NameF+"/"+objName).c_str() ); 
     //nEvent = tmptree->GetEntries();
   }
+  else
+    cout<<" Error no correct tree in "<<sname<<" file "<<endl;
+
   delete tmptree;
   delete datafile;
  
@@ -289,6 +297,8 @@ Dataset::loadHistos(string path, string dir, string filename) {
   
   string NameF = path+"/"+dir+"/"+filename+".root"; 
   if(path.find(":")!=(size_t)-1) NameF=dir+"/"+filename+".root";
+  if(dir.find("psi.ch")!=(size_t)-1)
+    NameF="dcap://t3se01.psi.ch:22125/"+dir+"/"+filename+".root";
 
   datafile = TFile::Open(NameF.c_str());
 
