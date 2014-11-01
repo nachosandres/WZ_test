@@ -167,6 +167,9 @@ void SUSYSSDL::run(){
 	// basic event selection (triggers, 2 ss leptons, veto)
 	if(!baseSelection()) return;
 
+	//skim right after the basic selection
+	fillSkimTree();
+
 	//cout<<" ************************************************** new event "<<_SampleName<<"  "<<_EntryIterator<<endl;
 	//splitting the samples into categories
 	// cout<<"============= lepton 1"<<endl;

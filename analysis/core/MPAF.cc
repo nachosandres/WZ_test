@@ -111,7 +111,6 @@ void MPAF::analyze(){
 	return: none
 	*/
 
-
   TStopwatch stw;
   float timeCPU=0;
   float timeWall=0;
@@ -819,8 +818,16 @@ void MPAF::modifySkimming() {
 
 void MPAF::initSkimming() {
   
-  string opath = string(getenv ("MPAF"))+"/workdir/Skimming/";
-  _oFile = new TFile( (opath+_SampleName+"_skim.root").c_str(),"RECREATE");
+  string opath = string(getenv ("MPAF"))+"/workdir/skims";
+  FILE* test = fopen( opath.c_str(), "r" );
+  if( test == 0 ) {
+    string command_ = "mkdir -p " + opath; 
+    assert( system( command_.c_str() ) == 0 );
+  }
+  else
+    fclose( test );
+
+  _oFile = new TFile( (opath+"/"+_SampleName+"_skim.root").c_str(),"RECREATE");
   _Samples[_inds]->getTree()->LoadTree(0);
   if(_fullSkim) {
     _skimTree = (TTree*)_Samples[_inds]->getTree()->CloneTree(0);
