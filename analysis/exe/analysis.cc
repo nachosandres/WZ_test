@@ -128,7 +128,7 @@ int main(int argc, char* argv[]) {
 		}
 		
 		else if(run_on[i] == "SUSYSSDL"){
-			SUSYSSDL* Analyzer = new SUSYSSDL(config_file);
+		        SUSYSSDL* Analyzer = new SUSYSSDL(config_file);
 			Analyzer -> analyze();
 			delete Analyzer;
 		}

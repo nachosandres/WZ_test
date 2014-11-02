@@ -94,6 +94,7 @@ void SUSYSSDL::initialize(){
 	_vc -> registerVar(_lep + "_dz"         , "AF");
 	_vc -> registerVar(_lep + "_tightId"    , "AI");
 	_vc -> registerVar(_lep + "_looseIdSusy", "AI");
+	_vc -> registerVar(_lep + "_eleCutIdCSA14_50ns_v1", "AI");
 	//_vc -> registerVar("nel"           , "I" );
 	//_vc -> registerVar("el_pt"         , "AF");
 	//_vc -> registerVar("el_eta"        , "AF");
@@ -167,6 +168,10 @@ void SUSYSSDL::run(){
 	// basic event selection (triggers, 2 ss leptons, veto)
 	if(!baseSelection()) return;
 
+	//skim right after the basic selection
+	//fillSkimTree();
+
+	
 	//cout<<" ************************************************** new event "<<_SampleName<<"  "<<_EntryIterator<<endl;
 	//splitting the samples into categories
 	// cout<<"============= lepton 1"<<endl;
@@ -322,7 +327,9 @@ void SUSYSSDL::writeOutput(){
 }
 
 
-
+// if adding variables int he skimming tree is needed...
+void SUSYSSDL::modifySkimming(){
+}
 
 
 /*****************************************************************************
@@ -472,8 +479,9 @@ bool SUSYSSDL::electronSelection(int elIdx){
 	float pt_cut = 10.;
 	if(_PT == "highpt") pt_cut = 20.;
 
-	if(!makeCut<int>(       _vc -> getI(_lep + "_tightId", elIdx) ,  1     , "=", "POG MVA Tight Id ", 0    , "el ID")) return false;
-	if(!makeCut<float>(     _vc -> getF(_lep + "_pt"     , elIdx) , pt_cut , ">", "pt selection"     , 0    , "el ID")) return false;
+	//if(!makeCut<int>(       _vc -> getI(_lep + "_tightId", elIdx) ,  1     , "=", "POG MVA Tight Id ", 0    , "el ID")) return false;
+	if(!makeCut<int>(       _vc -> getI(_lep + "_eleCutIdCSA14_50ns_v1", elIdx) ,  3     , ">=", "POG CB WP-M Id ", 0    , "el ID")) return false;
+		if(!makeCut<float>(     _vc -> getF(_lep + "_pt"     , elIdx) , pt_cut , ">", "pt selection"     , 0    , "el ID")) return false;
 	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  2.4   , "<", "eta selection"    , 0    , "el ID")) return false;
 	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  1.4442, "[!]", "eta selection"  , 1.566, "el ID")) return false;
 	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dz"     , elIdx)),  0.2   , "<", "dz selection"     , 0    , "el ID")) return false;
