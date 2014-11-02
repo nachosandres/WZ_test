@@ -47,6 +47,8 @@ private:
 	void modifyWeight();
 	void writeOutput();
 
+  void modifySkimming();
+
 	bool bJetSelection(int);
 	void collectKinematicObjects();
 	bool electronSelection(int);

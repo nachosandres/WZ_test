@@ -133,7 +133,12 @@ protected:
 	virtual void run();
 	virtual void writeOutput();
   
-
+  //skimming functions
+  virtual void modifySkimming();
+  template < typename T > void addSkimBranch(string name,T* val) {
+    _skimTree->Branch( name.c_str(), val );
+  };
+  void fillSkimTree() { _skimTree->Fill();};
 
 
 	// Private Non-Template Methods
@@ -142,7 +147,8 @@ private:
 
 	void initialize();
 
-
+  void initSkimming();
+  void finalizeSkimming();
 
 
 	// Public Members
@@ -214,7 +220,17 @@ private:
 	bool _TestNEvt;
 	unsigned int _TestNEvtMax; 
 
-  std::map<std::string, std::string> _SampleOption;
+        std::map<std::string, std::string> _SampleOption;
+  
+  //skimming variables
+  TFile* _oFile;
+  TTree* _skimTree;
+  TH1I* _hnSkim;
+
+  bool _skim;
+  bool _fullSkim;
+
+
 };
 
 

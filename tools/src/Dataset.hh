@@ -24,7 +24,7 @@ private:
 	bool _isData;
  
 	std::vector<Sample> _samples;
-	//vector<pair<int,int> > _events;
+        vector<pair<int,int> > _events;
 	std::vector<float> _weights;
 	std::vector<int> _nprocs;
 	
@@ -92,7 +92,7 @@ public:
 	TTree* getTree() {return _chain;};
 	int getNEvents() { return _chain->GetEntries(); };
 	
-	//int getNProcEvent(int evt);
+        int getNProcEvent(int evt);
 	
 	//void setNMax(size_t nmax);
 	
