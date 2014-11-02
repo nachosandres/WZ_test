@@ -65,10 +65,10 @@ void MPAF::initialize(){
 	// CH: we need to think of a better way to do this
 	// these are the names of the lepton and jet objects as stored in the tree
 	// unfortunately they are different for SSDL and Multilepton trees
-	_lep = "LepGood";
-	_lepnum = "nLepGood";
-	_jet = "Jet";
-	_jetnum = "nJet";
+	_lep = "lep";
+	_lepnum = "nlep";
+	_jet = "jet";
+	_jetnum = "njet";
 
 
 	_Verbose = new Verbose((VerbosityLevel) 0);
@@ -500,10 +500,10 @@ int MPAF::findCharge(std::string electron_label, std::string muon_label){
 	int charge = 0;
 
 	for(int i = 0; i < _NumKinObj[electron_label]; ++i)
-		charge += _vc -> getI("el_charge", _KinObj[electron_label][i]);
+		charge += _vc -> getI(_lep + "_charge", _KinObj[electron_label][i]);
 
 	for(int i = 0; i < _NumKinObj[muon_label]; ++i)
-		charge += _vc -> getI("mu_charge", _KinObj[muon_label][i]);
+		charge += _vc -> getI(_lep + "_charge", _KinObj[muon_label][i]);
 
 	return charge; 
 
@@ -556,7 +556,7 @@ float MPAF::HT(std::string jet_label){
 	float ht = 0;
 
 	for(int i = 0; i < _NumKinObj[jet_label]; ++i) 
-		ht += (_JEC == 1 ? _vc -> getF("jet_pt", _KinObj[jet_label][i]) : _vc -> getF("jet_rawPt", _KinObj[jet_label][i]));
+		ht += (_JEC == 1 ? _vc -> getF(_jet + "_pt", _KinObj[jet_label][i]) : _vc -> getF(_jet + "_rawPt", _KinObj[jet_label][i]));
 
 	return ht;
 
@@ -574,16 +574,16 @@ float MPAF::MLL(std::string lep1_flavor, int lep1_index, std::string lep2_flavor
 	TLorentzVector lep1, lep2, sum;
 
 	if     (lep1_flavor == "electron") 
-		lep1.SetPtEtaPhiM(_vc -> getF("el_pt", lep1_index), _vc -> getF("el_eta", lep1_index), _vc -> getF("el_phi", lep1_index), 0.005);
+		lep1.SetPtEtaPhiM(_vc -> getF(_lep + "_pt", lep1_index), _vc -> getF(_lep + "_eta", lep1_index), _vc -> getF(_lep + "_phi", lep1_index), 0.005);
 	else if(lep1_flavor == "muon"    ) 
-		lep1.SetPtEtaPhiM(_vc -> getF("el_pt", lep1_index), _vc -> getF("el_eta", lep1_index), _vc -> getF("el_phi", lep1_index), 0.105);
+		lep1.SetPtEtaPhiM(_vc -> getF(_lep + "_pt", lep1_index), _vc -> getF(_lep + "_eta", lep1_index), _vc -> getF(_lep + "_phi", lep1_index), 0.105);
 	else
 		return 0.;
 
 	if     (lep2_flavor == "electron") 
-		lep2.SetPtEtaPhiM(_vc -> getF("mu_pt", lep2_index), _vc -> getF("mu_eta", lep2_index), _vc -> getF("mu_phi", lep2_index), 0.005);
+		lep2.SetPtEtaPhiM(_vc -> getF(_lep + "_pt", lep2_index), _vc -> getF(_lep + "_eta", lep2_index), _vc -> getF(_lep + "_phi", lep2_index), 0.005);
 	else if(lep2_flavor == "muon"    ) 
-		lep2.SetPtEtaPhiM(_vc -> getF("mu_pt", lep2_index), _vc -> getF("mu_eta", lep2_index), _vc -> getF("mu_phi", lep2_index), 0.105);
+		lep2.SetPtEtaPhiM(_vc -> getF(_lep + "_pt", lep2_index), _vc -> getF(_lep + "_eta", lep2_index), _vc -> getF(_lep + "_phi", lep2_index), 0.105);
 	else
 		return 0.;
 
@@ -606,9 +606,9 @@ float MPAF::MT(std::string lepton_type, int lepton_iterator){
 	TLorentzVector met;
 
 	if     (lepton_type == "muon"    ) 
-		lepton.SetPtEtaPhiM( _vc -> getF("mu_pt", lepton_iterator), _vc -> getF("mu_eta", lepton_iterator), _vc -> getF("mu_phi", lepton_iterator), 0.105);
+		lepton.SetPtEtaPhiM( _vc -> getF(_lep + "_pt", lepton_iterator), _vc -> getF(_lep + "_eta", lepton_iterator), _vc -> getF(_lep + "_phi", lepton_iterator), 0.105);
 	else if(lepton_type == "electron") 
-		lepton.SetPtEtaPhiM( _vc -> getF("el_pt", lepton_iterator), _vc -> getF("el_eta", lepton_iterator), _vc -> getF("el_phi", lepton_iterator), 0.005);
+		lepton.SetPtEtaPhiM( _vc -> getF(_lep + "_pt", lepton_iterator), _vc -> getF(_lep + "_eta", lepton_iterator), _vc -> getF(_lep + "_phi", lepton_iterator), 0.005);
 	else
 		return 0.;
 	
