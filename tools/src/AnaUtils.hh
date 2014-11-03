@@ -23,6 +23,11 @@
 
 using namespace std;
 
+namespace AUtils {
+  const static int kMC=0;
+  const static int kGlobal=0;
+};
+
 struct EffST{
 
   float eff;
@@ -45,9 +50,9 @@ struct EffST{
   
 };
 
-typedef map<string,EffST> eIMap;
-typedef map<string, eIMap > eMap;
-typedef map<string, eMap> multiEMap;
+typedef map<string, EffST> eIMap; //efficiencies for one dataset, one categ
+typedef vector<eIMap > eMap; //efficiencies for one categ, all datasets
+typedef vector<eMap> multiEMap;//efficiencies for all categs, all datasets
 typedef eIMap::iterator itEIMap;
 typedef eMap::iterator itEMap;
 typedef multiEMap::iterator itMultiEMap;
@@ -73,8 +78,14 @@ private:
   
   //internal names...
   vector<string> _dsNames;
-  map<string, vector<string> > _effNames; //key=categ
+  map<int,string> _catNames;
+  map<int, vector<string> > _effNames; //key=categ
+  map<string, int>::const_iterator _itMSI;
   
+  int _kGlobal;
+  int _kMC;
+  
+
   string _uncSrc;
   int _uncDir;
 
@@ -89,9 +100,9 @@ public:
   };
 
   template < typename T > inline
-  bool makeCut(T value, T valcut, string type, string ds, string cName, float w, T valUp, T valDo, T seccut=0, string eCateg="global") {
+  bool makeCut(T value, T valcut, string type, int ids, string cName, float w, T valUp, T valDo, T seccut=0, int eCateg=AUtils::kGlobal) {
 
-    bool mean = internalMakeCut<T>( value, valcut, type, ds, cName, w, seccut, eCateg, false);
+    bool mean = internalMakeCut<T>( value, valcut, type, ids, cName, w, seccut, eCateg, false);
 
     bool up=mean,down=mean;
    
@@ -104,23 +115,23 @@ public:
   };
 
   template < typename T > inline
-  bool makeCut( T value, T valcut, string type, string ds, string cName, float w, T seccut=0, string eCateg="global", bool noRegister=false) {
-    return internalMakeCut<T>(value, valcut,type,ds,cName,w,seccut, eCateg, noRegister);
+  bool makeCut( T value, T valcut, string type, int ids, string cName, float w, T seccut=0, int eCateg=AUtils::kGlobal, bool noRegister=false) {
+    return internalMakeCut<T>(value, valcut,type,ids,cName,w,seccut, eCateg, noRegister);
   };
 
-  bool makeCut( bool decision, string ds, string cName, float w,string type="=", string eCateg="global", bool noRegister=false) {
-    return internalMakeCut<bool>( decision, true, type, ds, cName, w, 0, eCateg, noRegister );
+  bool makeCut( bool decision, int ids, string cName, float w,string type="=", int eCateg=AUtils::kGlobal, bool noRegister=false) {
+    return internalMakeCut<bool>( decision, true, type, ids, cName, w, 0, eCateg, noRegister );
   };
 
 
   template < typename T > inline
   bool simpleCut( T value, T cut, string type, T seccut=0 ) {
-    return internalMakeCut<T>( value, cut, type, "", "dummy", 0, seccut, "dummy", true );
+    return internalMakeCut<T>( value, cut, type, 0, "dummy", 0, seccut, -1, true );
   };
 
 
   bool simpleCut( bool decision, string type="=") {
-    return internalMakeCut<bool>( decision, true, type, "", "dummy", 0, 0, "dummy", true );
+    return internalMakeCut<bool>( decision, true, type, 0, "dummy", 0, 0, -1, true );
   };
 
   
@@ -129,8 +140,8 @@ public:
 
 
   //Efficiencies and yields
-  void setEfficiency(string ds, string cName, string eCateg, float value, bool acc);
-  void setSystematics( string ds, string cName, string sName, bool up, bool down, float w);
+  void setEfficiency(int ids, string cName, int eCateg, float value, bool acc);
+  void setSystematics( int ids, string cName, string sName, bool up, bool down, float w);
   void getYieldSysts(string ds, string lvl);
 
   void saveNumbers(string anName, string conName);
@@ -146,10 +157,13 @@ public:
 
   static hObs cloneHObs(const hObs* o1);
 
+  void addDataset(string dsName); 
+  void addCategory(int iCateg, string eCateg); 
+  
 private:
 
   template < typename T > inline
-  bool internalMakeCut( T value, T valcut, string type, string ds, string cName, float w, T seccut=0, string eCateg="global", bool noRegister=false) {
+  bool internalMakeCut( T value, T valcut, string type, int ids, string cName, float w, T seccut=0, int eCateg=AUtils::kGlobal, bool noRegister=false) {
 
     bool accept;
     
@@ -193,17 +207,17 @@ private:
       accept =false; cout<<" Warning cut :"<<type<<":"<<" for selection "<<cName<<endl;
     }  
     
-    if(!noRegister || ds.find("GHO")!=(size_t)-1 ) {
+    if(!noRegister || _dsNames[ids].find("GHO")!=(size_t)-1 ) {
       //deprecated to take into account uncertainties
       // setEfficiency(ds, cName, w, accept);
       // setSystematics( ds, cName,0,0, w);
  
       if(_uncSrc=="") {
-	setEfficiency(ds, cName, eCateg, w, accept);
+	setEfficiency(ids, cName, eCateg, w, accept);
 	//setSystematics( ds, cName,_uncSrc,false,false, w);
       }
       else {
-	setEfficiency(ds, cName, eCateg, 0, accept);
+	setEfficiency(ids, cName, eCateg, 0, accept);
 	// if(_uncDir==SystUtils::kUp)
 	//   setSystematics( ds, cName,_uncSrc,accept,false, w);
 	// else if(_uncDir==SystUtils::kDown)
@@ -217,7 +231,7 @@ private:
   };
 
 
-  void setNumbers(string ds,string cName, string eCateg,float w, bool acc);
+  void setNumbers(int ids,string cName, int eCateg,float w, bool acc);
 
   ClassDef(AnaUtils,0)
   

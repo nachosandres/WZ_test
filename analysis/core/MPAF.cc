@@ -347,7 +347,7 @@ void MPAF::loadConfigurationFile(std::string configuration_file){
 
 		  _Samples.push_back(new Dataset(dsName));
 		  _Samples.back() -> addSample(variable, _InputPath, value_char, tree, "", 1.0, 1.0, 1.0, 1.0);
-		  //_SampleOption[ variable ] = opt;
+		  _au->addDataset( dsName );
 		}
 				
 	}
@@ -787,27 +787,29 @@ void MPAF::loadDb(string key, string dbfile, string hname) {
 
 
 //____________________________________________________________________________
-bool MPAF::makeCut(bool decision, string cName, string type, string eCateg) {
+bool MPAF::makeCut(bool decision, string cName, string type, int eCateg) {
 	/*
 	??
 	parameters: 
 	return: 
 	*/
   //MM FIXME, option stuff is ugly
-	return _au -> makeCut(decision, _SampleName, cName, _EventWeight, type, eCateg, false);
+  //_SampleName
+  return _au -> makeCut(decision, _inds , cName, _EventWeight, type, eCateg, false);
 
 }
 
 
 //____________________________________________________________________________
-void MPAF::counter(string cName, string eCateg) {
+void MPAF::counter(string cName, int eCateg) {
 	/*
 	??
 	parameters: 
 	return: 
 	*/
 //MM FIXME, option stuff is ugly+_SampleOption[_SampleName]
-	_au -> makeCut(true, _SampleName, cName, _EventWeight, "=", eCateg, false);
+  // _SampleName
+  _au -> makeCut(true, _inds , cName, _EventWeight, "=", eCateg, false);
 
 }
 

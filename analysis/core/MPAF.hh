@@ -115,12 +115,13 @@ protected:
  
 	//counters and selection functions
 	template <typename T> inline
-	bool makeCut(T value, T valcut, string type, string cName, T seccut=0, string eCateg = "global") {
-	  return _au -> makeCut<T>(value, valcut, type, _SampleName+_SampleOption[_SampleName]
+	bool makeCut(T value, T valcut, string type, string cName, T seccut=0, int eCateg = AUtils::kGlobal) {
+	  return _au -> makeCut<T>(value, valcut, type, _inds
 				   , cName, _EventWeight, seccut, eCateg, false);
+	  //_SampleName+_SampleOption[_SampleName]
 	};
-	bool makeCut(bool decision, string cName, string type = "=", string eCateg = "global");
-	void counter(string cName, string eCateg = "global");
+  bool makeCut(bool decision, string cName, string type = "=", int eCateg = AUtils::kGlobal);
+  void counter(string cName, int eCateg = AUtils::kGlobal);
 
 
 	// virtual functions for the classes
