@@ -114,7 +114,6 @@ void AnaUtils::setEfficiency(int ids, string cName, int iCateg, float w, bool ac
 
   setNumbers(ids, cName, iCateg, w, acc);
 
-
 }
 
 void AnaUtils::addDataset(string dsName) {
@@ -153,7 +152,6 @@ AnaUtils::addCategory(int iCateg, string eCateg) {
   }
 
 }
-
 
 
 void AnaUtils::setSystematics(int ids, string cName, string sName, bool up, bool down, float w) {

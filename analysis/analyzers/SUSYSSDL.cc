@@ -170,7 +170,7 @@ void SUSYSSDL::modifyWeight() {
 void SUSYSSDL::run(){
 
   _leptons.clear();
-
+  
 	// prepare event selection
 	resetKinematicObjects();
 	collectKinematicObjects();
@@ -496,6 +496,7 @@ bool SUSYSSDL::electronSelection(int elIdx){
 	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dz"     , elIdx)),  0.2   , "<", "dz selection"     , 0    , kElId)) return false;
 	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dxy"    , elIdx)),  0.01  , "<", "dxy selection"    , 0    , kElId)) return false;
 
+
 	return true;
 
 }
@@ -536,6 +537,7 @@ bool SUSYSSDL::vetoElectronSelection(int elIdx){
   counter("vetoElDenominator", kElVeto);
 
 	if(!makeCut(!electronSelection(elIdx), "no veto electron", "=", kElVeto) ) return false;
+
 	if(!makeCut<int>(       _vc -> getI(_lep + "_eleCutIdCSA14_50ns_v1", elIdx) ,  3     , ">=", "POG CB WP-M Id ", 0    , kElVeto)) return false;
 	//if(!makeCut<int>(   _vc -> getI(_lep + "_tightId", elIdx), 1  , "=", "POG MVA Tight Id", 0, kElVeto ) ) return false;
 	if(!makeCut<float>( _vc -> getF(_lep + "_pt"     , elIdx), 5.0, ">", "pt selection"    , 0, kElVeto ) ) return false;
