@@ -481,7 +481,7 @@ bool SUSYSSDL::electronSelection(int elIdx){
 
 	//if(!makeCut<int>(       _vc -> getI(_lep + "_tightId", elIdx) ,  1     , "=", "POG MVA Tight Id ", 0    , "el ID")) return false;
 	if(!makeCut<int>(       _vc -> getI(_lep + "_eleCutIdCSA14_50ns_v1", elIdx) ,  3     , ">=", "POG CB WP-M Id ", 0    , "el ID")) return false;
-		if(!makeCut<float>(     _vc -> getF(_lep + "_pt"     , elIdx) , pt_cut , ">", "pt selection"     , 0    , "el ID")) return false;
+	if(!makeCut<float>(     _vc -> getF(_lep + "_pt"     , elIdx) , pt_cut , ">", "pt selection"     , 0    , "el ID")) return false;
 	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  2.4   , "<", "eta selection"    , 0    , "el ID")) return false;
 	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  1.4442, "[!]", "eta selection"  , 1.566, "el ID")) return false;
 	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dz"     , elIdx)),  0.2   , "<", "dz selection"     , 0    , "el ID")) return false;
@@ -527,7 +527,8 @@ bool SUSYSSDL::vetoElectronSelection(int elIdx){
 	counter("vetoElDenominator", "veto el");
 
 	if(!makeCut(!electronSelection(elIdx), "no veto electron", "=", "veto el") ) return false;
-	if(!makeCut<int>(   _vc -> getI(_lep + "_tightId", elIdx), 1  , "=", "POG MVA Tight Id", 0, "veto el" ) ) return false;
+	if(!makeCut<int>(   _vc -> getI(_lep + "_eleCutIdCSA14_50ns_v1", elIdx) ,  3     , ">=", "POG CB WP-M Id ", 0    , "el ID")) return false;
+	//if(!makeCut<int>(   _vc -> getI(_lep + "_tightId", elIdx), 1  , "=", "POG MVA Tight Id", 0, "veto el" ) ) return false;
 	if(!makeCut<float>( _vc -> getF(_lep + "_pt"     , elIdx), 5.0, ">", "pt selection"    , 0, "veto el" ) ) return false;
   
 	return true;
@@ -1022,9 +1023,9 @@ bool SUSYSSDL::brSelection(){
 		if(!makeCut<float>( _vc -> getF("met_pt"), _valCutMETLowBR , _cTypeMETLowBR , "BR MET low selection" , _upValCutMETLowBR ) ) return false;
 	}
 
-	if(!makeCut<float>( _NumKinObj["GoodJet"]         , _valCutNJetsBR , _cTypeNJetsBR , "BR jet multiplicity"  , _upValCutNJetsBR ) ) return false;
-	if(!makeCut<float>( _NumKinObj["BJet"]            , _valCutNBJetsBR, _cTypeNBJetsBR, "BR b-jet multiplicity", _upValCutNBJetsBR) ) return false;
-	if(!makeCut<float>( findCharge("Electron", "Muon"), _valCutCHBR    , _cTypeCHBR    , "BR charge selection"  , _upValCutCHBR    ) ) return false;
+	if(!makeCut<int>( _NumKinObj["GoodJet"]         , _valCutNJetsBR , _cTypeNJetsBR , "BR jet multiplicity"  , _upValCutNJetsBR ) ) return false;
+	if(!makeCut<int>( _NumKinObj["BJet"]            , _valCutNBJetsBR, _cTypeNBJetsBR, "BR b-jet multiplicity", _upValCutNBJetsBR) ) return false;
+	if(!makeCut<int>( findCharge("Electron", "Muon"), _valCutCHBR    , _cTypeCHBR    , "BR charge selection"  , _upValCutCHBR    ) ) return false;
 
 	return true;
 
@@ -1182,14 +1183,11 @@ bool SUSYSSDL::vetoEventSelection(std::string electron_label, std::string muon_l
 		// there is an os sf pair
 		if(os){
 			float mll = MLL("muon", _KinObj["VetoMuon"][0], "muon", os_mu_index);
-			//std::cout << "os muon with mll " << mll << std::endl;
 			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoMuon"][0]) > _Cuts["VetoMuonPtLow"]  && mll < _Cuts[kr + "VetoMLLLow"], "muon mll low pt veto", "=", kr + " vetoLepSel") ) return true;
 			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoMuon"][0]) > _Cuts["VetoMuonPtHigh"] && (mll > _Cuts[kr + "VetoMLLHighLL"] && mll < _Cuts[kr + "VetoMLLHighUL"]), "muon mll high pt veto", "=", kr + " vetoLepSel") ) return true;
-			//std::cout << "returning false" << std::endl;
 		}
 	}
 	
-	//std::cout << "returning false" << std::endl;
 
 	makeCut(true, "no veto event", "=", kr + " vetoLepSel");
 
@@ -1219,6 +1217,7 @@ void SUSYSSDL::fillEventPlots(std::string kr){
 	fill(kr + "_HT"        , HT("GoodJet")                                    , _EventWeight);
 	fill(kr + "_MET"       , _vc -> getF("met_pt")                            , _EventWeight);
 	fill(kr + "_MLL"       , findMLL("Electron", "Muon")                      , _EventWeight);
+	std::cout << "fill " << kr << " " << _NumKinObj["BJet"] << std::endl;
 	fill(kr + "_NBJets"    , _NumKinObj["BJet"]                               , _EventWeight);
 	fill(kr + "_NElectrons", _NumKinObj["Electron"]                           , _EventWeight);
 	fill(kr + "_NJets"     , _NumKinObj["GoodJet"]                            , _EventWeight);
