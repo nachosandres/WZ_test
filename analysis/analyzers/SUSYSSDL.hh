@@ -76,7 +76,10 @@ private:
 
 
 
-private:
+private: 
+
+  //counter categories, 0 is ALWAYS global (even if not specified later
+  enum {kGlobal=0, kElId, kElVeto, kMuId, kMuVeto, kJetId, kBJetId, kVetoLepSel};
 
   enum {kNoGenMatch=0, kMisMatchPdgId,
 	kMisChargePdgId, kGenMatched};
