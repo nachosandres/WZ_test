@@ -11,8 +11,8 @@
 
 
   //general parameters ********************* general parameters
-  string dir="SUSYSSDL/first/merged";
-  string fileName="susy_highpt"; //was treeName in LUNE
+  string dir="SUSYSSDL";
+  string fileName="susy_lowpt"; //was treeName in LUNE
   string hName="";
  
   bool mcOnly = false;
@@ -22,16 +22,16 @@
     md.anConf.configureData(false, 0, mcOnly);
     //}
   
-  //observables ********************** 
+  //observables **********************
   //string obs[6]={"","","","","",""};
-    md.dp.setObservables("BR_NBJets");
+    md.dp.setObservables("BR_NMuons");
 
   //Binning & title ************************* Binning & titre
   string yTitle="number of events";
-  int binning=10;
+  int binning=0;
   int addBinBkg=1; //BinB = binning*AddBin
   double rangeY[2]={0,0};
-  double rangeX[2]={0.,4.};
+  double rangeX[2]={0.,3.};
   int xDiv[3]={8,6,0};
   int yDiv[3]={6,6,0}; //Nlabel /  sous-Div /ssdiv
   bool logYScale=false;

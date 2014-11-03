@@ -42,11 +42,9 @@ SUSYSSDL::SUSYSSDL(std::string configuration_file){
 	modules.push_back("fillSRJetPlots");
 	modules.push_back("fillSRLeptonPlots");
 
-	initialize();
 	setAllModules(modules);
 	startExecution(configuration_file);
-
-
+	initialize();
 }
 
 
@@ -137,6 +135,19 @@ void SUSYSSDL::initialize(){
 	_vc -> registerVar("genLep_phi"    , "AF");
 	_vc -> registerVar("genLep_pdgId"  , "AI");
 
+
+
+
+	//additional counter categories
+	_au->addCategory( kElId, "el Id");
+	_au->addCategory( kElVeto, "veto El");
+	_au->addCategory( kMuId, "muon Id");
+	_au->addCategory( kMuVeto, "veto Mu");
+	_au->addCategory( kJetId, "jet Id");
+	_au->addCategory( kBJetId, "b-jet Id");
+	_au->addCategory( kVetoLepSel, "vetoLepSel" );
+
+
 }
 
 
@@ -159,7 +170,7 @@ void SUSYSSDL::modifyWeight() {
 void SUSYSSDL::run(){
 
   _leptons.clear();
-
+  
 	// prepare event selection
 	resetKinematicObjects();
 	collectKinematicObjects();
@@ -179,50 +190,49 @@ void SUSYSSDL::run(){
 	// cout<<"============= lepton 2"<<endl;
 	// cout<<" ==> "<<genMatchCateg( _leptons[1] )<<endl;
 
-	int lep1Id = genMatchCateg( _leptons[0] );
-	int lep2Id = genMatchCateg( _leptons[1] );
+	// int lep1Id = genMatchCateg( _leptons[0] );
+	// int lep2Id = genMatchCateg( _leptons[1] );
 	
-	if(_SampleName.find("misId")!=(size_t)-1) {
-	  if( ! ( (lep1Id == kMisChargePdgId && lep2Id >= kMisChargePdgId) || 
-		  (lep2Id == kMisChargePdgId && lep1Id >= kMisChargePdgId) ) ) return;
-	}
-	if(_SampleName.find("fake")!=(size_t)-1) {
-	  if( lep1Id > kMisMatchPdgId &&
-	      lep2Id > kMisMatchPdgId ) return;
-	}
-	if(_SampleName.find("prompt")!=(size_t)-1) {
-	  if( genMatchCateg( _leptons[0] ) != kGenMatched ||
-	      genMatchCateg( _leptons[1] ) != kGenMatched ) return;
-	}
-	counter("genCateg selection");
+	// if(_SampleName.find("misId")!=(size_t)-1) {
+	//   if( ! ( (lep1Id == kMisChargePdgId && lep2Id >= kMisChargePdgId) || 
+	// 	  (lep2Id == kMisChargePdgId && lep1Id >= kMisChargePdgId) ) ) return;
+	// }
+	// if(_SampleName.find("fake")!=(size_t)-1) {
+	//   if( lep1Id > kMisMatchPdgId &&
+	//       lep2Id > kMisMatchPdgId ) return;
+	// }
+	// if(_SampleName.find("prompt")!=(size_t)-1) {
+	//   if( genMatchCateg( _leptons[0] ) != kGenMatched ||
+	//       genMatchCateg( _leptons[1] ) != kGenMatched ) return;
+	// }
+	// counter("genCateg selection");
 	
 	//cout<<" ============> selected"<<endl;
 
 	// br event selection
-	if(brSelection()){
+	if(!brSelection()) return;
 
-		// fill event list
-		fillEventList();
+	// fill event list
+	fillEventList();
 		
-		// calling the modules
-		if(Tools::findInVector(_Modules, (std::string) "fillBREventPlots" )) fillEventPlots("BR");
-		if(Tools::findInVector(_Modules, (std::string) "fillBRJetPlots"   )) fillJetPlots("BR");
-		if(Tools::findInVector(_Modules, (std::string) "fillBRLeptonPlots")) fillLeptonPlots("BR");
-
-
-		// sr event selection
-		if(srSelection()){
+	// calling the modules
+	if(Tools::findInVector(_Modules, (std::string) "fillBREventPlots" )) fillEventPlots("BR");
+	if(Tools::findInVector(_Modules, (std::string) "fillBRJetPlots"   )) fillJetPlots("BR");
+	if(Tools::findInVector(_Modules, (std::string) "fillBRLeptonPlots")) fillLeptonPlots("BR");
+	
+	
+	// sr event selection
+	if(!srSelection()) return;
 		
-			// fill event list
-			fillEventList();
+	// fill event list
+	fillEventList();
+	
+	// calling the modules
+	if(Tools::findInVector(_Modules, (std::string) "fillSREventPlots" )) fillEventPlots("SR");
+	if(Tools::findInVector(_Modules, (std::string) "fillSRJetPlots"   )) fillJetPlots("SR");
+	if(Tools::findInVector(_Modules, (std::string) "fillSRLeptonPlots")) fillLeptonPlots("SR");
 
-			// calling the modules
-			if(Tools::findInVector(_Modules, (std::string) "fillSREventPlots" )) fillEventPlots("SR");
-			if(Tools::findInVector(_Modules, (std::string) "fillSRJetPlots"   )) fillJetPlots("SR");
-			if(Tools::findInVector(_Modules, (std::string) "fillSRLeptonPlots")) fillLeptonPlots("SR");
-
-		}
-	}
+	
 }
 
 
@@ -347,10 +357,10 @@ bool SUSYSSDL::bJetSelection(int jetIdx){
   	return: true (if the jet is a b-jet), false (else)
   	*/
 	
-	counter("BJetDenominator", "b-jet Id");
+  counter("BJetDenominator", kBJetId);
 
-	if(!makeCut(goodJetSelection(jetIdx), "jet Id", "=", "b-jet Id") ) return false;
-	if(!makeCut<float>(_vc -> getF(_jet + "_btagCSV", jetIdx), 0.679, ">=", "csv btag selection", 0, "b-jet Id") ) return false;
+	if(!makeCut(goodJetSelection(jetIdx), "jet Id", "=", kBJetId) ) return false;
+	if(!makeCut<float>(_vc -> getF(_jet + "_btagCSV", jetIdx), 0.679, ">=", "csv btag selection", 0, kBJetId) ) return false;
 	
 	return true;
 
@@ -372,18 +382,18 @@ void SUSYSSDL::collectKinematicObjects(){
 	_KinObj.insert(std::pair<Label, std::vector<int> >("Muon"        , empty_vector));
 	_KinObj.insert(std::pair<Label, std::vector<int> >("VetoElectron", empty_vector));
 	_KinObj.insert(std::pair<Label, std::vector<int> >("VetoMuon"    , empty_vector));
-
+	
 	for(int i = 0; i < _vc -> getI(_lepnum); ++i){
 		if(fabs(_vc -> getI(_lep + "_pdgId", i)) == 11){
 			if(electronSelection(i))     _KinObj["Electron"]    .push_back(i);
 			if(vetoElectronSelection(i)) _KinObj["VetoElectron"].push_back(i);
-		}
+		 }
 		if(fabs(_vc -> getI(_lep + "_pdgId", i)) == 13){
-			if(muonSelection(i))     _KinObj["Muon"]    .push_back(i);
-			if(vetoMuonSelection(i)) _KinObj["VetoMuon"].push_back(i);
+		   if(muonSelection(i))     _KinObj["Muon"]    .push_back(i);
+		   if(vetoMuonSelection(i)) _KinObj["VetoMuon"].push_back(i);
 		}
 	}
-
+	
 	for(int i = 0; i < _vc -> getI(_jetnum); ++i){
 		if(bJetSelection(i)   ) _KinObj["BJet"]   .push_back(i);
 		if(goodJetSelection(i)) _KinObj["GoodJet"].push_back(i);
@@ -410,10 +420,10 @@ bool SUSYSSDL::goodJetSelection(int jetIdx){
 	float min_dR = 0.4;
 	float jet_pt = (_JEC == 1 ? _vc -> getF(_jet + "_pt", jetIdx) : _vc -> getF(_jet + "_rawPt", jetIdx));
 
-	counter("JetDenominator", "jet Id");
+	counter("JetDenominator", kJetId);
 
-	if(!makeCut<float>(jet_pt                              , 40.0, ">", "pt selection" , 0, "jet Id") ) return false;
-	if(!makeCut<float>(fabs(_vc -> getF(_jet + "_eta", jetIdx)),  2.4, "<", "eta selection", 0, "jet Id") ) return false;
+	if(!makeCut<float>(jet_pt                              , 40.0, ">", "pt selection" , 0, kJetId) ) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_jet + "_eta", jetIdx)),  2.4, "<", "eta selection", 0, kJetId) ) return false;
 
 
 	// this is the implementation of jet lepton cleaning
@@ -439,7 +449,7 @@ bool SUSYSSDL::goodJetSelection(int jetIdx){
 	
 	}
 
-	if(makeCut(is_closest, "jet-lepton cleaning (el)", "=", "jet Id")) return false;
+	if(makeCut(is_closest, "jet-lepton cleaning (el)", "=", kJetId)) return false;
 	
 	// clean w/r/t loose muons 
 	for(int mu = 0; mu < _NumKinObj["Muons"]; ++mu){
@@ -459,7 +469,7 @@ bool SUSYSSDL::goodJetSelection(int jetIdx){
 	
 	} 
 		
-	if(makeCut(is_closest, "jet-lepton cleaning (mu)", "=", "jet Id")) return false;
+	if(makeCut(is_closest, "jet-lepton cleaning (mu)", "=", kJetId)) return false;
 
 	return true;
 
@@ -474,18 +484,17 @@ bool SUSYSSDL::electronSelection(int elIdx){
   	return: true (if the electron is an electron), false (else)
   	*/
 
-	counter("ElectronDenominator", "el ID");
+  counter("ElectronDenominator", kElId);
 
 	float pt_cut = 10.;
 	if(_PT == "highpt") pt_cut = 20.;
 
-	//if(!makeCut<int>(       _vc -> getI(_lep + "_tightId", elIdx) ,  1     , "=", "POG MVA Tight Id ", 0    , "el ID")) return false;
-	if(!makeCut<int>(       _vc -> getI(_lep + "_eleCutIdCSA14_50ns_v1", elIdx) ,  3     , ">=", "POG CB WP-M Id ", 0    , "el ID")) return false;
-	if(!makeCut<float>(     _vc -> getF(_lep + "_pt"     , elIdx) , pt_cut , ">", "pt selection"     , 0    , "el ID")) return false;
-	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  2.4   , "<", "eta selection"    , 0    , "el ID")) return false;
-	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  1.4442, "[!]", "eta selection"  , 1.566, "el ID")) return false;
-	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dz"     , elIdx)),  0.2   , "<", "dz selection"     , 0    , "el ID")) return false;
-	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dxy"    , elIdx)),  0.01  , "<", "dxy selection"    , 0    , "el ID")) return false;  
+	if(!makeCut<int>(       _vc -> getI(_lep + "_eleCutIdCSA14_50ns_v1", elIdx) ,  3     , ">=", "POG CB WP-M Id ", 0    , kElId)) return false;
+	if(!makeCut<float>(     _vc -> getF(_lep + "_pt"     , elIdx) , pt_cut , ">", "pt selection"     , 0    , kElId)) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  2.4   , "<", "eta selection"    , 0    , kElId)) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  1.4442, "[!]", "eta selection"  , 1.566, kElId)) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dz"     , elIdx)),  0.2   , "<", "dz selection"     , 0    , kElId)) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dxy"    , elIdx)),  0.01  , "<", "dxy selection"    , 0    , kElId)) return false;
 
 	return true;
 
@@ -500,16 +509,16 @@ bool SUSYSSDL::muonSelection(int muIdx){
   	return: true (if the muon is a muon), false (else)
   	*/
 
-	counter("MuonDenominator", "muon ID");
+	counter("MuonDenominator", kMuId);
 	
 	float pt_cut = 10.;
 	if(_PT == "highpt") pt_cut = 20.;
 
-	if(!makeCut<int>(       _vc -> getI(_lep + "_tightId", muIdx) ,  1    , "=", "POG Tight Id ", 0, "muon ID")) return false;
-	if(!makeCut<float>(     _vc -> getF(_lep + "_pt"     , muIdx) , pt_cut, ">", "pt selection" , 0, "muon ID")) return false;
-	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , muIdx)),  2.4  , "<", "eta selection", 0, "muon ID")) return false;
-	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dz"     , muIdx)),  0.2  , "<", "dz selection" , 0, "muon ID")) return false;
-	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dxy"    , muIdx)),  0.005, "<", "dxy selection", 0, "muon ID")) return false;  
+	if(!makeCut<int>(       _vc -> getI(_lep + "_tightId", muIdx) ,  1    , "=", "POG Tight Id ", 0, kMuId)) return false;
+	if(!makeCut<float>(     _vc -> getF(_lep + "_pt"     , muIdx) , pt_cut, ">", "pt selection" , 0, kMuId)) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , muIdx)),  2.4  , "<", "eta selection", 0, kMuId)) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dz"     , muIdx)),  0.2  , "<", "dz selection" , 0, kMuId)) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dxy"    , muIdx)),  0.005, "<", "dxy selection", 0, kMuId)) return false;  
 
 	return true;
 
@@ -524,12 +533,13 @@ bool SUSYSSDL::vetoElectronSelection(int elIdx){
   	return: true (if the electron is a veto electron), false (else)
   	*/
 
-	counter("vetoElDenominator", "veto el");
+  counter("vetoElDenominator", kElVeto);
 
-	if(!makeCut(!electronSelection(elIdx), "no veto electron", "=", "veto el") ) return false;
-	if(!makeCut<int>(   _vc -> getI(_lep + "_eleCutIdCSA14_50ns_v1", elIdx) ,  3     , ">=", "POG CB WP-M Id ", 0    , "el ID")) return false;
-	//if(!makeCut<int>(   _vc -> getI(_lep + "_tightId", elIdx), 1  , "=", "POG MVA Tight Id", 0, "veto el" ) ) return false;
-	if(!makeCut<float>( _vc -> getF(_lep + "_pt"     , elIdx), 5.0, ">", "pt selection"    , 0, "veto el" ) ) return false;
+	if(!makeCut(!electronSelection(elIdx), "no veto electron", "=", kElVeto) ) return false;
+
+	if(!makeCut<int>(       _vc -> getI(_lep + "_eleCutIdCSA14_50ns_v1", elIdx) ,  3     , ">=", "POG CB WP-M Id ", 0    , kElVeto)) return false;
+	//if(!makeCut<int>(   _vc -> getI(_lep + "_tightId", elIdx), 1  , "=", "POG MVA Tight Id", 0, kElVeto ) ) return false;
+	if(!makeCut<float>( _vc -> getF(_lep + "_pt"     , elIdx), 5.0, ">", "pt selection"    , 0, kElVeto ) ) return false;
   
 	return true;
 
@@ -544,11 +554,11 @@ bool SUSYSSDL::vetoMuonSelection(int muIdx){
   	return: true (if the muon is a veto muon), false (else)
   	*/
 
-	counter("VetoMuonDenominator", "veto mu");
+	counter("VetoMuonDenominator", kMuVeto);
 
-	if(!makeCut(!muonSelection(muIdx), "no veto muon", "=", "veto mu") ) return false;
-	if(!makeCut<int>(   _vc -> getI(_lep + "_tightId", muIdx), 1  , "=", "POG Tight Id", 0, "veto mu" ) ) return false;
-	if(!makeCut<float>( _vc -> getF(_lep + "_pt"     , muIdx), 5.0, ">", "pt selection", 0, "veto mu" ) ) return false;
+	if(!makeCut(!muonSelection(muIdx), "no veto muon", "=", kMuVeto) ) return false;
+	if(!makeCut<int>(   _vc -> getI(_lep + "_tightId", muIdx), 1  , "=", "POG Tight Id", 0, kMuVeto) ) return false;
+	if(!makeCut<float>( _vc -> getF(_lep + "_pt"     , muIdx), 5.0, ">", "pt selection", 0, kMuVeto ) ) return false;
 
 	return true;
 
@@ -982,18 +992,20 @@ bool SUSYSSDL::baseSelection(){
 	parameters: none
 	return: true (if event passes selection), false (else)
 	*/
-
-	counter("denominator");
+  
+  counter("denominator");
 
 	if(_isData && !makeCut<int>(_vc -> getI("HLT_DoubleMu"), 1, "=", "HLT DoubleMu") ) return false;	
 	if(_isData && !makeCut<int>(_vc -> getI("HLT_DoubleEl"), 1, "=", "HLT DoubleEl") ) return false;	
 	if(_isData && !makeCut<int>(_vc -> getI("HLT_MuEG")    , 1, "=", "HLT MuEG"    ) ) return false;	
 
+	if(!makeCut<int>( _NumKinObj["Electron"] + _NumKinObj["Muon"], 2, "=", "lepton multiplicity" ) ) return false; 
+	
 	bool is_3l_event = vetoEventSelection("Electron", "Muon");
 	bool is_ss_event = ssEventSelection  ("Electron", "Muon");
 	bool is_lowpt_event = lowptEventSelection("Electron", "Muon");
 
-	if(!makeCut<int>( _NumKinObj["Electron"] + _NumKinObj["Muon"], 2, "=", "lepton multiplicity" ) ) return false; 
+
 	if(!makeCut( is_ss_event , "same-sign selection", "=") ) return false;
 	if(!makeCut( !is_3l_event, "veto on 3 leptons"  , "=") ) return false;
 	if(_PT == "lowpt" && !makeCut( is_lowpt_event, "lowpt 20-10 leptons", "=") ) return false;
@@ -1138,10 +1150,10 @@ bool SUSYSSDL::vetoEventSelection(std::string electron_label, std::string muon_l
   	return: true (if the event has such a pair, i.e. if the event shall be rejected), false (else)
   	*/
 
-	counter("denominator", kr + " vetoLepSel");
+	counter("denominator", kVetoLepSel);
 	
-	if(!makeCut<int>(_NumKinObj[electron_label] + _NumKinObj[muon_label], 2, "=", "lep mult"     , 0, kr + " vetoLepSel") ) return false; 
-	if(!makeCut<int>(_NumKinObj["VetoElectron"] + _NumKinObj["VetoMuon"], 1, "=", "veto lep mult", 0, kr + " vetoLepSel") ) return false; 
+	if(!makeCut<int>(_NumKinObj[electron_label] + _NumKinObj[muon_label], 2, "=", "lep mult"     , 0, kVetoLepSel) ) return false; 
+	if(!makeCut<int>(_NumKinObj["VetoElectron"] + _NumKinObj["VetoMuon"], 1, "=", "veto lep mult", 0, kVetoLepSel) ) return false; 
 
 
 	// two electrons
@@ -1161,8 +1173,8 @@ bool SUSYSSDL::vetoEventSelection(std::string electron_label, std::string muon_l
 		// there is an os sf pair
 		if(os){	
 			float mll = MLL("electron", _KinObj["VetoElectron"][0], "electron", os_el_index);
-			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtLow"]  && mll < _Cuts[kr + "VetoMLLLow"], "electron mll low pt veto", "=", kr + " vetoLepSel") ) return true;
-			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtHigh"] && (mll > _Cuts[kr + "VetoMLLHighLL"] && mll < _Cuts[kr + "VetoMLLHighUL"]), "electron mll high pt veto", "=", kr + " vetoLepSel") ) return true;
+			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtLow"]  && mll < _Cuts[kr + "VetoMLLLow"], "electron mll low pt veto", "=", kVetoLepSel) ) return true;
+			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtHigh"] && (mll > _Cuts[kr + "VetoMLLHighLL"] && mll < _Cuts[kr + "VetoMLLHighUL"]), "electron mll high pt veto", "=", kVetoLepSel) ) return true;
 		}
 	}
 
@@ -1183,13 +1195,13 @@ bool SUSYSSDL::vetoEventSelection(std::string electron_label, std::string muon_l
 		// there is an os sf pair
 		if(os){
 			float mll = MLL("muon", _KinObj["VetoMuon"][0], "muon", os_mu_index);
-			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoMuon"][0]) > _Cuts["VetoMuonPtLow"]  && mll < _Cuts[kr + "VetoMLLLow"], "muon mll low pt veto", "=", kr + " vetoLepSel") ) return true;
-			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoMuon"][0]) > _Cuts["VetoMuonPtHigh"] && (mll > _Cuts[kr + "VetoMLLHighLL"] && mll < _Cuts[kr + "VetoMLLHighUL"]), "muon mll high pt veto", "=", kr + " vetoLepSel") ) return true;
+			if(makeCut(_vc -> getF("el_pt", _KinObj["VetoMuon"][0]) > _Cuts["VetoMuonPtLow"]  && mll < _Cuts[kr + "VetoMLLLow"], "muon mll low pt veto", "=", kVetoLepSel) ) return true;
+			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoMuon"][0]) > _Cuts["VetoMuonPtHigh"] && (mll > _Cuts[kr + "VetoMLLHighLL"] && mll < _Cuts[kr + "VetoMLLHighUL"]), "muon mll high pt veto", "=", kVetoLepSel) ) return true;
 		}
 	}
 	
 
-	makeCut(true, "no veto event", "=", kr + " vetoLepSel");
+	makeCut(true, "no veto event", "=", kVetoLepSel);
 
 	return false;
 
