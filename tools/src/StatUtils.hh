@@ -71,6 +71,13 @@ public :
   };
 
   
+  template <typename T> static inline
+  int findInVector(T v, vector<T> vals) {
+    for(size_t i=0;i<vals.size();i++){
+      if( v==vals[i] ) return i;
+    }
+    return -1;
+  };
 
 
   ClassDef(StatUtils,0)

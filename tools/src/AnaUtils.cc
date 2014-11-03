@@ -6,11 +6,14 @@ ClassImp(AnaUtils)
 
 AnaUtils::AnaUtils() {
 
+  _kMC=AUtils::kMC;
+  _kGlobal=AUtils::kGlobal;
+
   //MC initialization
   eMap tmp;
-  _effMap[ "MC" ] = tmp;
+  _effMap.push_back( tmp );
   _dsNames.push_back("MC");
-
+  
   _invCut=false;
   _skipCut=false;
   
@@ -73,30 +76,14 @@ AnaUtils::invCut(string type) {
 
 
 
-void AnaUtils::setEfficiency(string ds, string cName, string eCateg, float w, bool acc) {
-
-  //instanciate dataset
-  _itMEMap=_effMap.find( ds );
-  if(_itMEMap==_effMap.end()) {
-      _dsNames.push_back(ds);
-  }
+void AnaUtils::setEfficiency(int ids, string cName, int iCateg, float w, bool acc) {
   
   //  Acceptance
   if(_useAccForEff)
     if(!_inAcc) w=0;
-
   
-  _itEMap=_effMap[ ds ].find( eCateg );
-  if(_itEMap==_effMap[ ds ].end() ) {
-    
-    if(_effNames.find( eCateg ) == _effNames.end() ) {
-      vector<string> vtmp;
-      _effNames[ eCateg ] = vtmp; 
-    }
-  }
-
-    _itEIMap=_effMap[ ds ][eCateg].find( cName );
-    if(_itEIMap==_effMap[ ds ][ eCateg ].end() ) {
+  _itEIMap=_effMap[ ids ][iCateg].find( cName );
+  if(_itEIMap==_effMap[ ids ][ iCateg ].end() ) {
     EffST tmp;
     tmp.eff = 0;
     tmp.sumw = 0; tmp.sumw2 = 0;
@@ -104,16 +91,16 @@ void AnaUtils::setEfficiency(string ds, string cName, string eCateg, float w, bo
     tmp.sumwTot = 0; tmp.sumw2Tot = 0;
     tmp.NTot = 0;    
     
-    _effMap[ ds ][ eCateg ][ cName ] = tmp;
+    _effMap[ ids ][ iCateg ][ cName ] = tmp;
 
     bool exists=false;
-    for(size_t ic=0;ic<_effNames[ eCateg ].size();ic++)
-      if(cName == _effNames[ eCateg ][ic]) exists=true;
+    for(size_t ic=0;ic<_effNames[ iCateg ].size();ic++)
+      if(cName == _effNames[ iCateg ][ic]) exists=true;
     if(!exists)
-      _effNames[ eCateg ].push_back( cName );
+      _effNames[ iCateg ].push_back( cName );
   }
   
-  if(_itEIMap==_effMap[ "MC" ][ eCateg ].end() ) {
+  if(_itEIMap==_effMap[ _kMC ][ iCateg ].end() ) {
     EffST tmp;
     tmp.eff = 0;
     //    tmp.systp = 0; tmp.systm = 0;
@@ -122,16 +109,54 @@ void AnaUtils::setEfficiency(string ds, string cName, string eCateg, float w, bo
     tmp.sumwTot = 0; tmp.sumw2Tot = 0;
     tmp.NTot = 0;    
 
-    _effMap[ "MC" ][ eCateg ][ cName ] = tmp;
+    _effMap[ _kMC ][ iCateg ][ cName ] = tmp;
   }
 
-  setNumbers(ds, cName, eCateg, w, acc);
+  setNumbers(ids, cName, iCateg, w, acc);
 
 
 }
 
+void AnaUtils::addDataset(string dsName) {
+  
+  _dsNames.push_back(dsName);
+  eMap tmp;
+  _effMap.push_back( tmp );
+ 
+}
 
-void AnaUtils::setSystematics(string ds, string cName, string sName, bool up, bool down, float w) {
+void
+AnaUtils::addCategory(int iCateg, string eCateg) {
+  
+  //first, check if the global instance exists
+  // and if not, create it 
+  if( _catNames.find( _kGlobal )==_catNames.end()) {
+    _catNames[ _kGlobal ] = "global";
+    vector<string> vtmp;
+    _effNames[ _kGlobal ] = vtmp; 
+
+    for(size_t ids=0;ids<_dsNames.size();ids++) {
+      eIMap tmp;
+      _effMap[ ids ].push_back( tmp );
+    }
+  }
+
+  //and now the category
+  
+  _catNames[ iCateg ] = eCateg;
+  vector<string> vtmp;
+  _effNames[ iCateg ] = vtmp; 
+    
+  for(size_t ids=0;ids<_dsNames.size();ids++) {
+    eIMap tmp;
+    _effMap[ ids ].push_back( tmp );
+  }
+
+}
+
+
+
+void AnaUtils::setSystematics(int ids, string cName, string sName, bool up, bool down, float w) {
 
   bool accept[2] = {false,false};
   accept[0] = up;
@@ -145,7 +170,7 @@ void AnaUtils::setSystematics(string ds, string cName, string sName, bool up, bo
   // _effMap[ ds ][ cName ].systsU[ sName ] +=(accept[0]?val:0);
   // _effMap[ ds ][ cName ].systsD[ sName ] +=(accept[1]?val:0);
   
-  if(ds!="data" && ds!="Data") {
+  if(_dsNames[ids]!="data" && _dsNames[ids]!="Data") {
     // _effMap[ "MC" ][ cName ].systp+=(accept[0]?val:0);
     // _effMap[ "MC" ][ cName ].systm+=(accept[1]?val:0);
     // _effMap[ "MC" ][ cName ].systsU[ sName ] +=(accept[0]?val:0);
@@ -283,35 +308,34 @@ void AnaUtils::saveNumbers(string anName, string conName) {
     dsNames.push_back(_dsNames.back());
 
   // print global efficiencies at the end======================
-  vector<string> catNames;
+  vector<int> catNames;
   bool hasGlobEff=false;
-  for(map<string, vector<string> >::const_iterator it=_effNames.begin();
+  for(map<int, vector<string> >::const_iterator it=_effNames.begin();
       it!=_effNames.end();it++) {
     
-    if(it->first == "global") {hasGlobEff=true; continue; }
+    if( _catNames[it->first] == "global") {hasGlobEff=true; continue; }
     catNames.push_back( it->first ); 
   }
   if(hasGlobEff)
-    catNames.push_back("global");
+    catNames.push_back( _kGlobal );
 
-  for(size_t icat=0;icat<catNames.size();icat++) {
-    string categ = catNames[icat];
+  for(size_t ic=0;ic<catNames.size();ic++) {
+    int icat = catNames[ic];
 
-    ofile<<"categ\t"<<categ<<endl;
+    ofile<<"categ\t"<<_catNames[icat]<<endl;
 
 
     bool header=true;
     //to skip the simulation in a first time
-    for(size_t ic=0;ic<_effNames[categ].size();ic++) { //cuts
-    
-      _itEIMap = _effMap[ "MC" ][categ].find( _effNames[categ][ ic ] );
-      if(_itEIMap == _effMap["MC"][categ].end() ) break; //out of the loop if no MC
+    for(size_t ic=0;ic<_effNames[icat].size();ic++) { //cuts
+      
+      _itEIMap = _effMap[ _kMC ][icat].find( _effNames[icat][ ic ] );
+      if(_itEIMap == _effMap[ _kMC ][icat].end() ) break; //out of the loop if no MC
 
       if(header) {
 	ofile<<"\tselection"<<fixed<<setprecision(4);
 	for(size_t ids=0;ids<dsNames.size();ids++) {
-	  _itMEMap = _effMap.find( dsNames[ ids ] );
-	  ofile<<"\t"<<_itMEMap->first<<"\t";
+	  ofile<<"\t"<<dsNames[ids]<<"\t";
 	}
 	ofile<<endl;
 	header=false;
@@ -322,11 +346,12 @@ void AnaUtils::saveNumbers(string anName, string conName) {
       //to skip the simulation summary
       for(size_t ids=0;ids<dsNames.size();ids++) { //datasets
       
-	_itMEMap = _effMap.find( dsNames[ ids ] );
+	//_itMEMap = _effMap[ids].find( dsNames[ ids ] );
 	map<string,EffST>::iterator itm;
       	{ //simulation detail
-	  itm=_itMEMap->second[categ].find( _itEIMap->first );
-	  if(itm==_itMEMap->second[categ].end()) 
+	  itm=_effMap[ids][icat].find( _itEIMap->first );
+	  //itm=_itMEMap->second[categ].find( _itEIMap->first );
+	  if(itm==_effMap[ids][icat].end()) 
 	    ofile<<"\t"<<" - ";
 	  //ofile<<" - ";
 	  else {
@@ -358,7 +383,7 @@ void AnaUtils::saveNumbers(string anName, string conName) {
       }//datasets
     }//cuts
 
-    ofile<<endl<<"endcateg\t"<<categ<<endl<<endl;
+    ofile<<endl<<"endcateg\t"<<_catNames[icat]<<endl<<endl;
   }//categories
 
   ofile.close();
@@ -380,23 +405,23 @@ void AnaUtils::printNumbers() {
     dsNames.push_back(_dsNames.back());
 
   // print global efficiencies at the end======================
-  vector<string> catNames;
+  vector<int> catNames;
   bool hasGlobEff=false;
-  for(map<string, vector<string> >::const_iterator it=_effNames.begin();
+  for(map<int, vector<string> >::const_iterator it=_effNames.begin();
       it!=_effNames.end();it++) {
     
-    if(it->first == "global") {hasGlobEff=true; continue; }
-    catNames.push_back( it->first ); 
+    if(it->first == _kGlobal) {hasGlobEff=true; continue; }
+    catNames.push_back(  it->first ); 
   }
   if(hasGlobEff)
-    catNames.push_back("global");
+    catNames.push_back( _kGlobal );
 
-  for(size_t icat=0;icat<catNames.size();icat++) {
-    string categ = catNames[icat];
+  for(size_t ic=0;ic<catNames.size();ic++) {
+    int icat = catNames[ic];
     
     cout<<endl<<endl;
     cout<<" ===================================================================== "<<endl;
-    cout<<" ============= Efficiency category : "<<setw(17)<<categ<<" =============== "<<endl;
+    cout<<" ============= Efficiency category : "<<setw(17)<<_catNames[ icat ]<<" =============== "<<endl;
     cout<<" ===================================================================== "<<endl;
 
   for(size_t ids=0;ids<dsNames.size();ids++) { //datasets
@@ -406,17 +431,14 @@ void AnaUtils::printNumbers() {
     float tmpswtot=-1;
     float tmpNTot=-1;
     
-    _itMEMap = _effMap.find( dsName );
-    _itEMap = _itMEMap->second.find( categ );
-
-    cout<<endl<< "Begin efficiencies for "<<_itMEMap->first<<"   "<<_itEMap->second.size()<<"  ********* "<<endl;
+    cout<<endl<< "Begin efficiencies for "<<dsName<<"   "<<_effMap[ids][icat].size()<<"  ********* "<<endl;
     
     string initName;
-    for(size_t ic=0;ic<_effNames[ categ ].size();ic++) { //cut
+    for(size_t ic=0;ic<_effNames[ icat ].size();ic++) { //cut
     
-      _itEIMap = _itEMap->second.find( _effNames[ categ ][ ic ] );
-      if(ic==0) initName = _effNames[ categ ][ ic ];
-      if(_itEIMap == _itEMap->second.end() ) continue;
+      _itEIMap = _effMap[ids][icat].find( _effNames[ icat ][ ic ] );
+      if(ic==0) initName = _effNames[ icat ][ ic ];
+      if(_itEIMap == _effMap[ids][icat].end() ) continue;
     
       //get total value
       float eff = _itEIMap->second.sumw / _itEIMap->second.sumwTot;
@@ -449,12 +471,12 @@ void AnaUtils::printNumbers() {
 
       //==========================================================
       //cout<<_itMap->second.sumw<<"   "<<_itEMap->second.begin()->second.sumwTot<<endl;
-      float globEff = _itEIMap->second.sumw/_itEMap->second[ initName ].sumwTot;
+      float globEff = _itEIMap->second.sumw/_effMap[ids][icat][ initName ].sumwTot;
       
       //FIXME ugly protection against a change of weight
       if(globEff>1) globEff=1;
       
-      float globErr = StatUtils::BinomError( _itEMap->second[ initName ].sumwTot, globEff);      
+      float globErr = StatUtils::BinomError( _effMap[ids][icat][ initName ].sumwTot, globEff);      
       cout<<setprecision(3)<<fixed;
       cout<<" --> "<<setw(30)<<_itEIMap->first<<"\t  = "<<eff<<" +- "<<error;
       //cout<<" (+ "<<systH<<" - "<<systL;
@@ -645,27 +667,29 @@ void AnaUtils::setSkipCut(vector<string> var, bool invCut) {
 }
 
 
-void AnaUtils::setNumbers(string ds,string cName, string eCateg, float w, bool acc) {
+void AnaUtils::setNumbers(int ids,string cName, int iCateg, float w, bool acc) {
   
-  _effMap[ ds ][ eCateg ][ cName ].NTot +=1;
-  _effMap[ ds ][ eCateg ][ cName ].sumwTot +=w;
-  _effMap[ ds ][ eCateg ][ cName ].sumw2Tot +=w*w;
+  _effMap[ ids ][ iCateg ][ cName ].NTot +=1;
+  _effMap[ ids ][ iCateg ][ cName ].sumwTot +=w;
+  _effMap[ ids ][ iCateg ][ cName ].sumw2Tot +=w*w;
 
-  if(ds!="data" && ds!="Data" && ds.find("sig")==(size_t)-1) {
-    _effMap[ "MC" ][ eCateg ][ cName ].NTot +=1;
-    _effMap[ "MC" ][ eCateg ][ cName ].sumwTot +=w;
-    _effMap[ "MC" ][ eCateg ][ cName ].sumw2Tot +=w*w;
+  if(_dsNames[ids]!="data" && _dsNames[ids]!="Data" && 
+     _dsNames[ids].find("sig")==(size_t)-1) {
+    _effMap[ _kMC ][ iCateg ][ cName ].NTot +=1;
+    _effMap[ _kMC ][ iCateg ][ cName ].sumwTot +=w;
+    _effMap[ _kMC ][ iCateg ][ cName ].sumw2Tot +=w*w;
   }
 
   if(acc) {
-    _effMap[ ds ][ eCateg ][ cName ].N +=1;
-    _effMap[ ds ][ eCateg ][ cName ].sumw +=w;
-    _effMap[ ds ][ eCateg ][ cName ].sumw2 +=w*w;
+    _effMap[ ids ][ iCateg ][ cName ].N +=1;
+    _effMap[ ids ][ iCateg ][ cName ].sumw +=w;
+    _effMap[ ids ][ iCateg ][ cName ].sumw2 +=w*w;
 
-    if(ds!="data" && ds!="Data" && ds.find("sig")==(size_t)-1) {
-      _effMap[ "MC" ][ eCateg ][ cName ].N +=1;
-      _effMap[ "MC" ][ eCateg ][ cName ].sumw +=w;
-      _effMap[ "MC" ][ eCateg ][ cName ].sumw2 +=w*w;
+    if(_dsNames[ids]!="data" && _dsNames[ids]!="Data" && 
+       _dsNames[ids].find("sig")==(size_t)-1) {
+      _effMap[ _kMC ][ iCateg ][ cName ].N +=1;
+      _effMap[ _kMC ][ iCateg ][ cName ].sumw +=w;
+      _effMap[ _kMC ][ iCateg ][ cName ].sumw2 +=w*w;
     }
 
   }
@@ -678,12 +702,13 @@ AnaUtils::reset() {
 
   _effMap.clear();
   _dsNames.clear();
+  _catNames.clear();
   _effNames.clear();
   
   //MC initialization
   eMap tmp;
-  _effMap[ "MC" ] = tmp;
-  _dsNames.push_back("MC");
+  _effMap.push_back( tmp );
+  _dsNames[ _kMC ]="MC";
 
 }
 
