@@ -181,7 +181,7 @@ void SUSYSSDL::run(){
 
 	//skim right after the basic selection
 	//fillSkimTree();
-
+	//return;
 	
 	//cout<<" ************************************************** new event "<<_SampleName<<"  "<<_EntryIterator<<endl;
 	//splitting the samples into categories
@@ -189,23 +189,25 @@ void SUSYSSDL::run(){
 	// cout<<" ==> "<<genMatchCateg( _leptons[0] )<<endl;
 	// cout<<"============= lepton 2"<<endl;
 	// cout<<" ==> "<<genMatchCateg( _leptons[1] )<<endl;
-
-	// int lep1Id = genMatchCateg( _leptons[0] );
-	// int lep2Id = genMatchCateg( _leptons[1] );
+if(_SampleName.find("TTJets")!=(size_t)-1 || _SampleName.find("DYJets")!=(size_t)-1 ||
+	   _SampleName.find("WJets")!=(size_t)-1 ) {
+	 int lep1Id = genMatchCateg( _leptons[0] );
+	 int lep2Id = genMatchCateg( _leptons[1] );
 	
-	// if(_SampleName.find("misId")!=(size_t)-1) {
-	//   if( ! ( (lep1Id == kMisChargePdgId && lep2Id >= kMisChargePdgId) || 
-	// 	  (lep2Id == kMisChargePdgId && lep1Id >= kMisChargePdgId) ) ) return;
-	// }
-	// if(_SampleName.find("fake")!=(size_t)-1) {
-	//   if( lep1Id > kMisMatchPdgId &&
-	//       lep2Id > kMisMatchPdgId ) return;
-	// }
-	// if(_SampleName.find("prompt")!=(size_t)-1) {
-	//   if( genMatchCateg( _leptons[0] ) != kGenMatched ||
-	//       genMatchCateg( _leptons[1] ) != kGenMatched ) return;
-	// }
-	// counter("genCateg selection");
+	 if(_SampleName.find("misId")!=(size_t)-1) {
+	   if( ! ( (lep1Id == kMisChargePdgId && lep2Id >= kMisChargePdgId) || 
+	 	  (lep2Id == kMisChargePdgId && lep1Id >= kMisChargePdgId) ) ) return;
+	 }
+	 if(_SampleName.find("fake")!=(size_t)-1) {
+	   if( lep1Id > kMisMatchPdgId &&
+	       lep2Id > kMisMatchPdgId ) return;
+	 }
+	 if(_SampleName.find("prompt")!=(size_t)-1) {
+	   if( genMatchCateg( _leptons[0] ) != kGenMatched ||
+	       genMatchCateg( _leptons[1] ) != kGenMatched ) return;
+	 }
+	 }
+	 counter("genCateg selection");
 	
 	//cout<<" ============> selected"<<endl;
 
@@ -1173,8 +1175,8 @@ bool SUSYSSDL::vetoEventSelection(std::string electron_label, std::string muon_l
 		// there is an os sf pair
 		if(os){	
 			float mll = MLL("electron", _KinObj["VetoElectron"][0], "electron", os_el_index);
-			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtLow"]  && mll < _Cuts[kr + "VetoMLLLow"], "electron mll low pt veto", "=", kVetoLepSel) ) return true;
-			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoElectron"][0]) > _Cuts["VetoElectronPtHigh"] && (mll > _Cuts[kr + "VetoMLLHighLL"] && mll < _Cuts[kr + "VetoMLLHighUL"]), "electron mll high pt veto", "=", kVetoLepSel) ) return true;
+			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoElectron"][0]) > 5.0  &&  mll < 12.0, "electron mll low pt veto", "=", kVetoLepSel) ) return true;
+			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoElectron"][0]) > 10.0 && (mll > 76.0 && mll < 106.0), "electron mll high pt veto", "=", kVetoLepSel) ) return true;
 		}
 	}
 
@@ -1195,8 +1197,8 @@ bool SUSYSSDL::vetoEventSelection(std::string electron_label, std::string muon_l
 		// there is an os sf pair
 		if(os){
 			float mll = MLL("muon", _KinObj["VetoMuon"][0], "muon", os_mu_index);
-			if(makeCut(_vc -> getF("el_pt", _KinObj["VetoMuon"][0]) > _Cuts["VetoMuonPtLow"]  && mll < _Cuts[kr + "VetoMLLLow"], "muon mll low pt veto", "=", kVetoLepSel) ) return true;
-			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoMuon"][0]) > _Cuts["VetoMuonPtHigh"] && (mll > _Cuts[kr + "VetoMLLHighLL"] && mll < _Cuts[kr + "VetoMLLHighUL"]), "muon mll high pt veto", "=", kVetoLepSel) ) return true;
+			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoMuon"][0]) > 5.0  && mll < 12.0, "muon mll low pt veto", "=", kVetoLepSel) ) return true;
+			if(makeCut(_vc -> getF(_lep + "_pt", _KinObj["VetoMuon"][0]) > 10.0 && (mll > 76.0 && mll < 106.0), "muon mll high pt veto", "=", kVetoLepSel) ) return true;
 		}
 	}
 	
