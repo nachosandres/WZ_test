@@ -262,51 +262,53 @@ void SUSYSSDL::defineOutput(){
 
 	// Baseline Region
 
-	_hm -> addVariable("BR_HT"        , 1000, 0.0, 1000.0, "H_T [GeV]"            ); 
-	_hm -> addVariable("BR_MET"       , 1000, 0.0, 1000.0, "#slash{E}_T [GeV]"    );
-	_hm -> addVariable("BR_MLL"       , 1000, 0.0, 1000.0, "m_{ll} [GeV]"         ); 
-	_hm -> addVariable("BR_NBJets"    ,   20, 0.0,   20.0, "b-jet multiplicity"   );
-	_hm -> addVariable("BR_NElectrons",   20, 0.0,   20.0, "electron multiplicity");
-	_hm -> addVariable("BR_NJets"     ,   20, 0.0,   20.0, "jet multiplicity"     );
-	_hm -> addVariable("BR_NLeps"     ,   20, 0.0,   20.0, "lepton multiplicity"  );
-	_hm -> addVariable("BR_NMuons"    ,   20, 0.0,   20.0, "muon multiplicity"    );
-	_hm -> addVariable("BR_NVrtx"     ,   40, 0.0,   40.0, "vertex multiplicity"  );
-	_hm -> addVariable("BR_ElDXY"     ,   50, 0.0,    0.5, "#||{dxy}(e) [cm]"     );
-	_hm -> addVariable("BR_ElEta"     ,  240, 0.0,    2.4, "#||{#eta(e)}"         );
-	_hm -> addVariable("BR_ElIso"     ,   50, 0.0,    1.0, "PF Iso (e)"           );
-	_hm -> addVariable("BR_ElMT"      , 1000, 0.0, 1000.0, "M_T(e) [GeV]"         );
-	_hm -> addVariable("BR_ElPt"      , 1000, 0.0, 1000.0, "P_T(e) [GeV]"         );
-	_hm -> addVariable("BR_MuDXY"     ,   50, 0.0,    0.5, "#||{dxy}(#mu) [cm]"   );
-	_hm -> addVariable("BR_MuEta"     ,  240, 0.0,    2.4, "#||{#eta(#mu)}"       );
-	_hm -> addVariable("BR_MuIso"     ,   50, 0.0,    1.0, "PF Iso (#mu)"         );
-	_hm -> addVariable("BR_MuMT"      , 1000, 0.0, 1000.0, "M_T(#mu) [GeV]"       );
-	_hm -> addVariable("BR_MuPt"      , 1000, 0.0, 1000.0, "P_T(#mu) [GeV]"       );
-	_hm -> addVariable("BR_JetCSVBTag",   50, 0.0,    1.0, "jet CSV B-Tag"        );
-	_hm -> addVariable("BR_JetPt"     , 1000, 0.0, 1000.0, "P_T(jet) [GeV]"       );
+	_hm -> addVariable("BR_LepCharge" ,   20, -10.0,   10.0, "lepton charge"        );
+	_hm -> addVariable("BR_HT"        , 1000,   0.0, 1000.0, "H_T [GeV]"            ); 
+	_hm -> addVariable("BR_MET"       , 1000,   0.0, 1000.0, "#slash{E}_T [GeV]"    );
+	_hm -> addVariable("BR_MLL"       , 1000,   0.0, 1000.0, "m_{ll} [GeV]"         ); 
+	_hm -> addVariable("BR_NBJets"    ,   20,   0.0,   20.0, "b-jet multiplicity"   );
+	_hm -> addVariable("BR_NElectrons",   20,   0.0,   20.0, "electron multiplicity");
+	_hm -> addVariable("BR_NJets"     ,   20,   0.0,   20.0, "jet multiplicity"     );
+	_hm -> addVariable("BR_NLeps"     ,   20,   0.0,   20.0, "lepton multiplicity"  );
+	_hm -> addVariable("BR_NMuons"    ,   20,   0.0,   20.0, "muon multiplicity"    );
+	_hm -> addVariable("BR_NVrtx"     ,   40,   0.0,   40.0, "vertex multiplicity"  );
+	_hm -> addVariable("BR_ElDXY"     ,   50,   0.0,    0.5, "#||{dxy}(e) [cm]"     );
+	_hm -> addVariable("BR_ElEta"     ,  240,   0.0,    2.4, "#||{#eta(e)}"         );
+	_hm -> addVariable("BR_ElIso"     ,   50,   0.0,    1.0, "PF Iso (e)"           );
+	_hm -> addVariable("BR_ElMT"      , 1000,   0.0, 1000.0, "M_T(e) [GeV]"         );
+	_hm -> addVariable("BR_ElPt"      , 1000,   0.0, 1000.0, "P_T(e) [GeV]"         );
+	_hm -> addVariable("BR_MuDXY"     ,   50,   0.0,    0.5, "#||{dxy}(#mu) [cm]"   );
+	_hm -> addVariable("BR_MuEta"     ,  240,   0.0,    2.4, "#||{#eta(#mu)}"       );
+	_hm -> addVariable("BR_MuIso"     ,   50,   0.0,    1.0, "PF Iso (#mu)"         );
+	_hm -> addVariable("BR_MuMT"      , 1000,   0.0, 1000.0, "M_T(#mu) [GeV]"       );
+	_hm -> addVariable("BR_MuPt"      , 1000,   0.0, 1000.0, "P_T(#mu) [GeV]"       );
+	_hm -> addVariable("BR_JetCSVBTag",   50,   0.0,    1.0, "jet CSV B-Tag"        );
+	_hm -> addVariable("BR_JetPt"     , 1000,   0.0, 1000.0, "P_T(jet) [GeV]"       );
 
 	// Signal Region
 
-	_hm -> addVariable("SR_HT"        , 1000, 0.0, 1000.0, "H_T [GeV]"            ); 
-	_hm -> addVariable("SR_MET"       , 1000, 0.0, 1000.0, "#slash{E}_T [GeV]"    );
-	_hm -> addVariable("SR_MLL"       , 1000, 0.0, 1000.0, "m_{ll} [GeV]"         ); 
-	_hm -> addVariable("SR_NBJets"    ,   20, 0.0,   20.0, "b-jet multiplicity"   );
-	_hm -> addVariable("SR_NElectrons",   20, 0.0,   20.0, "electron multiplicity");
-	_hm -> addVariable("SR_NJets"     ,   20, 0.0,   20.0, "jet multiplicity"     );
-	_hm -> addVariable("SR_NLeps"     ,   20, 0.0,   20.0, "lepton multiplicity"  );
-	_hm -> addVariable("SR_NMuons"    ,   20, 0.0,   20.0, "muon multiplicity"    );
-	_hm -> addVariable("SR_NVrtx"     ,   40, 0.0,   40.0, "vertex multiplicity"  );
-	_hm -> addVariable("SR_ElDXY"     ,   50, 0.0,    0.5, "#||{dxy}(e) [cm]"     );
-	_hm -> addVariable("SR_ElEta"     ,  240, 0.0,    2.4, "#||{#eta(e)}"         );
-	_hm -> addVariable("SR_ElIso"     ,   50, 0.0,    1.0, "PF Iso (e)"           );
-	_hm -> addVariable("SR_ElMT"      , 1000, 0.0, 1000.0, "M_T(e) [GeV]"         );
-	_hm -> addVariable("SR_ElPt"      , 1000, 0.0, 1000.0, "P_T(e) [GeV]"         );
-	_hm -> addVariable("SR_MuDXY"     ,   50, 0.0,    0.5, "#||{dxy}(#mu) [cm]"   );
-	_hm -> addVariable("SR_MuEta"     ,  240, 0.0,    2.4, "#||{#eta(#mu)}"       );
-	_hm -> addVariable("SR_MuIso"     ,   50, 0.0,    1.0, "PF Iso (#mu)"         );
-	_hm -> addVariable("SR_MuMT"      , 1000, 0.0, 1000.0, "M_T(#mu) [GeV]"       );
-	_hm -> addVariable("SR_MuPt"      , 1000, 0.0, 1000.0, "P_T(#mu) [GeV]"       );
-	_hm -> addVariable("SR_JetCSVBTag",   50, 0.0,    1.0, "jet CSV B-Tag"        );
-	_hm -> addVariable("SR_JetPt"     , 1000, 0.0, 1000.0, "P_T(jet) [GeV]"       );
+	_hm -> addVariable("SR_LepCharge" ,   20, -10.0,   10.0, "lepton charge"        );
+	_hm -> addVariable("SR_HT"        , 1000,   0.0, 1000.0, "H_T [GeV]"            ); 
+	_hm -> addVariable("SR_MET"       , 1000,   0.0, 1000.0, "#slash{E}_T [GeV]"    );
+	_hm -> addVariable("SR_MLL"       , 1000,   0.0, 1000.0, "m_{ll} [GeV]"         ); 
+	_hm -> addVariable("SR_NBJets"    ,   20,   0.0,   20.0, "b-jet multiplicity"   );
+	_hm -> addVariable("SR_NElectrons",   20,   0.0,   20.0, "electron multiplicity");
+	_hm -> addVariable("SR_NJets"     ,   20,   0.0,   20.0, "jet multiplicity"     );
+	_hm -> addVariable("SR_NLeps"     ,   20,   0.0,   20.0, "lepton multiplicity"  );
+	_hm -> addVariable("SR_NMuons"    ,   20,   0.0,   20.0, "muon multiplicity"    );
+	_hm -> addVariable("SR_NVrtx"     ,   40,   0.0,   40.0, "vertex multiplicity"  );
+	_hm -> addVariable("SR_ElDXY"     ,   50,   0.0,    0.5, "#||{dxy}(e) [cm]"     );
+	_hm -> addVariable("SR_ElEta"     ,  240,   0.0,    2.4, "#||{#eta(e)}"         );
+	_hm -> addVariable("SR_ElIso"     ,   50,   0.0,    1.0, "PF Iso (e)"           );
+	_hm -> addVariable("SR_ElMT"      , 1000,   0.0, 1000.0, "M_T(e) [GeV]"         );
+	_hm -> addVariable("SR_ElPt"      , 1000,   0.0, 1000.0, "P_T(e) [GeV]"         );
+	_hm -> addVariable("SR_MuDXY"     ,   50,   0.0,    0.5, "#||{dxy}(#mu) [cm]"   );
+	_hm -> addVariable("SR_MuEta"     ,  240,   0.0,    2.4, "#||{#eta(#mu)}"       );
+	_hm -> addVariable("SR_MuIso"     ,   50,   0.0,    1.0, "PF Iso (#mu)"         );
+	_hm -> addVariable("SR_MuMT"      , 1000,   0.0, 1000.0, "M_T(#mu) [GeV]"       );
+	_hm -> addVariable("SR_MuPt"      , 1000,   0.0, 1000.0, "P_T(#mu) [GeV]"       );
+	_hm -> addVariable("SR_JetCSVBTag",   50,   0.0,    1.0, "jet CSV B-Tag"        );
+	_hm -> addVariable("SR_JetPt"     , 1000,   0.0, 1000.0, "P_T(jet) [GeV]"       );
 
 }
 
@@ -1228,10 +1230,10 @@ void SUSYSSDL::fillEventPlots(std::string kr){
   	return: none
   	*/
 
+	fill(kr + "_LepCharge" , findCharge("Electron", "Muon")                   , _EventWeight);
 	fill(kr + "_HT"        , HT("GoodJet")                                    , _EventWeight);
 	fill(kr + "_MET"       , _vc -> getF("met_pt")                            , _EventWeight);
 	fill(kr + "_MLL"       , findMLL("Electron", "Muon")                      , _EventWeight);
-	std::cout << "fill " << kr << " " << _NumKinObj["BJet"] << std::endl;
 	fill(kr + "_NBJets"    , _NumKinObj["BJet"]                               , _EventWeight);
 	fill(kr + "_NElectrons", _NumKinObj["Electron"]                           , _EventWeight);
 	fill(kr + "_NJets"     , _NumKinObj["GoodJet"]                            , _EventWeight);
