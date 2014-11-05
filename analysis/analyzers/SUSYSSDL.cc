@@ -68,72 +68,73 @@ void SUSYSSDL::initialize(){
 	*/
 
 
-	_vc -> registerVar("run"            , "I" );
-	_vc -> registerVar("lumi"           , "I" );
-	_vc -> registerVar("event"          , "I" );
-	_vc -> registerVar("HLT_SingleMu"   , "I" );
-	_vc -> registerVar("HLT_MuEG"       , "I" );
-	_vc -> registerVar("HLT_TripleEl"   , "I" );
-	_vc -> registerVar("HLT_DoubleEl"   , "I" );
-	_vc -> registerVar("HLT_DoubleMu"   , "I" );
-	_vc -> registerVar("nVert"          , "I" );
-	_vc -> registerVar("nTrueInt"       , "I" );
-	_vc -> registerVar("puWeight"       , "F" );
-	_vc -> registerVar("genWeight"      , "F" );
-	_vc -> registerVar(_lepnum          , "I" );
-	_vc -> registerVar(_lep + "_pt"         , "AF");
-	_vc -> registerVar(_lep + "_eta"        , "AF");
-	_vc -> registerVar(_lep + "_phi"        , "AF");
-	_vc -> registerVar(_lep + "_charge"     , "AI");
-	_vc -> registerVar(_lep + "_pdgId"      , "AI");
-	_vc -> registerVar(_lep + "_relIso03"   , "AF");
-	_vc -> registerVar(_lep + "_relIso04"   , "AF");
-	_vc -> registerVar(_lep + "_dxy"        , "AF");
-	_vc -> registerVar(_lep + "_dz"         , "AF");
-	_vc -> registerVar(_lep + "_tightId"    , "AI");
-	_vc -> registerVar(_lep + "_looseIdSusy", "AI");
+	_vc -> registerVar("run"                          , "I" );
+	_vc -> registerVar("lumi"                         , "I" );
+	_vc -> registerVar("event"                        , "I" );
+	_vc -> registerVar("HLT_SingleMu"                 , "I" );
+	_vc -> registerVar("HLT_MuEG"                     , "I" );
+	_vc -> registerVar("HLT_TripleEl"                 , "I" );
+	_vc -> registerVar("HLT_DoubleEl"                 , "I" );
+	_vc -> registerVar("HLT_DoubleMu"                 , "I" );
+	_vc -> registerVar("nVert"                        , "I" );
+	_vc -> registerVar("nTrueInt"                     , "I" );
+	_vc -> registerVar("puWeight"                     , "F" );
+	_vc -> registerVar("genWeight"                    , "F" );
+	_vc -> registerVar(_lepnum                        , "I" );
+	_vc -> registerVar(_lep + "_pt"                   , "AF");
+	_vc -> registerVar(_lep + "_eta"                  , "AF");
+	_vc -> registerVar(_lep + "_phi"                  , "AF");
+	_vc -> registerVar(_lep + "_charge"               , "AI");
+	_vc -> registerVar(_lep + "_pdgId"                , "AI");
+	_vc -> registerVar(_lep + "_relIso03"             , "AF");
+	_vc -> registerVar(_lep + "_relIso04"             , "AF");
+	_vc -> registerVar(_lep + "_dxy"                  , "AF");
+	_vc -> registerVar(_lep + "_dz"                   , "AF");
+	_vc -> registerVar(_lep + "_tightId"              , "AI");
+	_vc -> registerVar(_lep + "_looseIdSusy"          , "AI");
 	_vc -> registerVar(_lep + "_eleCutIdCSA14_50ns_v1", "AI");
-	//_vc -> registerVar("nel"           , "I" );
-	//_vc -> registerVar("el_pt"         , "AF");
-	//_vc -> registerVar("el_eta"        , "AF");
-	//_vc -> registerVar("el_phi"        , "AF");
-	//_vc -> registerVar("el_charge"     , "AI");
-	//_vc -> registerVar("el_pdgId"      , "AI");
-	//_vc -> registerVar("el_relIso03"   , "AF");
-	//_vc -> registerVar("el_relIso04"   , "AF");
-	//_vc -> registerVar("el_dxy"        , "AF");
-	//_vc -> registerVar("el_dz"         , "AF");
-	//_vc -> registerVar("el_tightId"    , "AI");
-	//_vc -> registerVar("el_looseIdSusy", "AI");
-	//_vc -> registerVar("nmu"           , "I" );
-	//_vc -> registerVar("mu_pt"         , "AF");
-	//_vc -> registerVar("mu_eta"        , "AF");
-	//_vc -> registerVar("mu_phi"        , "AF");
-	//_vc -> registerVar("mu_charge"     , "AI");
-	//_vc -> registerVar("mu_pdgId"      , "AI");
-	//_vc -> registerVar("mu_relIso03"   , "AF");
-	//_vc -> registerVar("mu_relIso04"   , "AF");
-	//_vc -> registerVar("mu_dxy"        , "AF");
-	//_vc -> registerVar("mu_dz"         , "AF");
-	//_vc -> registerVar("mu_tightId"    , "AI");
-	//_vc -> registerVar("mu_looseIdSusy", "AI");
-	_vc -> registerVar("met_pt"         , "F" );
-	_vc -> registerVar("met_eta"        , "F" );
-	_vc -> registerVar("met_phi"        , "F" );
-	_vc -> registerVar("met_mass"       , "F" );
-	_vc -> registerVar(_jetnum          , "I" ); 
-	_vc -> registerVar(_jet + "_pt"         , "AF"); 
-	_vc -> registerVar(_jet + "_rawPt"      , "AF"); 
-	_vc -> registerVar(_jet + "_eta"        , "AF"); 
-	_vc -> registerVar(_jet + "_phi"        , "AF"); 
-	_vc -> registerVar(_jet + "_mass"       , "AF"); 
-	_vc -> registerVar(_jet + "_btagCSV"    , "AF");
+	_vc -> registerVar(_lep + "_mvaNew"               , "AF");
+	//_vc -> registerVar("nel"                          , "I" );
+	//_vc -> registerVar("el_pt"                        , "AF");
+	//_vc -> registerVar("el_eta"                       , "AF");
+	//_vc -> registerVar("el_phi"                       , "AF");
+	//_vc -> registerVar("el_charge"                    , "AI");
+	//_vc -> registerVar("el_pdgId"                     , "AI");
+	//_vc -> registerVar("el_relIso03"                  , "AF");
+	//_vc -> registerVar("el_relIso04"                  , "AF");
+	//_vc -> registerVar("el_dxy"                       , "AF");
+	//_vc -> registerVar("el_dz"                        , "AF");
+	//_vc -> registerVar("el_tightId"                   , "AI");
+	//_vc -> registerVar("el_looseIdSusy"               , "AI");
+	//_vc -> registerVar("nmu"                          , "I" );
+	//_vc -> registerVar("mu_pt"                        , "AF");
+	//_vc -> registerVar("mu_eta"                       , "AF");
+	//_vc -> registerVar("mu_phi"                       , "AF");
+	//_vc -> registerVar("mu_charge"                    , "AI");
+	//_vc -> registerVar("mu_pdgId"                     , "AI");
+	//_vc -> registerVar("mu_relIso03"                  , "AF");
+	//_vc -> registerVar("mu_relIso04"                  , "AF");
+	//_vc -> registerVar("mu_dxy"                       , "AF");
+	//_vc -> registerVar("mu_dz"                        , "AF");
+	//_vc -> registerVar("mu_tightId"                   , "AI");
+	//_vc -> registerVar("mu_looseIdSusy"               , "AI");
+	_vc -> registerVar("met_pt"                       , "F" );
+	_vc -> registerVar("met_eta"                      , "F" );
+	_vc -> registerVar("met_phi"                      , "F" );
+	_vc -> registerVar("met_mass"                     , "F" );
+	_vc -> registerVar(_jetnum                        , "I" ); 
+	_vc -> registerVar(_jet + "_pt"                   , "AF"); 
+	_vc -> registerVar(_jet + "_rawPt"                , "AF"); 
+	_vc -> registerVar(_jet + "_eta"                  , "AF"); 
+	_vc -> registerVar(_jet + "_phi"                  , "AF"); 
+	_vc -> registerVar(_jet + "_mass"                 , "AF"); 
+	_vc -> registerVar(_jet + "_btagCSV"              , "AF");
 
 	//generator informations
-	_vc -> registerVar("ngenLep"       , "I");
-	_vc -> registerVar("genLep_eta"    , "AF");
-	_vc -> registerVar("genLep_phi"    , "AF");
-	_vc -> registerVar("genLep_pdgId"  , "AI");
+	_vc -> registerVar("ngenLep"                      , "I" );
+	_vc -> registerVar("genLep_eta"                   , "AF");
+	_vc -> registerVar("genLep_phi"                   , "AF");
+	_vc -> registerVar("genLep_pdgId"                 , "AI");
 
 
 
@@ -502,17 +503,18 @@ bool SUSYSSDL::electronSelection(int elIdx){
   	return: true (if the electron is an electron), false (else)
   	*/
 
-  counter("ElectronDenominator", kElId);
+	counter("ElectronDenominator", kElId);
 
 	float pt_cut = 10.;
 	if(_PT == "highpt") pt_cut = 20.;
 
-	if(!makeCut<int>(       _vc -> getI(_lep + "_eleCutIdCSA14_50ns_v1", elIdx) ,  3     , ">=", "POG CB WP-M Id ", 0    , kElId)) return false;
-	if(!makeCut<float>(     _vc -> getF(_lep + "_pt"     , elIdx) , pt_cut , ">", "pt selection"     , 0    , kElId)) return false;
-	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  2.4   , "<", "eta selection"    , 0    , kElId)) return false;
-	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  1.4442, "[!]", "eta selection"  , 1.566, kElId)) return false;
-	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dz"     , elIdx)),  0.2   , "<", "dz selection"     , 0    , kElId)) return false;
-	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dxy"    , elIdx)),  0.01  , "<", "dxy selection"    , 0    , kElId)) return false;
+	if(!makeCut<int>(       _vc -> getI(_lep + "_eleCutIdCSA14_50ns_v1", elIdx) ,  3     , ">=" , "POG CB WP-M Id ", 0    , kElId)) return false;
+	//if(!makeCut<int>(       _vc -> getI(_lep + "_mvaNew"               , elIdx) ,  0.93  , ">=" , "POG MVA Id "    , 0    , kElId)) return false;
+	if(!makeCut<float>(     _vc -> getF(_lep + "_pt"                   , elIdx) , pt_cut , ">"  , "pt selection"   , 0    , kElId)) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"                  , elIdx)),  2.4   , "<"  , "eta selection"  , 0    , kElId)) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"                  , elIdx)),  1.4442, "[!]", "eta selection"  , 1.566, kElId)) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dz"                   , elIdx)),  0.2   , "<"  , "dz selection"   , 0    , kElId)) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dxy"                  , elIdx)),  0.01  , "<"  , "dxy selection"  , 0    , kElId)) return false;
 
 	return true;
 
@@ -551,13 +553,13 @@ bool SUSYSSDL::vetoElectronSelection(int elIdx){
   	return: true (if the electron is a veto electron), false (else)
   	*/
 
-  counter("vetoElDenominator", kElVeto);
+	counter("vetoElDenominator", kElVeto);
 
 	if(!makeCut(!electronSelection(elIdx), "no veto electron", "=", kElVeto) ) return false;
 
-	if(!makeCut<int>(       _vc -> getI(_lep + "_eleCutIdCSA14_50ns_v1", elIdx) ,  3     , ">=", "POG CB WP-M Id ", 0    , kElVeto)) return false;
-	//if(!makeCut<int>(   _vc -> getI(_lep + "_tightId", elIdx), 1  , "=", "POG MVA Tight Id", 0, kElVeto ) ) return false;
-	if(!makeCut<float>( _vc -> getF(_lep + "_pt"     , elIdx), 5.0, ">", "pt selection"    , 0, kElVeto ) ) return false;
+	if(!makeCut<int>(   _vc -> getI(_lep + "_eleCutIdCSA14_50ns_v1", elIdx), 3.0 , ">=", "POG CB WP-M Id ", 0, kElVeto)) return false;
+	//if(!makeCut<int>(   _vc -> getI(_lep + "_mvaNew"               , elIdx), 0.93, ">=", "POG MVA Id "    , 0, kElVeto)) return false;
+	if(!makeCut<float>( _vc -> getF(_lep + "_pt"                   , elIdx), 5.0 , ">" , "pt selection"   , 0, kElVeto)) return false;
   
 	return true;
 

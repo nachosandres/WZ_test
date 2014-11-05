@@ -24,14 +24,14 @@
   
   //observables **********************
   //string obs[6]={"","","","","",""};
-    md.dp.setObservables("BR_MET");
+    md.dp.setObservables("BR_HT");
 
   //Binning & title ************************* Binning & titre
   string yTitle="number of events";
   int binning=40;
   int addBinBkg=1; //BinB = binning*AddBin
-  double rangeY[2]={0,0};
-  double rangeX[2]={80.,250.};
+  double rangeY[2]={0,};
+  double rangeX[2]={240.,600.};
   int xDiv[3]={8,6,0};
   int yDiv[3]={6,6,0}; //Nlabel /  sous-Div /ssdiv
   bool logYScale=false;
@@ -80,44 +80,45 @@
   //LumisXS[ "WJetsToLNu_HT600toInf_PU_S14_POSTLS170fake" ]=  246396.2;
   //LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170fake" ]=  59873.5; 
   
-  LumisXS[ "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimfake" ]=  20911.8;
-  LumisXS[ "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimfake" ]=  176031.2;
-  LumisXS[ "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimfake" ]= 757009.6;
-  LumisXS[ "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimfake" ]=   2072135.3;
-  LumisXS[ "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skimfake" ]=  2811.0;
-  LumisXS[ "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skimfake" ]=  10421.0;
-  LumisXS[ "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skimfake" ]=  83347.9;
-  LumisXS[ "WJetsToLNu_HT600toInf_PU_S14_POSTLS170_skimfake" ]=  246396.2;
-  LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimfake" ]=  59873.5; 
+  LumisXS[ "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimfake"       ] = 4063169  / ( 194.3   * 1.27);
+  LumisXS[ "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimfake"       ] = 9195870  / (  52.24  * 1.27);
+  LumisXS[ "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimfake"       ] = 4955385  / (   6.546 * 1.27);
+  LumisXS[ "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimfake"       ] = 4515183  / (   2.179 * 1.27);
+  LumisXS[ "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skimfake"      ] = 5107581  / (1817.0   * 1.23);
+  LumisXS[ "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skimfake"      ] = 4914555  / ( 471.6   * 1.23); 
+  LumisXS[ "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skimfake"      ] = 4634976  / (  55.61  * 1.23);
+  LumisXS[ "WJetsToLNu_HT600toInf_PU_S14_POSTLS170_skimfake"      ] = 4634714  / (  18.81  * 1.23);
+  LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimfake" ] = 25416280 / 809.1;
 
-  LumisXS[ "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimmisId" ]=  20911.8;
-  LumisXS[ "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimmisId" ]=  176031.2;
-  LumisXS[ "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimmisId" ]= 757009.6;
-  LumisXS[ "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimmisId" ]=   2072135.3;
-  LumisXS[ "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skimmisId" ]=  2811.0;
-  LumisXS[ "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skimmisId" ]=  10421.0;
-  LumisXS[ "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skimmisId" ]=  83347.9;
-  LumisXS[ "WJetsToLNu_HT600toInf_PU_S14_POSTLS170_skimmisId" ]=  246396.2;
-  LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimmisId" ]=  59873.5; 
+  LumisXS[ "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimmisId"       ] = 4063169  / ( 194.3   * 1.27);
+  LumisXS[ "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimmisId"       ] = 9195870  / (  52.24  * 1.27);
+  LumisXS[ "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimmisId"       ] = 4955385  / (   6.546 * 1.27);
+  LumisXS[ "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimmisId"       ] = 4515183  / (   2.179 * 1.27);
+  LumisXS[ "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skimmisId"      ] = 5107581  / (1817.0   * 1.23);
+  LumisXS[ "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skimmisId"      ] = 4914555  / ( 471.6   * 1.23); 
+  LumisXS[ "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skimmisId"      ] = 4634976  / (  55.61  * 1.23);
+  LumisXS[ "WJetsToLNu_HT600toInf_PU_S14_POSTLS170_skimmisId"      ] = 4634714  / (  18.81  * 1.23);
+  LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimmisId" ] = 25416280 / 809.1;
+  
+  LumisXS[ "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimprompt"       ] = 4063169  / ( 194.3   * 1.27);
+  LumisXS[ "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimprompt"       ] = 9195870  / (  52.24  * 1.27);
+  LumisXS[ "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimprompt"       ] = 4955385  / (   6.546 * 1.27);
+  LumisXS[ "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimprompt"       ] = 4515183  / (   2.179 * 1.27);
+  LumisXS[ "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skimprompt"      ] = 5107581  / (1817.0   * 1.23);
+  LumisXS[ "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skimprompt"      ] = 4914555  / ( 471.6   * 1.23); 
+  LumisXS[ "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skimprompt"      ] = 4634976  / (  55.61  * 1.23);
+  LumisXS[ "WJetsToLNu_HT600toInf_PU_S14_POSTLS170_skimprompt"      ] = 4634714  / (  18.81  * 1.23);
+  LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimprompt" ] = 25416280 / 809.1;
+  
+  LumisXS[ "TTHnlo_S14_skim"                  ] = 213300 / 0.5085;
+  LumisXS[ "TTWJets_S14_skim"                 ] = 249415 / 0.6647;
+  LumisXS[ "TTZJets_S14_skim"                 ] = 249275 / 0.8565;
 
-  LumisXS[ "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimprompt" ]=  20911.8;
-  LumisXS[ "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimprompt" ]=  176031.2;
-  LumisXS[ "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimprompt" ]= 757009.6;
-  LumisXS[ "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimprompt" ]=   2072135.3;
-  LumisXS[ "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skimprompt" ]=  2811.0;
-  LumisXS[ "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skimprompt" ]=  10421.0;
-  LumisXS[ "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skimprompt" ]=  83347.9;
-  LumisXS[ "WJetsToLNu_HT600toInf_PU_S14_POSTLS170_skimprompt" ]=  246396.2;
-  LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimprompt" ]=  59873.5; 
+  LumisXS[ "T1tttt2J_6_PU_S14_POSTLS170_skim" ] = 105679 / (0.0141903 * 50) ; //CH: arbitrary rescaling (50) to make it visible
+  LumisXS[ "T1tttt2J_7_PU_S14_POSTLS170_skim" ] = 100322 / (0.0856418 * 50) ; //CH: arbitrary rescaling (50) to make it visible
+  LumisXS[ "T5Full_1200_1000_800_skim"        ] = 121497 / (0.0856418 * 50) ; //CH: arbitrary rescaling (50) to make it visible
+  LumisXS[ "T5Full_1500_800_100_skim"         ] = 127139 / (0.0141903 * 50) ; //CH: arbitrary rescaling (50) to make it visible
 
-  LumisXS[ "T1tttt2J_6_PU_S14_POSTLS170_skim" ]=105679 / 0.0141903 * 100; //CH: arbitrary rescaling (100) to make it visible
-  LumisXS[ "T1tttt2J_7_PU_S14_POSTLS170_skim" ]=100322 / 0.0856418 * 100; //CH: arbitrary rescaling (100) to make it visible
-  //LumisXS[ "T2tt_S14_skim" ]=1034154 /1.31169;
-  LumisXS[ "T5Full_1200_1000_800_skim" ]= 121497 / 0.0856418 * 100; //CH: arbitrary rescaling (100) to make it visible
-  LumisXS[ "T5Full_1500_800_100_skim" ]= 127139 / 0.0141903 * 100; //CH: arbitrary rescaling (100) to make it visible
-  LumisXS[ "TTHnlo_S14_skim" ] = 213300 / 0.5085  ;
-  LumisXS[ "TTWJets_S14_skim" ] = 249415 / 1.152;
-  LumisXS[ "TTZJets_S14_skim" ] = 249275 / 2.232 ;
   
 
   //via XSect
@@ -169,14 +170,13 @@
   //md.anConf.addSample( "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimprompt",            "t#bar{t}/EWK prompt", kOrange+7 );
   //md.anConf.addSample( "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimprompt",            "t#bar{t}/EWK prompt", kOrange+7 );
   
-  md.anConf.addSample( "TTHnlo_S14_skim",             "Rare",    kOrange-2 );
-  md.anConf.addSample( "TTWJets_S14_skim",             "Rare",    kOrange-2 );
-  md.anConf.addSample( "TTZJets_S14_skim",             "Rare",    kOrange-2 );
-  md.anConf.addSample( "T1tttt2J_7_PU_S14_POSTLS170_skim",        "T1tttt(HM) sig",    kGreen+2 );
-  md.anConf.addSample( "T1tttt2J_6_PU_S14_POSTLS170_skim",        "T1tttt(HL) sig",    kGreen+2 );
-  //md.anConf.addSample( "T2tt_S14_skim",                         "T2tt sig",    kGreen+2 );
-  md.anConf.addSample( "T5Full_1200_1000_800_skim",               "T5WW(HM) sig",    kGreen+2 );
-  md.anConf.addSample( "T5Full_1500_800_100_skim",                "T5WW(HL) sig",    kGreen+2 );
+  md.anConf.addSample( "TTHnlo_S14_skim"                                      ,  "Rare"          , kOrange-2 );
+  md.anConf.addSample( "TTWJets_S14_skim"                                     ,  "Rare"          , kOrange-2 );
+  md.anConf.addSample( "TTZJets_S14_skim"                                     ,  "Rare"          , kOrange-2 );
+  md.anConf.addSample( "T1tttt2J_7_PU_S14_POSTLS170_skim"                     ,  "T1tttt(HM) sig", kGreen    );
+  md.anConf.addSample( "T1tttt2J_6_PU_S14_POSTLS170_skim"                     ,  "T1tttt(HL) sig", kGreen-3  );
+  md.anConf.addSample( "T5Full_1200_1000_800_skim"                            ,  "T5WW(HM) sig"  , kGreen-1  );
+  md.anConf.addSample( "T5Full_1500_800_100_skim"                             ,  "T5WW(HL) sig"  , kGreen+4  );
 
   // }
  //===============================================================
@@ -202,7 +202,7 @@
  			mcOnly,cmsPrel, uncDet);
 
  md.doPlot();
- md.savePlot("SUSYSSDL");
+ md.savePlot("SUSYSSDL_cut_lowpt");
  // md.dp.addText(xt,yt,st,addText);
 
 }
