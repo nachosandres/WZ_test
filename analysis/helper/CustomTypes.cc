@@ -14,7 +14,7 @@
 #define CUSTOMTYPES_HH
 
 #include <TString.h>
-
+#include <string.h>
 
 
 
@@ -24,7 +24,7 @@
 ******************************************************************************
 *****************************************************************************/
 
-typedef TString Label;
+typedef std::string Label;
 
 
 
