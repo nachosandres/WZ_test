@@ -273,12 +273,14 @@ void SUSYSSDL::defineOutput(){
 	_hm -> addVariable("BR_NMuons"    ,   20,   0.0,   20.0, "muon multiplicity"    );
 	_hm -> addVariable("BR_NVrtx"     ,   40,   0.0,   40.0, "vertex multiplicity"  );
 	_hm -> addVariable("BR_ElDXY"     ,   50,   0.0,    0.5, "#||{dxy}(e) [cm]"     );
-	_hm -> addVariable("BR_ElEta"     ,  240,   0.0,    2.4, "#||{#eta(e)}"         );
+	_hm -> addVariable("BR_ElAbsEta"  ,  240,   0.0,    2.4, "#||{#eta(e)}"         );
+	_hm -> addVariable("BR_ElEta"     ,  480,  -2.4,    2.4, "#eta(e)"              );
 	_hm -> addVariable("BR_ElIso"     ,   50,   0.0,    1.0, "PF Iso (e)"           );
 	_hm -> addVariable("BR_ElMT"      , 1000,   0.0, 1000.0, "M_T(e) [GeV]"         );
 	_hm -> addVariable("BR_ElPt"      , 1000,   0.0, 1000.0, "P_T(e) [GeV]"         );
 	_hm -> addVariable("BR_MuDXY"     ,   50,   0.0,    0.5, "#||{dxy}(#mu) [cm]"   );
-	_hm -> addVariable("BR_MuEta"     ,  240,   0.0,    2.4, "#||{#eta(#mu)}"       );
+	_hm -> addVariable("BR_MuAbsEta"  ,  240,   0.0,    2.4, "#||{#eta(#mu)}"       );
+	_hm -> addVariable("BR_MuEta"     ,  480,  -2.4,    2.4, "#eta(#mu)"            );
 	_hm -> addVariable("BR_MuIso"     ,   50,   0.0,    1.0, "PF Iso (#mu)"         );
 	_hm -> addVariable("BR_MuMT"      , 1000,   0.0, 1000.0, "M_T(#mu) [GeV]"       );
 	_hm -> addVariable("BR_MuPt"      , 1000,   0.0, 1000.0, "P_T(#mu) [GeV]"       );
@@ -421,59 +423,71 @@ bool SUSYSSDL::goodJetSelection(int jetIdx){
   	return: true (if the jet is good), false (else)
   	*/
 
-	float min_dR = 0.4;
 	float jet_pt = (_JEC == 1 ? _vc -> getF(_jet + "_pt", jetIdx) : _vc -> getF(_jet + "_rawPt", jetIdx));
 
 	counter("JetDenominator", kJetId);
 
-	if(!makeCut<float>(jet_pt                              , 40.0, ">", "pt selection" , 0, kJetId) ) return false;
+	if(!makeCut<float>(jet_pt                                  , 40.0, ">", "pt selection" , 0, kJetId) ) return false;
 	if(!makeCut<float>(fabs(_vc -> getF(_jet + "_eta", jetIdx)),  2.4, "<", "eta selection", 0, kJetId) ) return false;
 
 
-	// this is the implementation of jet lepton cleaning
-	// maybe we find a better way => matthieu's library?
+	// CH: here we require dR(j, selected lep) > 0.4, which
+	// makes jet-lepton cleaning obsolete
+	for(int el = 0; el < _NumKinObj["Electron"]; ++el){
+		float dr = Tools::dR(_vc -> getF(_lep + "_eta", _KinObj["Electron"][el]), _vc -> getF(_jet + "_eta", jetIdx), _vc -> getF(_lep + "_phi", _KinObj["Electron"][el]), _vc -> getF(_jet + "_phi", jetIdx));
+		if(!makeCut<float>(dr, 0.4, ">", "dR selection (el)", 0, kJetId) ) return false;
+	}	
 
-	bool is_closest = false;
-		
-	// clean w/r/t loose electrons
-	for(int el = 0; el < _NumKinObj["Electrons"]; ++el){
-						
-		float closest_dr  = 99.;
-		int   closest_jet =  -1;
-		
-		for(int jet = 0; jet < _vc -> getI(_jetnum); ++jet){
-			float dr = Tools::dR(_vc -> getF(_lep + "_eta", _KinObj["Electrons"][el]), _vc -> getF(_jet + "_eta", jet), _vc -> getF(_lep + "_phi", _KinObj["Electrons"][el]), _vc -> getF(_jet + "_phi", jet));
-			if(dr < closest_dr) {
-				closest_dr  = dr;
-				closest_jet = jet;
-			}
-		}
-		
-		if(closest_jet == jetIdx && closest_dr < min_dR) is_closest = true;
-	
+	for(int mu = 0; mu < _NumKinObj["Muon"]; ++mu){
+		float dr = Tools::dR(_vc -> getF(_lep + "_eta", _KinObj["Muon"][mu]), _vc -> getF(_jet + "_eta", jetIdx), _vc -> getF(_lep + "_phi", _KinObj["Muon"][mu]), _vc -> getF(_jet + "_phi", jetIdx)); 
+		if(!makeCut<float>(dr, 0.4, ">", "dR selection (mu)", 0, kJetId) ) return false;
 	}
 
-	if(makeCut(is_closest, "jet-lepton cleaning (el)", "=", kJetId)) return false;
-	
-	// clean w/r/t loose muons 
-	for(int mu = 0; mu < _NumKinObj["Muons"]; ++mu){
-		
-		float closest_dr  = 99.; 
-		int   closest_jet =  -1; 
-		
-		for(int jet = 0; jet < _vc -> getI(_jetnum); ++jet){ 
-			float dr = Tools::dR(_vc -> getF(_lep + "_eta", _KinObj["Muons"][mu]), _vc -> getF(_jet + "_eta", jet), _vc -> getF(_lep + "_phi", _KinObj["Muons"][mu]), _vc -> getF(_jet + "_phi", jet)); 
-			if(dr < closest_dr) { 
-				closest_dr  = dr; 
-				closest_jet = jet; 
-			} 
-		} 
-		
-		if(closest_jet == jetIdx && closest_dr < min_dR) is_closest = true; 
-	
-	} 
-		
-	if(makeCut(is_closest, "jet-lepton cleaning (mu)", "=", kJetId)) return false;
+
+	// CH: this is the implementation of jet lepton cleaning
+	// maybe we find a better way => matthieu's library?
+
+//	bool is_closest = false;
+//		
+//	// clean w/r/t loose electrons
+//	for(int el = 0; el < _NumKinObj["Electron"]; ++el){
+//						
+//		float closest_dr  = 99.;
+//		int   closest_jet =  -1;
+//		
+//		for(int jet = 0; jet < _vc -> getI(_jetnum); ++jet){
+//			float dr = Tools::dR(_vc -> getF(_lep + "_eta", _KinObj["Electron"][el]), _vc -> getF(_jet + "_eta", jet), _vc -> getF(_lep + "_phi", _KinObj["Electrons"][el]), _vc -> getF(_jet + "_phi", jet));
+//			if(dr < closest_dr) {
+//				closest_dr  = dr;
+//				closest_jet = jet;
+//			}
+//		}
+//		
+//		if(closest_jet == jetIdx && closest_dr < min_dR) is_closest = true;
+//	
+//	}
+//
+//	if(makeCut(is_closest, "jet-lepton cleaning (el)", "=", kJetId)) return false;
+//	
+//	// clean w/r/t loose muons 
+//	for(int mu = 0; mu < _NumKinObj["Muon"]; ++mu){
+//		
+//		float closest_dr  = 99.; 
+//		int   closest_jet =  -1; 
+//		
+//		for(int jet = 0; jet < _vc -> getI(_jetnum); ++jet){ 
+//			float dr = Tools::dR(_vc -> getF(_lep + "_eta", _KinObj["Muon"][mu]), _vc -> getF(_jet + "_eta", jet), _vc -> getF(_lep + "_phi", _KinObj["Muon"][mu]), _vc -> getF(_jet + "_phi", jet)); 
+//			if(dr < closest_dr) { 
+//				closest_dr  = dr; 
+//				closest_jet = jet; 
+//			} 
+//		} 
+//		
+//		if(closest_jet == jetIdx && closest_dr < min_dR) is_closest = true; 
+//	
+//	} 
+//		
+//	if(makeCut(is_closest, "jet-lepton cleaning (mu)", "=", kJetId)) return false;
 
 	return true;
 
@@ -1007,12 +1021,11 @@ bool SUSYSSDL::baseSelection(){
 	
 	bool is_3l_event = vetoEventSelection("Electron", "Muon");
 	bool is_ss_event = ssEventSelection  ("Electron", "Muon");
-	bool is_lowpt_event = lowptEventSelection("Electron", "Muon");
-
+	//bool is_lowpt_event = lowptEventSelection("Electron", "Muon");
 
 	if(!makeCut( is_ss_event , "same-sign selection", "=") ) return false;
 	if(!makeCut( !is_3l_event, "veto on 3 leptons"  , "=") ) return false;
-	if(_PT == "lowpt" && !makeCut( is_lowpt_event, "lowpt 20-10 leptons", "=") ) return false;
+	//if(_PT == "lowpt" && !makeCut( is_lowpt_event, "lowpt 20-10 leptons", "=") ) return false;
 	
 	if(!makeCut<float>( findMLL("Electron", "Muon"), 8.0, ">", "MLL selection") ) return false;
 
