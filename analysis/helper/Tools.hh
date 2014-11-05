@@ -199,26 +199,26 @@ namespace Tools {
 	}
 
 	//____________________________________________________________________________
-	template<typename ValueType> std::map<Label, ValueType> GetSubSetOfMapByKeys(std::map<Label, ValueType> map, Label keys_beginning){
-		/*
-		selects a subset of a map according to a list of given keys
-		parameters: map (the parent map), keys (the vector of keys)
-		return: subset of map containing only elements whose keys are in keys
-		*/
+	// template<typename ValueType> std::map<Label, ValueType> GetSubSetOfMapByKeys(std::map<Label, ValueType> map, Label keys_beginning){
+	// 	/*
+	// 	selects a subset of a map according to a list of given keys
+	// 	parameters: map (the parent map), keys (the vector of keys)
+	// 	return: subset of map containing only elements whose keys are in keys
+	// 	*/
 	
-		std::map<Label, ValueType> result;
-		typename std::map<Label, ValueType>::iterator i;
+	// 	std::map<Label, ValueType> result;
+	// 	typename std::map<Label, ValueType>::iterator i;
 		
-		for(i = map.begin(); i != map.end(); ++i)
-			if(i -> first(0, keys_beginning.Length()) == keys_beginning)
-				result[i -> first] = map[i -> first];
+	// 	for(i = map.begin(); i != map.end(); ++i)
+	// 	  if(i -> first(0, (Tstring)(keys_beginning).Length()) == keys_beginning)
+	// 			result[i -> first] = map[i -> first];
 	
-		return result;
+	// 	return result;
 	
-	}
+	// }
 	
 	
-	//____________________________________________________________________________
+	//___________________________________________________________ _________________
 	template<typename ValueType> std::map<Label, ValueType> GetSubSetOfMapByKeys(std::map<Label, ValueType> map, std::vector<Label> keys){
 		/*
 		selects a subset of a map according to a list of given keys
