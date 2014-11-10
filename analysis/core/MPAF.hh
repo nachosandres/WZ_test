@@ -139,7 +139,7 @@ protected:
   template < typename T > void addSkimBranch(string name,T* val) {
     _skimTree->Branch( name.c_str(), val );
   };
-  void fillSkimTree() { _skimTree->Fill();};
+  void fillSkimTree() { if(_skim) _skimTree->Fill();};
 
 
 	// Private Non-Template Methods

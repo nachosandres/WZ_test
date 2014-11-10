@@ -11,7 +11,7 @@ for is in ${SAMPLES[@]}; do
 		sed -i 's|SAMPLE|'$is'|' cfg/tmpFiles/susy_${sr}_${is}_${pt}.cfg
 		#sed -i 's|YYY|'$N'|' cfg/tmpFiles/susy_${sr}.cfg
 		
-		qsub -q all.q -N MPAFjob -o /shome/cheidegg/MPAF/workdir/logs/log_${sr}_${is}_${pt}.out -e /shome/cheidegg/MPAF/workdir/logs/log_${sr}_${is}_${pt}.err /shome/cheidegg/MPAF/scripts/submit.sh /shome/cheidegg/MPAF/cfg/tmpFiles/susy_${sr}_${is}_${pt}.cfg
+		qsub -q all.q -N MPAFjob -o $MPAF/workdir/logs/log_${sr}_${is}_${pt}.out -e $MPAF/workdir/logs/log_${sr}_${is}_${pt}.err $MPAF/scripts/submit.sh $MPAF/cfg/tmpFiles/susy_${sr}_${is}_${pt}.cfg
 	
 
 done

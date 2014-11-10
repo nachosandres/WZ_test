@@ -2385,6 +2385,9 @@ Display::computeSystematics(bool isProf, bool cumul) {
 	TH1* htmp=(TH1*) _hClonesNoStack[ids]->Clone();
 	//	HistoUtils::changeToDiffHisto(htmp);
 	
+	if(((string)htmp->GetName()).find("sig")!=(size_t)-1
+	   && !_noStack) continue;
+
 	y += htmp->GetBinContent(ib);
 	
 	if(((string)htmp->GetName()).find("_DD")==(size_t)-1)
