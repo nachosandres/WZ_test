@@ -11,7 +11,7 @@
 
 
   //general parameters ********************* general parameters
-  string dir="SUSYSSDL";
+  string dir="SUSYSSDL_cut";
   string fileName="susy_lowpt"; //was treeName in LUNE
   string hName="";
  

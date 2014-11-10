@@ -522,7 +522,7 @@ bool SUSYSSDL::electronSelection(int elIdx){
 	//if(!makeCut<int>(       _vc -> getI(_lep + "_eleCutIdCSA14_50ns_v1", elIdx) ,  3     , ">=", "POG CB WP-M Id ", 0    , kElId)) return false;
 	//if(!makeCut<float>(     _vc -> getF(_lep + "_relIso03", elIdx),  0.1   , "<", "Isolation "       , 0    , kElId)) return false;
 	if(!makeCut<int>(       _vc -> getI(_lep + "_tightCharge", elIdx) , 1 , ">", "charge selection"  , 0    , kElId)) return false;
-	if(!makeCut(( _vc -> getI(_lep + "_convVeto", elIdx) > 0 + _vc -> getI(_lep + "_lostHits", elIdx)) == 0, "conversion rejection", "=", kElId)) return false;
+	if(!makeCut( _vc -> getI(_lep + "_convVeto", elIdx) > 0 && _vc -> getI(_lep + "_lostHits", elIdx) == 0, "conversion rejection", "=", kElId)) return false;
 	if(!makeCut<float>(     _vc -> getF(_lep + "_pt"     , elIdx) , pt_cut , ">", "pt selection"     , 0    , kElId)) return false;
 	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  2.4   , "<", "eta selection"    , 0    , kElId)) return false;
 	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  1.4442, "[!]", "eta selection"  , 1.566, kElId)) return false;
@@ -549,7 +549,7 @@ bool SUSYSSDL::muonSelection(int muIdx){
 
 	if(!makeCut<int>(       _vc -> getI(_lep + "_tightId", muIdx) ,  1    , "=", "POG Tight Id ", 0, kMuId)) return false;
 	if(!makeCut<float>(     _vc -> getF(_lep + "_relIso03", muIdx),  0.1  , "<", "Isolation "   , 0, kMuId)) return false;
-	if(!makeCut<int>(       _vc -> getI(_lep + "_tightCharge", muIdx), 1 , ">", "charge selection"  , 0    , kMuId)) return false;
+	//if(!makeCut<int>(       _vc -> getI(_lep + "_tightCharge", muIdx), 1 , ">", "charge selection"  , 0    , kMuId)) return false;
 	if(!makeCut<float>(     _vc -> getF(_lep + "_pt"     , muIdx) , pt_cut, ">", "pt selection" , 0, kMuId)) return false;
 	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , muIdx)),  2.4  , "<", "eta selection", 0, kMuId)) return false;
 	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_dz"     , muIdx)),  0.1  , "<", "dz selection" , 0, kMuId)) return false;
@@ -573,11 +573,11 @@ bool SUSYSSDL::vetoElectronSelection(int elIdx){
 	//MM: not needed anymore
 	//if(!makeCut(!electronSelection(elIdx), "no veto electron", "=", kElVeto) ) return false;
 
-	if(!makeCut<float>(     _vc -> getF(_lep + "_pt"     , elIdx) , 5.0    , ">"  , "pt selection"   , 0    , kElVeto)) return false;
-	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  2.4   , "<"  , "eta selection"  , 0    , kElVeto)) return false;
-	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"    , elIdx)),  1.4442, "[!]", "eta selection"  , 1.566, kElVeto)) return false;
+	if(!makeCut<float>(     _vc -> getF(_lep + "_pt"    , elIdx) , 5.0   , ">"  , "pt selection"    , 0    , kElVeto)) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"   , elIdx)), 2.4   , "<"  , "eta selection"   , 0    , kElVeto)) return false;
+	if(!makeCut<float>(fabs(_vc -> getF(_lep + "_eta"   , elIdx)), 1.4442, "[!]", "eta selection"   , 1.566, kElVeto)) return false;
 	
-	if(!makeCut<float>(     _vc -> getF(_lep + "_mvaNew", elIdx),  0.93   , ">", "POG MVA Tight Id "       , 0    , kElVeto)) return false;
+	if(!makeCut<float>(     _vc -> getF(_lep + "_mvaNew", elIdx) , 0.93  , ">"  , "POG MVA Tight Id", 0    , kElVeto)) return false;
 	//if(!makeCut<int>(       _vc -> getI(_lep + "_eleCutIdCSA14_50ns_v1", elIdx) ,  1    , ">=", "POG CB WP-L Id ", 0    , kElVeto)) return false;
 	//if(!makeCut<float>(     _vc -> getF(_lep + "_relIso03", elIdx),  0.2   , "<", "Isolation "       , 0    , kElVeto)) return false;
   
