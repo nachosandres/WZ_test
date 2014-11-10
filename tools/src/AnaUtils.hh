@@ -207,6 +207,8 @@ private:
       accept =false; cout<<" Warning cut :"<<type<<":"<<" for selection "<<cName<<endl;
     }  
     
+    ids+=1;//0 booked for MC
+
     if(!noRegister || _dsNames[ids].find("GHO")!=(size_t)-1 ) {
       //deprecated to take into account uncertainties
       // setEfficiency(ds, cName, w, accept);
