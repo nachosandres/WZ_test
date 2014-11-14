@@ -11,14 +11,15 @@
 
 
   //general parameters ********************* general parameters
-  string dir="SUSYSSDL/mva";
-  string fileName="susy_highpt"; //was treeName in LUNE susy_cut_lowpt
+  string dir="SUSYSSDL";
+  string fileName="susy_SR01_highpt"; //was treeName in LUNE susy_cut_lowpt
+  string fileList="susy_SR0?_highpt"; //CH: since AnaConfig needs a fileName to open, we need to put the data files into a different variable
   string hName="";
- 
+
   bool mcOnly = false;
   
   //if(md.isInitStatus()) {
-    md.anConf.configureNames( dir, fileName, hName );
+    md.anConf.configureNames( dir, fileName, fileList, hName );
     md.anConf.configureData(false, 0, mcOnly);
     //}
   
@@ -191,10 +192,10 @@
   //md.anConf.addSample( "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimprompt",            "t#bar{t}/EWK prompt", kOrange+7 );
   //md.anConf.addSample( "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimprompt",            "t#bar{t}/EWK prompt", kOrange+7 );
 
-  md.anConf.addSample( "WZJetsTo3LNu_S14_skim"                                ,  "Rare"          , kOrange-2 );
-  md.anConf.addSample( "TTHnlo_S14_skim"                                      ,  "Rare"          , kOrange-2 );
-  md.anConf.addSample( "TTWJets_S14_skim"                                     ,  "Rare"          , kOrange-2 );
-  md.anConf.addSample( "TTZJets_S14_skim"                                     ,  "Rare"          , kOrange-2 );
+  md.anConf.addSample( "WZJetsTo3LNu_S14_skim"                                ,  "Rare"             , kOrange-2 );
+  md.anConf.addSample( "TTHnlo_S14_skim"                                      ,  "Rare"             , kOrange-2 );
+  md.anConf.addSample( "TTWJets_S14_skim"                                     ,  "Rare"             , kOrange-2 );
+  md.anConf.addSample( "TTZJets_S14_skim"                                     ,  "Rare"             , kOrange-2 );
   md.anConf.addSample( "T1tttt2J_6_PU_S14_POSTLS170_skim"                     ,  "T1tttt(HL)*20 sig", kViolet-3  );
   md.anConf.addSample( "T1tttt2J_7_PU_S14_POSTLS170_skim"                     ,  "T1tttt(HM)*20 sig", kGreen+2  );
   md.anConf.addSample( "T5Full_1500_800_100_skim"                             ,  "T5WW(HL)*20 sig"  , kRed+1  );
@@ -215,17 +216,18 @@
    // }
 
  //plotting ================
-  md.dp.setLumiAndEnergy( lumi, energy );
- md.dp.setNormalization( Norm );
- md.dp.configureDisplay(yTitle, rangeY, rangeX, logYScale, xDiv,
+	md.dp.setLumiAndEnergy( lumi, energy );
+	md.dp.setNormalization( Norm );
+	md.dp.configureDisplay(yTitle, rangeY, rangeX, logYScale, xDiv,
  			yDiv, binning, addBinBkg, overFlowBin,
  			underFlowBin, showDMCRatio, showGrid, 
 			stacking, addSystematics, mcStatSyst,
 			markerSize, lineWidth,summedSignal, 
  			mcOnly,cmsPrel, uncDet);
 
- md.doPlot();
- // md.savePlot("SUSYSSDL_cut_highpt");
+	md.doPlot();
+	md.doStatisticsPlot();
+  md.savePlot("SUSYSSDL_test");
  // md.dp.addText(xt,yt,st,addText);
 
 }

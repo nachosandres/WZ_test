@@ -146,7 +146,9 @@ public:
 
   void saveNumbers(string anName, string conName);
   void printNumbers();
-  vector< pair<string, vector<vector<float> > > > retrieveNumbers();
+	vector<string> listFiles(string dir, string files);
+	int findElement(vector<string> v, string e);
+  vector< pair<string, vector<vector<float> > > > retrieveNumbers(string anName, string conName, vector<string> snames, vector<string> dsnames);
   //void drawNumbers();
   
   void setSkipCut(vector<string> var, bool invCut); 

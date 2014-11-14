@@ -42,8 +42,16 @@ MPAFDisplay::reset() {
   anConf.reset(); 
 }
 
-void
-MPAFDisplay::doPlot() {
+
+void MPAFDisplay::doStatisticsPlot(){
+
+	vector< pair<string, vector<vector<float> > > > numbers = au.retrieveNumbers( anConf.getDir(), anConf.getObjList(), anConf.getSampleNames(), anConf.getDsNames());	
+	dp.drawStatistics( numbers, anConf.getDSNames() );
+
+}
+
+
+void MPAFDisplay::doPlot() {
 
   configure();
 
@@ -67,8 +75,8 @@ MPAFDisplay::doPlot() {
   vector<const hObs*> Obs_;
   vector<vector<systM> > systs_;
   
-  for(size_t io=0;io<obs_.size();io++) {
-    _currentObs=obs_[io];
+  for(size_t io = 0; io < obs_.size(); ++io) {
+    _currentObs = obs_[io];
 
     if( _hm->getHObs( obs_[io] )==NULL) {
       cout<<" Error, no observable of name : "<<obs_[io]<<endl;
@@ -80,8 +88,8 @@ MPAFDisplay::doPlot() {
   }  
   
   if(Obs_.size()!=0) {
-    dp.setSystematicsUnc( systs_ );
-    dp.plotDistributions( Obs_ );
+	dp.setSystematicsUnc( systs_ );
+	dp.plotDistributions( Obs_ );
   }
 
 }
@@ -98,7 +106,8 @@ MPAFDisplay::setHistograms() {
 
 
   for(size_t ids=0;ids<_dsnames.size();ids++) {
-  
+ 
+	cout << "loading " << _dsnames[ids] << endl; 
     _ids = _dsnames[ids];
     _inds = ids;
     

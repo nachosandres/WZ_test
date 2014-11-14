@@ -29,7 +29,7 @@ for ip in ${PTS[@]}; do
 	#	sed -i 's|SAMPLE|'$is'|' cfg/tmpFiles/susy_${sr}_${is}_${pt}.cfg
 		#sed -i 's|YYY|'$N'|' cfg/tmpFiles/susy_${sr}.cfg
 		
-		qsub -q all.q -N MPAFjob -o /shome/mmarionn/MPAF/workdir/logs/log_${sr}_${pt}.out -e /shome/mmarionn/MPAF/workdir/logs/log_${sr}_${is}_${pt}.err /shome/mmarionn/MPAF/scripts/submit.sh /shome/mmarionn/MPAF/cfg/tmpFiles/susy_${sr}_${pt}.cfg
+		qsub -q all.q -N MPAFjob -o /shome/cheidegg/MPAF/workdir/logs/log_${sr}_${pt}.out -e /shome/cheidegg/MPAF/workdir/logs/log_${sr}_${is}_${pt}.err /shome/cheidegg/MPAF/scripts/submit.sh /shome/cheidegg/MPAF/cfg/tmpFiles/susy_${sr}_${pt}.cfg
 
 		ii=`echo $ii +1 | bc`
 

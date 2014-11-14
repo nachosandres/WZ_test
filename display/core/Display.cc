@@ -2066,37 +2066,75 @@ Display::drawCumulativeHistos(const hObs* theObs ) {
 }
 
 void
-Display::drawStatistics( vector<pair<string,vector<vector<float> > > > vals) {
-  softReset();
+Display::drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames) {
+
+	softReset();
+
+	vector<string> cNames;
+	vector<TH1*> hMC;
+	vector<TH1*> hMCs;
+	TH1F* hData;
+	unsigned int last_mc = 0;
+
+	for(unsigned int i = 0; i < dsnames.size(); ++i) {
+		if( !_sSignal && dsnames[i].find("sig") == (size_t) -1 && i > last_mc) 
+			last_mc = i; 
+	}
 
 
-  vector<string> cNames;
-  vector<TH1*> hMC;
-  TH1F* hData;
+	for(size_t ic=0;ic<vals.size();ic++) {
+		if(find(cNames.begin(), cNames.end(), vals[ic].first) == cNames.end())
+			cNames.push_back( vals[ic].first );
+	}
+ 
+	for(size_t i=0;i<vals[0].second.size(); i++ ) { // CH: was vals[0].second.size()-2 before
+		TH1F* tmp = new TH1F( dsnames[i].c_str(), dsnames[i].c_str(), cNames.size(), 0, cNames.size());
+		_itCol = _colors.find( dsnames[i] );
+		tmp -> SetFillColor(_itCol->second);
+		tmp -> SetLineColor(_itCol->second);
+		tmp -> SetLineWidth(2);
+		
+		if(i <= last_mc) hMC .push_back( (TH1F*) tmp );
+		else             hMCs.push_back( (TH1F*) tmp );
+	
+	}
 
-  for(size_t ic=0;ic<vals.size();ic++) {
-    cNames.push_back( vals[ic].first );
-  }
+	
+	hData = new TH1F("statData","statData",cNames.size(),0,cNames.size());
+	TH1F* hMCt = new TH1F("statMC","statMC",cNames.size(),0,cNames.size());
+	TGraphAsymmErrors* mcUncert = new TGraphAsymmErrors(cNames.size() );
   
-  for(size_t i=0;i<vals[0].second.size()-2; i++ ) {
-    TH1F* tmp = new TH1F(_names[i].c_str(),_names[i].c_str(),cNames.size(),0,cNames.size());
-    _itCol = _colors.find( _names[i] );
-    tmp->SetFillColor(_itCol->second);
-    tmp->SetLineColor(_itCol->second);
-    tmp->SetLineWidth(2);
-    
-    hMC.push_back( (TH1*)tmp );
-  }
-  hData = new TH1F("statData","statData",cNames.size(),0,cNames.size());
-  TH1F* hMCt = new TH1F("statMC","statMC",cNames.size(),0,cNames.size());
-  TGraphAsymmErrors* mcUncert = new TGraphAsymmErrors(cNames.size() );
-  
-  //now fill the plots
-  for(size_t ic=0;ic<vals.size();ic++) {
+	//now fill the plots
+	for(size_t ic=0;ic<vals.size();ic++) {
 
-    for(size_t id=0;id<vals[ic].second.size();id++) {
-     
-      if(id==0) {//vals[ic].second.size()-2) { //MC total
+		for(size_t id=0; id < vals[ic].second.size();id++) {
+
+			_itW = _gWeights.find(dsnames[id] );
+
+			if( !_sSignal && dsnames[id].find("sig") == (size_t)-1){
+				float sum = vals[ic].second[id][0] * _itW -> second;
+				for(size_t ii = 0; ii < id; ++ii) {
+					if( !_sSignal &&_names[ii].find("sig")!=(size_t)-1) continue;
+					sum += vals[ic].second[ii][0] * _itW -> second;
+					//cout<<" + "<<vals[ic].second[ii][0]<<" = "<<sum<<endl;
+				}
+				hMC[id] -> SetBinContent( ic+1, sum);
+				if(id == last_mc){
+					mcUncert->SetPoint( ic, ic+0.5 , vals[ic].second[id][0] );
+					mcUncert->SetPointError( ic, 0.25,0.25, vals[ic].second[id][2], vals[ic].second[id][3] );
+				}
+			}
+			else{
+				hMCs[id - last_mc - 1] -> SetBinContent( ic+1, vals[ic].second[id][0] * _itW -> second );
+			}
+
+		}//ds
+	}//vals
+
+		//hMC[id] -> SetBinContent( ic+1, vals[ic].second[id][0] * _itW -> second );
+		//hMC[id] -> SetBinError(   ic+1, vals[ic].second[id][1] * _itW -> second ); 
+   
+     /* if(id==0) {//vals[ic].second.size()-2) { //MC total
 	hMCt->SetBinContent( ic+1, vals[ic].second[id][0] );
 	hMCt->SetBinError( ic+1, vals[ic].second[id][1] );
 	mcUncert->SetPoint( ic, ic+0.5 , vals[ic].second[id][0] );
@@ -2107,95 +2145,98 @@ Display::drawStatistics( vector<pair<string,vector<vector<float> > > > vals) {
       }
       else {
 	//_itW = _gWeights.find( _names[_nhmc-id-1] );
-	
-	float sum = vals[ic].second[id][0];
+*/	
 	//cout<<id<<" sum "<<sum<<endl;
-	for(size_t ii=1;ii<id;ii++) {
-	  sum += vals[ic].second[ii][0];
-	  //cout<<" + "<<vals[ic].second[ii][0]<<" = "<<sum<<endl;
-	}
 	//cout<<" total : "<<sum<<endl;
-	hMC[id-1]->SetBinContent( ic+1, sum );
 	//	hMC[id]->SetBinError( ic, vals[ic].second[id][1] );
-      }
+  /*    }
 
     }//ds
   }//cuts
+*/
   
-  //and get the canvas ready
-  
-  _pads = preparePads();
-  _pads[0][0]->Draw();
-  _pads[0][0]->cd();
-  
-  TGraphAsymmErrors* gData= HistoUtils::convertHistoToGraph(hData,1,
-							    _normOpts.find("dif")!=_normOpts.end());
+	//and get the canvas ready
+	
+	_pads = preparePads();
+	_pads[0][0]->Draw();
+	_pads[0][0]->cd();
+	
+	TGraphAsymmErrors* gData= HistoUtils::convertHistoToGraph(hData,1, _normOpts.find("dif")!=_normOpts.end());
 
-  //error correction
-  // if(_normOpts.find("dif")!=_normOpts.end()) {
-  //   for(int ip=0;ip<gData->GetN();ip++) {
-  //     float eyl = gData->GetErrorYlow(ip);
-  //     float eyh = gData->GetErrorYhigh(ip);
-  //     gData->SetPointError(0,0,eyl,eyh);
-  //   }
-  // }
-  
-
-  TH1F* emptyH = (TH1F*)hData->Clone();
-  emptyH->Reset("ICEM");
-  
-  emptyH->SetFillColor(0);
-
+	//error correction
+	// if(_normOpts.find("dif")!=_normOpts.end()) {
+	//   for(int ip=0;ip<gData->GetN();ip++) {
+	//     float eyl = gData->GetErrorYlow(ip);
+	//     float eyh = gData->GetErrorYhigh(ip);
+	//     gData->SetPointError(0,0,eyl,eyh);
+	//   }
+	// }
   
 
-  float ymin = min( (float)0.1, HistoUtils::getHistoYlowWithError(hMCt, _xmin, _xmax ) );
-  float ymax = HistoUtils::getHistoYhighWithError(hMCt, _xmin, _xmax );
+	TH1F* emptyH = (TH1F*) hMC[0]->Clone();
+	emptyH->Reset("ICEM");
+	emptyH->SetFillColor(0);
+
+	_xmin = 0;
+	_xmax = 100;
+	hMCt = (TH1F*) hMC.back() -> Clone();
+
+	float ymin = min( (float)0.1, HistoUtils::getHistoYlowWithError(hMCt, _xmin, _xmax ) );
+	float ymax = HistoUtils::getHistoYhighWithError(hMCt, _xmin, _xmax );
+	
+	//ymin = min( HistoUtils::getGraphYlowWithError(gData, _xmin, _xmax ), ymin );
+	//ymax = max( HistoUtils::getGraphYhighWithError(gData, _xmin, _xmax ), ymax );
+	// if(_logYScale)
+	//   ymax*= 10;
+	// else
+	ymax*=1.3;
+
+
+	emptyH->GetYaxis()->SetRangeUser(ymin,ymax);
+	emptyH->GetXaxis()->SetNdivisions(_Xdiv[0],_Xdiv[1],_Xdiv[2]);
+	emptyH->GetYaxis()->SetNdivisions(_Ydiv[0],_Ydiv[1],_Ydiv[2]);
+	emptyH->GetYaxis()->SetTitle(_ytitle.c_str());
+	for(size_t ib=0; ib < cNames.size(); ++ib)
+		emptyH -> GetXaxis() -> SetBinLabel(ib+1, cNames[ib].c_str() );
+	emptyH->Draw();
+
+	for(size_t ih = 0; ih < hMC.size(); ++ih) 
+	  	hMC[hMC.size() - ih - 1] -> Draw("same hist"); 
+	
+	for(size_t ih = 0; ih < hMCs.size(); ++ih)
+		hMCs[hMCs.size() - ih - 1] -> Draw("same");
+
+	hMCt->SetLineWidth(2);
+	hMCt->SetLineColor(kBlack);
+	hMCt->SetFillStyle(0);
+	hMCt->Draw("same hist");
+	gData->Draw("p");
+	
+	cmsPrel();
+
+	//_hCoords.push_back( HistoUtils::getHistoUpperCoordinates(hMCt) );
+	//_hCoords.push_back( HistoUtils::getHistoUpperCoordinates(hData) );
+	
+	for(size_t ih = 0; ih < hMCs.size(); ++ih)
+		_hClones.push_back((TH1*) hMCs[hMCs.size()-ih-1] -> Clone());
+
+	//copy the graphs for legend purposes ... ugly...
+	for(size_t ih = 0; ih < hMC.size(); ++ih)
+		_hClones.push_back((TH1*) hMC[hMC.size()-ih-1] -> Clone());
+
+
+	_hMC = hMCt;
+	_hData = hData;
+	_mcUncert[0] = mcUncert;
   
-  ymin = min( HistoUtils::getGraphYlowWithError(gData, _xmin, _xmax ), ymin );
-  ymax = max( HistoUtils::getGraphYhighWithError(gData, _xmin, _xmax ), ymax );
-  // if(_logYScale)
-  //   ymax*= 10;
-  // else
-  ymax*=1.3;
+	_pads[0][0]->Update();
 
-  emptyH->GetYaxis()->SetRangeUser(ymin,ymax);
-  emptyH->GetXaxis()->SetNdivisions(_Xdiv[0],_Xdiv[1],_Xdiv[2]);
-  emptyH->GetYaxis()->SetNdivisions(_Ydiv[0],_Ydiv[1],_Ydiv[2]);
-  emptyH->GetYaxis()->SetTitle(_ytitle.c_str());
-  for(size_t ib=0;ib<cNames.size();ib++) {
-    emptyH->GetXaxis()->SetBinLabel(ib+1, cNames[ib].c_str() );
-  }
-  emptyH->Draw();
-  
-  for(size_t ih=0;ih<hMC.size();ih++) {
-    hMC[_nhmc-ih-1]->Draw("same hist");
-  }
-
-  hMCt->SetLineWidth(2);
-  hMCt->SetLineColor(kBlack);
-  hMCt->SetFillStyle(0);
-  hMCt->Draw("same hist");
-  gData->Draw("p");
-
-  cmsPrel();
-
-  // _hCoords.push_back( HistoUtils::getHistoUpperCoordinates(hMCt) );
-  // _hCoords.push_back( HistoUtils::getHistoUpperCoordinates(hData) );
-
-  //copy the graphs for legend purposes ... ugly...
-  _hClones = hMC;
-  _hMC = hMCt;
-  _hData = hData;
-  _mcUncert[0] = mcUncert;
-  
-  _pads[0][0]->Update();
-  
-  adjustLegend(0);
-  if(_leg) {
-    TLegend* tmpleg=(TLegend*)_leg->Clone();
-    tmpleg->Draw("same");
-    _pads[0][0]->RedrawAxis();
-  }
+	adjustLegend(0);
+	if(_leg) {
+		TLegend* tmpleg=(TLegend*)_leg->Clone();
+		tmpleg->Draw("same");
+		_pads[0][0]->RedrawAxis();
+	}
   
 }
 
@@ -2872,85 +2913,90 @@ void
 Display::adjustLegend(int iobs, bool skipCoords) {
   float xd,xu,yd,yu,f=1.;
   
-  if(!skipCoords) {
+	if(!skipCoords) {
 
-    if(_normOpts.find("norm")!=_normOpts.end() ) { // normalized to one, all plots needed
-      for(size_t ih=0;ih<_nhmc;ih++) {
-	_hCoords.push_back( HistoUtils::getHistoUpperCoordinates(_hClones[ih]) );
-      }
-    }
-    else {
-      if(!_dOnly)
-	_hCoords.push_back( HistoUtils::getHistoUpperCoordinates(_hMC) );
-      //and the signals if not summed...
-      for(size_t ih=0;ih<_nhmc;ih++) {
-	string nh = (string)( _hClones[ih]->GetName());
-	if( !_sSignal && nh.find("sig")!=(size_t)-1)
-	  _hCoords.push_back( HistoUtils::getHistoUpperCoordinates(_hClones[ih]) );
-      }
-    }  
+		//cout << "starting legend stuff " << _nhmc << endl;
+		if(_normOpts.find("norm")!=_normOpts.end() ) { // normalized to one, all plots needed
+			for(size_t ih=0;ih<_nhmc;ih++) {
+			  _hCoords.push_back( HistoUtils::getHistoUpperCoordinates(_hClones[ih]) );
+			}
+		}
+		else {
+			if(!_dOnly)
+				_hCoords.push_back( HistoUtils::getHistoUpperCoordinates(_hMC) );
+			
+			//cout << "hCoods APB size is " << _hCoords.size() << endl;  
+			//and the signals if not summed...
+			for(size_t ih=0;ih<_nhmc;ih++) {
+				string nh = (string)( _hClones[ih]->GetName());
+				if( !_sSignal && nh.find("sig")!=(size_t)-1)
+					_hCoords.push_back( HistoUtils::getHistoUpperCoordinates(_hClones[ih]) );
+				//cout << "hCoods APB size is " << _hCoords.size() << endl;  
+			}
+    	}  
     
-    if(_addSyst) {
-      _hCoords.push_back( HistoUtils::getGraphUpperCoordinatesWithError(_mcUncert[0]) );
-    }
+		if(_addSyst) {
+			_hCoords.push_back( HistoUtils::getGraphUpperCoordinatesWithError(_mcUncert[0]) );
+			//cout << "hCoods APB size is " << _hCoords.size() << endl;  
+		}
 
+		if(!_mcOnly) {
+			float dNorm = 1.;
+			if(_normOpts.find("norm")!=_normOpts.end()) 
+				dNorm=_hData->Integral(0,10000000);
+			if(_normOpts.find("uni")!=_normOpts.end()) 
+				dNorm=1.;
+		
+			if(_normOpts.find("dif")!=_normOpts.end()) //temporary fix
+				_hCoords.push_back( HistoUtils::getHistoUpperCoordinatesWithError(_hData, dNorm) );
+		}
 
-    if(!_mcOnly) {
-      float dNorm = 1.;
-      if(_normOpts.find("norm")!=_normOpts.end()) 
-	dNorm=_hData->Integral(0,10000000);
-      if(_normOpts.find("uni")!=_normOpts.end()) 
-	dNorm=1.;
+	}
 
-      if(_normOpts.find("dif")!=_normOpts.end()) //temporary fix
-	_hCoords.push_back( HistoUtils::getHistoUpperCoordinatesWithError(_hData, dNorm) );
-    }
-
-  }
-
-  getLegendCoordinate(_hMC,xd,yd,xu,yu,f,iobs);
-  //cout<<" leg "<<xd<<"  "<<yd<<"  "<<xu<<"  "<<yu<<"  "<<f<<endl;
-  _leg = new TLegend(xd,yd,xu,yu);
-  _leg->SetName("legend");
+	getLegendCoordinate(_hMC,xd,yd,xu,yu,f,iobs);
+	//cout<<" leg "<<xd<<"  "<<yd<<"  "<<xu<<"  "<<yu<<"  "<<f<<endl;
+	_leg = new TLegend(xd,yd,xu,yu);
+	_leg->SetName("legend");
   
-  _leg->SetTextSize(0.039*f);
-  //_leg->SetTextSize(0.04 );
-  _leg->SetShadowColor(0);
-  _leg->SetLineColor(1);
-  _leg->SetFillColor(0);
+	_leg->SetTextSize(0.039*f);
+	//_leg->SetTextSize(0.04 );
+	_leg->SetShadowColor(0);
+	_leg->SetLineColor(1);
+	_leg->SetFillColor(0);
+	
+	map<string,size_t> sigs;
 
-  map<string,size_t> sigs;
 
-  string legOpt="pl";
-  if(_normOpts.find("norm")!=_normOpts.end()) legOpt="l";
+	string legOpt="pl";
+	if(_normOpts.find("norm")!=_normOpts.end()) legOpt="l";
+	
+	if(!_mcOnly)
+		_leg->AddEntry(_gData,"data", legOpt.c_str() );
 
-  if(!_mcOnly)
-    _leg->AddEntry(_gData,"data", legOpt.c_str() );
-  if( _is1D) {//!(_isProf && _is1D) ) {
-    for(size_t i=0;i<_nhmc;i++) {
-      
-      string nh = (string)( _hClones[i]->GetName());
-      if( nh.find("sig")==(size_t)-1) {
-	_leg->AddEntry(_hClones[i],_names[_nhmc-i-1].c_str(),"f");
-      }
-      else {
-	string na = _names[_nhmc-i-1];
-	size_t b= _names[_nhmc-i-1].find("sig");
-	na.erase(b,3);
-	sigs[ na ] = i ;
-      }
-    }
-  }
-  
-  if(_addSyst && !_is2D) {
-    _leg->AddEntry(_mcUncert[0]->Clone(),"uncertainties","f");
-  }
-  
-  //and signals at the end
-  for(map<string,size_t>::const_iterator it=sigs.begin();
-      it!=sigs.end();it++) {
-    _leg->AddEntry(_hClones[it->second],it->first.c_str(),_sSignal?"f":"l");
-  }
+	if( _is1D) {//!(_isProf && _is1D) ) { 
+		for(size_t i=0;i<_nhmc;i++) {
+    		string nh = (string)( _hClones[i]->GetName());
+
+			if( nh.find("sig")==(size_t)-1) {
+				_leg->AddEntry(_hClones[i],_names[_nhmc-i-1].c_str(),"f");
+			}
+			else {
+				string na = _names[_nhmc-i-1];
+				size_t b = _names[_nhmc-i-1].find("sig");
+				na.erase(b, 3);	
+				sigs[ na ] = i ;
+			}
+		}
+	}
+
+	if(_addSyst && !_is2D) {
+		_leg->AddEntry(_mcUncert[0]->Clone(),"uncertainties","f");
+	}
+
+	for(map<string,size_t>::const_iterator it=sigs.begin();
+		it!=sigs.end();it++) {
+		_leg->AddEntry(_hClones[it->second],it->first.c_str(),_sSignal?"f":"l");
+	}
 
 }
 
@@ -3038,7 +3084,8 @@ Display::getLegendCoordinate(TH1*h, float& pxd, float& pyd, float& pxu, float& p
       float f=1.;
       bool abortPos=false;
       
-      for(size_t id=0;id<_hCoords.size();id++) {
+    //cout << "hCoods size is " << _hCoords.size() << endl;  
+	for(size_t id=0;id<_hCoords.size();id++) {
 	if(yu < graphVal(xu,id,iobs) || yu < graphVal(xd,id,iobs) ) {
 	  abortPos=true; break;}
 	graphConstraint(id,iobs, xd, xu, yd, yu,f, dx,dy );
@@ -3078,8 +3125,11 @@ Display::graphVal(float x,int ih, int iobs) {
   float X = _pads[0][iobs]->PixeltoX( x*_wpad  );
 
   size_t bin = StatUtils::findBin<float>(X, _hCoords[ih][0] );
+
   //cout<<x<<"   "<<X<<"   "<<bin<<"   "<<_xdlim<<"  "<<endl;
-  float yt=_logYScale?(log(_hCoords[ih][1][bin])/log(10)):_hCoords[ih][1][bin];
+	//cout << "investigating seg fault" << endl;
+	//cout << "ih is " << ih << endl;
+ float yt=_logYScale?(log(_hCoords[ih][1][bin])/log(10)):_hCoords[ih][1][bin];
   
   float y = 1 - (_pads[0][iobs]->YtoPixel( yt ))/(float)_hpad;
  

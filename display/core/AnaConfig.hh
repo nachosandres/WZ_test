@@ -23,7 +23,11 @@ private:
   string _path;
   
   string _treeName;
+  string _treeList;
   string _hname;
+
+	vector<string> _samplenames;
+	vector<string> _dsnames;
 
   map<int, string > _numDS;
   map<int, string >::iterator _itNDS;
@@ -69,9 +73,13 @@ public:
 		     map<string,float> Kfac,
 		     float l,bool useXS=true );
   void configureData(bool runfilter, int runnum,bool MCOnly);
-  void configureNames(string dir, string objName, string hName);
+  void configureNames(string dir, string objName, string objList, string hName);
 
+	string getDir() {return _dir;};
+	string getObjList() {return _treeList;};
   float getLumi() {return _lumi;};
+	vector<string> getSampleNames() {return _samplenames;};
+	vector<string> getDsNames() {return _dsnames;};
 
   // float getWeight(int channel, int evt);
   // float getWeight(string chan, int evt);

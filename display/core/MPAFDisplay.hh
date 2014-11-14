@@ -13,6 +13,7 @@
 
 #include "display/core/AnaConfig.hh"
 #include "display/core/Display.hh"
+#include "tools/src/AnaUtils.hh"
 #include "tools/src/Dataset.hh"
 #include "tools/src/DataBaseManager.hh"
 #include "tools/src/HistoManager.hh"
@@ -42,6 +43,7 @@ private:
 public:
 
   AnaConfig anConf;
+	AnaUtils au;
   Display dp;
 
   //===== functions ====
@@ -64,6 +66,7 @@ public:
 
   void refresh();
 
+  void doStatisticsPlot();
   void doPlot();
 
   void savePlot(string path, string advname="");

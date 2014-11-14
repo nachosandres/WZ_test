@@ -216,7 +216,7 @@ public:
   void saveHistos(string hname, const hObs* theObs);
   void saveHistosSpecLQ(string hname);
   
-  void drawStatistics( vector<pair<string,vector<vector<float> > > > vals);
+  void drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames);
   void drawDetailSystematics(bool cumul);
 
   void addText(float x, float y, float s, string text);

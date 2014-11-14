@@ -132,9 +132,10 @@ void AnaConfig::configureLumi(map<string,float> LumisXS, map<string,float> Kfac,
 }
 
 void 
-AnaConfig::configureNames(string dir, string treeName, string hName) {
+AnaConfig::configureNames(string dir, string treeName, string treeList, string hName) {
   _dir = dir;
   _treeName = treeName;
+  _treeList = treeList;
   _hname = hName;
 }
 
@@ -208,7 +209,9 @@ AnaConfig::addSample( string str, string sname, int col) {
     
     _datasets[ sname ]->addSample(str, _path, _dir, _treeName,
 				  _hname,0., 1., 1., 1.);
-    
+	_samplenames.push_back(str);
+	_dsnames.push_back(sname);
+ 
     return;
   }
   
@@ -249,10 +252,14 @@ AnaConfig::addSample( string str, string sname, int col) {
     _datasets[ sname ]->addSample(str, _path, _dir, _treeName,
 				  _hname, xSect, kFact, _lumi,
 				  eqLumi);
+	_samplenames.push_back(str);
+	_dsnames.push_back(sname);
   }
   else {
     //cout<<sname<<" --> "<<str<<endl;
     _datasets[ sname ]->addSample(str, "", "", "", "", 0, 0, 0, 0);
+	_samplenames.push_back(str);
+	_dsnames.push_back(sname);
   }
   //cout<<" ya? "<< _datasets[ sname ]<<"  "<<sname<<"  "<<str<<endl;
  

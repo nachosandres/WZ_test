@@ -55,7 +55,7 @@ public:
 	
 	~Dataset();
 	
-  void freeMemory();
+	void freeMemory();
 
 	void config(std::string name, int color, int content);
 	
