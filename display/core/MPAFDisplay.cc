@@ -46,7 +46,28 @@ MPAFDisplay::reset() {
 void MPAFDisplay::doStatisticsPlot(){
 
 	vector< pair<string, vector<vector<float> > > > numbers = au.retrieveNumbers( anConf.getDir(), anConf.getObjList(), anConf.getSampleNames(), anConf.getDsNames());	
-	dp.drawStatistics( numbers, anConf.getDSNames() );
+
+	vector<float> weights;
+
+	for(size_t id = 0; id < _dsnames.size(); ++id){
+
+		string ids = _dsnames[id];
+		Dataset* ds=anConf.getDataset( ids );
+		vector<string> samples= ds->getSamples();
+		weights.push_back(0.);
+		for(size_t is=0;is<samples.size(); is++){
+			//cout << "for " << id << " adding " << ds->getWeight(is) << " to " << weights[id];
+			weights[id] = sqrt(pow(weights[id],2) + pow(ds->getWeight(is), 2));
+			//cout << " which gives " << weights[id] << endl;
+		}
+	}
+
+	for(size_t id = 0; id < weights.size(); ++id){
+		weights[id] *= anConf.getLumi();
+		//cout << "my weight for dataset " << id << " is " << weights[id] << endl;
+	}
+
+	dp.drawStatistics( numbers, anConf.getDSNames(), weights );
 
 }
 

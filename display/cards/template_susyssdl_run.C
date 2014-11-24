@@ -13,7 +13,7 @@
   //general parameters ********************* general parameters
   string dir="SUSYSSDLws";
   string fileName="susy_SR01_highpt_cut_40"; //was treeName in LUNE susy_cut_lowpt
-  string fileList="susy_SR0?_highpt_cut_40"; //CH: since AnaConfig needs a fileName to open, we need to put the data files into a different variable
+  string fileList="susy_SR3?_lowpt_mva_IVF"; //CH: since AnaConfig needs a fileName to open, we need to put the data files into a different variable
   string hName="";
 
   bool mcOnly = false;
@@ -222,7 +222,7 @@
 
 	md.doPlot();
 	md.doStatisticsPlot();
-  md.savePlot("SUSYSSDL_ws");
+  md.savePlot("SUSYSSDL_ws1");
  // md.dp.addText(xt,yt,st,addText);
 
 }

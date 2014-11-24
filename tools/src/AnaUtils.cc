@@ -690,8 +690,6 @@ AnaUtils::retrieveNumbers(string anName, string conName, vector<string> snames, 
 
 
 		ifile.open(filenames_[i].c_str());
-		
-		cout << "processing file " << filenames_[i] << endl;
 
 		vector<float> p;
 		p.resize(snames.size());
@@ -720,8 +718,8 @@ AnaUtils::retrieveNumbers(string anName, string conName, vector<string> snames, 
 						err   = (errw_char=="-"?0.0:(atof(errw_char)>=0?atof(errw_char):0.0));
 						int j = findElement(snames, samplename);
 						if(j >= 0){
-							buffer_val[i][j] = nevts;
-							buffer_err[i][j] = err;
+							buffer_val[i][j] = nevts * weight;
+							buffer_err[i][j] = err   * weight;
 						}
 					}
 				}
@@ -756,7 +754,7 @@ AnaUtils::retrieveNumbers(string anName, string conName, vector<string> snames, 
 			}
 			else {
 				p.second[idx][0] += buffer_val[ic][ids];
-				p.second[idx][1] += buffer_err[ic][ids]; //CH: attention!! errors are summed differently!!
+				p.second[idx][1] = sqrt(pow(p.second[idx][1], 2) + pow(buffer_err[ic][ids], 2)); //CH: err = sqrt(err1^2 + err2^2 + ... )
 				p.second[idx][2] += 0.;
 				p.second[idx][3] += 0.;
 			}
@@ -766,10 +764,6 @@ AnaUtils::retrieveNumbers(string anName, string conName, vector<string> snames, 
 		onums.push_back( p );
 	}//cuts
 
-	cout << onums[0].first << std::endl;
-	cout << onums[0].second.size() << std::endl;
-	cout << onums[0].second[0][0] << std::endl;
-	std::cout << "returning..." << endl;
 	
 	return onums;
 				

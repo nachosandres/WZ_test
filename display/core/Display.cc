@@ -570,17 +570,23 @@ Display::getFitVar() {
 void
 Display::initWeights(const hObs* theobs) {
 
+	//cout << "i am here" << endl;
+
   if(_normOpts.find("fit")!=_normOpts.end() ) {
     prepareHistograms(theobs);
     
     _fitNorm->initialize(_hClonesNoStack, _hData, _fitStr);
     map<string,float> ws=_fitNorm->getWeights();
-    for(_itW=ws.begin();_itW!=ws.end();_itW++)
+    for(_itW=ws.begin();_itW!=ws.end();_itW++){
       _gWeights[ _itW->first ] *= _itW->second;
+		//cout << "multiplying " << _itW->first << " by " << _itW->second << endl;
+	}
   }
   else
-    for(_itW=_saveWeights.begin();_itW!=_saveWeights.end();_itW++)
+    for(_itW=_saveWeights.begin();_itW!=_saveWeights.end();_itW++){
       _gWeights[ _itW->first ] = _itW->second;
+		//cout << "setting " << _itW->first << " by " << _itW->second << endl;
+	}
 
 }
 
@@ -2066,7 +2072,7 @@ Display::drawCumulativeHistos(const hObs* theObs ) {
 }
 
 void
-Display::drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames) {
+Display::drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames, vector<float> weights) {
 
 	softReset();
 
@@ -2081,7 +2087,6 @@ Display::drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vec
 			last_mc = i; 
 	}
 
-
 	for(size_t ic=0;ic<vals.size();ic++) {
 		if(find(cNames.begin(), cNames.end(), vals[ic].first) == cNames.end())
 			cNames.push_back( vals[ic].first );
@@ -2090,7 +2095,7 @@ Display::drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vec
 	for(size_t i=0;i<vals[0].second.size(); i++ ) { // CH: was vals[0].second.size()-2 before
 		TH1F* tmp = new TH1F( dsnames[i].c_str(), dsnames[i].c_str(), cNames.size(), 0, cNames.size());
 		_itCol = _colors.find( dsnames[i] );
-		tmp -> SetFillColor(_itCol->second);
+		if(i <= last_mc) tmp -> SetFillColor(_itCol->second);
 		tmp -> SetLineColor(_itCol->second);
 		tmp -> SetLineWidth(2);
 		
@@ -2100,32 +2105,36 @@ Display::drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vec
 	}
 
 	
-	hData = new TH1F("statData","statData",cNames.size(),0,cNames.size());
-	TH1F* hMCt = new TH1F("statMC","statMC",cNames.size(),0,cNames.size());
-	TGraphAsymmErrors* mcUncert = new TGraphAsymmErrors(cNames.size() );
+	hData      = new TH1F("statData", "statData", cNames.size(), 0, cNames.size());
+	TH1F* hMCt = new TH1F("statMC"  , "statMC"  , cNames.size(), 0, cNames.size());
+	TGraphAsymmErrors* mcUncert = new TGraphAsymmErrors( cNames.size() );
   
 	//now fill the plots
-	for(size_t ic=0;ic<vals.size();ic++) {
+	for(size_t ic = 0; ic < vals.size(); ic++) {//signal regions
 
-		for(size_t id=0; id < vals[ic].second.size();id++) {
+		for(size_t id = 0; id < vals[ic].second.size(); id++) {//datasets
 
-			_itW = _gWeights.find(dsnames[id] );
+			float weight = weights[id];
+			//cout << "reading weights for " << dsnames[id] << " is " << weight << endl;
+			//_itW = _gWeights.find( dsnames[id] );			
+			//cout << "reading weights for " << dsnames[id] << " is " << _itW -> second << endl;
 
 			if( !_sSignal && dsnames[id].find("sig") == (size_t)-1){
-				float sum = vals[ic].second[id][0] * _itW -> second;
+				float sum = vals[ic].second[id][0];// * weight;
 				for(size_t ii = 0; ii < id; ++ii) {
-					if( !_sSignal &&_names[ii].find("sig")!=(size_t)-1) continue;
-					sum += vals[ic].second[ii][0] * _itW -> second;
-					//cout<<" + "<<vals[ic].second[ii][0]<<" = "<<sum<<endl;
+					if( !_sSignal && dsnames[ii].find("sig")!=(size_t)-1) continue;
+					sum += vals[ic].second[ii][0]; //* weights[ii];
+					//cout << " + " << vals[ic].second[ii][0]*weights[ii] <<" (" << dsnames[ii] << ") = "<<sum<<endl;
 				}
+				//cout << "filling MC for " << id << " (" << vals[ic].first << ") with " << sum << endl;
 				hMC[id] -> SetBinContent( ic+1, sum);
 				if(id == last_mc){
-					mcUncert->SetPoint( ic, ic+0.5 , vals[ic].second[id][0] );
+					mcUncert->SetPoint( ic, ic+0.5 , vals[ic].second[id][0]);// * weight);
 					mcUncert->SetPointError( ic, 0.25,0.25, vals[ic].second[id][2], vals[ic].second[id][3] );
 				}
 			}
 			else{
-				hMCs[id - last_mc - 1] -> SetBinContent( ic+1, vals[ic].second[id][0] * _itW -> second );
+				hMCs[id - last_mc - 1] -> SetBinContent( ic+1, vals[ic].second[id][0]);// * weight);
 			}
 
 		}//ds
@@ -2200,8 +2209,10 @@ Display::drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vec
 		emptyH -> GetXaxis() -> SetBinLabel(ib+1, cNames[ib].c_str() );
 	emptyH->Draw();
 
-	for(size_t ih = 0; ih < hMC.size(); ++ih) 
+	for(size_t ih = 0; ih < hMC.size(); ++ih){
+		//cout << "drawing hMC " << hMC.size() - ih - 1 << " with integral " << hMC[hMC.size() - ih - 1] -> Integral() << endl; 
 	  	hMC[hMC.size() - ih - 1] -> Draw("same hist"); 
+	}
 	
 	for(size_t ih = 0; ih < hMCs.size(); ++ih)
 		hMCs[hMCs.size() - ih - 1] -> Draw("same");
@@ -2231,7 +2242,7 @@ Display::drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vec
   
 	_pads[0][0]->Update();
 
-	adjustLegend(0);
+	adjustLegend(0, true);
 	if(_leg) {
 		TLegend* tmpleg=(TLegend*)_leg->Clone();
 		tmpleg->Draw("same");
