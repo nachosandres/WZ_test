@@ -2072,7 +2072,7 @@ Display::drawCumulativeHistos(const hObs* theObs ) {
 }
 
 void
-Display::drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames, vector<float> weights) {
+Display::drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames) {
 
 	softReset();
 
@@ -2114,7 +2114,7 @@ Display::drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vec
 
 		for(size_t id = 0; id < vals[ic].second.size(); id++) {//datasets
 
-			float weight = weights[id];
+			//float weight = weights[id];
 			//cout << "reading weights for " << dsnames[id] << " is " << weight << endl;
 			//_itW = _gWeights.find( dsnames[id] );			
 			//cout << "reading weights for " << dsnames[id] << " is " << _itW -> second << endl;

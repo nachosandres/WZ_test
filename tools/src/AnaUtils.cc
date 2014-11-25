@@ -669,7 +669,7 @@ int AnaUtils::findElement(vector<string> v, string e){
 
 
 vector< pair<string, vector<vector<float> > > >
-AnaUtils::retrieveNumbers(string anName, string conName, vector<string> snames, vector<string> dsnames) {
+AnaUtils::retrieveNumbers(string anName, string conName, vector<string> snames, vector<string> dsnames, vector<float> weights) {
 
 	vector< pair<string, vector<vector<float> > > > onums;
 	char buffer[500]; 
@@ -718,8 +718,8 @@ AnaUtils::retrieveNumbers(string anName, string conName, vector<string> snames, 
 						err   = (errw_char=="-"?0.0:(atof(errw_char)>=0?atof(errw_char):0.0));
 						int j = findElement(snames, samplename);
 						if(j >= 0){
-							buffer_val[i][j] = nevts * weight;
-							buffer_err[i][j] = err   * weight;
+							buffer_val[i][j] = nevts * weights[j];
+							buffer_err[i][j] = err   * weights[j];
 						}
 					}
 				}

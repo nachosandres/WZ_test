@@ -148,7 +148,7 @@ public:
   void printNumbers();
 	vector<string> listFiles(string dir, string files);
 	int findElement(vector<string> v, string e);
-  vector< pair<string, vector<vector<float> > > > retrieveNumbers(string anName, string conName, vector<string> snames, vector<string> dsnames);
+  vector< pair<string, vector<vector<float> > > > retrieveNumbers(string anName, string conName, vector<string> snames, vector<string> dsnames, vector<float> weights);
   //void drawNumbers();
   
   void setSkipCut(vector<string> var, bool invCut); 
