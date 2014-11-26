@@ -12,8 +12,8 @@
 
   //general parameters ********************* general parameters
   string dir="SUSYSSDLws";
-  string fileName="susy_SR01_highpt_cut_40"; //was treeName in LUNE susy_cut_lowpt
-  string fileList="susy_SR0?_highpt_cut_40"; //CH: since AnaConfig needs a fileName to open, we need to put the data files into a different variable
+  string fileName="susy_SR11_lowpt_cut_40"; //was treeName in LUNE susy_cut_lowpt
+  string fileList="susy_SR1?_lowpt_cut_40"; //CH: since AnaConfig needs a fileName to open, we need to put the data files into a different variable
   string hName="";
 
   bool mcOnly = false;
@@ -109,14 +109,14 @@
 	LumisXS[ "TTZJets_S14_skim"] =      249275 / 0.8565;
 	LumisXS[ "WZJetsTo3LNu_S14_skim"] =      231127 / 2.29;
 	
-	LumisXS[ "SMS_T1tttt_2J_mGl1200_mLSP800_PU_S14_POSTLS170_skim"] =      100322 / (0.0856418 *40) ;
-	LumisXS[ "SMS_T1tttt_2J_mGl1500_mLSP100_PU_S14_POSTLS170_skim"] =      105679 / (0.0141903 *40) ;
-	LumisXS[ "T1tttt_2J_mGo1300_mStop300_mCh285_mChi280_pythia8_S14_skim"] =      35288 / (0.0460525 *40);
-	LumisXS[ "T1tttt_2J_mGo1300_mStop300_mChi280_pythia8_S14_skim"] =      16360 / (0.0460525 *40);
-	LumisXS[ "T1tttt_2J_mGo800_mStop300_mCh285_mChi280_pythia8_S14_skim"] =      30344 / (1.4891* 10);
-	LumisXS[ "T1tttt_2J_mGo800_mStop300_mChi280_pythia8_S14_skim"] =      23343 / (1.4891* 10);
-	LumisXS[ "T5Full_1200_1000_800_skim"] =       121497 / (0.0856418 *40);
-	LumisXS[ "T5Full_1500_800_100_skim"] =       127139 / (0.0141903 *40) ;
+	LumisXS[ "SMS_T1tttt_2J_mGl1200_mLSP800_PU_S14_POSTLS170_skim"] =      100322 / (0.0856418 *20) ;
+	LumisXS[ "SMS_T1tttt_2J_mGl1500_mLSP100_PU_S14_POSTLS170_skim"] =      105679 / (0.0141903 *20) ;
+	LumisXS[ "T1tttt_2J_mGo1300_mStop300_mCh285_mChi280_pythia8_S14_skim"] =      35288 / (0.0460525 *20);
+	LumisXS[ "T1tttt_2J_mGo1300_mStop300_mChi280_pythia8_S14_skim"] =      16360 / (0.0460525 *20);
+	LumisXS[ "T1tttt_2J_mGo800_mStop300_mCh285_mChi280_pythia8_S14_skim"] =      30344 / (1.4891 *5);
+	LumisXS[ "T1tttt_2J_mGo800_mStop300_mChi280_pythia8_S14_skim"] =      23343 / (1.4891 *5);
+	LumisXS[ "T5Full_1200_1000_800_skim"] =       121497 / (0.0856418 *20);
+	LumisXS[ "T5Full_1500_800_100_skim"] =       127139 / (0.0141903 *20) ;
 
 
 
@@ -181,10 +181,10 @@
   md.anConf.addSample( "TTWJets_S14_skim"                                     ,  "Rare"             , kOrange-2 );
   md.anConf.addSample( "TTZJets_S14_skim"                                     ,  "Rare"             , kOrange-2 );
 
-  md.anConf.addSample( "SMS_T1tttt_2J_mGl1200_mLSP800_PU_S14_POSTLS170_skim"  ,    "T1tttt(HL)*40 sig", kViolet-3  );
-  md.anConf.addSample( "SMS_T1tttt_2J_mGl1500_mLSP100_PU_S14_POSTLS170_skim"  ,    "T1tttt(HM)*40 sig", kGreen+2  );
-  md.anConf.addSample( "T1tttt_2J_mGo800_mStop300_mCh285_mChi280_pythia8_S14_skim", "T1tttt(8/3/2.85)*10 comp sig", kRed+1 );
-  md.anConf.addSample( "T5Full_1200_1000_800_skim"                            ,  "T5WW(HM)*40 sig"  , kOrange+6  );
+  md.anConf.addSample( "SMS_T1tttt_2J_mGl1200_mLSP800_PU_S14_POSTLS170_skim"  ,    "T1tttt(HL)*20 sig", kViolet-3  );
+  md.anConf.addSample( "SMS_T1tttt_2J_mGl1500_mLSP100_PU_S14_POSTLS170_skim"  ,    "T1tttt(HM)*20 sig", kGreen+2  );
+  md.anConf.addSample( "T1tttt_2J_mGo800_mStop300_mCh285_mChi280_pythia8_S14_skim", "T1tttt(8/3/2.85)*5 comp sig", kRed+1 );
+  md.anConf.addSample( "T5Full_1200_1000_800_skim"                            ,  "T5WW(HM)*20 sig"  , kOrange+6  );
 
 
   //md.anConf.addSample( "WZJetsTo3LNu_S14_skim"                                ,  "Rare"             , kOrange-2 );
@@ -222,7 +222,7 @@
 
 	md.doPlot();
 	md.doStatisticsPlot();
-  md.savePlot("SUSYSSDL_ws");
+  md.savePlot("SUSYSSDL_wsnew");
  // md.dp.addText(xt,yt,st,addText);
 
 }
