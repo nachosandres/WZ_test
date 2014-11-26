@@ -365,3 +365,16 @@ TH1*
 Dataset::getHisto(string varName, string sName) {
   return _histos[ varName ][ sName ];
 }
+
+
+int
+Dataset::hasSample(string sname) {
+
+  for(int is=0;is<_samples.size();is++) {
+    if(_samples[is].getName()==sname)
+      return is;
+  }
+  
+  return -1;
+  
+}

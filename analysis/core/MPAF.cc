@@ -281,6 +281,7 @@ void MPAF::loadConfigurationFile(std::string configuration_file){
 		//option reset
 		strcpy(tree_char  ,"");
 		strcpy(option_char,"");
+		strcpy(value_char,"");
 		
 		if(sscanf(buffer, "%s\t%s\t%s\t%s\t%s", symbol_char, variable_char, value_char, tree_char, option_char) < 3) continue;
 		
@@ -307,6 +308,9 @@ void MPAF::loadConfigurationFile(std::string configuration_file){
 			else if (variable == "SR"           ) _SR            = value;
 			else if (variable == "BR"           ) _BR            = value;
 			else if (variable == "PT"           ) _PT            = value;
+			else if (variable == "MVALep"       ) _mva           = (value=="mva")?true:false;
+			else if (variable == "BTag"         ) _btag          = value;
+			else if (variable == "LepFlavor"    ) _lepflav       = value;
 		}
 
 		// event or object selections

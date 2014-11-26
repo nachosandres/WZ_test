@@ -126,6 +126,7 @@ private:
   std::vector<CandStruct> _leptons;
 
   bool _mvaId;
+  string _bvar;
 
 };
 

@@ -8,6 +8,7 @@ MPAFDisplay::MPAFDisplay() {
 
  _hm=new HistoManager();
  _dbm=new DataBaseManager();
+ _au=new AnaUtils();
  _recompute=true;
 }
 
@@ -40,13 +41,119 @@ MPAFDisplay::reset() {
   _hm->reset();
   dp.reset();
   anConf.reset(); 
+  //  _au->reset();
 }
 
 
-void MPAFDisplay::doStatisticsPlot(){
+void 
+MPAFDisplay::doStatisticsPlot(){
 
-	vector< pair<string, vector<vector<float> > > > numbers = au.retrieveNumbers( anConf.getDir(), anConf.getObjList(), anConf.getSampleNames(), anConf.getDsNames());	
+	vector< pair<string, vector<vector<float> > > > numbers = _au->retrieveNumbers( anConf.getDir(), anConf.getObjList(), anConf.getSampleNames(), anConf.getDsNames());	
 	dp.drawStatistics( numbers, anConf.getDSNames() );
+
+}
+
+
+void
+MPAFDisplay::getStatistics(string categ) {
+  _au->printTables(categ);
+}
+
+
+void 
+MPAFDisplay::setNumbers() {
+  if(!_recompute) return;
+
+  string filename = anConf.getObjList()[0];
+  for(size_t id=0;id<_dsnames.size();id++) {
+    _au->addDataset(_dsnames[id]);
+    //cout<<" adding dataset " <<endl;
+  }
+  
+  if(filename=="") return;
+
+  //string ndb= (string)getenv("MPAF")+"/stats/"+anConf.getDir()+"/"+filename;
+  string ndb = filename;
+  ifstream fDb( ndb.c_str(), ios::in );
+
+  if(fDb)  {
+    string line;
+    
+    int icat=1; //0 for global
+    string categ;
+    string cname;
+    string sname;
+    string dsname;
+    float yield, eyield;
+    int gen;
+    int ids;
+
+    while(getline(fDb, line)) 
+      {
+	
+	istringstream iss(line);
+	vector<string> tks;
+	copy(istream_iterator<string>(iss),
+	     istream_iterator<string>(),
+	     back_inserter<vector<string> >(tks));
+
+	if(tks.size()==0) continue; 
+
+	if(tks[0]=="categ") {
+	  categ="";
+	  for(int i=1;i<tks.size();i++) //prevent from spaces in categ names
+	    categ +=tks[i]; 
+
+	  if(categ!="global") {
+	    _au->addCategory(icat, categ);
+	  }
+	  else icat=0; //comes in last so do not mess the reading
+	}
+	else if(tks[0]=="endcateg") { //fill the maps
+	  icat++;
+	}
+	else if(tks[0]=="selection") continue;
+	else {
+
+	  size_t n=tks.size()-4;
+	  cname="";
+	  for(int i=0;i<n;i++)
+	    cname += tks[i]+" ";
+	    
+	  //cname = tks[0];
+	  sname = tks[n];
+	  dsname = anConf.findDS(sname);
+	  ids=-1;
+	  if(dsname=="") continue;
+	  for(int id=0;id<_dsnames.size();id++ ) {
+	    if(_dsnames[id]==dsname) {
+	      ids = id+1;//because MC is 0
+	      break;
+	    }
+	      
+	  }
+
+	  //quite ugly...
+	  Dataset* ds=anConf.getDataset( dsname );
+	  int is = ds->hasSample(sname);
+	  float w = ds->getWeight(is)*anConf.getLumi();
+
+	  yield  = atof( tks[n+1].c_str() ) *w ;
+	  gen = atoi( tks[n+2].substr(1, tks[3].size()-1).c_str() );
+	  eyield = atof( tks[n+3].c_str() ) *w;
+	  //cout<<line<<endl;
+	  // if(icat==0)
+	  //   cout<<"   "<<ids<<"   "<<sname<<"   "<<cname<<"   "<<icat<<"    "<<yield/w<<"    "<<eyield/w<<"    "<<yield<<"   "<<gen<<"   "<<w<<endl;
+	  _au->setEffFromStat(ids, cname, icat, yield, eyield, gen);
+	}
+	
+      }
+
+    fDb.close();
+  }
+  else {
+    cout<<"Warning, statistics file "<<filename<<" not loaded, no auto binning specified"<<endl;
+  }
 
 }
 
@@ -55,8 +162,11 @@ void MPAFDisplay::doPlot() {
 
   configure();
 
+
   setHistograms();
   dp.setLumi( anConf.getLumi() );
+
+  setNumbers();
 
   //See if a fit is needed for the normalization
   //ugly....
@@ -92,6 +202,8 @@ void MPAFDisplay::doPlot() {
 	dp.plotDistributions( Obs_ );
   }
 
+  _recompute=false;
+
 }
 
 
@@ -102,7 +214,7 @@ MPAFDisplay::setHistograms() {
   // and store them into the HistoManager
 
   //do not need to reload everything at each iteration, but let's do it for the moment
-  //if(!_recompute) return;
+  if(!_recompute) return;
 
 
   for(size_t ids=0;ids<_dsnames.size();ids++) {
@@ -303,9 +415,11 @@ MPAFDisplay::producePlots(string path) {
   
   gROOT->SetBatch(kTRUE);
 
-  vector<string> obss = _hm->getObservables();
+  //vector<string> obss = _hm->getObservables();
+  vector<string> obss = dp.getAutoVars();
 
   for(size_t is=0;is<obss.size();is++) {
+
     refresh();
     dp.setObservables( obss[is] );
     doPlot();
@@ -330,7 +444,6 @@ MPAFDisplay::getIntegral(float x1, float x2, float y1, float y2) {
 void
 MPAFDisplay::refresh() {
   dp.reset();
-  anConf.reset();
-  _hm->reset();
+  // anConf.reset();
+  // _hm->reset();
 }
-

@@ -146,7 +146,7 @@ protected:
 	
 private:
 
-	void initialize();
+  void initialize();
 
   void initSkimming();
   void finalizeSkimming();
@@ -179,6 +179,9 @@ public:
 	std::string _SR;
 	std::string _BR;
 	std::string _PT;
+  bool _mva;
+  std::string _btag;
+  std::string _lepflav;
 	std::map <std::string, bool> _UsedCuts;
 	std::map <std::string, float> _Cuts;
 	std::vector <Dataset*> _Samples;

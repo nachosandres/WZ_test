@@ -108,6 +108,21 @@ AnaConfig::findDS(int channel) {
   return _itNDS->second;
 }
 
+
+string 
+AnaConfig::findDS(string channel) {
+
+  for(_itDs = _datasets.begin(); _itDs!= _datasets.end(); _itDs++) {
+
+    if(_itDs->second->hasSample(channel)!=-1 )
+      return _itDs->first;
+  }
+
+  //cout<<" Warning, no dataset for the sample "<<channel<<endl;
+    return "";  
+}
+
+
 int
 AnaConfig::findChan(string ds) {
   for(_itNDS=_numDS.begin();_itNDS!=_numDS.end();_itNDS++) {
@@ -132,10 +147,13 @@ void AnaConfig::configureLumi(map<string,float> LumisXS, map<string,float> Kfac,
 }
 
 void 
-AnaConfig::configureNames(string dir, string treeName, string treeList, string hName) {
+AnaConfig::configureNames(string dir, string treeName, string fileList, string hName) {
   _dir = dir;
   _treeName = treeName;
-  _treeList = treeList;
+
+  vector<string> filenames = listFiles((string)(getenv("MPAF")) + "/workdir/stats/" + dir + "/", fileList + ".dat");
+  _fileList = filenames;
+
   _hname = hName;
 }
 
@@ -339,4 +357,24 @@ AnaConfig::getHName() {
 
   }
 
+}
+
+
+vector<string>
+AnaConfig::listFiles(string dir, string files){
+
+  vector<string> result;
+
+  string command = "ls " + dir + files;
+  FILE * pipe = popen(command.c_str(), "r");
+
+  char buffer[128];
+  while(!feof(pipe)) {
+    if(fgets(buffer, 128, pipe) != NULL)
+      result.push_back(buffer);
+    result[result.size()-1].erase(result[result.size()-1].find_last_not_of(" \n\r\t")+1);
+  }
+
+  pclose(pipe);
+  return result;
 }

@@ -210,6 +210,46 @@ Display::setNormalization(string str) {
 
 }
 
+void
+Display::loadAutoBinning(string filename) {
+
+  if(filename=="") return;
+
+  string ndb= (string)getenv("MPAF")+"/display/cards/"+filename;
+  ifstream fDb( ndb.c_str(), ios::in );
+
+  if(fDb)  {
+    string line;
+    while(getline(fDb, line)) 
+      {
+
+	istringstream iss(line);
+	vector<string> tks;
+	copy(istream_iterator<string>(iss),
+	     istream_iterator<string>(),
+	     back_inserter<vector<string> >(tks));
+
+	string var = tks[0];
+	int bin = atoi(tks[1].c_str());
+	float xmin = atof(tks[2].c_str());
+	float xmax = atof(tks[3].c_str());
+
+	vector<float> vals(3,0);
+	vals[0] = bin;
+	vals[1] = xmin;
+	vals[2] = xmax;
+
+	_autoBins[ var ] = vals;
+	_autoVars.push_back(var);
+      }
+  } 
+  else {
+    cout<<"Warning, auto binning file "<<ndb<<" not loaded, no auto binning specified"<<endl;
+  }
+
+
+}
+
 void 
 Display::setObservables(string v1, string v2, string v3,
 			string v4, string v5, string v6) {
@@ -937,11 +977,20 @@ Display::prepareHistograms(const hObs* theobs) {
   }
   
   //Global Rebinning ======================
+  float tmpXm=_xmin;
+  float tmpXM=_xmax;
+  if(_autoBins.find(theobs->name)!=_autoBins.end() ) {
+    _gBin = _autoBins[ theobs->name ][0];
+    _xmin = _autoBins[ theobs->name ][1]; 
+    _xmax = _autoBins[ theobs->name ][2]; 
 
-  if(_gBin==0) { //automatic binning
-    _gBin = HistoUtils::autoBinning(_xmin, _xmax, theobs->nBX, 
-				    theobs->binsX[0], theobs->binsX.back() );
-    _gBckBin=1;
+  }
+  else {
+    if(_gBin==0) { //automatic binning
+      _gBin = HistoUtils::autoBinning(_xmin, _xmax, theobs->nBX, 
+				      theobs->binsX[0], theobs->binsX.back() );
+      _gBckBin=1;
+    }
   }
 
   //FIXME MM
@@ -1203,6 +1252,17 @@ Display::prepareHistograms(const hObs* theobs) {
     // if(_normOpts.find("dif")!=_normOpts.end())
     //   ymax /= _hMC->GetBinWidth(0); //temporary fix
 
+ for(size_t ih=0;ih<_nhmc;ih++) {
+      //FIXME skip signals not summed
+      string nh = (string)( _hClones[ih]->GetName());
+      if( !(!_sSignal && nh.find("sig")!=(size_t)-1) ) {
+	float yM = HistoUtils::getHistoYhighWithError(_hClones[ih],_xmin,_xmax);
+	if(yM>ymax)
+	  ymax = yM*(_logYScale?15:1.5);
+      }
+    }
+
+
     float ymin = 10000000000.;
     for(size_t ih=0;ih<_nhmc;ih++) {
       //FIXME skip signals not summed
@@ -1293,6 +1353,11 @@ Display::prepareHistograms(const hObs* theobs) {
   }
   
   delete hData;
+
+  //rerieveing the xmin and xmax values
+  _xmin = tmpXm;
+  _xmax = tmpXM;
+
 
 }
 

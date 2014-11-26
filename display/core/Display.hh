@@ -111,6 +111,9 @@ private:
 
   float _xCoordSave[2];
 
+  std::map<std::string, std::vector<float> > _autoBins;
+  vector<string> _autoVars;
+  
   //titles
   string _xtitle;
   string _ytitle;
@@ -229,6 +232,9 @@ public:
   void configure(string dsname, int col, bool isGhost);
   void setWeight(string dsname, float w);
   void initWeights(const hObs* theobs);
+
+  void loadAutoBinning(string filename);
+  vector<string> getAutoVars() {return _autoVars;};
 
   const TCanvas* getCanvas() { return _c;}; 
 

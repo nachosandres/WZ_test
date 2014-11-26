@@ -116,6 +116,49 @@ void AnaUtils::setEfficiency(int ids, string cName, int iCateg, float w, bool ac
 
 }
 
+
+void AnaUtils::setEffFromStat(int ids, string cName, int iCateg, float sw, float esw, int ngen) {
+  
+  //  Acceptance
+  // if(_useAccForEff)
+  //   if(!_inAcc) w=0;
+  
+  _itEIMap=_effMap[ ids ][iCateg].find( cName );
+  if(_itEIMap==_effMap[ ids ][ iCateg ].end() ) {
+   
+    EffST tmp;
+    tmp.eff = 0;
+    tmp.sumw = 0; tmp.sumw2 = 0;
+    tmp.N = 0;    
+    tmp.sumwTot = 0; tmp.sumw2Tot = 0;
+    tmp.NTot = 0;    
+    
+    _effMap[ ids ][ iCateg ][ cName ] = tmp;
+
+    bool exists=false;
+    for(size_t ic=0;ic<_effNames[ iCateg ].size();ic++)
+      if(cName == _effNames[ iCateg ][ic]) exists=true;
+
+    if(!exists)
+      _effNames[ iCateg ].push_back( cName );
+  }
+  
+  if(_itEIMap==_effMap[ _kMC ][ iCateg ].end() ) {
+    EffST tmp;
+    tmp.eff = 0;
+    //    tmp.systp = 0; tmp.systm = 0;
+    tmp.sumw = 0; tmp.sumw2 = 0;
+    tmp.N = 0;    
+    tmp.sumwTot = 0; tmp.sumw2Tot = 0;
+    tmp.NTot = 0;    
+
+    _effMap[ _kMC ][ iCateg ][ cName ] = tmp;
+  }
+
+  setNumFromStat(ids, cName, iCateg, sw, esw, ngen );
+
+}
+
 void AnaUtils::addDataset(string dsName) {
   
   _dsNames.push_back(dsName);
@@ -140,6 +183,7 @@ AnaUtils::addCategory(int iCateg, string eCateg) {
     }
   }
 
+  
   //and now the category
   
   _catNames[ iCateg ] = eCateg;
@@ -264,154 +308,155 @@ AnaUtils::getYieldSysts(string ds, string lvl) {
 
 void AnaUtils::saveNumbers(string anName, string conName) {
 
-	// testing write permission on output directory
-	cout << endl;
-	string dirname_ =  (string)(getenv("MPAF")) + "/workdir/stats/" + anName;
-	FILE* test = fopen( dirname_.c_str(), "r" );
-	if( test == 0 ) {
-		string command_ = "mkdir -p " + dirname_; 
-		assert( system( command_.c_str() ) == 0 );
-	}
-	else
-	  fclose( test );
+  // testing write permission on output directory
+  cout << endl;
+  string dirname_ =  (string)(getenv("MPAF")) + "/workdir/stats/" + anName;
+  FILE* test = fopen( dirname_.c_str(), "r" );
+  if( test == 0 ) {
+    string command_ = "mkdir -p " + dirname_; 
+    assert( system( command_.c_str() ) == 0 );
+  }
+  else
+    fclose( test );
 	
-	string ofilename_ = dirname_ + "/" + conName + ".dat";
-	test = fopen( ofilename_.c_str(), "r" );
-	if( test != 0 )	{
-		fclose( test );
-		TDatime datime_;
-		cout << "File " << ofilename_ << " already exists, save it." << endl;
-		string command_ = "mv " + ofilename_ + " " + ofilename_ + "_"; 
-		ostringstream os;
-		os << datime_.Get();
-		command_ += os.str();
-		assert( system( command_.c_str() ) == 0 );
-	}
+  string ofilename_ = dirname_ + "/" + conName + ".dat";
+  test = fopen( ofilename_.c_str(), "r" );
+  if( test != 0 )	{
+    fclose( test );
+    TDatime datime_;
+    cout << "File " << ofilename_ << " already exists, save it." << endl;
+    string command_ = "mv " + ofilename_ + " " + ofilename_ + "_"; 
+    ostringstream os;
+    os << datime_.Get();
+    command_ += os.str();
+    assert( system( command_.c_str() ) == 0 );
+  }
 
-	//now storing the output
-	ofstream ofile( ofilename_.c_str(), ios::out | ios::trunc );
-	if(!ofile) {
-		cout << "Error writing log file containing yields " << endl; 
-		return;
-	}
+  //now storing the output
+  ofstream ofile( ofilename_.c_str(), ios::out | ios::trunc );
+  if(!ofile) {
+    cout << "Error writing log file containing yields " << endl; 
+    return;
+  }
 
   
-	//move MC at the end
-	vector<string> dsNames;
-	bool hasData = _dsNames.back() == "data" || _dsNames.back() == "Data";
-	size_t nds = _dsNames.size();
+  //move MC at the end
+  vector<string> dsNames;
+  bool hasData = _dsNames.back() == "data" || _dsNames.back() == "Data";
+  size_t nds = _dsNames.size();
   
-	//preparing the order of writing
-	//remove MC yields, not useful if not properly weighted
-	for(size_t ids = 1; ids < (hasData ? nds-1 : nds); ++ids)
-		dsNames.push_back( _dsNames[ids] );
+  //preparing the order of writing
+  //remove MC yields, not useful if not properly weighted
+  for(size_t ids = 1; ids < (hasData ? nds-1 : nds); ++ids)
+    dsNames.push_back( _dsNames[ids] );
 
-	if( hasData )
-		dsNames.push_back( _dsNames.back() );
+  if( hasData )
+    dsNames.push_back( _dsNames.back() );
 
-	// print global efficiencies at the end======================
-	vector<int> catNames;
-	bool hasGlobEff = false;
-	for(map<int, vector<string> >::const_iterator it = _effNames.begin(); it != _effNames.end(); ++it) {
-		if( _catNames[it -> first] == "global") {
-			hasGlobEff = true; 
-			continue; 
-		}
-		catNames.push_back( it -> first ); 
-	}
+  // print global efficiencies at the end======================
+  vector<int> catNames;
+  bool hasGlobEff = false;
+  for(map<int, vector<string> >::const_iterator it = _effNames.begin(); it != _effNames.end(); ++it) {
+    if( _catNames[it -> first] == "global") {
+      hasGlobEff = true; 
+      continue; 
+    }
+    catNames.push_back( it -> first ); 
+  }
 
-	if(hasGlobEff)
-		catNames.push_back( _kGlobal );
+  if(hasGlobEff)
+    catNames.push_back( _kGlobal );
 
-	for(size_t ic = 0; ic < catNames.size(); ++ic) {
-    	int icat = catNames[ic];
-		ofile << "categ\t" << _catNames[icat] << endl;
-		bool header = true;
+  for(size_t ic = 0; ic < catNames.size(); ++ic) {
+    int icat = catNames[ic];
+    ofile << "categ\t" << _catNames[icat] << endl;
+    bool header = true;
 
-		// to skip the simulation in a first time
-		for(size_t ic = 0; ic < _effNames[icat].size(); ++ic) { //cuts
+    // to skip the simulation in a first time
+    for(size_t ic = 0; ic < _effNames[icat].size(); ++ic) { //cuts
 
-			_itEIMap = _effMap[ _kMC ][icat].find( _effNames[icat][ ic ] );
+      _itEIMap = _effMap[ _kMC ][icat].find( _effNames[icat][ ic ] );
 	
-			// out of the loop if no MC
-			if(_itEIMap == _effMap[ _kMC ][icat].end() ) 
-				break; 
+      // out of the loop if no MC
+      if(_itEIMap == _effMap[ _kMC ][icat].end() ) 
+	break; 
 
-			if(header){
-				ofile << "\tselection\tdataset\tyield (unweighted)\tyield error\tnum gen evts" << endl;
-				header = false;
-			}
+      if(header){
+	ofile << "\tselection\tdataset\tyield (unweighted)\tyield error\tnum gen evts" << endl;
+	header = false;
+      }
 	
-			// CH: not needed anymore	
-			//if(header) {
-			//	ofile << "\tselection" << fixed << setprecision(4);
-			//	for(size_t ids = 0; ids < dsNames.size(); ids++)
-			//		ofile << "\t" << dsNames[ids] << "\t";
-			//	ofile << endl;
-			//	header = false;
-			//}
+      // CH: not needed anymore	
+      //if(header) {
+      //	ofile << "\tselection" << fixed << setprecision(4);
+      //	for(size_t ids = 0; ids < dsNames.size(); ids++)
+      //		ofile << "\t" << dsNames[ids] << "\t";
+      //	ofile << endl;
+      //	header = false;
+      //}
 
 
-			// to skip the simulation summary
-			for(size_t ids = 0; ids < dsNames.size(); ++ids) { //datasets
-  
-				//_itMEMap = _effMap[ids].find( dsNames[ ids ] );
-				map<string,EffST>::iterator itm;
+      // to skip the simulation summary
+      for(size_t id = 0; id < dsNames.size(); ++id) { //datasets
+	int ids = id+1;
 
-				{ // simulation detail
+	//_itMEMap = _effMap[ids].find( dsNames[ ids ] );
+	map<string,EffST>::iterator itm;
+
+	{ // simulation detail
 
 			
-					// cut name
-					ofile << "\t" << _itEIMap -> first;
+	  // cut name
+	  ofile << "\t" << _itEIMap -> first;
 
-					// dataset name
-					ofile << "\t" << dsNames[ids]; 
+	  // dataset name
+	  ofile << "\t" << dsNames[id]; 
 
-					// yields
+	  // yields
 
-					itm = _effMap[ids][icat].find( _itEIMap -> first );
-					//itm=_itMEMap -> second[categ].find( _itEIMap -> first );
+	  itm = _effMap[ids][icat].find( _itEIMap -> first );
+	  //itm=_itMEMap -> second[categ].find( _itEIMap -> first );
 
-					if(itm == _effMap[ids][icat].end()) 
-					  ofile << "\t - (-)\t - ";
-					  //ofile << " - ";
+	  if(itm == _effMap[ids][icat].end()) 
+	    ofile << "\t 0 (0)\t 0 ";
+	  //ofile << " - ";
 
-					else {
-						if(itm -> second.sumw > 0.000001 ) { 
-							ostringstream os, os2, os3;
-							os  << fixed << setprecision(4) << itm -> second.sumw;
-							os2 << fixed << setprecision(0) << itm -> second.N;
-							os3 << fixed << setprecision(4) << sqrt(itm -> second.sumw2);
+	  else {
+	    if(itm -> second.sumw > 0.000001 ) { 
+	      ostringstream os, os2, os3;
+	      os  << fixed << setprecision(4) << itm -> second.sumw;
+	      os2 << fixed << setprecision(0) << itm -> second.N;
+	      os3 << fixed << setprecision(4) << sqrt(itm -> second.sumw2);
 							
-							//string tmps = os.str() + " +- " + os2.str();
-							ofile << "\t" << os.str() << " (" << os2.str() << ")\t" << os3.str();
-							// ofile << itm -> second.sumw;
-							// ofile << " +- " << sqrt(itm -> second.sumw2);
-						}
-						else
-					  		ofile << "\t - (-)\t - ";
-							//ofile << " - ";
+	      //string tmps = os.str() + " +- " + os2.str();
+	      ofile << "\t" << os.str() << " (" << os2.str() << ")\t" << os3.str();
+	      // ofile << itm -> second.sumw;
+	      // ofile << " +- " << sqrt(itm -> second.sumw2);
+	    }
+	    else
+	      ofile << "\t 0 (0)\t 0 ";
+	    //ofile << " - ";
 						
-						// number of selected events unweighted
-						//ofile << fixed << setprecision(0) << " (" << itm -> second.N << ")" << fixed << setprecision(4);
-					}
+	    // number of selected events unweighted
+	    //ofile << fixed << setprecision(0) << " (" << itm -> second.N << ")" << fixed << setprecision(4);
+	  }
 
-					// number of generated events
+	  // number of generated events
 
 
-					ofile << endl;
-					//if(ids == dsNames.size()-1 )
-					//	ofile << endl;
-					//else
-					//  ofile << "\t";
-				}
-			} // datasets
-		} // cuts
+	  ofile << endl;
+	  //if(ids == dsNames.size()-1 )
+	  //	ofile << endl;
+	  //else
+	  //  ofile << "\t";
+	}
+      } // datasets
+    } // cuts
 
-		ofile << "endcateg\t" << _catNames[icat] << endl << endl;
-	} // categories
+    ofile << "endcateg\t" << _catNames[icat] << endl << endl;
+  } // categories
 
-	ofile.close();
+  ofile.close();
 }
 
 
@@ -449,9 +494,11 @@ void AnaUtils::printNumbers() {
     cout<<" ============= Efficiency category : "<<setw(17)<<_catNames[ icat ]<<" =============== "<<endl;
     cout<<" ===================================================================== "<<endl;
 
-  for(size_t ids=0;ids<dsNames.size();ids++) { //datasets
-     string dsName = dsNames[ids];
-
+  for(size_t id=0;id<dsNames.size();id++) { //datasets
+     string dsName = dsNames[id];
+     //but id = 0 is MC
+     int ids=id+1;
+    
     //need last object for change of weights
     float tmpswtot=-1;
     float tmpNTot=-1;
@@ -637,141 +684,279 @@ void AnaUtils::printNumbers() {
 
   cout<<endl<<endl;
 
+}
+
+void
+AnaUtils::printTables(string categ) {
+  
+  vector<int> catNames;
+  bool hasGlobEff=false;
+  for(map<int, vector<string> >::const_iterator it=_effNames.begin();
+      it!=_effNames.end();it++) {
+    
+    if(it->first == _kGlobal) {hasGlobEff=true; continue; }
+    catNames.push_back(  it->first ); 
+  }
+  if(hasGlobEff)
+    catNames.push_back( _kGlobal );
+
+
+  int icat=0;
+  for(size_t ic=0;ic<catNames.size();ic++) {
+    if(catNames[ic]==categ) {
+      icat = ic;
+      break;
+    }
   }
 
 
+  //move MC at the end
+  vector<string> dsNames;
+  bool hasData = _dsNames.back()=="data" || _dsNames.back()=="Data";
+  size_t nds=_dsNames.size();
+  
+  for(size_t ids=1;ids<(hasData?nds-1:nds);ids++) {
+    dsNames.push_back(_dsNames[ids]);
+  }
+  //dsNames.push_back(_dsNames[0]); //MC disabled for now
+  if(hasData)
+    dsNames.push_back(_dsNames.back());
 
-vector<string> AnaUtils::listFiles(string dir, string files){
+  //Numbers =======================================================
+  cout<<endl<<endl;
+  //For Latex
 
-	vector<string> result;
+  bool header=true;
+  //start from one to skip the simulation in a first time
+  for(size_t ic=0;ic<_effNames[ icat ].size();ic++) { //cuts
+    
+    _itEIMap = _effMap[ _kMC ][ icat ].find( _effNames[ icat ][ ic ] );
+    if(_itEIMap == _effMap[ _kMC ][ icat ].end() ) break; //out of the loop if no MC
 
-	string command = "ls " + dir + files;
-	FILE * pipe = popen(command.c_str(), "r");
+    if(header) {
+      cout<<" Cut  "<<fixed<<setprecision(2);
+      for(size_t ids=0;ids<dsNames.size();ids++) { //_itEMap
 
-    char buffer[128];
-    while(!feof(pipe)) {
-    	if(fgets(buffer, 128, pipe) != NULL)
-    		result.push_back(buffer);
-			result[result.size()-1].erase(result[result.size()-1].find_last_not_of(" \n\r\t")+1);
-	}
+  	//_itEMap = _effMap[ ids ].find( dsNames[ ids ] );
+  	// if(_itEMap->first=="data" || _itEMap->first=="Data") 
+  	//   cout<<" & MC   "<<"  & "<<_itEMap->first<<"   ";
+  	// else
+  	  cout<<" & "<<dsNames[ ids ]<<"   ";
+      }
+      cout<<" \\\\ "<<endl;
+      header=false;
+    }
 
-	pclose(pipe);
-	return result;
+    cout<<_effNames[ icat ][ ic ]<<"    ";
+
+    //start from one to skip the simulation summary
+    for(size_t id=0;id<dsNames.size();id++) { //datasets _itEMap
+      //_itEMap = _effMap[ ids ][ icat ];
+      int ids=id+1;
+      //      if( (!hasData && ) )
+
+      cout<<" & ";
+
+      { //simulation detail
+  	_itEIMap=_effMap[ ids ][ icat ].find( _effNames[ icat ][ ic ] );
+  	if(_itEIMap==_effMap[ ids ][ icat ].end()) 
+  	  cout<<" - ";
+  	else {
+  	  if(_itEIMap->second.sumw>0.000001 ) {
+  	    cout<<_itEIMap->second.sumw;
+  	    cout<<" $\\pm$ "<<sqrt(_itEIMap->second.sumw2);
+  	  }
+  	  else
+  	    cout<<" - "; 
+  	}
+
+  	if(dsNames[id]=="data" || dsNames[id]=="Data" ||
+  	   (!hasData && (dsNames[id]=="MC" || ids==dsNames.size() ) ) )
+  	  cout<<" \\\\ "<<endl;
+      }
+      
+    }//datasets
+  }//cuts
+
+
+  cout<<endl<<endl;
+  
+
+    //For Visu
+
+  header=true;
+  //to skip the simulation in a first time
+   for(size_t ic=0;ic<_effNames[icat].size();ic++) { //cuts
+    
+    _itEIMap = _effMap[ _kMC ][icat].find( _effNames[icat][ ic ] );
+    if(_itEIMap == _effMap[_kMC][icat].end() ) break; //out of the loop if no MC
+
+    if(header) {
+      cout<<setw(15)<<" Cut                "<<fixed<<setprecision(2)<<"\t";
+      for(size_t ids=0;ids<dsNames.size();ids++) {
+  	//_itEMap = _effMap[ids].find( dsNames[ ids ] );
+  	cout<<setw(20)<<dsNames[ids]<<"\t";
+      }
+      cout<<endl;
+      header=false;
+    }
+
+    cout<<setw(20)<<_effNames[ icat ][ ic ]<<"\t";
+
+    //to skip the simulation summary
+    for(size_t id=0;id<dsNames.size();id++) { //datasets
+      int ids = id+1;
+      //_itEMap = _effMap[ids].find( dsNames[ ids ] );
+      // map<string,EffST>::iterator itm;
+      { //simulation detail
+  	_itEIMap=_effMap[ ids ][ icat ].find( _effNames[ icat ][ ic ] );
+  	if(_itEIMap==_effMap[ ids ][ icat ].end()) 
+  	  cout<<setw(20)<<" - ";
+  	//cout<<" - ";
+  	else {
+  	  if(_itEIMap->second.sumw>0.000001 ) {
+	    
+  	    ostringstream os,os2;
+  	    os <<fixed<<setprecision(2)<<_itEIMap->second.sumw;
+  	    os2 <<fixed<<setprecision(2)<<sqrt(_itEIMap->second.sumw2);
+
+  	    string tmps=os.str()+" +- "+os2.str();
+  	    cout<<setw(20)<<tmps;
+	    // cout<<_itEIMap->second.sumw;
+  	    // cout<<" +- "<<sqrt(_itEIMap->second.sumw2);
+  	  }
+  	  else
+  	    cout<<" - "; 
+  	}
+
+	if(dsNames[id]=="data" || dsNames[id]=="Data" || 
+	   (!hasData && (dsNames[id]=="MC" || ids==dsNames.size() ) ) )  
+   	  cout<<endl;
+  	else
+	  cout<<"\t";
+      }
+      
+    }//datasets
+   }//cuts
+
+
+
 }
 
-int AnaUtils::findElement(vector<string> v, string e){
 
-	vector<string>::iterator i = find(v.begin(), v.end(), e);
-	if(i == v.end()) return -1;
-	return distance( v.begin(), i );
+int 
+AnaUtils::findElement(vector<string> v, string e){
+
+  vector<string>::iterator i = find(v.begin(), v.end(), e);
+  if(i == v.end()) return -1;
+  return distance( v.begin(), i );
 
 }
 
 
 vector< pair<string, vector<vector<float> > > >
-AnaUtils::retrieveNumbers(string anName, string conName, vector<string> snames, vector<string> dsnames) {
+AnaUtils::retrieveNumbers(string anName, vector<string> filenames, vector<string> snames, vector<string> dsnames) {
 
-	vector< pair<string, vector<vector<float> > > > onums;
-	char buffer[500]; 
-	bool globalcat = false;
-	vector<vector<float> > buffer_val;
-	vector<vector<float> > buffer_err;
+  vector< pair<string, vector<vector<float> > > > onums;
+  char buffer[500]; 
+  bool globalcat = false;
+  vector<vector<float> > buffer_val;
+  vector<vector<float> > buffer_err;
 
-	ifstream ifile;
-	vector<string> filenames_ = listFiles((string)(getenv("MPAF")) + "/workdir/stats/" + anName + "/",  conName + ".dat");
+  ifstream ifile;
 
-	for(unsigned int i = 0; i < filenames_.size(); ++i){
+  for(unsigned int i = 0; i < filenames.size(); ++i){
 
-		if(ifile.is_open()) {
-			ifile.close();
-			ifile.clear();
-			ifile.seekg(0, ios_base::beg);
-		}
+    if(ifile.is_open()) {
+      ifile.close();
+      ifile.clear();
+      ifile.seekg(0, ios_base::beg);
+    }
 
 
-		ifile.open(filenames_[i].c_str());
+    ifile.open(filenames[i].c_str());
 		
-		cout << "processing file " << filenames_[i] << endl;
+    cout << "processing file " << filenames[i] << endl;
 
-		vector<float> p;
-		p.resize(snames.size());
-		buffer_val.push_back(p);
-		buffer_err.push_back(p);
+    vector<float> p;
+    p.resize(snames.size());
+    buffer_val.push_back(p);
+    buffer_err.push_back(p);
 
-		while(ifile.getline(buffer, 500, '\n')) {
+    while(ifile.getline(buffer, 500, '\n')) {
 
-			string line = buffer;
+      string line = buffer;
 
-			if(line.substr(0,1) == "" || line.substr(0,1) == " ") continue; 
-			if(line.find("categ") != std::string::npos && line.find("global") != std::string::npos) globalcat = true;
-			if(line.find("endcateg") != std::string::npos) globalcat = false;
+      if(line.substr(0,1) == "" || line.substr(0,1) == " ") continue; 
+      if(line.find("categ") != std::string::npos && line.find("global") != std::string::npos) globalcat = true;
+      if(line.find("endcateg") != std::string::npos) globalcat = false;
 
-			if(globalcat){
+      if(globalcat){
 
-				float nevts = 0.0, err = 0.0;
-				string samplename = "";
-				char sname_char[100] = "", nw_char[20] = "-", n_char[20] = "-", errw_char[20] = "-", gen_char[20] = "-";
+	float nevts = 0.0, err = 0.0;
+	string samplename = "";
+	char sname_char[100] = "", nw_char[20] = "0", n_char[20] = "0", errw_char[20] = "0", gen_char[20] = "0";
 
-				if(line.find("SR charge selection") != std::string::npos){
-					if(sscanf(buffer, "\tSR charge selection\t%s\t%s (%s\t%s\t%s", sname_char, nw_char, n_char, errw_char, gen_char) >= 4){ 
-						//CH: n_char contains also the closing bracket ) => ugly, nasty, should be forbidden under penalty 
-						samplename = sname_char;
-						nevts = (nw_char=="-"?0.0:(atof(nw_char)>=0?atof(nw_char):0.0));
-						err   = (errw_char=="-"?0.0:(atof(errw_char)>=0?atof(errw_char):0.0));
-						int j = findElement(snames, samplename);
-						if(j >= 0){
-							buffer_val[i][j] = nevts;
-							buffer_err[i][j] = err;
-						}
-					}
-				}
-			}
-		}
+	if(line.find("SR charge selection") != std::string::npos){
+	  if(sscanf(buffer, "\tSR charge selection\t%s\t%s (%s\t%s\t%s", sname_char, nw_char, n_char, errw_char, gen_char) >= 4){ 
+	    //CH: n_char contains also the closing bracket ) => ugly, nasty, should be forbidden under penalty 
+	    samplename = sname_char;
+	    nevts = atof(nw_char);//(nw_char=="-"?0.0:(atof(nw_char)>=0?atof(nw_char):0.0));
+	    err   = atof(errw_char);//(errw_char=="-"?0.0:(atof(errw_char)>=0?atof(errw_char):0.0));
+	    int j = findElement(snames, samplename);
+	    if(j >= 0){
+	      buffer_val[i][j] = nevts;
+	      buffer_err[i][j] = err;
+	    }
+	  }
 	}
+      }
+    }
+  }
 
 
-	vector<string> ds;
-	for(int i = 0; i < dsnames.size(); ++i) {
-		if(findElement(ds, dsnames[i])==-1){
-			ds.push_back(dsnames[i]);
-		}
-	}
+  vector<string> ds;
+  for(int i = 0; i < dsnames.size(); ++i) {
+    if(findElement(ds, dsnames[i])==-1){
+      ds.push_back(dsnames[i]);
+    }
+  }
 
-	for(size_t ic = 0; ic < filenames_.size(); ++ic) { // signal regions
+  for(size_t ic = 0; ic < filenames.size(); ++ic) { // signal regions
 			
-		pair<string, vector<vector<float> > > p;
-		vector<vector<float> > v(ds.size(), vector<float>(4, 0));
-		size_t first  = filenames_[ic].find_first_of("_");
-		size_t second = filenames_[ic].find_first_of("_", first + 1);
-		p.first  = filenames_[ic].substr(first + 1, second - first - 1);
-		p.second = v;
+    pair<string, vector<vector<float> > > p;
+    vector<vector<float> > v(ds.size(), vector<float>(4, 0));
+    size_t first  = filenames[ic].find_first_of("_");
+    size_t second = filenames[ic].find_first_of("_", first + 1);
+    p.first  = filenames[ic].substr(first + 1, second - first - 1);
+    p.second = v;
 
-		//to skip the simulation summary
-		for(size_t ids = 0; ids < snames.size(); ++ids) { // datasets
+    //to skip the simulation summary
+    for(size_t ids = 0; ids < snames.size(); ++ids) { // datasets
 
-			int idx = findElement(ds, dsnames[ids]);
+      int idx = findElement(ds, dsnames[ids]);
 
-			if(buffer_val[ic][ids] == 0){ 
-				p.second[idx][0] += 0.;
-			}
-			else {
-				p.second[idx][0] += buffer_val[ic][ids];
-				p.second[idx][1] += buffer_err[ic][ids]; //CH: attention!! errors are summed differently!!
-				p.second[idx][2] += 0.;
-				p.second[idx][3] += 0.;
-			}
+      if(buffer_val[ic][ids] == 0){ 
+	p.second[idx][0] += 0.;
+      }
+      else {
+	p.second[idx][0] += buffer_val[ic][ids];
+	p.second[idx][1] += buffer_err[ic][ids]; //CH: attention!! errors are summed differently!!
+	p.second[idx][2] += 0.;
+	p.second[idx][3] += 0.;
+      }
 		
-		}//datasets
+    }//datasets
 		
-		onums.push_back( p );
-	}//cuts
+    onums.push_back( p );
+  }//cuts
 
-	cout << onums[0].first << std::endl;
-	cout << onums[0].second.size() << std::endl;
-	cout << onums[0].second[0][0] << std::endl;
-	std::cout << "returning..." << endl;
+  cout << onums[0].first << std::endl;
+  cout << onums[0].second.size() << std::endl;
+  cout << onums[0].second[0][0] << std::endl;
+  std::cout << "returning..." << endl;
 	
-	return onums;
+  return onums;
 				
 				
 
@@ -831,9 +1016,12 @@ void AnaUtils::setSkipCut(vector<string> var, bool invCut) {
 
 void AnaUtils::setNumbers(int ids,string cName, int iCateg, float w, bool acc) {
   
+
+
   _effMap[ ids ][ iCateg ][ cName ].NTot +=1;
   _effMap[ ids ][ iCateg ][ cName ].sumwTot +=w;
   _effMap[ ids ][ iCateg ][ cName ].sumw2Tot +=w*w;
+
 
   if(_dsNames[ids]!="data" && _dsNames[ids]!="Data" && 
      _dsNames[ids].find("sig")==(size_t)-1) {
@@ -854,6 +1042,33 @@ void AnaUtils::setNumbers(int ids,string cName, int iCateg, float w, bool acc) {
       _effMap[ _kMC ][ iCateg ][ cName ].sumw2 +=w*w;
     }
 
+  }
+
+}
+
+
+void AnaUtils::setNumFromStat(int ids,string cName, int iCateg, float sw, float esw, int ngen) {
+  
+  _effMap[ ids ][ iCateg ][ cName ].NTot +=ngen;
+  _effMap[ ids ][ iCateg ][ cName ].sumwTot +=sw;
+  _effMap[ ids ][ iCateg ][ cName ].sumw2Tot +=esw*esw;
+
+  if(_dsNames[ids]!="data" && _dsNames[ids]!="Data" && 
+     _dsNames[ids].find("sig")==(size_t)-1) {
+    _effMap[ _kMC ][ iCateg ][ cName ].NTot +=ngen;
+    _effMap[ _kMC ][ iCateg ][ cName ].sumwTot +=sw;
+    _effMap[ _kMC ][ iCateg ][ cName ].sumw2Tot +=esw*esw;
+  }
+
+  _effMap[ ids ][ iCateg ][ cName ].N +=ngen;
+  _effMap[ ids ][ iCateg ][ cName ].sumw +=sw;
+  _effMap[ ids ][ iCateg ][ cName ].sumw2 +=esw*esw;
+
+  if(_dsNames[ids]!="data" && _dsNames[ids]!="Data" && 
+     _dsNames[ids].find("sig")==(size_t)-1) {
+    _effMap[ _kMC ][ iCateg ][ cName ].N +=ngen;
+    _effMap[ _kMC ][ iCateg ][ cName ].sumw +=sw;
+    _effMap[ _kMC ][ iCateg ][ cName ].sumw2 +=esw*esw;
   }
 
 }

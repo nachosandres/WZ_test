@@ -141,14 +141,16 @@ public:
 
   //Efficiencies and yields
   void setEfficiency(int ids, string cName, int eCateg, float value, bool acc);
+  void setEffFromStat(int ids, string cName, int eCateg, float sw, float esw, int ngen);
   void setSystematics( int ids, string cName, string sName, bool up, bool down, float w);
   void getYieldSysts(string ds, string lvl);
 
   void saveNumbers(string anName, string conName);
   void printNumbers();
-	vector<string> listFiles(string dir, string files);
-	int findElement(vector<string> v, string e);
-  vector< pair<string, vector<vector<float> > > > retrieveNumbers(string anName, string conName, vector<string> snames, vector<string> dsnames);
+  void printTables(string categ="global");
+
+  int findElement(vector<string> v, string e);
+  vector< pair<string, vector<vector<float> > > > retrieveNumbers(string anName, vector<string> fileNames, vector<string> snames, vector<string> dsnames);
   //void drawNumbers();
   
   void setSkipCut(vector<string> var, bool invCut); 
@@ -236,6 +238,7 @@ private:
 
 
   void setNumbers(int ids,string cName, int eCateg,float w, bool acc);
+  void setNumFromStat(int ids,string cName, int iCateg, float sw, float esw, int ngen);
 
   ClassDef(AnaUtils,0)
   

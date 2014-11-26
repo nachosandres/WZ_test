@@ -39,11 +39,12 @@ private:
 
   HistoManager* _hm;
   DataBaseManager* _dbm;
+  AnaUtils* _au;
 
 public:
 
   AnaConfig anConf;
-	AnaUtils au;
+
   Display dp;
 
   //===== functions ====
@@ -54,7 +55,7 @@ private:
   void configure();
 
 
-
+  void setNumbers();
   void setHistograms();
 
 public:
@@ -68,6 +69,9 @@ public:
 
   void doStatisticsPlot();
   void doPlot();
+
+  void getStatistics(string categ="global");
+  
 
   void savePlot(string path, string advname="");
   void producePlots(string path);
