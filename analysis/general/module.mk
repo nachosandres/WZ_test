@@ -1,5 +1,5 @@
 #Source files to compile
-FILES := FakeRatio
+#FILES := FakeRatio
 
 
 # Header files to use for dictionary generation

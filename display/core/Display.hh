@@ -159,6 +159,8 @@ private:
   bool _uncDet;
   vector<string> _uncNames;
 
+  bool _comSyst;
+
   //plot format
   bool _is1D;
   bool _is2D;
@@ -219,6 +221,7 @@ public:
   void saveHistos(string hname, const hObs* theObs);
   void saveHistosSpecLQ(string hname);
   
+  void prepareStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames);
   void drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames);
   void drawDetailSystematics(bool cumul);
 
@@ -258,8 +261,9 @@ private:
   TPolyLine* PolyLineFromGraph(vector<TGraph*> graphs);
   TPolyLine* PolyLineFromGraph(TGraph* graph);
   
-  void plotDistribution(const hObs* theobs, int iobs);
-  void drawDistribution(const hObs* theobs);
+  void plotDistribution(const string& htype, const string& type,
+			int iobs);
+  void drawDistribution();
   void prepareHistograms(const hObs* theobs);
  
   void drawDataMCRatio();

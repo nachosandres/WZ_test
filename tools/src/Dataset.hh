@@ -90,6 +90,7 @@ public:
   //float findWeight(int event);
 	
   float getWeight(int is) {return _samples[is].getLumW(); };
+  float getWeight(string sname);
 	
   TTree* getTree() {return _chain;};
   int getNEvents() { return _chain->GetEntries(); };

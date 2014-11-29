@@ -6,10 +6,10 @@ using namespace std;
 
 MPAFDisplay::MPAFDisplay() {
 
- _hm=new HistoManager();
- _dbm=new DataBaseManager();
- _au=new AnaUtils();
- _recompute=true;
+  _hm=new HistoManager();
+  _dbm=new DataBaseManager();
+  _au=new AnaUtils();
+  _recompute=true;
 }
 
 MPAFDisplay::~MPAFDisplay() {
@@ -46,10 +46,17 @@ MPAFDisplay::reset() {
 
 
 void 
-MPAFDisplay::doStatisticsPlot(){
+MPAFDisplay::drawStatistics(string categ, string cname){
 
-	vector< pair<string, vector<vector<float> > > > numbers = _au->retrieveNumbers( anConf.getDir(), anConf.getObjList(), anConf.getSampleNames(), anConf.getDsNames());	
-	dp.drawStatistics( numbers, anConf.getDSNames() );
+  bool mcat=false;
+  if(cname!="") mcat=true;
+
+  vector< pair<string, vector<vector<float> > > > numbers = _au->retrieveNumbers(categ, mcat, cname);	
+
+  vector<string> dsNames = anConf.getDSNames();
+  dsNames.insert(dsNames.begin(), "MC");
+
+  dp.drawStatistics( numbers, dsNames );
 
 }
 
@@ -64,22 +71,42 @@ void
 MPAFDisplay::setNumbers() {
   if(!_recompute) return;
 
-  string filename = anConf.getObjList()[0];
   for(size_t id=0;id<_dsnames.size();id++) {
     _au->addDataset(_dsnames[id]);
-    //cout<<" adding dataset " <<endl;
   }
+  
+  vector<string> statFiles = anConf.getObjList();
+  string ctag = "";
+  size_t bl = 0;
+  size_t bh = 0;
+  
+  int icat=1; //0 for global
+
+  for(int i=(int)(statFiles.size())-1; i>=0; i--) {
+    
+    if(statFiles.size()>1 && i!=0)
+      ctag = findDiff(statFiles[0], statFiles[i],'_',bl,bh);
+    if(statFiles.size()>1 && i==0)
+      ctag = statFiles[0].substr(bl,bh-bl);
+
+    readStatFile( statFiles[i], ctag, icat);
+  }
+
+}
+
+void
+MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
   
   if(filename=="") return;
 
-  //string ndb= (string)getenv("MPAF")+"/stats/"+anConf.getDir()+"/"+filename;
   string ndb = filename;
   ifstream fDb( ndb.c_str(), ios::in );
+
+  map<pair<string,string>, bool > fVal;
 
   if(fDb)  {
     string line;
     
-    int icat=1; //0 for global
     string categ;
     string cname;
     string sname;
@@ -87,7 +114,7 @@ MPAFDisplay::setNumbers() {
     float yield, eyield;
     int gen;
     int ids;
-
+  
     while(getline(fDb, line)) 
       {
 	
@@ -101,13 +128,17 @@ MPAFDisplay::setNumbers() {
 
 	if(tks[0]=="categ") {
 	  categ="";
-	  for(int i=1;i<tks.size();i++) //prevent from spaces in categ names
-	    categ +=tks[i]; 
+	  for(size_t i=1;i<tks.size();i++) //prevent from spaces in categ names
+	    categ +=tks[i];
+
+	  categ+=ctag;
 
 	  if(categ!="global") {
 	    _au->addCategory(icat, categ);
+	  } 
+	  else {
+	    if(ctag=="") icat=0; //comes in last so do not mess the reading
 	  }
-	  else icat=0; //comes in last so do not mess the reading
 	}
 	else if(tks[0]=="endcateg") { //fill the maps
 	  icat++;
@@ -117,48 +148,50 @@ MPAFDisplay::setNumbers() {
 
 	  size_t n=tks.size()-4;
 	  cname="";
-	  for(int i=0;i<n;i++)
+	  for(size_t i=0;i<n;i++)
 	    cname += tks[i]+" ";
 	    
-	  //cname = tks[0];
 	  sname = tks[n];
-	  dsname = anConf.findDS(sname);
+
+	  Dataset* ds=anConf.findDS( sname );
 	  ids=-1;
-	  if(dsname=="") continue;
-	  for(int id=0;id<_dsnames.size();id++ ) {
-	    if(_dsnames[id]==dsname) {
+
+	  if(ds==nullptr) continue;
+	  for(size_t id=0;id<_dsnames.size();id++ ) {
+	    if(_dsnames[id]==ds->getName() ) {
 	      ids = id+1;//because MC is 0
 	      break;
 	    }
-	      
 	  }
 
-	  //quite ugly...
-	  Dataset* ds=anConf.getDataset( dsname );
-	  int is = ds->hasSample(sname);
-	  float w = ds->getWeight(is)*anConf.getLumi();
+	  float w = ds->getWeight(sname)*anConf.getLumi();
 
 	  yield  = atof( tks[n+1].c_str() ) *w ;
-	  gen = atoi( tks[n+2].substr(1, tks[3].size()-1).c_str() );
+	  gen = atoi( tks[n+2].substr(1,tks[3].size()-1).c_str() );
 	  eyield = atof( tks[n+3].c_str() ) *w;
-	  //cout<<line<<endl;
-	  // if(icat==0)
-	  //   cout<<"   "<<ids<<"   "<<sname<<"   "<<cname<<"   "<<icat<<"    "<<yield/w<<"    "<<eyield/w<<"    "<<yield<<"   "<<gen<<"   "<<w<<endl;
-	  _au->setEffFromStat(ids, cname, icat, yield, eyield, gen);
+
+	  pair<string,string> p(ds->getName(), cname+sname);
+	  if(fVal.find(p)==fVal.end() ) {
+	    fVal[p]=true;
+	    _au->setEffFromStat(ids,cname,icat,yield,eyield,gen);
+	  }
+
 	}
 	
       }
-
     fDb.close();
   }
   else {
-    cout<<"Warning, statistics file "<<filename<<" not loaded, no auto binning specified"<<endl;
+    cout<<"Warning, statistics file "<<filename<<" not loaded"<<endl;
   }
+
 
 }
 
 
-void MPAFDisplay::doPlot() {
+
+void
+MPAFDisplay::doPlot() {
 
   configure();
 
@@ -198,8 +231,8 @@ void MPAFDisplay::doPlot() {
   }  
   
   if(Obs_.size()!=0) {
-	dp.setSystematicsUnc( systs_ );
-	dp.plotDistributions( Obs_ );
+    dp.setSystematicsUnc( systs_ );
+    dp.plotDistributions( Obs_ );
   }
 
   _recompute=false;
@@ -219,7 +252,6 @@ MPAFDisplay::setHistograms() {
 
   for(size_t ids=0;ids<_dsnames.size();ids++) {
  
-	cout << "loading " << _dsnames[ids] << endl; 
     _ids = _dsnames[ids];
     _inds = ids;
     
@@ -237,7 +269,7 @@ MPAFDisplay::setHistograms() {
 	}
 	else {
 	  htmp->Add( ds->getHisto( obss[io], samples[is] ), 
-		       ds->getWeight(is) );
+		     ds->getWeight(is) );
 	}
       } 
 
@@ -282,7 +314,7 @@ MPAFDisplay::drawRatio(string o1, string o2 ) {
     cout<<" Error, no observable of name : "<<o1<<endl;
     return;
   }
- if( Obs_[1]==NULL) {
+  if( Obs_[1]==NULL) {
     cout<<" Error, no observable of name : "<<o2<<endl;
     return;
   }
@@ -389,12 +421,12 @@ MPAFDisplay::saveHistos(string o1) {
   const hObs* Obs_;
   Obs_ =  _hm->getHObs( o1 );
 
-   if( Obs_==NULL) {
-     cout<<" Error, no observable of name : "<<o1<<endl;
-     return;
-   }
+  if( Obs_==NULL) {
+    cout<<" Error, no observable of name : "<<o1<<endl;
+    return;
+  }
    
-   dp.saveHistos(o1, Obs_);
+  dp.saveHistos(o1, Obs_);
 
 }
 
@@ -446,4 +478,44 @@ MPAFDisplay::refresh() {
   dp.reset();
   // anConf.reset();
   // _hm->reset();
+}
+
+
+
+vector<string> 
+MPAFDisplay::split(const string& s, char delim) {
+
+  vector<string> elems;
+  std::stringstream ss(s);
+  std::string item;
+  while (std::getline(ss, item, delim)) {
+    if (!item.empty())
+      elems.push_back(item);
+  }
+  return elems;
+}
+
+string
+MPAFDisplay::findDiff(const string& s1, const string& s2,
+		      char delim, size_t& bl, size_t& bh) {
+
+  vector<string> sel1 = split(s1, delim);
+  vector<string> sel2 = split(s2, delim);
+
+  if(sel1.size() != sel2.size() ) {
+    bl = 0;
+    bh = sel1.size()-1;
+    return s2;
+  }
+
+  string diff="";
+  for(size_t ie=0;ie<sel1.size();ie++) {
+    if(sel1[ie]==sel2[ie]) continue;
+
+    diff += sel2[ie];
+    bl = s1.find(sel1[ie]);
+    bh = bl + sel1[ie].size();
+  }
+  
+  return diff;
 }

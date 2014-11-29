@@ -8,7 +8,7 @@ Display::Display():
 _c(0),_leg(0),_empty(0),_hMC(0),_hData(0),_gData(0)
 {
   
-  TGaxis::SetMaxDigits(5);
+  TGaxis::SetMaxDigits(3);
   TH1::SetDefaultSumw2(true);
   TH1::AddDirectory(kFALSE);
 
@@ -24,6 +24,8 @@ _c(0),_leg(0),_empty(0),_hMC(0),_hData(0),_gData(0)
   _is1D=true;
   _is2D=false;
   _isProf=false;
+
+  _comSyst=true;
 
   _userYScale=false;
 
@@ -277,7 +279,6 @@ Display::preparePads() {
 
   size_t n_ = _nvars;
   float m=1.3-(n_-1)*.1; //other
-  //float m=1.4-(n_-1)*.1; //LQ
   
   vector<TPad*> padhigh_;
   vector<vector<TPad*> > pad_;
@@ -323,7 +324,6 @@ Display::preparePads() {
     padtmp->SetFrameLineWidth(2);
     padtmp->SetFrameBorderMode(0);
     
-    //    vector<TPad*> vpadtmp;
     padhigh_.push_back(padtmp);
 
   }
@@ -363,7 +363,6 @@ Display::preparePadsWithRatio() {
   _hpad = t_ + h_ +k_ ;
 
   _c=new TCanvas("variables","variables",100,100,W_,H_);
-  //  c2=new TCanvas("c2","Test",300,300,1.2*W_,1.2*H_);
   Double_t xlow_= 0;
   Double_t ylow_=0.;
   Double_t xup_=0;
@@ -511,25 +510,32 @@ Display::plotDistributions(vector<const hObs*> theObs) {
     
     if(io!=0) _rmLabel=false;
     refreshHistos();
-    plotDistribution( theObs[io], io );
+
+    //prepare the histograms
+    prepareHistograms(theObs[io]);
+
+    plotDistribution( theObs[io]->htype, theObs[io]->type, io );
 
   }
-  
- 
+   
   _c->Update();
 
 }
 
 
-void Display::plotDistribution(const hObs* theobs, int iobs) {
+
+void
+Display::plotDistribution(const string& htype, const string& type,
+			  int iobs) {
 
   _c->cd();
   _pads[0][iobs]->Draw();
   _pads[0][iobs]->cd();
 
   _csystM = _systMUnc[iobs];
-
-  drawDistribution(theobs);
+  
+  //draw the histograms
+  drawDistribution();
 
   _pads[0][iobs]->RedrawAxis();
 
@@ -548,7 +554,7 @@ void Display::plotDistribution(const hObs* theobs, int iobs) {
  
   _pads[0][iobs]->Update();
  
-  if(theobs->htype.find("1D")!=(size_t)-1) { //fixme -> legend adjustment not supported for 2D plots
+  if(htype.find("1D")!=(size_t)-1) { //fixme -> legend adjustment not supported for 2D plots
     adjustLegend(iobs);
     if(_leg) {
       TLegend* tmpleg=(TLegend*)_leg->Clone();
@@ -559,8 +565,8 @@ void Display::plotDistribution(const hObs* theobs, int iobs) {
   _pads[0][iobs]->Update();
 
   if(!_showRatio || 
-     theobs->htype.find("1D")==(size_t)-1 ||
-     theobs->type=="u" || !_hMC ) return;
+     htype.find("1D")==(size_t)-1 ||
+     type=="u" || !_hMC ) return;
 
   _c->cd();
   _pads[1][iobs]->Draw();
@@ -581,9 +587,7 @@ Display::configure(string dsname, int col, bool isGhost) {
   // else
   
   _ghosts[ dsname ] = isGhost;
-  //cout<<" ghost? "<<isGhost<<"   "<<dsname<<endl;
   if(!isGhost) {
-    //cout<<dsname<<"   "<<_ghosts.size()-1<<"   "<<col<<endl;
     _names.push_back(dsname);
     _colors[ dsname ] = col;
     _iNs.push_back( _ghosts.size()-1 );
@@ -615,27 +619,25 @@ Display::initWeights(const hObs* theobs) {
     
     _fitNorm->initialize(_hClonesNoStack, _hData, _fitStr);
     map<string,float> ws=_fitNorm->getWeights();
-    for(_itW=ws.begin();_itW!=ws.end();_itW++)
+    for(_itW=ws.begin();_itW!=ws.end();_itW++){
       _gWeights[ _itW->first ] *= _itW->second;
+    }
   }
   else
-    for(_itW=_saveWeights.begin();_itW!=_saveWeights.end();_itW++)
+    for(_itW=_saveWeights.begin();_itW!=_saveWeights.end();_itW++){
       _gWeights[ _itW->first ] = _itW->second;
+
+    }
 
 }
 
 void
-Display::drawDistribution(const hObs* theobs) {
+Display::drawDistribution() {
 
-  //prepare the histograms
-  prepareHistograms(theobs);
-  
   //Drawing now.... (+legend) ============================
   if(_is1D)
     _empty->DrawCopy();
-  // else
-  //   _empty->DrawCopy();
-  
+   
   //signals
   vector<size_t> sigs;
   string opt;
@@ -669,7 +671,9 @@ Display::drawDistribution(const hObs* theobs) {
   
   // systematic uncertainties now ============
   if(_addSyst && !_is2D && _hMC) {
-    computeSystematics(_isProf,true);
+    if(_comSyst) {
+      computeSystematics(_isProf,true);
+    }
     
     if(_addSyst) {
       TGraphAsymmErrors* mcUnc = (TGraphAsymmErrors*) _mcUncert.back()->Clone();
@@ -689,7 +693,6 @@ Display::drawDistribution(const hObs* theobs) {
 
   }
   // the data ==============================================
-  // cout<<theobs->titleX<<"   "<<_gData<<endl;
   if(_is1D && !_isProf) {
     if(!_mcOnly && _gData!=NULL)
       _gData->Draw("p");
@@ -700,7 +703,6 @@ Display::drawDistribution(const hObs* theobs) {
     if(!_mcOnly) {
       _hData->SetMarkerStyle(20);
       _hData->Draw( opt.c_str() );
-      //    _gData->Draw("same");
     }
     if(_hMC!=0 && _normOpts.find("norm")==_normOpts.end()) {
       _hMC->SetMarkerStyle(24);
@@ -748,8 +750,6 @@ Display::changeGeVToTeV(TH1*& h,string xtitle, string ytitle, float xmin, float 
   bool isXTitle=xtitle.find("GeV")!=(size_t)-1;
   bool isYTitle=ytitle.find("GeV")!=(size_t)-1;
 
-  //bool is1D=hType.find("1D")!=(size_t)-1;
-
   bool changeX = isXTitle && (fabs(xmax)>=1000 || fabs(xmin)>=1000 );
   bool changeY = isYTitle && (fabs(ymax)>=1000 || fabs(ymin)>=1000 );
 
@@ -761,7 +761,6 @@ Display::changeGeVToTeV(TH1*& h,string xtitle, string ytitle, float xmin, float 
 
   TH1* tmp=NULL;
   TH2* tmp2=NULL;
-  //delete h;
 
   float* xBins=NULL;
   float* yBins=NULL;
@@ -848,9 +847,6 @@ Display::prepareHistograms(const hObs* theobs) {
   //first, remove ghost datasets ===  
   vector<TH1*> hTmps(_nhmc,0); 
   //size_t sTmp=_ghosts.size();
-  // for(int i=0;i<3;i++)
-  //   cout<<theobs->hs[i]->GetName()<<"   "<<3-i-1<<endl;
-  // cout<<"ih    it    gs-ih-1  "<<endl;
   for(size_t it=0;it<_nhmc;it++) {
     size_t ih = (size_t)_iNs[_nhmc-it-1];
     
@@ -885,13 +881,10 @@ Display::prepareHistograms(const hObs* theobs) {
   
   _hClones.resize(_nhmc);
   _hClonesNoStack.resize(_nhmc);
-  //_hSigClones.resize(_nhsig);
   _hMC= NULL;
   _hData = NULL;
   _gData = NULL;
-  // = _colors.begin();
-  // = _gWeights.begin();
-  
+    
   size_t nsig=0;
   float iMC=0.; float iData=0.;
   for(size_t ih=0;ih<_nhmc;ih++) {
@@ -899,7 +892,7 @@ Display::prepareHistograms(const hObs* theobs) {
     _itCol = _colors.find( _names[_nhmc-ih-1] );
     _itW = _gWeights.find( _names[_nhmc-ih-1] );
     
-    _hClones[ih] = (TH1*)hTmps[ih]->Clone();// (TH1*)theobs->hs[_nhmc-ih-1]->Clone();
+    _hClones[ih] = (TH1*)hTmps[ih]->Clone();
     _hClonesNoStack[ih] = (TH1*)hTmps[ih]->Clone();
 
     string nh="";
@@ -914,11 +907,11 @@ Display::prepareHistograms(const hObs* theobs) {
      
 	for(size_t ij=ih+1;ij<(_noStack?min(ih+1,_nhmc):_nhmc);ij++) {
 	  
-	  string nh2 = (string)( hTmps[ih]->GetName()); //theobs->hs[_nhmc-ij-1]->GetName());
+	  string nh2 = (string)( hTmps[ih]->GetName());
 	  if( nh2.find("sig")==(size_t)-1 )
-	    _hClones[ih]->Add( (TH1*)hTmps[ij]->Clone(), _itW->second ); //(TH1*)theobs->hs[_nhmc-ij-1]->Clone()
+	    _hClones[ih]->Add( (TH1*)hTmps[ij]->Clone(), _itW->second );
 	  else if( _sSignal )
-	    _hClones[ih]->Add( (TH1*)hTmps[ij]->Clone(), _itW->second ); //(TH1*)theobs->hs[_nhmc-ij-1]->Clone()
+	    _hClones[ih]->Add( (TH1*)hTmps[ij]->Clone(), _itW->second );
 	}  
       }  
     
@@ -1061,12 +1054,11 @@ Display::prepareHistograms(const hObs* theobs) {
     for(size_t ih=0;ih<_nhmc;ih++) {
       HistoUtils::changeToDiffHisto( _hClones[ih] );
     }
-    //  HistoUtils::changeToDiffHisto( _hData );
   }
   // ====================================
 
 
-  //Passing from GeV to Tev =====================
+  //Passing from GeV to TeV =====================
   bool xAxTeV=false;
   bool yAxTeV=false;
   
@@ -1077,7 +1069,6 @@ Display::prepareHistograms(const hObs* theobs) {
   _xmin = max( (double)_xmin, _mcOnly?_hClones[0]->GetXaxis()->GetXmin():_hData->GetXaxis()->GetXmin() );
   _xmax = min( (double)_xmax, _mcOnly?_hClones[0]->GetXaxis()->GetXmax():_hData->GetXaxis()->GetXmax() );
   
-  //if(_is1D)
   {
     if(!_mcOnly)
       changeGeVToTeV( _hData, theobs->titleX, theobs->titleY,
@@ -1143,7 +1134,6 @@ Display::prepareHistograms(const hObs* theobs) {
   }
   //============================================
   
-  //cout<<_hClones.size()<<"   "<<nsig<<endl;  
   //MC total ===================================
   if( _is1D && !_dOnly) {
     if(_hClones.size()!=nsig)
@@ -1165,9 +1155,7 @@ Display::prepareHistograms(const hObs* theobs) {
       _empty=(TH1*)_hData->Clone();
   }
   else {
-    //   cout<<_hClones[0]<<endl;
-    //   //TH1* tmp=(TH1*)_hClones[0]))->Clone();
-    _empty = (TH1*)((TH1*)(_hClones[0]))->Clone();//tmp;
+    _empty = (TH1*)((TH1*)(_hClones[0]))->Clone();
   }
   
   _empty->Reset("ICEM");
@@ -1182,7 +1170,7 @@ Display::prepareHistograms(const hObs* theobs) {
 
   if(_is1D && !_isProf) {
     if(_overflow) {
-      _empty->GetXaxis()->SetRangeUser(_xmin,_xmax-_empty->GetBinWidth(1)/1.5 -0.0001);// + empty->GetBinWidth(1) -0.00001);
+      _empty->GetXaxis()->SetRangeUser(_xmin,_xmax-_empty->GetBinWidth(1)/1.5 -0.0001);
       if(_underflow) {
 	_empty->GetXaxis()->SetRangeUser(_xmin,_xmax-0.0001);
       }
@@ -1252,10 +1240,9 @@ Display::prepareHistograms(const hObs* theobs) {
     // if(_normOpts.find("dif")!=_normOpts.end())
     //   ymax /= _hMC->GetBinWidth(0); //temporary fix
 
- for(size_t ih=0;ih<_nhmc;ih++) {
-      //FIXME skip signals not summed
+    for(size_t ih=0;ih<_nhmc;ih++) {
       string nh = (string)( _hClones[ih]->GetName());
-      if( !(!_sSignal && nh.find("sig")!=(size_t)-1) ) {
+      if( (!_sSignal && nh.find("sig")!=(size_t)-1) ) {
 	float yM = HistoUtils::getHistoYhighWithError(_hClones[ih],_xmin,_xmax);
 	if(yM>ymax)
 	  ymax = yM*(_logYScale?15:1.5);
@@ -1265,7 +1252,6 @@ Display::prepareHistograms(const hObs* theobs) {
 
     float ymin = 10000000000.;
     for(size_t ih=0;ih<_nhmc;ih++) {
-      //FIXME skip signals not summed
       string nh = (string)( _hClones[ih]->GetName());
       if( !(!_sSignal && nh.find("sig")!=(size_t)-1) ) {
 	float ym = HistoUtils::getHistoYlow(_hClones[ih],_xmin,_xmax);
@@ -1312,29 +1298,14 @@ Display::prepareHistograms(const hObs* theobs) {
   }
   else {
     _empty->GetYaxis()->SetRangeUser( _ymin, _ymax );
-    //_empty->GetYaxis()->SetTitle((theobs->titleY).c_str());
   }
 
   _empty->GetYaxis()->SetNdivisions(_Ydiv[0],_Ydiv[1],_Ydiv[2]);
   
-
-  //Fix the labels and title positions and sizes
-  // _empty->GetXaxis()->SetTitleOffset( 1.05 ); //1.05
-  // //_empty->GetXaxis()->SetTitleSize( 0.06 );
-  // _empty->GetXaxis()->SetTitleSize( 38/(_pads[0][0]->GetWh()*_pads[0][0]->GetAbsHNDC() ) );
-  // _empty->GetYaxis()->SetTitleOffset( _rmLabel?1000.:1.50 );
-  // _empty->GetYaxis()->SetTitleSize( _rmLabel?0.:38/(_pads[0][0]->GetWh()*_pads[0][0]->GetAbsHNDC() ) );
-  // //_empty->GetXaxis()->SetLabelOffset( 0.007 );
-  // _empty->GetXaxis()->SetLabelOffset( 5/(_pads[0][0]->GetWh()*_pads[0][0]->GetAbsHNDC() ) );
-  // _empty->GetXaxis()->SetLabelSize( 31/(_pads[0][0]->GetWh()*_pads[0][0]->GetAbsHNDC() ) );
-  // _empty->GetYaxis()->SetLabelOffset( _rmLabel?1000.:(5/(_pads[0][0]->GetWh()*_pads[0][0]->GetAbsHNDC()) ) );
-  // _empty->GetYaxis()->SetLabelSize( _rmLabel?0.:(31/(_pads[0][0]->GetWh()*_pads[0][0]->GetAbsHNDC()) ) );
-  //============================================
-
   if(_showRatio)
-    _empty->GetXaxis()->SetTitleOffset( 1.05 ); //1.05
+    _empty->GetXaxis()->SetTitleOffset( 1.05 );
   else
-    _empty->GetXaxis()->SetTitleOffset( 0.90 ); //1.05  
+    _empty->GetXaxis()->SetTitleOffset( 0.90 );
   _empty->GetXaxis()->SetTitleSize( 0.06 );
   _empty->GetYaxis()->SetTitleOffset( 1.50 );
   _empty->GetYaxis()->SetTitleSize( 0.06 );
@@ -1385,11 +1356,6 @@ Display::drawDataMCRatio() {
   TH1* emptyHisto=(TH1*)_hMC->Clone();
   emptyHisto->Reset("ICEM");
 
-  // TH1F* ratio = (TH1F*)_hData->Clone();
-  
-
-  // ratio->Divide(_hMC);
-  
   TGraphAsymmErrors* ratio = HistoUtils::ratioHistoToGraph( _hData, _hMC );
   ratio->SetName( ("ratio") );
  
@@ -1471,13 +1437,13 @@ Display::drawDataMCRatio() {
     }
   }//addsyst  
 
-  emptyHisto->GetYaxis()->SetRangeUser( 0.4, 1.6);// 1-rangemax, 1+rangemax );
+  emptyHisto->GetYaxis()->SetRangeUser( 0.4, 1.6);
   emptyHisto->GetXaxis()->SetNdivisions(_Xdiv[0],_Xdiv[1],_Xdiv[2]);
   emptyHisto->GetYaxis()->SetNdivisions(3,_Ydiv[1],_Ydiv[2]);
   emptyHisto->GetXaxis()->SetTitle( (_xtitle+" ").c_str() );
   emptyHisto->GetYaxis()->SetTitle( "Data/MC" );
   emptyHisto->GetXaxis()->SetTitleSize(0.20);
-  emptyHisto->GetXaxis()->SetTitleOffset(0.80); //0.85
+  emptyHisto->GetXaxis()->SetTitleOffset(0.80);
   emptyHisto->GetXaxis()->SetLabelOffset(0.007);
   emptyHisto->GetXaxis()->SetLabelSize(0.165);
   emptyHisto->GetYaxis()->SetLabelSize(0.14);
@@ -1487,7 +1453,7 @@ Display::drawDataMCRatio() {
   emptyHisto->GetXaxis()->SetTickLength(0.09);
   emptyHisto->GetYaxis()->SetTickLength(0.05);
   
-  ratio->GetYaxis()->SetRangeUser(  0.4, 1.6);//1-rangemax, 1+rangemax );
+  ratio->GetYaxis()->SetRangeUser(  0.4, 1.6);
   ratio->GetXaxis()->SetNdivisions(_Xdiv[0],_Xdiv[1],_Xdiv[2]);
   ratio->GetYaxis()->SetNdivisions(3,_Ydiv[1],_Ydiv[2]);
   ratio->GetXaxis()->SetTitle( (_xtitle+"_").c_str() );
@@ -1517,10 +1483,9 @@ Display::drawDataMCRatio() {
       }
     }
   }
-  //sysBand->Draw("F");
+ 
   
   ratio->Draw("p same");
-  //isTeV?_xmin:(_xmin/1000),1,isTeV?_xmax:(_xmax/1000),1);
   TLine* line=new TLine(_xmin,1,_xmax,1);
   line->SetLineColor(kRed+1);
   if(_uncDet) line->SetLineColor(kGreen+2);
@@ -1604,16 +1569,13 @@ Display::ratioObservables(vector<const hObs*> theObs) {
   ratioMC->SetMarkerStyle(24);
   
   //now draw! =======================
-  _empty->GetYaxis()->SetTitle( ytitle.c_str() );//_ytitle.c_str() );
+  _empty->GetYaxis()->SetTitle( ytitle.c_str() );
   for(int i=1;i<_empty->GetNbinsX()+1;i++) 
     _empty->SetBinContent(i,-1000);
   
   //with the good range
   float ymin=0, ymax=2;
  
-  // float xmin = max( (double)_xmin, _empty->GetXaxis()->GetXmin() );
-  // float xmax = min( (double)_xmax, _empty->GetXaxis()->GetXmax() );
-
   if(_normOpts.find("norm")==_normOpts.end()) { 
     ymin = HistoUtils::getGraphYlowWithError(ratioClones[0], _xmin, _xmax );
     ymax = HistoUtils::getGraphYhighWithError(ratioClones[0], _xmin, _xmax );
@@ -1652,7 +1614,6 @@ Display::ratioObservables(vector<const hObs*> theObs) {
       ratioClones[ii]->Draw("p");
   }
   
-  //FIXME
   _leg=NULL;
   
 }
@@ -1673,83 +1634,6 @@ Display::saveHistos(string o1, const hObs* theObs) {
 
 }
 
-//
-// Specific function!!!!
-//
-void
-Display::saveHistosSpecLQ(string o1) {
-
-  map<string,string> cNames;
-  cNames[ "t#bar{t}" ]="h_ttbar";
-  cNames[ "VV" ]="h_ewk";
-  //cNames[ "" ]="h_sig";
-  cNames[ "fake #tau" ]="h_wjets";
-  cNames[ "Z+jets" ]="h_zjets";
-  cNames[ "Z(ll/#tau#tau)+jets" ]="h_zjets";
-  cNames[ "single-t" ]="h_singlet";
-  
-  vector<string> sigs;
-  for(size_t ih=0;ih<_nhmc;ih++) {
-    string nh = (string)( _hClones[ih]->GetName());
-    if(  nh.find("sig")!=(size_t)-1) {
-      size_t p1=nh.find(" ") ;
-      size_t p2=nh.find("GeV");
-      string e = nh.substr(p1+1, p2-2-p1);
-      //cout<<" signal "<<e<<endl;
-      sigs.push_back(e);
-    }
-  }
-
-  FILE *test_;
-  test_=fopen( o1.c_str() , "r" );
-  if( test_==0 ) {
-    TString command_ = TString("mkdir -p ") + o1; 
-    system( command_.Data());
-  }
-  else
-    fclose( test_ );
-
-  for(size_t is=0;is<sigs.size();is++) {
-    
-    TFile* oFile=new TFile((o1+"/elTau_M"+sigs[is]+".root").c_str(), "RECREATE");
-    for(size_t ih=0;ih<_nhmc;ih++) {
-      TH1F* hMC=(TH1F*)_hClonesNoStack[ih]->Clone();
-      string nh = (string)( hMC->GetName());
-      if(nh.find("sig")!=(size_t)-1) {
-	if(nh.find(sigs[is])!=(size_t)-1) {
-	  hMC->SetName("h_sig");
-	  hMC->SetTitle("h_sig");
-	  hMC->Write();
-	}
-      }
-      else {
-	string name=hMC->GetName();
-	size_t p1=name.find("_");
-	name = name.substr(p1+1,name.size()-p1-1);
-	
-	map<string,string>::iterator it;
-	it = cNames.find(name);
-	if(it==cNames.end()) continue;
-	  
-	hMC->SetName( (cNames[ name ]).c_str() );
-	hMC->SetTitle( (cNames[ name ]).c_str() );
-	hMC->Write();
-      }
-    }
-    if(!_mcOnly) {
-      TH1F* hD=(TH1F*)_hData->Clone();
-      hD->SetName("h_data");
-      hD->SetTitle("h_data");
-      hD->Write();
-    }
-    
-    oFile->Close();
-    
-  }
-
-}
-
-
 void
 Display::showSignificance(const hObs* theObs) {
   
@@ -1764,20 +1648,9 @@ Display::showSignificance(const hObs* theObs) {
   if(_is2D)
     _ymin = theObs->binsY[0];
 
-  //  //first clean objects
-  // for(size_t ix=0;ix<_pads.size();ix++)
-  //   for(size_t iy=0;iy<_pads[ix].size();iy++) {
-  //     delete _pads[ix][iy];
-  //   }  
-
-  // _pads.clear();
   
-  // delete _leg;
-  // delete _c;
+  //get the canvas ready
   
-  //and get the canvas ready
-  
-
   _pads = preparePads();
   _pads[0][0]->Draw();
   _pads[0][0]->cd();
@@ -1808,8 +1681,6 @@ Display::showSignificance(const hObs* theObs) {
     TH2F* numHB = (TH2F*)_hClones[ sigs.size() ]->Clone();
     TH2F* numHS = (TH2F*)_hClones[ sigs.back() ]->Clone();
     
-    // cout<<numHB->Integral()<<"   "<<numHS->Integral()<<endl;
-
     TH2F* sig = HistoUtils::significance(numHS, numHB);
     HistoUtils::copyStyle( (TH1*)numHB, (TH1*&)sig, true );
     
@@ -1831,7 +1702,6 @@ Display::drawEfficiency(const hObs* theObs) {
     return;
   }
   
-
   //and get the canvas ready
   _pads = preparePads();
   _pads[0][0]->Draw();
@@ -1884,7 +1754,6 @@ Display::drawEfficiency(const hObs* theObs) {
 void
 Display::drawROCCurves(const hObs* theObs) {
 
-
   softReset();
   
   //protection against 2D histos
@@ -1893,7 +1762,6 @@ Display::drawROCCurves(const hObs* theObs) {
     return;
   }
   
-
   //and get the canvas ready
   _pads = preparePads();
   _pads[0][0]->Draw();
@@ -1918,11 +1786,6 @@ Display::drawROCCurves(const hObs* theObs) {
     rocCurves[is]->SetMarkerColor( _hSigClones[is]->GetLineColor() );
     rocCurves[is]->SetLineWidth(2);
   }
-
-  // for(size_t ii=0;ii<_hSigClones.size();ii++)
-  //   delete _hSigClones[ii];
-  // _hSigClones.clear();
-
 
   TH1F* tmp=new TH1F("dummy","dummy",51,0,1.05);
   TH1* empty=(TH1*)tmp->Clone();
@@ -1979,9 +1842,7 @@ Display::compaROCCurves(vector<const hObs*> obss) {
 
     rocCurves.resize( obss.size()*_nhsig );
       
-    //cout<<_nhsig<<endl;
     for(size_t is=0;is<_nhsig;is++) {
-      //cout<<_hMC<<"   "<<_hSigClones[is]<<endl;
       rocCurves[io*_nhsig +is] = HistoUtils::curveROC(_hSigClones[is],_hMC);
       rocCurves[io*_nhsig +is]->SetLineColor( _hSigClones[is]->GetLineColor() );
       rocCurves[io*_nhsig +is]->SetMarkerColor( _hSigClones[is]->GetLineColor() );
@@ -1989,10 +1850,6 @@ Display::compaROCCurves(vector<const hObs*> obss) {
       rocCurves[io*_nhsig +is]->SetLineStyle(io+1);
     }
 
-    // for(size_t ii=0;ii<_hSigClones.size();ii++)
-    //   delete _hSigClones[ii];
-    // _hSigClones.clear();
-    
   }
 
   TH1F* tmp=new TH1F("dummy","dummy",51,0,1.05);
@@ -2022,16 +1879,13 @@ Display::residualData(const hObs* theObs) {
     return;
   }
   
-
   //protection against no data
   if(_mcOnly) {
     cout<<" Warning, no data, cannot draw the residuals"<<endl;
     return;
   }
-
   
   //and get the canvas ready
-  
   _pads = preparePads();
   _pads[0][0]->Draw();
   _pads[0][0]->cd();
@@ -2053,22 +1907,16 @@ Display::residualData(const hObs* theObs) {
     
 
   //now draw! =======================
-  //_empty = (TH1*)_hMC->Clone(); _empty->Reset("ICEM");
   _empty->GetYaxis()->SetTitle( _ytitle.c_str() );
   for(int i=1;i<_empty->GetNbinsX()+1;i++) 
     _empty->SetBinContent(i,-1000);
   
   //with the good range
   float ymin=0, ymax=2;
- 
-  // float xmin = max( (double)_xmin, _empty->GetXaxis()->GetXmin() );
-  // float xmax = min( (double)_xmax, _empty->GetXaxis()->GetXmax() );
 
- 
   ymin = min(ymin, HistoUtils::getGraphYlowWithError(residuals, _xmin, _xmax ) );
   ymax = HistoUtils::getGraphYhighWithError(residuals, _xmin, _xmax );
     
-  
   _empty->GetYaxis()->SetRangeUser(ymin*0.9, ymax*1.1);
 
   _empty->DrawCopy();
@@ -2097,12 +1945,8 @@ Display::residualData(const hObs* theObs) {
     tmpUnc->SetName("uncertainties");
     tmpUnc->SetTitle("uncertainties");
     tmpUnc->Draw("p E2");
-    
-    //mcUnc->DrawClone("p E2");
-      
+          
   }
-  
-
 
   TLine* line=new TLine(_xmin,1,_xmax,1);
   line->SetLineColor(kGray+2);
@@ -2112,7 +1956,6 @@ Display::residualData(const hObs* theObs) {
 
   residuals->Draw("p");
   
-  //FIXME
   _leg=NULL;
   
 }
@@ -2131,177 +1974,151 @@ Display::drawCumulativeHistos(const hObs* theObs ) {
 }
 
 void
-Display::drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames) {
-
-	softReset();
-
-	vector<string> cNames;
-	vector<TH1*> hMC;
-	vector<TH1*> hMCs;
-	TH1F* hData;
-	unsigned int last_mc = 0;
-
-	for(unsigned int i = 0; i < dsnames.size(); ++i) {
-		if( !_sSignal && dsnames[i].find("sig") == (size_t) -1 && i > last_mc) 
-			last_mc = i; 
-	}
-
-
-	for(size_t ic=0;ic<vals.size();ic++) {
-		if(find(cNames.begin(), cNames.end(), vals[ic].first) == cNames.end())
-			cNames.push_back( vals[ic].first );
-	}
+Display::drawStatistics(vector<pair<string,vector<vector<float> > > > vals, 
+			vector<string> dsnames) {
+  _comSyst = false;
+  softReset();
  
-	for(size_t i=0;i<vals[0].second.size(); i++ ) { // CH: was vals[0].second.size()-2 before
-		TH1F* tmp = new TH1F( dsnames[i].c_str(), dsnames[i].c_str(), cNames.size(), 0, cNames.size());
-		_itCol = _colors.find( dsnames[i] );
-		tmp -> SetFillColor(_itCol->second);
-		tmp -> SetLineColor(_itCol->second);
-		tmp -> SetLineWidth(2);
-		
-		if(i <= last_mc) hMC .push_back( (TH1F*) tmp );
-		else             hMCs.push_back( (TH1F*) tmp );
-	
-	}
-
-	
-	hData = new TH1F("statData","statData",cNames.size(),0,cNames.size());
-	TH1F* hMCt = new TH1F("statMC","statMC",cNames.size(),0,cNames.size());
-	TGraphAsymmErrors* mcUncert = new TGraphAsymmErrors(cNames.size() );
+  prepareStatistics( vals, dsnames );
+ 
+  if(_mcOnly || _dOnly) _showRatio=false;
+  if(_dOnly) { _showRatio=false; _addSyst=false;}
   
-	//now fill the plots
-	for(size_t ic=0;ic<vals.size();ic++) {
+  if(!_showRatio) _pads = preparePads();
+  else _pads = preparePadsWithRatio();
+  _c->Draw();
 
-		for(size_t id=0; id < vals[ic].second.size();id++) {
+  plotDistribution( "1D", "m", 0 );
+  
+  _comSyst = true;
+}
 
-			_itW = _gWeights.find(dsnames[id] );
+void
+Display::prepareStatistics( vector<pair<string,vector<vector<float> > > > vals, 
+			    vector<string> dsnames) {
 
-			if( !_sSignal && dsnames[id].find("sig") == (size_t)-1){
-				float sum = vals[ic].second[id][0] * _itW -> second;
-				for(size_t ii = 0; ii < id; ++ii) {
-					if( !_sSignal &&_names[ii].find("sig")!=(size_t)-1) continue;
-					sum += vals[ic].second[ii][0] * _itW -> second;
-					//cout<<" + "<<vals[ic].second[ii][0]<<" = "<<sum<<endl;
-				}
-				hMC[id] -> SetBinContent( ic+1, sum);
-				if(id == last_mc){
-					mcUncert->SetPoint( ic, ic+0.5 , vals[ic].second[id][0] );
-					mcUncert->SetPointError( ic, 0.25,0.25, vals[ic].second[id][2], vals[ic].second[id][3] );
-				}
-			}
-			else{
-				hMCs[id - last_mc - 1] -> SetBinContent( ic+1, vals[ic].second[id][0] * _itW -> second );
-			}
 
-		}//ds
-	}//vals
 
-		//hMC[id] -> SetBinContent( ic+1, vals[ic].second[id][0] * _itW -> second );
-		//hMC[id] -> SetBinError(   ic+1, vals[ic].second[id][1] * _itW -> second ); 
-   
-     /* if(id==0) {//vals[ic].second.size()-2) { //MC total
-	hMCt->SetBinContent( ic+1, vals[ic].second[id][0] );
-	hMCt->SetBinError( ic+1, vals[ic].second[id][1] );
-	mcUncert->SetPoint( ic, ic+0.5 , vals[ic].second[id][0] );
-	mcUncert->SetPointError( ic, 0.25,0.25, vals[ic].second[id][2], vals[ic].second[id][3] );
+  vector<string> cNames;
+  vector<TH1*> hMC;
+  TH1F* hData;
+  
+  for(size_t ic=0;ic<vals.size();ic++) {
+    cNames.push_back( vals[ic].first );
+  }
+  
+  vector<int> idx;
+  vector<int>::iterator itx = idx.begin();
+  
+  size_t nDs=vals[0].second.size()-(_mcOnly?0:1);
+  for(size_t i=1;i<nDs; i++ ) {
+    TH1F* tmp = new TH1F(dsnames[nDs-i].c_str(), dsnames[nDs-i].c_str(),
+			 cNames.size(),0,cNames.size());
+    
+    _itCol = _colors.find( _names[nDs-i-1] );
+    if( dsnames[nDs-i].find("sig")==(size_t)-1) 
+      tmp->SetFillColor(_itCol->second);
+    
+    tmp->SetLineColor(_itCol->second);
+    tmp->SetLineWidth(2);
+    
+    hMC.push_back( (TH1*)tmp );
+  }
+  hData = new TH1F("statData","statData",cNames.size(),0,cNames.size());
+  TH1F* hMCt = new TH1F("statMC","statMC",cNames.size(),0,cNames.size());
+  TGraphAsymmErrors* mcUncert = new TGraphAsymmErrors(cNames.size() );
+  mcUncert->SetMarkerSize(0); 
+  mcUncert->SetMarkerStyle(1);
+  mcUncert->SetMarkerColor(1);
+  mcUncert->SetFillStyle(3001);
+  mcUncert->SetFillColor(kGray+1);
+  
+  size_t idat=_mcOnly?-1:(vals[0].second.size()-1);
+
+  //now fill the plots
+  for(size_t ic=0;ic<vals.size();ic++) {
+
+    for(size_t id=0;id<vals[ic].second.size();id++) {
+     
+      if(id==0) { //MC total
+       	hMCt->SetBinContent( ic+1, vals[ic].second[id][0] );
+       	hMCt->SetBinError( ic+1, vals[ic].second[id][1] );
+       	mcUncert->SetPoint( ic, ic+0.5 , vals[ic].second[id][0] );
+       	mcUncert->SetPointError( ic, 0.25,0.25, vals[ic].second[id][2], vals[ic].second[id][3] );
       }
-      else if(id==vals[ic].second.size()-1) { //data
+      else if(id==idat) { //data
 	hData->SetBinContent( ic+1, vals[ic].second[id][0] );
       }
       else {
-	//_itW = _gWeights.find( _names[_nhmc-id-1] );
-*/	
-	//cout<<id<<" sum "<<sum<<endl;
-	//cout<<" total : "<<sum<<endl;
-	//	hMC[id]->SetBinError( ic, vals[ic].second[id][1] );
-  /*    }
+	if( !_sSignal && dsnames[id].find("sig") == (size_t)-1){
+	  float sum = vals[ic].second[id][0];
+	  float sum2 = pow(vals[ic].second[id][1],2);
+	  for(size_t ii = 1; ii < id; ++ii) {//0 is MC
+	    if( !_sSignal && dsnames[ii].find("sig")!=(size_t)-1) continue;
+	    sum += vals[ic].second[ii][0];
+	    sum2 += pow(vals[ic].second[ii][1],2);
+	  }
+	  hMC[nDs-id-1]->SetBinContent( ic+1, sum);
+	}
+	else{
+	  hMC[nDs-id-1] -> SetBinContent( ic+1, vals[ic].second[id][0]);// * weight);
+	}
+
+      }
 
     }//ds
   }//cuts
-*/
   
-	//and get the canvas ready
-	
-	_pads = preparePads();
-	_pads[0][0]->Draw();
-	_pads[0][0]->cd();
-	
-	TGraphAsymmErrors* gData= HistoUtils::convertHistoToGraph(hData,1, _normOpts.find("dif")!=_normOpts.end());
-
-	//error correction
-	// if(_normOpts.find("dif")!=_normOpts.end()) {
-	//   for(int ip=0;ip<gData->GetN();ip++) {
-	//     float eyl = gData->GetErrorYlow(ip);
-	//     float eyh = gData->GetErrorYhigh(ip);
-	//     gData->SetPointError(0,0,eyl,eyh);
-	//   }
-	// }
+  TGraphAsymmErrors* gData= HistoUtils::convertHistoToGraph(hData,1,
+							    _normOpts.find("dif")!=_normOpts.end());
   
 
-	TH1F* emptyH = (TH1F*) hMC[0]->Clone();
-	emptyH->Reset("ICEM");
-	emptyH->SetFillColor(0);
-
-	_xmin = 0;
-	_xmax = 100;
-	hMCt = (TH1F*) hMC.back() -> Clone();
-
-	float ymin = min( (float)0.1, HistoUtils::getHistoYlowWithError(hMCt, _xmin, _xmax ) );
-	float ymax = HistoUtils::getHistoYhighWithError(hMCt, _xmin, _xmax );
-	
-	//ymin = min( HistoUtils::getGraphYlowWithError(gData, _xmin, _xmax ), ymin );
-	//ymax = max( HistoUtils::getGraphYhighWithError(gData, _xmin, _xmax ), ymax );
-	// if(_logYScale)
-	//   ymax*= 10;
-	// else
-	ymax*=1.3;
-
-
-	emptyH->GetYaxis()->SetRangeUser(ymin,ymax);
-	emptyH->GetXaxis()->SetNdivisions(_Xdiv[0],_Xdiv[1],_Xdiv[2]);
-	emptyH->GetYaxis()->SetNdivisions(_Ydiv[0],_Ydiv[1],_Ydiv[2]);
-	emptyH->GetYaxis()->SetTitle(_ytitle.c_str());
-	for(size_t ib=0; ib < cNames.size(); ++ib)
-		emptyH -> GetXaxis() -> SetBinLabel(ib+1, cNames[ib].c_str() );
-	emptyH->Draw();
-
-	for(size_t ih = 0; ih < hMC.size(); ++ih) 
-	  	hMC[hMC.size() - ih - 1] -> Draw("same hist"); 
-	
-	for(size_t ih = 0; ih < hMCs.size(); ++ih)
-		hMCs[hMCs.size() - ih - 1] -> Draw("same");
-
-	hMCt->SetLineWidth(2);
-	hMCt->SetLineColor(kBlack);
-	hMCt->SetFillStyle(0);
-	hMCt->Draw("same hist");
-	gData->Draw("p");
-	
-	cmsPrel();
-
-	//_hCoords.push_back( HistoUtils::getHistoUpperCoordinates(hMCt) );
-	//_hCoords.push_back( HistoUtils::getHistoUpperCoordinates(hData) );
-	
-	for(size_t ih = 0; ih < hMCs.size(); ++ih)
-		_hClones.push_back((TH1*) hMCs[hMCs.size()-ih-1] -> Clone());
-
-	//copy the graphs for legend purposes ... ugly...
-	for(size_t ih = 0; ih < hMC.size(); ++ih)
-		_hClones.push_back((TH1*) hMC[hMC.size()-ih-1] -> Clone());
-
-
-	_hMC = hMCt;
-	_hData = hData;
-	_mcUncert[0] = mcUncert;
+  TH1F* emptyH = (TH1F*)hData->Clone();
+  emptyH->Reset("ICEM");
   
-	_pads[0][0]->Update();
+  emptyH->SetFillColor(0);
 
-	adjustLegend(0);
-	if(_leg) {
-		TLegend* tmpleg=(TLegend*)_leg->Clone();
-		tmpleg->Draw("same");
-		_pads[0][0]->RedrawAxis();
-	}
+  float xmax=cNames.size();
+
+  float ymin = min( (float)0.1, HistoUtils::getHistoYlowWithError(hMCt, 0, xmax ) );
+  float ymax = HistoUtils::getHistoYhighWithError(hMCt, 0, xmax );
+
+  if(!_mcOnly) {
+    ymin = min( HistoUtils::getGraphYlowWithError(gData, 0, xmax ), ymin );
+    ymax = max( HistoUtils::getGraphYhighWithError(gData, 0, xmax ), ymax );
+  }
+
+  for(size_t ih=0;ih<hMC.size();ih++) {
+    string nh = (string)( hMC[ih]->GetName());
+    if( (!_sSignal && nh.find("sig")!=(size_t)-1) ) {
+      float yM = HistoUtils::getHistoYhighWithError(hMC[ih],0,xmax);
+      if(yM>ymax)
+	ymax = yM;//*(_logYScale?15:1.5);
+    }
+  }
+
+  if(_logYScale)
+    ymax*= 10;
+  else
+    ymax*=1.3;
+
+  emptyH->GetYaxis()->SetRangeUser(ymin,ymax);
+  emptyH->GetXaxis()->SetNdivisions(_Xdiv[0],_Xdiv[1],_Xdiv[2]);
+  emptyH->GetYaxis()->SetNdivisions(_Ydiv[0],_Ydiv[1],_Ydiv[2]);
+  emptyH->GetYaxis()->SetTitle(_ytitle.c_str());
+  for(size_t ib=0;ib<cNames.size();ib++) {
+    emptyH->GetXaxis()->SetBinLabel(ib+1, cNames[ib].c_str() );
+  }
+  
+  hMCt->SetLineWidth(2);
+  hMCt->SetLineColor(kBlack);
+  hMCt->SetFillStyle(0);
+  
+  _empty = emptyH;
+  _hClones = hMC;
+  _hMC = hMCt;
+  _hData = hData;
+  _mcUncert.push_back( mcUncert );
   
 }
 
@@ -2361,10 +2178,7 @@ Display::configureDisplay(string YTitle, double rangeY[2],
 
 void
 Display::checkData() {
-  //cout<<" checking data "<<_mcOnly<<"   "<<_lockData<<endl;
-  //FIXME
   if(_mcOnly) _mcOnly=false;
-  // else _mcOnly=false;
   _lockData=true;
 }
 
@@ -2489,8 +2303,7 @@ Display::computeSystematics(bool isProf, bool cumul) {
       float y=0;
       for(size_t ids=0;ids<_nhmc;ids++) {
 	TH1* htmp=(TH1*) _hClonesNoStack[ids]->Clone();
-	//	HistoUtils::changeToDiffHisto(htmp);
-	
+
 	if(((string)htmp->GetName()).find("sig")!=(size_t)-1
 	   && !_noStack) continue;
 
@@ -2498,16 +2311,14 @@ Display::computeSystematics(bool isProf, bool cumul) {
 	
 	if(((string)htmp->GetName()).find("_DD")==(size_t)-1)
 	  eyMC += pow( htmp->GetBinError(ib),2)
-	          *(isDif?pow(htmp->GetBinWidth(ib),2):1.);
+	    *(isDif?pow(htmp->GetBinWidth(ib),2):1.);
 	else
 	  eyDD += htmp->GetBinError(ib)*(isDif?htmp->GetBinWidth(ib):1.);
 	delete htmp;
       }
       tmp->SetBinContent(ib,y);
       tmp->SetBinError(ib, sqrt(eyMC) + eyDD );
-      // if(ib==4)
-      // 	cout<<tmp->GetBinContent(ib)<<"  "<<tmp->GetBinError(ib)<<"   "
-      // 	    <<_hMC->GetBinContent(ib)<<"  "<<_hMC->GetBinError(ib)<<endl;
+  
       float s = tmp->GetBinError(ib); 
       if(_normOpts.find("dif")==_normOpts.end()) {
 	systU[0] +=s*s;
@@ -2534,14 +2345,12 @@ Display::computeSystematics(bool isProf, bool cumul) {
 	systU[iv] +=s*s;
 	systD[iv] +=s*s;
 	if(ib==0 && _uncDet) {
-	  //cout<<iv<<"   "<<(*itS).first<<endl;
 	  _uncNames[iv] = (*itS).first;
 	}
       }
       if(_uncDet) nu++;
     } //sym
     
-
     //now asymetric systs
     for(itSystM itS=systsUp.begin();itS!=systsUp.end();itS++)  {
       
@@ -2551,9 +2360,6 @@ Display::computeSystematics(bool isProf, bool cumul) {
       
       for(size_t iv=nu;iv<(cumul?systU.size():(nu+1));iv++) {
 	
-	// if(ib==4 && iv==nu)
-	//   cout<<n<<" ini -> "<<systU[nu]<<"  "<<systD[nu]<<" ===>  "<<sU<<"   "<<sD<<endl;
-
 	if( sU*sD > 0) { //same sign errors
 	  systU[iv] +=sU>=0?(sU>sD?(sU*sU):(sD*sD)):0;
 	  systD[iv] +=sU<0?(sU<sD?(sU*sU):(sD*sD)):0;
@@ -2589,9 +2395,9 @@ Display::computeSystematics(bool isProf, bool cumul) {
       // 	unc[ih]->SetPointEYlow(ib, sqrt(systD[ih])/width );
       // }
       // else {
-	unc[ih]->SetPointEYhigh(ib, sqrt(systU[ih]) );
-	unc[ih]->SetPointEYlow(ib, sqrt(systD[ih]) );
-	//}
+      unc[ih]->SetPointEYhigh(ib, sqrt(systU[ih]) );
+      unc[ih]->SetPointEYlow(ib, sqrt(systD[ih]) );
+      //}
 
     }    
 
@@ -2670,7 +2476,7 @@ Display::drawDetailSystematics(bool cumul) {
   for(int iu=0;iu<min(4,(int)(_mcUncert.size()));iu++) { 
     int ii=_mcUncert.size()-iu-1;
     
-    double x,y/*,xl,xh*/,yl,yh;
+    double x,y,yl,yh;
       
     vector<float> xs;
     vector<float> yls;
@@ -2678,7 +2484,6 @@ Display::drawDetailSystematics(bool cumul) {
       
     for(int ib=0;ib<_mcUncert[ ii ]->GetN();ib++) {
       _mcUncert[ ii ]->GetPoint(ib,x,y);
-      //   MCUncertRatio->SetPoint(ib, x, 1 );
 
       yl = _mcUncert[ ii ]->GetErrorYlow(ib);
       yh = _mcUncert[ ii ]->GetErrorYhigh(ib);
@@ -2709,13 +2514,11 @@ Display::drawDetailSystematics(bool cumul) {
     sysBand.back()->SetFillColor(col[iu+4-sSy]);
     sysBand.back()->SetFillStyle(style[ iu+4-sSy ]);
   }
-  // cout<<ym<<"   "<<yM<<endl;
+
   if(1-ym > yM-1 ) yM = 1-ym +1;  
   else ym = 1-yM;  
 
-  //cout<<ym<<"   "<<yM<<endl;
-
-  emptyHisto->GetYaxis()->SetRangeUser( 0.3, 1.7);// 1-rangemax, 1+rangemax );
+  emptyHisto->GetYaxis()->SetRangeUser( 0.3, 1.7);
   emptyHisto->GetXaxis()->SetNdivisions(_Xdiv[0],_Xdiv[1],_Xdiv[2]);
   emptyHisto->GetYaxis()->SetNdivisions(3,_Ydiv[1],_Ydiv[2]);
   emptyHisto->GetXaxis()->SetTitle( Xtitle.c_str() );
@@ -2731,7 +2534,7 @@ Display::drawDetailSystematics(bool cumul) {
   emptyHisto->GetYaxis()->SetTickLength(0.05);
   emptyHisto->GetXaxis()->SetLabelOffset(0.011);
   
-  ratio->GetYaxis()->SetRangeUser(  0.3, 1.7);//1-rangemax, 1+rangemax );
+  ratio->GetYaxis()->SetRangeUser(  0.3, 1.7);
   ratio->GetXaxis()->SetNdivisions(_Xdiv[0],_Xdiv[1],_Xdiv[2]);
   ratio->GetYaxis()->SetNdivisions(3,_Ydiv[1],_Ydiv[2]);
   ratio->GetXaxis()->SetTitle( Xtitle.c_str() );
@@ -2753,8 +2556,6 @@ Display::drawDetailSystematics(bool cumul) {
     sysBand[iu]->Draw(iu+4-sSy<2?"l":"F");
   }
 
-
-  // TLine* line=new TLine(isTeV?_xmin:(_xmin/1000),1,isTeV?_xmax:(_xmax/1000),1);
   TLine* line=new TLine(_xmin,1,_xmax,1);
   line->SetLineColor(kRed+1);
   line->SetLineStyle(7);
@@ -2776,7 +2577,6 @@ Display::drawDetailSystematics(bool cumul) {
   
   legSyst->AddEntry(ratio,"data/MC","pl");
   
-  //cout<<sysBand.size()<<endl;
   int iui=0;
   for(int iu=0;iu<(int)sysBand.size();iu++) {
     if(cumul) iui=sysBand.size()-iu-1;
@@ -2786,14 +2586,14 @@ Display::drawDetailSystematics(bool cumul) {
     size_t p1=name.find("Unc");
     size_t p2=name.find("Do");
     size_t p3=name.find("Up");
-    //cout<<name<<" -> ";
+
     if(p2==(size_t)-1 && p3==(size_t)-1)
       name=name.substr(p1+3,name.size()-1);
     else if(p2!=(size_t)-1) 
       name=name.substr(p1+3,p2-p1-3);
     else
       name=name.substr(p1+3,p3-p1-3);
-    //cout<<name<<endl;
+    
     legSyst->AddEntry(sysBand[iui],name.c_str(),(iui<2)?"l":"f");
   }    
   legSyst->Draw();
@@ -2851,47 +2651,11 @@ Display::printInteg(float x1, float x2, float y1, float y2) {
 
 }
 
-//old CMS preliminary
-
-// void Display::cmsPrel() {
-//   TLatex latex;
-//   latex.SetNDC();
-//   latex.SetTextSize(_showRatio?0.05:0.04);
-//   latex.SetName("lumiText");
-
-//   if (_lumi > 0.) {
-//     latex.SetTextAlign(11); // align left, right=11
-    
-//     // if(_lumi > 1000 )
-//     //   latex.DrawLatex(0.48,0.87,Form("e#tau, %.1f fb^{-1}  at  #sqrt{s} = 8 TeV",_lumi/1000.));
-//     // else
-//     //   latex.DrawLatex(0.48,0.87,Form("e#tau, %.0f pb^{-1}  at  #sqrt{s} = 8 TeV",_lumi));
-
-//     if(_lumi > 1000 )
-//       latex.DrawLatex(0.54,0.87,Form(" %.1f fb^{-1}  at  #sqrt{s} = 8 TeV",_lumi/1000.));
-//     else
-//       latex.DrawLatex(0.54,0.87,Form(" %.0f pb^{-1}  at  #sqrt{s} = 8 TeV",_lumi));
-//   }
-//   latex.SetTextAlign(11); // align left
-  
-//   if(!_mcOnly) {
-//     if(_prel)
-//       latex.DrawLatex(0.54,0.96,"CMS preliminary 2012");
-//     else
-//       latex.DrawLatex(0.75,0.96,"CMS 2012");
-//   }
-//   else
-//     latex.DrawLatex(0.555,0.96,"CMS simulation 2012");
-
-// }
-
 //new CMS preliminary (thanks gautier..)
 
 void Display::cmsPrel() {
   TLatex latex;
   
-
-  //_showRatio?0.05:0.04;
   float t = _pads[0][0]->GetTopMargin();
   float tmpTextSize=0.75*t;
   latex.SetTextSize(tmpTextSize);
@@ -2929,8 +2693,7 @@ void Display::cmsPrel() {
   }
   else {
 
-
-   latex.SetName("lumiText");
+    latex.SetName("lumiText");
     latex.SetTextFont(42);
 
     if (_lumi > 0.) {
@@ -2978,90 +2741,84 @@ void
 Display::adjustLegend(int iobs, bool skipCoords) {
   float xd,xu,yd,yu,f=1.;
   
-	if(!skipCoords) {
-
-		//cout << "starting legend stuff " << _nhmc << endl;
-		if(_normOpts.find("norm")!=_normOpts.end() ) { // normalized to one, all plots needed
-			for(size_t ih=0;ih<_nhmc;ih++) {
-			  _hCoords.push_back( HistoUtils::getHistoUpperCoordinates(_hClones[ih]) );
-			}
-		}
-		else {
-			if(!_dOnly)
-				_hCoords.push_back( HistoUtils::getHistoUpperCoordinates(_hMC) );
-			
-			//cout << "hCoods APB size is " << _hCoords.size() << endl;  
-			//and the signals if not summed...
-			for(size_t ih=0;ih<_nhmc;ih++) {
-				string nh = (string)( _hClones[ih]->GetName());
-				if( !_sSignal && nh.find("sig")!=(size_t)-1)
-					_hCoords.push_back( HistoUtils::getHistoUpperCoordinates(_hClones[ih]) );
-				//cout << "hCoods APB size is " << _hCoords.size() << endl;  
-			}
-    	}  
+  if(!skipCoords) {
     
-		if(_addSyst) {
-			_hCoords.push_back( HistoUtils::getGraphUpperCoordinatesWithError(_mcUncert[0]) );
-			//cout << "hCoods APB size is " << _hCoords.size() << endl;  
-		}
+    if(_normOpts.find("norm")!=_normOpts.end() ) { // normalized to one, all plots needed
+      for(size_t ih=0;ih<_nhmc;ih++) {
+	_hCoords.push_back( HistoUtils::getHistoUpperCoordinates(_hClones[ih]) );
+      }
+    }
+    else {
+      if(!_dOnly)
+	_hCoords.push_back( HistoUtils::getHistoUpperCoordinates(_hMC) );
+			
+      //and the signals if not summed...
+      for(size_t ih=0;ih<_nhmc;ih++) {
+	string nh = (string)( _hClones[ih]->GetName());
+	if( !_sSignal && nh.find("sig")!=(size_t)-1) {
+	  _hCoords.push_back( HistoUtils::getHistoUpperCoordinates(_hClones[ih]) );
+	}
+      }
+    }  
+    
+    if(_addSyst) {
+      _hCoords.push_back( HistoUtils::getGraphUpperCoordinatesWithError(_mcUncert[0]) );
+    }
 
-		if(!_mcOnly) {
-			float dNorm = 1.;
-			if(_normOpts.find("norm")!=_normOpts.end()) 
-				dNorm=_hData->Integral(0,10000000);
-			if(_normOpts.find("uni")!=_normOpts.end()) 
-				dNorm=1.;
+    if(!_mcOnly) {
+      float dNorm = 1.;
+      if(_normOpts.find("norm")!=_normOpts.end()) 
+	dNorm=_hData->Integral(0,10000000);
+      if(_normOpts.find("uni")!=_normOpts.end()) 
+	dNorm=1.;
 		
-			if(_normOpts.find("dif")!=_normOpts.end()) //temporary fix
-				_hCoords.push_back( HistoUtils::getHistoUpperCoordinatesWithError(_hData, dNorm) );
-		}
+      if(_normOpts.find("dif")!=_normOpts.end()) //temporary fix
+	_hCoords.push_back( HistoUtils::getHistoUpperCoordinatesWithError(_hData, dNorm) );
+    }
 
-	}
+  }
 
-	getLegendCoordinate(_hMC,xd,yd,xu,yu,f,iobs);
-	//cout<<" leg "<<xd<<"  "<<yd<<"  "<<xu<<"  "<<yu<<"  "<<f<<endl;
-	_leg = new TLegend(xd,yd,xu,yu);
-	_leg->SetName("legend");
+  getLegendCoordinate(_hMC,xd,yd,xu,yu,f,iobs);
+  _leg = new TLegend(xd,yd,xu,yu);
+  _leg->SetName("legend");
   
-	_leg->SetTextSize(0.039*f);
-	//_leg->SetTextSize(0.04 );
-	_leg->SetShadowColor(0);
-	_leg->SetLineColor(1);
-	_leg->SetFillColor(0);
+  _leg->SetTextSize(0.039*f);
+  _leg->SetShadowColor(0);
+  _leg->SetLineColor(1);
+  _leg->SetFillColor(0);
 	
-	map<string,size_t> sigs;
+  map<string,size_t> sigs;
 
 
-	string legOpt="pl";
-	if(_normOpts.find("norm")!=_normOpts.end()) legOpt="l";
+  string legOpt="pl";
+  if(_normOpts.find("norm")!=_normOpts.end()) legOpt="l";
 	
-	if(!_mcOnly)
-		_leg->AddEntry(_gData,"data", legOpt.c_str() );
+  if(!_mcOnly)
+    _leg->AddEntry(_gData,"data", legOpt.c_str() );
 
-	if( _is1D) {//!(_isProf && _is1D) ) { 
-		for(size_t i=0;i<_nhmc;i++) {
-    		string nh = (string)( _hClones[i]->GetName());
+  if( _is1D) {
+    for(size_t i=0;i<_nhmc;i++) {
+      string nh = (string)( _hClones[i]->GetName());
+      if( nh.find("sig")==(size_t)-1) {
+	_leg->AddEntry(_hClones[i],_names[_nhmc-i-1].c_str(),"f");
+      }
+      else {
+	string na = _names[_nhmc-i-1];
+	size_t b = _names[_nhmc-i-1].find("sig");
+	na.erase(b, 3);	
+	sigs[ na ] = i ;
+      }
+    }
+  }
 
-			if( nh.find("sig")==(size_t)-1) {
-				_leg->AddEntry(_hClones[i],_names[_nhmc-i-1].c_str(),"f");
-			}
-			else {
-				string na = _names[_nhmc-i-1];
-				size_t b = _names[_nhmc-i-1].find("sig");
-				na.erase(b, 3);	
-				sigs[ na ] = i ;
-			}
-		}
-	}
+  if(_addSyst && !_is2D) {
+    _leg->AddEntry(_mcUncert[0]->Clone(),"uncertainties","f");
+  }
 
-	if(_addSyst && !_is2D) {
-		_leg->AddEntry(_mcUncert[0]->Clone(),"uncertainties","f");
-	}
-
-	for(map<string,size_t>::const_iterator it=sigs.begin();
-		it!=sigs.end();it++) {
-		_leg->AddEntry(_hClones[it->second],it->first.c_str(),_sSignal?"f":"l");
-	}
+  for(map<string,size_t>::const_iterator it=sigs.begin();
+      it!=sigs.end();it++) {
+    _leg->AddEntry(_hClones[it->second],it->first.c_str(),_sSignal?"f":"l");
+  }
 
 }
 
@@ -3104,10 +2861,6 @@ Display::getLegendCoordinate(TH1*h, float& pxd, float& pyd, float& pxu, float& p
   _xulim=(_pads[0][iobs]->XtoPixel( Xtu ))/(float)_wpad - Xof;
   _yulim=1-(_pads[0][iobs]->YtoPixel( Ytu ))/(float)_hpad - Yof;
   
-  // cout<<
-  // cout<<Xtd<<"   "<<Ytd<<"  "<<Xtu<<"   "<<Ytu<<endl;
-  // cout<<_xdlim<<"  "<<_ydlim<<"  "<< _xulim<<"   "<<_yulim<<endl;
-
   //LumiPad =======================================================================
   float xlp,ylp;
   float xLm=_xulim,yLm=_yulim;
@@ -3143,20 +2896,19 @@ Display::getLegendCoordinate(TH1*h, float& pxd, float& pyd, float& pxu, float& p
       yd = yu-dy;
       
       n++;
-      //cout<<xd<<"  "<<yd<<"   "<<xu<<"  "<<yu<<endl;
+ 
       if(xd<_xdlim || xu>_xulim || yd<_ydlim || yu>_yulim) continue;
       if(yu>yLm && xu>xLm ) continue;
       float f=1.;
       bool abortPos=false;
       
-    //cout << "hCoods size is " << _hCoords.size() << endl;  
-	for(size_t id=0;id<_hCoords.size();id++) {
+       for(size_t id=0;id<_hCoords.size();id++) {
 	if(yu < graphVal(xu,id,iobs) || yu < graphVal(xd,id,iobs) ) {
 	  abortPos=true; break;}
 	graphConstraint(id,iobs, xd, xu, yd, yu,f, dx,dy );
       }
       if(abortPos) continue;
-      //cout<<" !!!->  "<<xd<<"  "<<xu<<"   "<<yd<<"   "<<yu<<"   "<<f<<endl;
+
       if(f==1) { //found a definitive position
 	pxu = xu;
 	pxd = xd;
@@ -3166,7 +2918,6 @@ Display::getLegendCoordinate(TH1*h, float& pxd, float& pyd, float& pxu, float& p
 	return;
       }
       if(f>tmpf) {
-	//cout<<"   "<<xd<<"  "<<xu<<"   "<<yd<<"   "<<yu<<"   "<<f<<endl;
 	pxu = xu;
 	pxd = xd;
 	pyu = yu;
@@ -3178,7 +2929,7 @@ Display::getLegendCoordinate(TH1*h, float& pxd, float& pyd, float& pxu, float& p
     }//if is1D
     
   }//position tries
-  //cout<<" --->  "<<xd<<"  "<<xu<<"   "<<yd<<"   "<<yu<<"   "<<fo<<endl;
+
   return;
   
 }
@@ -3188,16 +2939,10 @@ float
 Display::graphVal(float x,int ih, int iobs) {
   
   float X = _pads[0][iobs]->PixeltoX( x*_wpad  );
-
   size_t bin = StatUtils::findBin<float>(X, _hCoords[ih][0] );
-
-  //cout<<x<<"   "<<X<<"   "<<bin<<"   "<<_xdlim<<"  "<<endl;
-	//cout << "investigating seg fault" << endl;
-	//cout << "ih is " << ih << endl;
- float yt=_logYScale?(log(_hCoords[ih][1][bin])/log(10)):_hCoords[ih][1][bin];
-  
+  float yt=_logYScale?(log(_hCoords[ih][1][bin])/log(10)):_hCoords[ih][1][bin];
   float y = 1 - (_pads[0][iobs]->YtoPixel( yt ))/(float)_hpad;
- 
+
   return y;
 }
 

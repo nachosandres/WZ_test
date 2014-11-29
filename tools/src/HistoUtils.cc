@@ -520,6 +520,9 @@ HistoUtils::convertHistoToGraph(TH1* h, float datNorm, bool diff) {
       eYh = StatUtils::ErrorPH(Y);
       
       //check for potential internal histogram weights, dummy version ==============
+      if(ip==1)
+	cout<<sqrt(h->GetBinContent(ip))<<"   "<<h->GetBinError(ip)<<endl;
+
       if(fabs(sqrt(h->GetBinContent(ip))-h->GetBinError(ip))/h->GetBinError(ip)>0.05) {
 	if(ip==1)
 	  cout<<" Treatment of weighted errors activated ====================== "<<endl;

@@ -110,16 +110,25 @@ AnaConfig::findDS(int channel) {
 
 
 string 
-AnaConfig::findDS(string channel) {
+AnaConfig::findDSName(string channel) {
 
-  for(_itDs = _datasets.begin(); _itDs!= _datasets.end(); _itDs++) {
-
-    if(_itDs->second->hasSample(channel)!=-1 )
-      return _itDs->first;
+  map<string, Dataset* >::const_iterator itDs;
+  for(itDs=_datasets.begin(); itDs!=_datasets.end();itDs++) {
+    if(itDs->second->hasSample(channel)!=-1 )
+      return itDs->first;
   }
+  
+  return "";  
+}
 
-  //cout<<" Warning, no dataset for the sample "<<channel<<endl;
-    return "";  
+
+Dataset* 
+AnaConfig::findDS(string channel) {
+  string dsName = findDSName(channel);
+  if(dsName!="")
+    return getDataset(dsName);
+  else
+    return nullptr;
 }
 
 
@@ -194,7 +203,7 @@ AnaConfig::addSample( string str, string sname, int col) {
       norm=0;
       name=str.substr(p0+1,str.size()-p0-1);
     }
-    //cout<<" norm "<<norm<<"  "<<name<<endl;
+
     _csData.push_back( pair<string, float>(name,norm) );
   }
   
@@ -238,7 +247,6 @@ AnaConfig::addSample( string str, string sname, int col) {
 
     //find xSect/kFact/eqLumi
     float xSect=1.,kFact=1.,eqLumi=1.;
-    //for(_itXS=_xSecLumis.begin();_itXS!=_xSecLumis.end();_itXS++)
     string tmpStr=str;
     if(str.find("ghost")!=(size_t)-1) {
       size_t p0=str.find(" ");
@@ -274,13 +282,11 @@ AnaConfig::addSample( string str, string sname, int col) {
 	_dsnames.push_back(sname);
   }
   else {
-    //cout<<sname<<" --> "<<str<<endl;
     _datasets[ sname ]->addSample(str, "", "", "", "", 0, 0, 0, 0);
-	_samplenames.push_back(str);
-	_dsnames.push_back(sname);
+    _samplenames.push_back(str);
+    _dsnames.push_back(sname);
   }
-  //cout<<" ya? "<< _datasets[ sname ]<<"  "<<sname<<"  "<<str<<endl;
- 
+  
 }
 
 
@@ -296,11 +302,7 @@ vector<string >
 AnaConfig::getDSNames() {
  
   vector<string> names;
-
-  // for(_itDs=_datasets.begin();_itDs!=_datasets.end();_itDs++) {
-  //   cout<<_itDs->first<<"   "<<_itDs->second->getName()<<endl;
-  //   names.push_back( _itDs->second->getName() );
-  // }
+  
   for(_itNDS=_numDS.begin();_itNDS!=_numDS.end();_itNDS++) {
     _itDs = _datasets.find( _itNDS->second );
     names.push_back( _itDs->second->getName() );
@@ -378,3 +380,4 @@ AnaConfig::listFiles(string dir, string files){
   pclose(pipe);
   return result;
 }
+

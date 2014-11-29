@@ -4,47 +4,6 @@ FILES :=
 DICTFILES :=
 
 # including the module.mk file
--include $(patsubst %, %/module.mk,analyzers)
-
-# appending the values found in FILES to the variable SRC
-SRC += $(patsubst %,analyzers/%,$(FILES))
-
-# appending the values found in DICTFILES to DICTH_modulename
-DICTH_analyzers := $(foreach i, $(patsubst %,analyzers/%,$(DICTFILES)), $(wildcard $(i).h) $(wildcard $(i).hh))
-# if dict header files exist, append to variable SRC
-ifneq ($(DICTH_analyzers),)
-SRC += analyzers/$(PKGNAME)_dict_analyzers
-endif
-
-PROG += $(patsubst %,$(BINDIR)/%,$(PROGRAMS))
-
-# appending the values found in FILES to the variable SRC
-PROGSRC += $(patsubst %,analyzers/%,$(PROGRAMS))
-
-# VPATH += :analyzers
-
-# make sure the output directories are there
-__dummy := $(shell mkdir -p $(DEPDIR)/analyzers $(OBJDIR)/analyzers)
-
-# a couple of rules to copy executable files correctly
-$(BINDIR)/%: analyzers/%
-	cp $^ $@
-
-#$(BINDIR)/%: analyzers/%.bin
-#	cp $^ $@
-
-$(BINDIR)/%: analyzers/bin/%
-	cp $^ $@
-
-$(BINDIR)/%: ${OBJDIR}/analyzers/%.bin
-	cp $^ $@
-
-
-# module.mk appends to FILES and DICTFILES
-FILES :=
-DICTFILES :=
-
-# including the module.mk file
 -include $(patsubst %, %/module.mk,core)
 
 # appending the values found in FILES to the variable SRC
@@ -168,38 +127,120 @@ FILES :=
 DICTFILES :=
 
 # including the module.mk file
--include $(patsubst %, %/module.mk,helper)
+-include $(patsubst %, %/module.mk,src)
 
 # appending the values found in FILES to the variable SRC
-SRC += $(patsubst %,helper/%,$(FILES))
+SRC += $(patsubst %,src/%,$(FILES))
 
 # appending the values found in DICTFILES to DICTH_modulename
-DICTH_helper := $(foreach i, $(patsubst %,helper/%,$(DICTFILES)), $(wildcard $(i).h) $(wildcard $(i).hh))
+DICTH_src := $(foreach i, $(patsubst %,src/%,$(DICTFILES)), $(wildcard $(i).h) $(wildcard $(i).hh))
 # if dict header files exist, append to variable SRC
-ifneq ($(DICTH_helper),)
-SRC += helper/$(PKGNAME)_dict_helper
+ifneq ($(DICTH_src),)
+SRC += src/$(PKGNAME)_dict_src
 endif
 
 PROG += $(patsubst %,$(BINDIR)/%,$(PROGRAMS))
 
 # appending the values found in FILES to the variable SRC
-PROGSRC += $(patsubst %,helper/%,$(PROGRAMS))
+PROGSRC += $(patsubst %,src/%,$(PROGRAMS))
 
-# VPATH += :helper
+# VPATH += :src
 
 # make sure the output directories are there
-__dummy := $(shell mkdir -p $(DEPDIR)/helper $(OBJDIR)/helper)
+__dummy := $(shell mkdir -p $(DEPDIR)/src $(OBJDIR)/src)
 
 # a couple of rules to copy executable files correctly
-$(BINDIR)/%: helper/%
+$(BINDIR)/%: src/%
 	cp $^ $@
 
-#$(BINDIR)/%: helper/%.bin
+#$(BINDIR)/%: src/%.bin
 #	cp $^ $@
 
-$(BINDIR)/%: helper/bin/%
+$(BINDIR)/%: src/bin/%
 	cp $^ $@
 
-$(BINDIR)/%: ${OBJDIR}/helper/%.bin
+$(BINDIR)/%: ${OBJDIR}/src/%.bin
+	cp $^ $@
+
+
+# module.mk appends to FILES and DICTFILES
+FILES :=
+DICTFILES :=
+
+# including the module.mk file
+-include $(patsubst %, %/module.mk,tools)
+
+# appending the values found in FILES to the variable SRC
+SRC += $(patsubst %,tools/%,$(FILES))
+
+# appending the values found in DICTFILES to DICTH_modulename
+DICTH_tools := $(foreach i, $(patsubst %,tools/%,$(DICTFILES)), $(wildcard $(i).h) $(wildcard $(i).hh))
+# if dict header files exist, append to variable SRC
+ifneq ($(DICTH_tools),)
+SRC += tools/$(PKGNAME)_dict_tools
+endif
+
+PROG += $(patsubst %,$(BINDIR)/%,$(PROGRAMS))
+
+# appending the values found in FILES to the variable SRC
+PROGSRC += $(patsubst %,tools/%,$(PROGRAMS))
+
+# VPATH += :tools
+
+# make sure the output directories are there
+__dummy := $(shell mkdir -p $(DEPDIR)/tools $(OBJDIR)/tools)
+
+# a couple of rules to copy executable files correctly
+$(BINDIR)/%: tools/%
+	cp $^ $@
+
+#$(BINDIR)/%: tools/%.bin
+#	cp $^ $@
+
+$(BINDIR)/%: tools/bin/%
+	cp $^ $@
+
+$(BINDIR)/%: ${OBJDIR}/tools/%.bin
+	cp $^ $@
+
+
+# module.mk appends to FILES and DICTFILES
+FILES :=
+DICTFILES :=
+
+# including the module.mk file
+-include $(patsubst %, %/module.mk,utils)
+
+# appending the values found in FILES to the variable SRC
+SRC += $(patsubst %,utils/%,$(FILES))
+
+# appending the values found in DICTFILES to DICTH_modulename
+DICTH_utils := $(foreach i, $(patsubst %,utils/%,$(DICTFILES)), $(wildcard $(i).h) $(wildcard $(i).hh))
+# if dict header files exist, append to variable SRC
+ifneq ($(DICTH_utils),)
+SRC += utils/$(PKGNAME)_dict_utils
+endif
+
+PROG += $(patsubst %,$(BINDIR)/%,$(PROGRAMS))
+
+# appending the values found in FILES to the variable SRC
+PROGSRC += $(patsubst %,utils/%,$(PROGRAMS))
+
+# VPATH += :utils
+
+# make sure the output directories are there
+__dummy := $(shell mkdir -p $(DEPDIR)/utils $(OBJDIR)/utils)
+
+# a couple of rules to copy executable files correctly
+$(BINDIR)/%: utils/%
+	cp $^ $@
+
+#$(BINDIR)/%: utils/%.bin
+#	cp $^ $@
+
+$(BINDIR)/%: utils/bin/%
+	cp $^ $@
+
+$(BINDIR)/%: ${OBJDIR}/utils/%.bin
 	cp $^ $@
 

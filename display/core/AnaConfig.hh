@@ -88,8 +88,9 @@ public:
   //vector<int> getDDDSStatus();  
   vector<pair<string, float> > getCSData();
 
+  Dataset* findDS(string channel);
   string findDS(int channel);
-  string findDS(string channel);
+  string findDSName(string channel);
   int findChan(string ds);
 
   void addSample(string str, string sname, int col );

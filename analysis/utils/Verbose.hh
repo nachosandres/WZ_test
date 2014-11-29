@@ -17,8 +17,8 @@
 
 #include <time.h>
 
-#include "analysis/helper/CustomTypes.cc"
-#include "analysis/helper/Tools.hh"
+#include "analysis/utils/CustomTypes.cc"
+#include "analysis/utils/Tools.hh"
 
 
 
@@ -30,36 +30,36 @@ public:
 
 	Verbose(VerbosityLevel);
 	~Verbose();
-	void Initialize(VerbosityLevel);
+	void initialize(VerbosityLevel);
 
-	void SetErrorMessages();
-	void SetLogFilePath(std::string);
-	void SetNumberOfModules(int);
-	void SetPaths(std::string, std::string);
-	void SetSystemMessages();
-	void SetVerbosityLevel(VerbosityLevel);
+	void setErrorMessages();
+	void setLogFilePath(std::string);
+	void setNumberOfModules(int);
+	void setPaths(std::string, std::string);
+	void setSystemMessages();
+	void setVerbosityLevel(VerbosityLevel);
 
-	std::string GetErrorMessageByID(int = 0);
-	std::vector<std::string> GetErrorMessages();
-	int GetNumberOfModulesLeft();
-	std::string GetSystemMessageByID(int = 0);
-	std::vector<std::string> GetSystemMessages();
-	int GetVerboseAsInt();
+	std::string getErrorMessageByID(int = 0);
+	std::vector<std::string> getErrorMessages();
+	int getNumberOfModulesLeft();
+	std::string getSystemMessageByID(int = 0);
+	std::vector<std::string> getSystemMessages();
+	int getVerboseAsInt();
 
 	void Class(std::string);
-	void Control();
-	void Error(int = 0);
-	void ErrorAndExit(int = 0);
-	void ExecutionTime();
-	void Function(std::string);
-	void JobControl();
-	void Message(int = 0);
-	void Module();
-	void Print(std::string, bool = false);
-	void Sample(std::string);
-	void Talk(std::string, int = 0, bool = false);
-	void Write(std::string);
-	void WriteLogFile();
+	void control();
+	void error(int = 0);
+	void errorAndExit(int = 0);
+	void executionTime();
+	void function(std::string);
+	void jobControl();
+	void message(int = 0);
+	void module();
+	void print(std::string, bool = false);
+	void sample(std::string);
+	void talk(std::string, int = 0, bool = false);
+	void write(std::string);
+	void writeLogFile();
 	
 
 private:

@@ -1,0 +1,94 @@
+#include "analysis/utils/Parser.hh"
+
+#include <sstream>
+#include <fstream>
+#include <iostream>
+#include <cstdlib>
+#include <iterator>
+
+using namespace std;
+
+inPar
+Parser::parseLine(string line) {
+
+  istringstream iss(line);
+  vector<string> tks;
+  copy(istream_iterator<string>(iss),
+       istream_iterator<string>(),
+       back_inserter<vector<string> >(tks));
+
+
+  inPar ip;  
+  ip.type=Parser::kNone;
+  if(tks.size()==0 || tks[0]=="#" ) return ip;
+
+
+  int type=Parser::kNone;
+  if(tks[0]=="dir")
+    type=Parser::kDir;
+  if(tks[0]=="ans")
+    type=Parser::kAN;
+  if(tks[0]=="user")
+    type=Parser::kUsr;
+  if(tks[0]=="verb")
+    type=Parser::kVbs;
+  if(tks[0]=="skim")
+    type=Parser::kSkim;
+  if(tks[0]=="nmax")
+    type=Parser::kNMax;
+  if(tks[0]=="nskip")
+    type=Parser::kSkip;
+  if(tks[0]=="var")
+    type=Parser::kVar;
+  if(tks[0]=="tree")
+    type=Parser::kTree;
+  if(tks[0]=="ds")
+    type=Parser::kDS;
+
+  string val = tks[1];
+
+  vector<string> opts;
+  for(size_t i=2;i<tks.size();i++)
+    opts.push_back(tks[i]);
+  
+  pair<int, string> p(type, val);
+  
+  string id=tks[0];
+  if(type==Parser::kVar || type==Parser::kDS)
+    id = val;
+
+
+  ip.type = type;
+  ip.id = id;
+  ip.val = val;
+  ip.opts = opts;
+
+  if(type!=Parser::kNone)
+    return ip;
+}
+
+
+MIPar
+Parser::parseFile(string filename) {
+
+  ifstream fDb( filename.c_str(), ios::in );
+  
+  MIPar mip;
+
+  if(fDb) {
+    string line;
+
+    while(getline(fDb, line)) 
+      {
+	inPar p=parseLine(line);
+	if(p.type==Parser::kNone) continue;
+	mip[ p.id ] = p;
+      }
+    fDb.close();
+  }
+  else {
+    cout<<"Error, configuration file "<<filename<<" does not exists, aborting..."<<endl;
+    abort();
+  }
+  
+}

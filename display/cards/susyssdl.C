@@ -12,8 +12,8 @@
 
   //general parameters ********************* general parameters
   string dir="SUSYSSDL";
-  string fileName="susy_SR00_highpt_cut_40"; //was treeName in LUNE susy_cut_lowpt
-  string fileList="susy_SR00_highpt_cut_40"; //CH: since AnaConfig needs a fileName to open, we need to put the data files into a different variable
+  string fileName="susy_SR05_highpt_cut_40"; //was treeName in LUNE susy_cut_lowpt
+  string fileList="susy_SR0[1-8]_highpt_cut_40"; //CH: since AnaConfig needs a fileName to open, we need to put the data files into a different variable
   string hName="";
 
   bool mcOnly = false;
@@ -25,7 +25,7 @@
   
   //observables **********************
   //string obs[6]={"","","","","",""};
-    md.dp.setObservables("BR_HT");
+    md.dp.setObservables("SR_HT");
 
   //Binning & title ************************* Binning & titre
   string yTitle="number of events";
@@ -103,7 +103,7 @@
   LumisXS[ "TTWJets_S14_skim"] =      249415 / 0.6647;
   LumisXS[ "TTZJets_S14_skim"] =      249275 / 0.8565;
   LumisXS[ "WZJetsTo3LNu_S14_skim"] =      231127 / 2.29;
-  
+
   LumisXS[ "SMS_T1tttt_2J_mGl1200_mLSP800_PU_S14_POSTLS170_skim"] =      100322 / (0.0856418 *20) ;
   LumisXS[ "SMS_T1tttt_2J_mGl1500_mLSP100_PU_S14_POSTLS170_skim"] =      105679 / (0.0141903 *20) ;
   LumisXS[ "T1tttt_2J_mGo1300_mStop300_mCh285_mChi280_pythia8_S14_skim"] =      35288 / (0.0460525 *20);
@@ -143,20 +143,21 @@
   // md.anConf.addSample( "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimfake",             "Z+jets fake",    kAzure+6 );
 
   md.anConf.addSample( "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimfake",             "fake",    kBlue+1 );
-  md.anConf.addSample( "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skim",             "fake",    kAzure-2 );
-   md.anConf.addSample( "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skim",             "fake",    kAzure-2 );
-   md.anConf.addSample( "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skim",             "fake",    kAzure-2 );
-   md.anConf.addSample( "WJetsToLNu_HT600toInf_PU_S14_POSTLS170_skim",             "fake",    kAzure-2 );
-   md.anConf.addSample( "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimfake",             "fake",    kAzure+6 );
-   md.anConf.addSample( "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimfake",             "fake",    kAzure+6 );
-   md.anConf.addSample( "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimfake",             "fake",    kAzure+6 );
-   md.anConf.addSample( "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimfake",             "fake",    kAzure+6 );
+  // md.anConf.addSample( "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skim",             "fake",    kAzure-2 );
+
+  // md.anConf.addSample( "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skim",             "fake",    kAzure-2 );
+  // md.anConf.addSample( "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skim",             "fake",    kAzure-2 );
+  // md.anConf.addSample( "WJetsToLNu_HT600toInf_PU_S14_POSTLS170_skim",             "fake",    kAzure-2 );
+  // md.anConf.addSample( "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimfake",             "fake",    kAzure+6 );
+  // md.anConf.addSample( "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimfake",             "fake",    kAzure+6 );
+  // md.anConf.addSample( "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimfake",             "fake",    kAzure+6 );
+  // md.anConf.addSample( "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimfake",             "fake",    kAzure+6 );
 
   md.anConf.addSample( "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimmisId",             "t#bar{t} misId",    kRed+1 );
-  md.anConf.addSample( "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimmisId",             "Z+jets misId",    kRed-6 );
-  md.anConf.addSample( "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimmisId",             "Z+jets misId",    kRed-6 );
-  md.anConf.addSample( "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimmisId",             "Z+jets misId",    kRed-6 );
-  md.anConf.addSample( "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimmisId",             "Z+jets misId",    kRed-6 );
+  // md.anConf.addSample( "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimmisId",             "Z+jets misId",    kRed-6 );
+  // md.anConf.addSample( "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimmisId",             "Z+jets misId",    kRed-6 );
+  // md.anConf.addSample( "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimmisId",             "Z+jets misId",    kRed-6 );
+  // md.anConf.addSample( "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimmisId",             "Z+jets misId",    kRed-6 );
 
   // //md.anConf.addSample( "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimprompt",      "t#bar{t}/EWK prompt", kOrange+7 );
   // //md.anConf.addSample( "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skimprompt",           "t#bar{t}/EWK prompt", kOrange+7 );
@@ -168,16 +169,17 @@
   // //md.anConf.addSample( "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimprompt",            "t#bar{t}/EWK prompt", kOrange+7 );
   // //md.anConf.addSample( "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimprompt",            "t#bar{t}/EWK prompt", kOrange+7 );
 
-  md.anConf.addSample( "WZJetsTo3LNu_S14_skim"                                ,  "Rare"             , kOrange-2 );
-  md.anConf.addSample( "TTHnlo_S14_skim"                                      ,  "Rare"             , kOrange-2 );
-  md.anConf.addSample( "TTWJets_S14_skim"                                     ,  "Rare"             , kOrange-2 );
-  md.anConf.addSample( "TTZJets_S14_skim"                                     ,  "Rare"             , kOrange-2 );
+
+  // md.anConf.addSample( "WZJetsTo3LNu_S14_skim"                                ,  "Rare"             , kOrange-2 );
+  // md.anConf.addSample( "TTHnlo_S14_skim"                                      ,  "Rare"             , kOrange-2 );
+  // md.anConf.addSample( "TTWJets_S14_skim"                                     ,  "Rare"             , kOrange-2 );
+  // md.anConf.addSample( "TTZJets_S14_skim"                                     ,  "Rare"             , kOrange-2 );
   
-  md.anConf.addSample( "SMS_T1tttt_2J_mGl1200_mLSP800_PU_S14_POSTLS170_skim"                     ,  "T1tttt(HL)*20 sig", kViolet-3  );
-  md.anConf.addSample( "SMS_T1tttt_2J_mGl1500_mLSP100_PU_S14_POSTLS170_skim"                     ,  "T1tttt(HM)*20 sig", kGreen+2  );
-  // //md.anConf.addSample( "T1tttt_2J_mGo1300_mStop300_mChi280_pythia8_S14_skim" , "T1tttt(HM) sig",  kViolet-3  );
-  md.anConf.addSample( "T1tttt_2J_mGo800_mStop300_mCh285_mChi280_pythia8_S14_skim", "T1tttt(8/3/2.85)*5 comp sig", kRed+1 );
-  // //md.anConf.addSample( "T5Full_1500_800_100_skim"                             ,  "T5WW(HL)*20 sig"  , kRed+1  );
+  //md.anConf.addSample( "SMS_T1tttt_2J_mGl1200_mLSP800_PU_S14_POSTLS170_skim"                     ,  "T1tttt(HL)*20 sig", kViolet-3  );
+  // md.anConf.addSample( "SMS_T1tttt_2J_mGl1500_mLSP100_PU_S14_POSTLS170_skim"                     ,  "T1tttt(HM)*20 sig", kGreen+2  );
+  // // //md.anConf.addSample( "T1tttt_2J_mGo1300_mStop300_mChi280_pythia8_S14_skim" , "T1tttt(HM) sig",  kViolet-3  );
+  //md.anConf.addSample( "T1tttt_2J_mGo800_mStop300_mCh285_mChi280_pythia8_S14_skim", "T1tttt(8/3/2.85)*5 comp sig", kRed+1 );
+  // // //md.anConf.addSample( "T5Full_1500_800_100_skim"                             ,  "T5WW(HL)*20 sig"  , kRed+1  );
   md.anConf.addSample( "T5Full_1200_1000_800_skim"                            ,  "T5WW(HM)*20 sig"  , kOrange+6  );
    
 
