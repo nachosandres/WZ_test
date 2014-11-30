@@ -23,11 +23,11 @@ private:
   string _path;
   
   string _treeName;
-  string _treeList;
+  vector<string> _fileList;
   string _hname;
 
-	vector<string> _samplenames;
-	vector<string> _dsnames;
+  vector<string> _samplenames;
+  vector<string> _dsnames;
 
   map<int, string > _numDS;
   map<int, string >::iterator _itNDS;
@@ -55,12 +55,6 @@ private:
 
   bool _skiptree;
 
-  
-
-public:
-
-  map<string, Dataset* >::iterator itDs;
- 
 
 public:
 
@@ -75,11 +69,11 @@ public:
   void configureData(bool runfilter, int runnum,bool MCOnly);
   void configureNames(string dir, string objName, string objList, string hName);
 
-	string getDir() {return _dir;};
-	string getObjList() {return _treeList;};
+  string getDir() {return _dir;};
+  vector<string> getObjList() {return _fileList;};
   float getLumi() {return _lumi;};
-	vector<string> getSampleNames() {return _samplenames;};
-	vector<string> getDsNames() {return _dsnames;};
+  vector<string> getSampleNames() {return _samplenames;};
+  vector<string> getDsNames() {return _dsnames;};
 
   // float getWeight(int channel, int evt);
   // float getWeight(string chan, int evt);
@@ -94,7 +88,9 @@ public:
   //vector<int> getDDDSStatus();  
   vector<pair<string, float> > getCSData();
 
+  Dataset* findDS(string channel);
   string findDS(int channel);
+  string findDSName(string channel);
   int findChan(string ds);
 
   void addSample(string str, string sname, int col );
@@ -112,6 +108,12 @@ public:
   //void setNMax(size_t testNMax);
 
   void isHistoAnalysis();
+
+private:
+
+  vector<string> listFiles(string dir, string files);
+ 
+
 
 };
 

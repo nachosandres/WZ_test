@@ -11,7 +11,7 @@
 *****************************************************************************/
 
 
-#include "analysis/helper/Verbose.hh"
+#include "analysis/utils/Verbose.hh"
 
 
 
@@ -35,7 +35,7 @@ Verbose::Verbose(VerbosityLevel verbose){
 	_StartTime = time(0);
 	_WrittenOutput = "STARTING DIlEPTONS\n";
 
-	Initialize(verbose);
+	initialize(verbose);
 
 }
 
@@ -52,17 +52,17 @@ Verbose::~Verbose(){
 
 
 //____________________________________________________________________________
-void Verbose::Initialize(VerbosityLevel verbose){ 
+void Verbose::initialize(VerbosityLevel verbose){ 
 	/*
 	initializes the Verbose class
     parameters: verbose (verbose level)
 	return: none
 	*/
 
-	SetVerbosityLevel(verbose);
-	SetErrorMessages();
-	SetSystemMessages();
-	Talk(Tools::replace(GetSystemMessageByID(0), "__TIMESTAMP__", Tools::getTimestamp()), 1);
+	setVerbosityLevel(verbose);
+	setErrorMessages();
+	setSystemMessages();
+	talk(Tools::replace(getSystemMessageByID(0), "__TIMESTAMP__", Tools::getTimestamp()), 1);
 
 }
 
@@ -78,7 +78,7 @@ void Verbose::Initialize(VerbosityLevel verbose){
 
 
 //____________________________________________________________________________
-void Verbose::SetErrorMessages(){
+void Verbose::setErrorMessages(){
 	/*
 	sets the vector of error messages by reading them from the corresponding info file
 	parameters: none
@@ -111,7 +111,7 @@ void Verbose::SetErrorMessages(){
 
 
 //____________________________________________________________________________
-void Verbose::SetLogFilePath(std::string new_value){
+void Verbose::setLogFilePath(std::string new_value){
 	/*
 	sets the file path of the log file
 	parameters: new_value
@@ -124,7 +124,7 @@ void Verbose::SetLogFilePath(std::string new_value){
 
 
 //____________________________________________________________________________
-void Verbose::SetNumberOfModules(int number_of_modules_left){
+void Verbose::setNumberOfModules(int number_of_modules_left){
 	/*
 	sets the number of modules left
 	parameters: number_of_modules_left
@@ -138,7 +138,7 @@ void Verbose::SetNumberOfModules(int number_of_modules_left){
 
 
 //____________________________________________________________________________
-void Verbose::SetSystemMessages(){
+void Verbose::setSystemMessages(){
 	/*
 	sets the vector of system messages by reading them from the corresponding info file
 	parameters: none
@@ -158,7 +158,7 @@ void Verbose::SetSystemMessages(){
 
 
 //____________________________________________________________________________
-void Verbose::SetVerbosityLevel(VerbosityLevel verbose){
+void Verbose::setVerbosityLevel(VerbosityLevel verbose){
 	/*
 	sets the verbose of the class to given value
 	parameters: verbose (level to be set)
@@ -181,7 +181,7 @@ void Verbose::SetVerbosityLevel(VerbosityLevel verbose){
 
 
 //____________________________________________________________________________
-std::string Verbose::GetErrorMessageByID(int error_id){
+std::string Verbose::getErrorMessageByID(int error_id){
 	/*
 	returns the message at a given error ID
 	parameters: error_id
@@ -194,7 +194,7 @@ std::string Verbose::GetErrorMessageByID(int error_id){
 
 
 //____________________________________________________________________________
-std::vector<std::string> Verbose::GetErrorMessages(){
+std::vector<std::string> Verbose::getErrorMessages(){
 	/*
 	returns the vector of all error messages
 	parameters: none
@@ -207,7 +207,7 @@ std::vector<std::string> Verbose::GetErrorMessages(){
 
 
 //____________________________________________________________________________
-int Verbose::GetNumberOfModulesLeft(){
+int Verbose::getNumberOfModulesLeft(){
 	/*
 	returns the number of modules left
 	parameters: none
@@ -219,7 +219,7 @@ int Verbose::GetNumberOfModulesLeft(){
 }
 
 //____________________________________________________________________________
-std::string Verbose::GetSystemMessageByID(int message_id){
+std::string Verbose::getSystemMessageByID(int message_id){
 	/*
 	returns the message at a given message ID
 	parameters: message_id
@@ -232,7 +232,7 @@ std::string Verbose::GetSystemMessageByID(int message_id){
 
 
 //____________________________________________________________________________
-std::vector<std::string> Verbose::GetSystemMessages(){
+std::vector<std::string> Verbose::getSystemMessages(){
 	/*
 	returns the vector of all system messages
 	parameters: none
@@ -245,7 +245,7 @@ std::vector<std::string> Verbose::GetSystemMessages(){
 
 
 //____________________________________________________________________________
-int Verbose::GetVerboseAsInt(){
+int Verbose::getVerboseAsInt(){
 	/*
 	returns the verbose of the class as int
 	parameters: none
@@ -276,40 +276,40 @@ void Verbose::Class(std::string class_name){
   	return: none
   	*/
 
-	Talk(Tools::replace(GetSystemMessageByID(1), "__CLASS_NAME__", class_name), 2);
+	talk(Tools::replace(getSystemMessageByID(1), "__CLASS_NAME__", class_name), 2);
 
 }
 
 
 //____________________________________________________________________________
-void Verbose::Error(int error_id){
+void Verbose::error(int error_id){
 	/*
   	talks about an error that occurred
   	parameters: error_id
   	return: none
   	*/
 
-	Talk(GetErrorMessageByID(error_id), 0, true);
+	talk(getErrorMessageByID(error_id), 0, true);
 
 }
 
 
 //____________________________________________________________________________
-void Verbose::ErrorAndExit(int error_id){
+void Verbose::errorAndExit(int error_id){
 	/*
   	talks about a severe error that occurred and exists the execution
   	parametres: error_id
   	return: none
   	*/
 
-	Error(error_id);
+	error(error_id);
 	exit(1);
 
 }
 
 
 //____________________________________________________________________________
-void Verbose::ExecutionTime(){
+void Verbose::executionTime(){
 	/*
   	talks about the execution time, i.e. the time difference between kStartTime
   	(which is set when this class is initialized, which happens when MPAF
@@ -326,26 +326,26 @@ void Verbose::ExecutionTime(){
 
 	std::string execution_time = Tools::toStdString(hours) + "h " + Tools::toStdString(rest_minutes) + "m " + Tools::toStdString(rest_seconds) + "s"; 
 
-	Talk(Tools::replace(Tools::replace(GetSystemMessageByID(5), "__TIMESTAMP__", Tools::getTimestamp()), "__EXECUTION_TIME__", execution_time), 1);
+	talk(Tools::replace(Tools::replace(getSystemMessageByID(5), "__TIMESTAMP__", Tools::getTimestamp()), "__EXECUTION_TIME__", execution_time), 1);
 
 }
 
 
 //____________________________________________________________________________
-void Verbose::Function(std::string function_name){
+void Verbose::function(std::string function_name){
 	/*
   	talks about a (member) function being called
   	parameters: function_name
   	return: none
   	*/
 
-	Talk(Tools::replace(GetSystemMessageByID(2), "__FUNCTION_NAME__", function_name), 2);
+	talk(Tools::replace(getSystemMessageByID(2), "__FUNCTION_NAME__", function_name), 2);
 
 }
 
 
 //____________________________________________________________________________
-void Verbose::JobControl(){
+void Verbose::jobControl(){
 	/*
   	this will be job control at some point
   	*/
@@ -355,20 +355,20 @@ void Verbose::JobControl(){
 
 
 //____________________________________________________________________________
-void Verbose::Message(int message_id){
+void Verbose::message(int message_id){
 	/*
   	talks about system stuff, regular system messages that are not errors
   	parameters: message_id
   	return: none
   	*/
 
-	Talk(GetSystemMessageByID(message_id), 1);
+	talk(getSystemMessageByID(message_id), 1);
 
 }
 
 
 //____________________________________________________________________________
-void Verbose::Module(){
+void Verbose::module(){
 	/*
   	talks about the number of modules left to process, since this method is called
   	immediately before the calling of another module, we decrease the number of
@@ -377,14 +377,14 @@ void Verbose::Module(){
   	return: none
   	*/
 
-	Talk(Tools::replace(Tools::replace(GetSystemMessageByID(3), "__NUMBER_OF_MODULES_LEFT__", Tools::toStdString(_NumberOfModulesLeft)), "__NUMBER_OF_MODULES__", Tools::toStdString(_NumberOfAllModules)), 1);
+	talk(Tools::replace(Tools::replace(getSystemMessageByID(3), "__NUMBER_OF_MODULES_LEFT__", Tools::toStdString(_NumberOfModulesLeft)), "__NUMBER_OF_MODULES__", Tools::toStdString(_NumberOfAllModules)), 1);
 	--_NumberOfModulesLeft;
 
 }
 
 
 //____________________________________________________________________________
-void Verbose::Print(std::string message, bool print_error){
+void Verbose::print(std::string message, bool print_error){
 	/*
   	do the printing, i.e. printing out a message in bash
   	parameters: message, print_error (true if we are printing an error, false otherwise)
@@ -398,19 +398,19 @@ void Verbose::Print(std::string message, bool print_error){
 
 
 //____________________________________________________________________________
-void Verbose::Sample(std::string sample_name){
+void Verbose::sample(std::string sample_name){
 	/*
   	talks about a samples being processed
   	parameters: sample_name
   	return: none
   	*/
 
-	Talk(Tools::replace(GetSystemMessageByID(4), "__SAMPLE_NAME__", sample_name), 1);
+	talk(Tools::replace(getSystemMessageByID(4), "__SAMPLE_NAME__", sample_name), 1);
 
 }
 
 //____________________________________________________________________________
-void Verbose::Talk(std::string message, int required_verbose, bool talk_error){
+void Verbose::talk(std::string message, int required_verbose, bool talk_error){
 	/*
   	does the talking, i.e. prints and writes a message
   	parameters: message, required_verbose (minimum verbosity level required for printing
@@ -420,15 +420,15 @@ void Verbose::Talk(std::string message, int required_verbose, bool talk_error){
   	*/
 
 	if(_Verbose == (VerbosityLevel) required_verbose) 
-		Print(message, talk_error);
+		print(message, talk_error);
 
-	Write(message);
+	write(message);
 
 }
 
 
 //____________________________________________________________________________
-void Verbose::Write(std::string message){
+void Verbose::write(std::string message){
 	/*
   	writes a message to the log file cache
   	parameters: message
@@ -442,7 +442,7 @@ void Verbose::Write(std::string message){
 
 
 //____________________________________________________________________________
-void Verbose::WriteLogFile(){
+void Verbose::writeLogFile(){
 	/*
   	writes the log file cache to the log file
   	parameters: none

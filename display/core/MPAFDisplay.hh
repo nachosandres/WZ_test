@@ -39,11 +39,12 @@ private:
 
   HistoManager* _hm;
   DataBaseManager* _dbm;
+  AnaUtils* _au;
 
 public:
 
   AnaConfig anConf;
-	AnaUtils au;
+
   Display dp;
 
   //===== functions ====
@@ -54,8 +55,13 @@ private:
   void configure();
 
 
-
+  void setNumbers();
   void setHistograms();
+
+  vector<string> split(const string& s, char delim);
+  string findDiff(const string& s1, const string& s2,
+		  char delim, size_t& bl, size_t& bh);
+  void readStatFile(string filename, string ctag, int& icat);
 
 public:
 
@@ -66,8 +72,11 @@ public:
 
   void refresh();
 
-  void doStatisticsPlot();
+  
   void doPlot();
+
+  void getStatistics(string categ="global");
+  void drawStatistics(string categ="global", string cname="");
 
   void savePlot(string path, string advname="");
   void producePlots(string path);

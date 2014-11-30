@@ -108,6 +108,30 @@ AnaConfig::findDS(int channel) {
   return _itNDS->second;
 }
 
+
+string 
+AnaConfig::findDSName(string channel) {
+
+  map<string, Dataset* >::const_iterator itDs;
+  for(itDs=_datasets.begin(); itDs!=_datasets.end();itDs++) {
+    if(itDs->second->hasSample(channel)!=-1 )
+      return itDs->first;
+  }
+  
+  return "";  
+}
+
+
+Dataset* 
+AnaConfig::findDS(string channel) {
+  string dsName = findDSName(channel);
+  if(dsName!="")
+    return getDataset(dsName);
+  else
+    return nullptr;
+}
+
+
 int
 AnaConfig::findChan(string ds) {
   for(_itNDS=_numDS.begin();_itNDS!=_numDS.end();_itNDS++) {
@@ -132,10 +156,13 @@ void AnaConfig::configureLumi(map<string,float> LumisXS, map<string,float> Kfac,
 }
 
 void 
-AnaConfig::configureNames(string dir, string treeName, string treeList, string hName) {
+AnaConfig::configureNames(string dir, string treeName, string fileList, string hName) {
   _dir = dir;
   _treeName = treeName;
-  _treeList = treeList;
+
+  vector<string> filenames = listFiles((string)(getenv("MPAF")) + "/workdir/stats/" + dir + "/", fileList + ".dat");
+  _fileList = filenames;
+
   _hname = hName;
 }
 
@@ -176,7 +203,7 @@ AnaConfig::addSample( string str, string sname, int col) {
       norm=0;
       name=str.substr(p0+1,str.size()-p0-1);
     }
-    //cout<<" norm "<<norm<<"  "<<name<<endl;
+
     _csData.push_back( pair<string, float>(name,norm) );
   }
   
@@ -220,7 +247,6 @@ AnaConfig::addSample( string str, string sname, int col) {
 
     //find xSect/kFact/eqLumi
     float xSect=1.,kFact=1.,eqLumi=1.;
-    //for(_itXS=_xSecLumis.begin();_itXS!=_xSecLumis.end();_itXS++)
     string tmpStr=str;
     if(str.find("ghost")!=(size_t)-1) {
       size_t p0=str.find(" ");
@@ -256,13 +282,11 @@ AnaConfig::addSample( string str, string sname, int col) {
 	_dsnames.push_back(sname);
   }
   else {
-    //cout<<sname<<" --> "<<str<<endl;
     _datasets[ sname ]->addSample(str, "", "", "", "", 0, 0, 0, 0);
-	_samplenames.push_back(str);
-	_dsnames.push_back(sname);
+    _samplenames.push_back(str);
+    _dsnames.push_back(sname);
   }
-  //cout<<" ya? "<< _datasets[ sname ]<<"  "<<sname<<"  "<<str<<endl;
- 
+  
 }
 
 
@@ -278,11 +302,7 @@ vector<string >
 AnaConfig::getDSNames() {
  
   vector<string> names;
-
-  // for(_itDs=_datasets.begin();_itDs!=_datasets.end();_itDs++) {
-  //   cout<<_itDs->first<<"   "<<_itDs->second->getName()<<endl;
-  //   names.push_back( _itDs->second->getName() );
-  // }
+  
   for(_itNDS=_numDS.begin();_itNDS!=_numDS.end();_itNDS++) {
     _itDs = _datasets.find( _itNDS->second );
     names.push_back( _itDs->second->getName() );
@@ -340,3 +360,24 @@ AnaConfig::getHName() {
   }
 
 }
+
+
+vector<string>
+AnaConfig::listFiles(string dir, string files){
+
+  vector<string> result;
+
+  string command = "ls " + dir + files;
+  FILE * pipe = popen(command.c_str(), "r");
+
+  char buffer[128];
+  while(!feof(pipe)) {
+    if(fgets(buffer, 128, pipe) != NULL)
+      result.push_back(buffer);
+    result[result.size()-1].erase(result[result.size()-1].find_last_not_of(" \n\r\t")+1);
+  }
+
+  pclose(pipe);
+  return result;
+}
+

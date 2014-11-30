@@ -9,8 +9,8 @@ ClassImp(Dataset)
 Dataset::Dataset():
 _chain(0)
 {
-	_isData = false;
-	config("", 1, kTree );
+  _isData = false;
+  config("", 1, kTree );
 }
 
 
@@ -18,8 +18,8 @@ _chain(0)
 Dataset::Dataset(string name):
   _chain(0)
 {
-	_isData = false;
-	config(name, 1, kTree );
+  _isData = false;
+  config(name, 1, kTree );
 }
 
 
@@ -28,8 +28,8 @@ Dataset::Dataset(string name, int color):
   _chain(0)
 {
 
-	_isData = false;
-	config(name, color, kHisto);
+  _isData = false;
+  config(name, color, kHisto);
 
 }
 
@@ -59,111 +59,111 @@ void Dataset::freeMemory() {
 //____________________________________________________________________________
 void Dataset::addSample(string sfullname, string path, string dir, string objName, string hname, float xSect, float kFact, float lumi, float eqLumi) {
   /*
-	adds a sample to the dataset; the sample has a name encoded in sfullname,
-	lies in the directory path/dir/, has a tree called objName or a histogram
-	called hname, has cross section xSect, k-factor kFact, luminosity lumi
-	and equivalent luminosity eqLumi (i.e. corrected for the number of events we're
-	looping on)
-	parameters: sfullname ("data:sname" or just "sname"), path, dir, objName, hname, xSect, kFact, lumi, eqLumi
-	return: none
-	*/
+    adds a sample to the dataset; the sample has a name encoded in sfullname,
+    lies in the directory path/dir/, has a tree called objName or a histogram
+    called hname, has cross section xSect, k-factor kFact, luminosity lumi
+    and equivalent luminosity eqLumi (i.e. corrected for the number of events we're
+    looping on)
+    parameters: sfullname ("data:sname" or just "sname"), path, dir, objName, hname, xSect, kFact, lumi, eqLumi
+    return: none
+  */
 
-	string sname;
+  string sname;
 	
-	// decode sfullname to get _isData and sname 
-	if(sfullname.find(":") != (size_t) -1){
-		if(sfullname.find("data") != (size_t) -1)
-			_isData = true;
-		else
-			_isData = false;
+  // decode sfullname to get _isData and sname 
+  if(sfullname.find(":") != (size_t) -1){
+    if(sfullname.find("data") != (size_t) -1)
+      _isData = true;
+    else
+      _isData = false;
 
-		size_t p = sfullname.find(":");
-		sname = sfullname.substr(p + 1, sfullname.size() - p - 1);
-	}
-	else {
-		sname =  sfullname;
-	}
+    size_t p = sfullname.find(":");
+    sname = sfullname.substr(p + 1, sfullname.size() - p - 1);
+  }
+  else {
+    sname =  sfullname;
+  }
 
 
   
-	//protection against double loading in the same dataset
-	for(size_t is=0;is<_samples.size();is++) {
-		if(_samples[is].getName()==sname) {
-			return;
-		}
-	}
+  //protection against double loading in the same dataset
+  for(size_t is=0;is<_samples.size();is++) {
+    if(_samples[is].getName()==sname) {
+      return;
+    }
+  }
 	
-	//Tree/chain initialisation =========
-	if(isTreeType())
-		if(_chain==NULL)
-			_chain = new TChain(objName.c_str());
-	//======
+  //Tree/chain initialisation =========
+  if(isTreeType())
+    if(_chain==NULL)
+      _chain = new TChain(objName.c_str());
+  //======
 	
-	//is Data driven?
-	// if(sname.find("DD")!=(size_t)-1 ) {
-	//   _isDataDriven=true;
+  //is Data driven?
+  // if(sname.find("DD")!=(size_t)-1 ) {
+  //   _isDataDriven=true;
 	
-	//   Sample s(sname, 0, xSect, kFact, eqLumi);
-	//    _samples.push_back(s);
-	//    _weights.push_back(1.);
+  //   Sample s(sname, 0, xSect, kFact, eqLumi);
+  //    _samples.push_back(s);
+  //    _weights.push_back(1.);
 	
-	//   return;
-	// }
+  //   return;
+  // }
 	
-	//is from Control Sample?
-	_isFromCS=0;
-	if(sname.find("CS")!=(size_t)-1 ) {
-	  _isFromCS=1;
-	  if(sname.find("CSS")!=(size_t)-1)
-	    _isFromCS=2;
-	  if(sname.find("CSC")!=(size_t)-1)
-	    _isFromCS=3;
-	  if(sname.find("CSN")!=(size_t)-1)
-	    _isFromCS=4;
+  //is from Control Sample?
+  _isFromCS=0;
+  if(sname.find("CS")!=(size_t)-1 ) {
+    _isFromCS=1;
+    if(sname.find("CSS")!=(size_t)-1)
+      _isFromCS=2;
+    if(sname.find("CSC")!=(size_t)-1)
+      _isFromCS=3;
+    if(sname.find("CSN")!=(size_t)-1)
+      _isFromCS=4;
 	  
-	  if(sname.find("OCS")!=(size_t)-1 )
-	    _isFromCS+=10;
+    if(sname.find("OCS")!=(size_t)-1 )
+      _isFromCS+=10;
 	
-	  Sample s(sname, 0,0, xSect, kFact, eqLumi);
-	  _samples.push_back(s);
-	  _weights.push_back(1.);
+    Sample s(sname, 0,0, xSect, kFact, eqLumi);
+    _samples.push_back(s);
+    _weights.push_back(1.);
 	
-	  return;
-	}
+    return;
+  }
 	
-	//is ghost?
-	//cout<<sname<<" ghost? "<<(sname.find("ghost")!=(size_t)-1 )<<endl;
-	if(sname.find("ghost")!=(size_t)-1 ) {
-	  _isGhost =true;
-	  //cout<<" !!! ghost!!! "<<endl;
-	  size_t p0=sname.find(" ");
-	  sname=sname.substr(p0+1,sname.size()-p0-1) ;
-	}
+  //is ghost?
+  //cout<<sname<<" ghost? "<<(sname.find("ghost")!=(size_t)-1 )<<endl;
+  if(sname.find("ghost")!=(size_t)-1 ) {
+    _isGhost =true;
+    //cout<<" !!! ghost!!! "<<endl;
+    size_t p0=sname.find(" ");
+    sname=sname.substr(p0+1,sname.size()-p0-1) ;
+  }
 	
 	
-	//Looking for the tree if not data-driven
-	int nEvent = 0; //MM: not really needed anymore, kept for now
-	int nProcEvt = 0; //getNProcEvents(path, dir, objName, sname);
+  //Looking for the tree if not data-driven
+  int nEvent = 0; //MM: not really needed anymore, kept for now
+  int nProcEvt = 0; //getNProcEvents(path, dir, objName, sname);
 	
-	Sample s(sname, nEvent, nProcEvt, xSect, kFact, eqLumi);
-	_samples.push_back(s);
-	_weights.push_back( s.getLumW() );
+  Sample s(sname, nEvent, nProcEvt, xSect, kFact, eqLumi);
+  _samples.push_back(s);
+  _weights.push_back( s.getLumW() );
 	
-	//tree analysis 
-	if(isTreeType()) {
-	  loadTree(path, dir, sname, objName);
+  //tree analysis 
+  if(isTreeType()) {
+    loadTree(path, dir, sname, objName);
 	
-	  cout<<" Adding "<<sname<<"  to "<<_name
-	  <<"   :  nEvt "<<_chain->GetEntries()<<" ("<<nProcEvt
-	  <<" gen) "<<" / w (/pb-1) = "<<s.getLumW()<<endl;
-	}
-	else { //reading histograms
-	  loadHistos(path, dir, objName);
+    cout<<" Adding "<<sname<<"  to "<<_name
+	<<"   :  nEvt "<<_chain->GetEntries()<<" ("<<nProcEvt
+	<<" gen) "<<" / w (/pb-1) = "<<s.getLumW()<<endl;
+  }
+  else { //reading histograms
+    loadHistos(path, dir, objName);
 	  
-	  cout<<" Adding "<<sname<<"  to "<<_name
-	  <<"   :  nEvt "<<nEvent<<" ("<<nProcEvt
-	  <<" gen) "<<" / w (/pb-1) = "<<s.getLumW()<<endl;
-	}
+    cout<<" Adding "<<sname<<"  to "<<_name
+	<<"   :  nEvt "<<nEvent<<" ("<<nProcEvt
+	<<" gen) "<<" / w (/pb-1) = "<<s.getLumW()<<endl;
+  }
 
 }
 
@@ -192,8 +192,8 @@ Dataset::getNProcEvents(string path, string dir, string fileName, string sname) 
   return nProc;
 }
 
- int
- Dataset::getNProcEvent(int evt) {
+int
+Dataset::getNProcEvent(int evt) {
   
   for(size_t iv=0;iv<_events.size();iv++) {
     if(evt>=_events[iv].first && evt<_events[iv].second) {
@@ -305,7 +305,7 @@ Dataset::loadHistos(string path, string dir, string filename) {
   //scan the file to retrieve the histograms
   TIter nextkey(datafile->GetListOfKeys());
   TKey *key;
-  while (key = (TKey*)nextkey()) {
+  while (key = (TKey*)nextkey() ) {
     TObject* obj = key->ReadObj(); 
     if( obj==nullptr ) continue;
       
@@ -317,7 +317,7 @@ Dataset::loadHistos(string path, string dir, string filename) {
 
     TIter nextkeyD( ((TDirectory*)obj)->GetListOfKeys() );
     TKey *keyD;
-    while (keyD = (TKey*)nextkeyD()) {
+    while (keyD = (TKey*)nextkeyD() ) {
       TObject* objD = keyD->ReadObj(); 
       if( objD==nullptr ) continue;
       if( ((string)(objD->IsA()->GetName())).substr(0,2)!=("TH") &&
@@ -364,4 +364,23 @@ Dataset::getObservables() {
 TH1*
 Dataset::getHisto(string varName, string sName) {
   return _histos[ varName ][ sName ];
+}
+
+
+int
+Dataset::hasSample(string sname) {
+
+  for(size_t is=0;is<_samples.size();is++) {
+    if(_samples[is].getName()==sname)
+      return is;
+  }
+  
+  return -1;
+}
+
+float
+Dataset::getWeight(string sname) {
+  int is = hasSample(sname);
+  if(is==-1) return 0;
+  return getWeight(is);
 }

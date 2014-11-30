@@ -141,14 +141,21 @@ public:
 
   //Efficiencies and yields
   void setEfficiency(int ids, string cName, int eCateg, float value, bool acc);
+  void setEffFromStat(int ids, string cName, int eCateg, float sw, float esw, int ngen);
   void setSystematics( int ids, string cName, string sName, bool up, bool down, float w);
   void getYieldSysts(string ds, string lvl);
 
   void saveNumbers(string anName, string conName);
   void printNumbers();
-	vector<string> listFiles(string dir, string files);
-	int findElement(vector<string> v, string e);
-  vector< pair<string, vector<vector<float> > > > retrieveNumbers(string anName, string conName, vector<string> snames, vector<string> dsnames, vector<float> weights);
+
+  void printTables(string categ="global");
+
+  // =======
+// 	vector<string> listFiles(string dir, string files);
+  int findElement(vector<string> v, string e);
+  //vector< pair<string, vector<vector<float> > > > retrieveNumbers(string anName, string conName, vector<string> snames, vector<string> dsnames, vector<float> weights);
+  vector< pair<string, vector<vector<float> > > > retrieveNumbers(string categ, bool mcat, string cname);
+
   //void drawNumbers();
   
   void setSkipCut(vector<string> var, bool invCut); 
@@ -236,6 +243,11 @@ private:
 
 
   void setNumbers(int ids,string cName, int eCateg,float w, bool acc);
+  void setNumFromStat(int ids,string cName, int iCateg, float sw, float esw, int ngen);
+
+  vector<string> prepareDSNames(bool wMC, vector<int>& idxs);
+  int getCategId(string categ);
+  
 
   ClassDef(AnaUtils,0)
   
