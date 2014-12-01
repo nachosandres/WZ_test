@@ -246,34 +246,35 @@ void MPAF::loadConfigurationFile(std::string cfg){
   for(MIPar::const_iterator it=_inputVars.begin(); 
       it!=_inputVars.end();it++) {
 
-    if(it->first==Parser::kDir) {
+    if(it->second.type==Parser::kDir) {
       _inputPath=it->second.val;
     }
-    if(it->first==Parser::kVbs) {
+    if(it->second.type==Parser::kVbs) {
       // int vLvl=Tools::toVerbosityLevel(it->second.val);
       // _verbose->setVerbosityLevel(vLvl);
     }
-    if(it->first==Parser::kSkim) {
+    if(it->second.type==Parser::kSkim) {
       _skim    = true;
       if(it->second.val=="Limited") _fullSkim=false;
     }
-    if(it->first==Parser::kNMax) {
+    if(it->second.type==Parser::kNMax) {
       _nEvtMax = atoi(it->second.val.c_str());
     }
-    if(it->first==Parser::kSkip) {
+    if(it->second.type==Parser::kSkip) {
       _nSkip = atoi(it->second.val.c_str());
     }
-    if(it->first==Parser::kTree) {
+    if(it->second.type==Parser::kTree) {
       tName = it->second.val;
     }
     
   }
 
   //datasets
+  
   for(MIPar::const_iterator it=_inputVars.begin(); 
       it!=_inputVars.end();it++) {
 
-    if(it->first!=Parser::kDS) continue;
+    if(it->second.type!=Parser::kDS) continue;
     
     string dsName=it->second.val;
     string dirName="";
@@ -281,12 +282,13 @@ void MPAF::loadConfigurationFile(std::string cfg){
     if(opts.size()!=0) {
       for(size_t i=0;i<opts.size();i++) {
 	if(opts[i].substr(0,4)=="dir:")
-	  dirName=opts[i].substr(4, opts[i].size()-5 );
+	  dirName=opts[i].substr(4, opts[i].size()-4 );
 	if(opts[i].substr(0,4)=="pfx:")
-	  dsName += opts[i].substr(4, opts[i].size()-5 );
+	  dsName += opts[i].substr(4, opts[i].size()-4 );
       }
       
       _datasets.push_back(new Dataset(dsName));
+      
       _datasets.back()->addSample(it->second.val, _inputPath, dirName, tName, "", 1.0, 1.0, 1.0, 1.0);
       _au->addDataset( dsName );
     }

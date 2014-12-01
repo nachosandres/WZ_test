@@ -91,4 +91,5 @@ Parser::parseFile(string filename) {
     abort();
   }
   
+  return mip;
 }

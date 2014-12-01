@@ -13,7 +13,7 @@
   //general parameters ********************* general parameters
   string dir="SUSYSSDL";
   string fileName="susy_SR05_highpt_cut_40"; //was treeName in LUNE susy_cut_lowpt
-  string fileList="susy_SR0[1-8]_highpt_cut_40"; //CH: since AnaConfig needs a fileName to open, we need to put the data files into a different variable
+  string fileList="susy_SR05_highpt_cut_40"; //CH: since AnaConfig needs a fileName to open, we need to put the data files into a different variable
   string hName="";
 
   bool mcOnly = false;
