@@ -4,7 +4,8 @@
 **                                                                          **
 ** The Multi-Purpose Analysis Framework                                     **
 **                                                                          **
-** Constantin Heidegger, CERN, Summer 2014                                  **
+** Constantin Heidegger, Matthieu Marionneau                                **
+** CERN, Fall 2014                                                          **
 **                                                                          **
 ******************************************************************************
 ******************************************************************************
