@@ -170,8 +170,9 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
 
 int
 Dataset::getNProcEvents(string path, string dir, string fileName, string sname) {
-  string NameF = path+"/"+dir+"/"+fileName+".root";
-  
+
+  string p= string(getenv ("MPAF"))+"/workdir";
+  string NameF = p+"/"+dir+"/"+fileName+".root";
   if(dir.find(":")!=(size_t)-1) NameF=path+"/"+fileName+".root";
   if(dir.find("psi.ch")!=(size_t)-1)
     NameF="dcap://t3se01.psi.ch:22125/"+dir+"/"+sname+".root";
@@ -254,12 +255,12 @@ Dataset::getSamples() {
 
 void 
 Dataset::loadTree(string path, string dir, string sname, string objName) {
-
   
   TFile* datafile(nullptr);
-  
-  string NameF = path+"/data/"+dir+"/"+sname+".root"; 
-  if(path.find(":")!=(size_t)-1) NameF=dir+"/"+sname+".root";
+
+  string p= string(getenv ("MPAF"))+"/workdir";
+  string NameF = p+"/data/"+dir+"/"+sname+".root"; 
+  if(path.find(":")!=(size_t)-1) NameF=path+"/"+sname+".root";
   if(dir.find("psi.ch")!=(size_t)-1)
     NameF="dcap://t3se01.psi.ch:22125/"+dir+"/"+sname+".root";
 

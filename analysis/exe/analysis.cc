@@ -65,13 +65,12 @@ int main(int argc, char* argv[]) {
   
   // Reading cfg file and get classes to run on
   vector<string> ans;
-  
-  MIPar inputVars = Parser::parseFile(cfg);
 
+  MIPar inputVars = Parser::parseFile(cfg);
   for(MIPar::const_iterator it=inputVars.begin(); 
       it!=inputVars.end();it++) {
 
-    if(it->first!=Parser::kAN) continue;
+    if(it->second.type!=Parser::kAN) continue;
 
     ans.push_back(it->second.val);
     vector<string> opts= it->second.opts;
