@@ -55,7 +55,7 @@ private:
   bool lowptEventSelection(std::string, std::string, std::string = "");
   bool someSelection();
   bool srSelection();
-  bool ssEventSelection(std::string, std::string, std::string = "");
+  bool ssEventSelection();
   bool vetoEventSelection(std::string, std::string, std::string = "");
 
   void fillEventPlots(std::string);

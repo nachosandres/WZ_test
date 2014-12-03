@@ -288,7 +288,6 @@ void MPAF::loadConfigurationFile(std::string cfg){
       }
       
       _datasets.push_back(new Dataset(dsName));
-      
       _datasets.back()->addSample(it->second.val, _inputPath, dirName, tName, "", 1.0, 1.0, 1.0, 1.0);
       _au->addDataset( dsName );
     }
