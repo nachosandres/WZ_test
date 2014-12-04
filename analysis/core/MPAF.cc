@@ -273,7 +273,7 @@ void MPAF::loadConfigurationFile(std::string cfg){
   
   for(MIPar::const_iterator it=_inputVars.begin(); 
       it!=_inputVars.end();it++) {
-
+    
     if(it->second.type!=Parser::kDS) continue;
     
     string dsName=it->second.val;
@@ -283,14 +283,11 @@ void MPAF::loadConfigurationFile(std::string cfg){
       for(size_t i=0;i<opts.size();i++) {
 	if(opts[i].substr(0,4)=="dir:")
 	  dirName=opts[i].substr(4, opts[i].size()-4 );
-	if(opts[i].substr(0,4)=="pfx:")
-	  dsName += opts[i].substr(4, opts[i].size()-4 );
       }
-      
-      _datasets.push_back(new Dataset(dsName));
-      _datasets.back()->addSample(it->second.val, _inputPath, dirName, tName, "", 1.0, 1.0, 1.0, 1.0);
-      _au->addDataset( dsName );
     }
+    _datasets.push_back(new Dataset(dsName));
+    _datasets.back()->addSample(it->second.val, _inputPath, dirName, tName, "", 1.0, 1.0, 1.0, 1.0);
+    _au->addDataset( dsName );
   }
 
 }
