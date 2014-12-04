@@ -56,6 +56,12 @@ Parser::parseLine(string line) {
   string id=tks[0];
   if(type==Parser::kVar || type==Parser::kDS)
     id = val;
+  if(type==Parser::kDS) {
+    for(size_t i=0;i<opts.size();i++) {
+      if(opts[i].substr(0,4)=="pfx:")
+	id += opts[i].substr(4, opts[i].size()-4 );
+    }
+  }
 
 
   ip.type = type;

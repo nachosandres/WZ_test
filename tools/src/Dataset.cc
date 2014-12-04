@@ -257,7 +257,7 @@ void
 Dataset::loadTree(string path, string dir, string sname, string objName) {
   
   TFile* datafile(nullptr);
-
+  if(dir=="") dir=path;
   string p= string(getenv ("MPAF"))+"/workdir";
   string NameF = p+"/data/"+dir+"/"+sname+".root"; 
   if(path.find(":")!=(size_t)-1) NameF=path+"/"+sname+".root";
@@ -270,8 +270,7 @@ Dataset::loadTree(string path, string dir, string sname, string objName) {
   }
     
   TTree* tmptree = (TTree*)datafile->Get( objName.c_str() );
-  cout<<tmptree<<endl;
-
+ 
   if(tmptree != nullptr ) {
     _chain->Add( (NameF+"/"+objName).c_str() ); 
     //nEvent = tmptree->GetEntries();
