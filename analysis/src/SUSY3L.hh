@@ -33,6 +33,36 @@ private:
 
     void modifySkimming();
 
+    void collectKinematicObjects();
+    bool electronSelection(int);
+    bool muonSelection(int);
+    bool vetoElectronSelection(int);
+    bool vetoMuonSelection(int);
+
+    
+
+
+
+
+
+
+
+private:
+
+    //counter categories, 0 is ALWAYS global (even if not specified later)
+    enum {kGlobal=0, kElId, kElVeto, kMuId, kMuVeto};
+
+    //vectors for electron and muon candidates
+    std::vector<int> _elIdx;
+    std::vector<int> _muIdx;
+
+    //list of object candidates
+    CandList _els;
+    CandList _vEls;
+    CandList _mus;
+    CandList _vMus;
+
+
 };
 
 #endif
