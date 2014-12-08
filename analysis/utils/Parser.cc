@@ -20,7 +20,7 @@ Parser::parseLine(string line) {
 
   inPar ip;  
   ip.type=Parser::kNone;
-  if(tks.size()==0 || tks[0]=="#" ) return ip;
+  if(tks.size()==0 || tks[0].substr(0,1)=="#" ) return ip;
 
 
   int type=Parser::kNone;
