@@ -41,6 +41,8 @@ private:
     bool bJetSelection(int);
     bool goodJetSelection(int);
 
+    bool baseSelection();
+
     float HT();
 
 

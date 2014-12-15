@@ -121,7 +121,8 @@ void SUSY3L::run(){
     // do the minimal selection and collect kinematic variables for events passing it
     collectKinematicObjects();
 
-	
+    // basic event selection
+    if(!baseSelection()) return;	
 }
 
 
@@ -427,7 +428,7 @@ bool SUSY3L::bJetSelection(int jetIdx){
     if(!makeCut(goodJetSelection(jetIdx), "jet Id", "=", kBJetId) ) return false;
     //cut on b-tagger parameter
     //TODO: which criteria for b-tagging? Which cut value?
-    //if(!makeCut<float>(_vc->getF("Jet_btagCSV", jetIdx), 0.679, ">=", "csv btag selection", 0, kBJetId) ) return false;
+    if(!makeCut<float>(_vc->getF("Jet_btagCSV", jetIdx), 0.679, ">=", "csv btag selection", 0, kBJetId) ) return false;
 
     return true;
 
@@ -471,6 +472,46 @@ bool SUSY3L::goodJetSelection(int jetIdx){
 }
 
 
+/*******************************************************************************
+* ******************************************************************************
+* ** KINEMATIC REGION DEFINITIONS                                             **
+* ******************************************************************************
+* *****************************************************************************/
+
+
+
+
+/*******************************************************************************
+* ******************************************************************************
+* ** EVENT SELECTIONS                                                         **
+* ******************************************************************************
+* *****************************************************************************/
+
+//____________________________________________________________________________
+bool SUSY3L::baseSelection(){
+    /*
+        implements the basic selection that is fundamental for both the baseline 
+        and the signal region selections
+        parameters: none
+        return: true (if event passes selection), false (else)
+    */
+
+    //select 3 lepton events of all flavor combinations
+    if(!makeCut<int>( _nEls + _nMus, 3, "=", "lepton multiplicity" ) ) return false;
+
+    //require at least 1 of the 3 leptons to have higher pT than original cut
+    float pt_cut_high = 20.;
+
+
+
+    //reject events where 2 opposit sign, same flavor leptons together have an 
+    //invariant mass around the Z mass
+    //bool is_Zpair = vetoEventSelection("Electron", "Muon");
+    //if(!makeCut( !is_Zpair, "veto on Z pairs"  , "=") ) return false;
+
+
+    return true;
+}
 
 
 
@@ -478,6 +519,20 @@ bool SUSY3L::goodJetSelection(int jetIdx){
 
 
 
+
+
+
+
+
+
+
+
+
+/*******************************************************************************
+* ******************************************************************************
+* ** EXECUTING TASKS                                                          **
+* ******************************************************************************
+* *****************************************************************************/
 
 
 
