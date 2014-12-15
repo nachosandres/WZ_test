@@ -42,14 +42,20 @@ private:
     bool goodJetSelection(int);
 
     bool baseSelection();
+    bool hardLegSelection();
+    bool ZEventSelection();
+
+
 
     float HT();
+
+    string _pairmass;
 
 
 private:
 
     //counter categories, 0 is ALWAYS global (even if not specified later)
-    enum {kGlobal=0, kElId, kElVeto, kMuId, kMuVeto, kJetId, kBJetId};
+    enum {kGlobal=0, kElId, kElVeto, kMuId, kMuVeto, kJetId, kBJetId, konZEvents};
 
     //vectors for electron and muon candidates
     std::vector<int> _elIdx;

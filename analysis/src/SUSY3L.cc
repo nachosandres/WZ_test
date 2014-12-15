@@ -85,8 +85,10 @@ void SUSY3L::initialize(){
     _au->addCategory( kMuVeto, "veto Mu");
     _au->addCategory( kJetId, "jet Id");
     _au->addCategory( kBJetId, "b-jet Id");
+    _au->addCategory( konZEvents, "Z events");
                  
-
+    //config file input variables
+    _pairmass = getCfgVarS("pairMass");
 
 
 
@@ -472,6 +474,7 @@ bool SUSY3L::goodJetSelection(int jetIdx){
 }
 
 
+
 /*******************************************************************************
 * ******************************************************************************
 * ** KINEMATIC REGION DEFINITIONS                                             **
@@ -500,33 +503,128 @@ bool SUSY3L::baseSelection(){
     if(!makeCut<int>( _nEls + _nMus, 3, "=", "lepton multiplicity" ) ) return false;
 
     //require at least 1 of the 3 leptons to have higher pT than original cut
-    float pt_cut_high = 20.;
+    bool has_hard_leg = hardLegSelection();
+    if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
 
+    //require minimum number of jets
+    int nJets_cut = 2;
+    if(!makeCut<int>( _nJets, nJets_cut, ">=", "jet multiplicity") ) return false;
 
+    //require minimum number of b-tagged jets
+    int nBJets_cut = 1;
+    if(!makeCut<int>( _nBJets, nBJets_cut, ">=", "b-jet multiplicity") ) return false;
 
-    //reject events where 2 opposit sign, same flavor leptons together have an 
-    //invariant mass around the Z mass
-    //bool is_Zpair = vetoEventSelection("Electron", "Muon");
-    //if(!makeCut( !is_Zpair, "veto on Z pairs"  , "=") ) return false;
-
-
+    //select on or off-Z events according to specification in config file
+    bool is_reconstructed_Z = ZEventSelection();
+    if(_pairmass == "off"){
+        if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
+    }
+    else if(_pairmass == "on"){
+        if(makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
+    }
     return true;
 }
 
+//____________________________________________________________________________
+bool SUSY3L::hardLegSelection(){
+    /*
+        Checks if the selected event with 3 leptons has at least one lepton 
+        fullfilling a harsher pT cut 
+        return: true (if the event has such a lepton with higher pT), false (else)
+    */
+
+    //pt cut for hard leg
+    float pt_cut_hard = 20.;
+
+    //check if one of the electrons fullfils hard pt cut
+    for(int ie=0; ie<_nEls; ++ie){
+        if(_els[ie]->pt()>pt_cut_hard) return true;
+    }
+
+    //check if one of the muons fullfils hard pt cut
+    for(int im=0; im<_nMus; ++im){
+        if(_mus[im]->pt()>pt_cut_hard) return true;
+    }
+
+    return false;
+}
+
+//____________________________________________________________________________
+bool SUSY3L::ZEventSelection(){
+    /*
+        Checks if there is a same-flavor opposite-charge pair with an invariant 
+        mass around the Z mass among the 3 leptons. If that is the case the event
+        is rejected to suppress leptons coming from on-shell Z decays
+        return: true (if a Z can be reconstructed from 2 leptons), false (else)
+    */
+    
+    //count reconstructed Z bosons
+    counter("denominator", konZEvents);
+
+    //Z mass
+    float Zmass = 91.;
+    float low_mll_cut = 12.;
 
 
+    //three electrons
+    if(_nEls == 3){
+        if(_els[0]->charge() != _els[1]->charge()){
+            float mll = Candidate::create(_els[0], _els[1])->mass();
+            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+        }
+        if(_els[0]->charge() != _els[2]->charge()){
+            float mll = Candidate::create(_els[0], _els[2])->mass();
+            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+        }
+        if(_els[1]->charge() != _els[2]->charge()){
+            float mll = Candidate::create(_els[1], _els[2])->mass();
+            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+        }
+    }
 
+    //2 electrons and 1 muon
+    if(_nEls == 2){
+        if(_els[0]->charge() != _els[1]->charge()){
+            float mll = Candidate::create(_els[0], _els[1])->mass();
+            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+        }
+    }
 
+    //1 electron and 2 muons
+    if(_nMus == 2){
+        if(_mus[0]->charge() != _mus[1]->charge()){
+            float mll = Candidate::create(_mus[0], _mus[1])->mass();
+            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+        }
+    }
 
+    //three muons
+    if(_nMus == 3){
+        if(_mus[0]->charge() != _mus[1]->charge()){
+            float mll = Candidate::create(_mus[0], _mus[1])->mass();
+            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+        }
+        if(_mus[0]->charge() != _mus[2]->charge()){
+            float mll = Candidate::create(_mus[0], _mus[2])->mass();
+            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+        }
+        if(_mus[1]->charge() != _mus[2]->charge()){
+            float mll = Candidate::create(_mus[1], _mus[2])->mass();
+            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+        }
+    }
 
+    return false;
 
-
-
-
-
-
-
-
+}
 
 /*******************************************************************************
 * ******************************************************************************
