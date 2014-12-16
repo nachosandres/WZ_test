@@ -89,7 +89,7 @@ void SUSY3L::initialize(){
                  
     //config file input variables
     _pairmass = getCfgVarS("pairMass");
-
+    _BR = getCfgVarS("baselineRegion");
 
 
 }
@@ -113,9 +113,6 @@ void SUSY3L::run(){
     _mus.clear();
     _elIdx.clear();
     _muIdx.clear();
-    //does veto vector has to be cleared?
-    //_vEls.clear();
-    //_vMus.clear();
     
     // increment event counter, used as denominator for yield calculation
     counter("denominator");
@@ -123,7 +120,8 @@ void SUSY3L::run(){
     // do the minimal selection and collect kinematic variables for events passing it
     collectKinematicObjects();
 
-    // basic event selection
+    // baseline event selection and initialization of baseline region cuts
+    setBaselineRegion();
     if(!baseSelection()) return;	
 }
 
@@ -206,6 +204,7 @@ void SUSY3L::collectKinematicObjects(){
                                                   0.105) );     //muon mass
                 _muIdx.push_back(i);
             }
+            /*
             else {
                 if(vetoMuonSelection(i))  {
                     _vMus.push_back( Candidate::create(_vc->getF("LepGood_pt", i),
@@ -216,6 +215,7 @@ void SUSY3L::collectKinematicObjects(){
                                                        0.105) );    //muon mass
                 }
             }
+            */
         }
         
         // check which of the nLepGood leptons are electrons, identifier 11
@@ -232,6 +232,7 @@ void SUSY3L::collectKinematicObjects(){
                                                   0.0005) );    //electron mass
                 _elIdx.push_back(i);
             }
+            /*
             else {
                 //if electron passes veto selection, create veto electron candidate
                 //and append to _vEls vector
@@ -244,6 +245,7 @@ void SUSY3L::collectKinematicObjects(){
                                                        0.0005) );   //electron mass
                 }
             }
+            */
         }
         
     }
@@ -251,8 +253,8 @@ void SUSY3L::collectKinematicObjects(){
     //length of the vectors gives the number of candidates for each objet group in the event
     _nEls = _els.size();
     _nMus = _mus.size();
-    _nVEls = _vEls.size();
-    _nVMus = _vMus.size();
+    //_nVEls = _vEls.size();
+    //_nVMus = _vMus.size();
 
     // loop over all jets of the event
     for(int i = 0; i < _vc->getI("nJet"); ++i){
@@ -273,9 +275,10 @@ void SUSY3L::collectKinematicObjects(){
     //length of the vectors gives the number of candidates for each objet group in the event
     _nBJets = _bJets.size();
     _nJets = _jets.size();
-    
-    //_HT = HT();
-    //create met candidate for every event (why for every one?)
+   
+   //compute sum of jet pT's 
+    _HT = HT();
+    //create met candidate for every event
     _met = Candidate::create(_vc->getF("met_pt"), _vc->getF("met_phi") );
 
 
@@ -481,6 +484,63 @@ bool SUSY3L::goodJetSelection(int jetIdx){
 * ******************************************************************************
 * *****************************************************************************/
 
+//____________________________________________________________________________
+void SUSY3L::setBaselineRegion(){
+    /*
+        sets the cuts of the baseline region (_BR)
+        parameters: none
+        return: none
+    */
+
+    if(_BR == "BR0"){
+        setCut("LepMultiplicity"    ,    3, "="  );     //number of isolated leptons
+        _pt_cut_hard_leg = 20.;                         //harsher pT requirement on one of the leptons
+        setCut("NJets"              ,    2, ">=" );     //number of jets in event
+        setCut("NBJets"             ,    1, ">=" );     //number of b-tagged jets in event
+        _ZMassWindow = 15.;                             //width around Z mass to define on- or off-Z events
+        _lowMllCut = 12.;                               //low invariant mass cut for ossf leptoin pairs
+        setCut("HT"                 ,   60, ">=" );     //sum of jet pT's
+        setCut("MET"                ,   50, ">=" );     //missing transverse energy
+    }
+
+}
+
+//____________________________________________________________________________
+void SUSY3L::setCut(std::string var, float valCut, std::string cType, float upValCut) {
+    /*
+        sets the parameters (valCut, cType, upValCut) for a specific cut on a variable (var)
+        parameters: var, valCut (the cut value), cType (the cut type), upValCut (the upper value
+        in case one cuts the variable in a range)
+        return: none
+    */
+
+    //baseline region
+    if(var == "LepMultiplicity") {
+        _valCutLepMultiplicityBR   = valCut;
+        _cTypeLepMultiplicityBR    = cType;
+        _upValCutLepMultiplicityBR = upValCut;
+    }
+    else if(var == "NJets") {
+        _valCutNJetsBR   = valCut;
+        _cTypeNJetsBR    = cType;
+        _upValCutNJetsBR = upValCut;
+    }
+    else if(var == "NBJets") {
+        _valCutNBJetsBR   = valCut;
+        _cTypeNBJetsBR    = cType;
+        _upValCutNBJetsBR = upValCut;
+    }
+    else if(var == "HT") {
+        _valCutHTBR   = valCut;
+        _cTypeHTBR    = cType;
+        _upValCutHTBR = upValCut;
+    }
+    else if(var == "MET") {
+        _valCutMETBR   = valCut;
+        _cTypeMETBR    = cType;
+        _upValCutMETBR = upValCut;
+    }
+}
 
 
 
@@ -500,19 +560,23 @@ bool SUSY3L::baseSelection(){
     */
 
     //select 3 lepton events of all flavor combinations
-    if(!makeCut<int>( _nEls + _nMus, 3, "=", "lepton multiplicity" ) ) return false;
+    if(!makeCut<int>( _nEls + _nMus, _valCutLepMultiplicityBR, _cTypeLepMultiplicityBR, "lepton multiplicity", _upValCutLepMultiplicityBR ) ) return false;
 
     //require at least 1 of the 3 leptons to have higher pT than original cut
     bool has_hard_leg = hardLegSelection();
     if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
 
     //require minimum number of jets
-    int nJets_cut = 2;
-    if(!makeCut<int>( _nJets, nJets_cut, ">=", "jet multiplicity") ) return false;
+    if(!makeCut<int>( _nJets, _valCutNJetsBR, _cTypeNJetsBR, "jet multiplicity", _upValCutNJetsBR) ) return false;
 
     //require minimum number of b-tagged jets
-    int nBJets_cut = 1;
-    if(!makeCut<int>( _nBJets, nBJets_cut, ">=", "b-jet multiplicity") ) return false;
+    if(!makeCut<int>( _nBJets, _valCutNBJetsBR, _cTypeNBJetsBR, "b-jet multiplicity", _upValCutNBJetsBR) ) return false;
+
+    //require minimum hadronic activity (sum of jet pT's)
+    if(!makeCut<float>( _HT, _valCutHTBR, _cTypeHTBR, "hadronic activity", _upValCutHTBR) ) return false;
+
+    //require minimum missing transvers energy (actually missing momentum)
+    if(!makeCut<float>( _met->pt(), _valCutMETBR, _cTypeMETBR, "missing transverse energy", _upValCutMETBR) ) return false;
 
     //select on or off-Z events according to specification in config file
     bool is_reconstructed_Z = ZEventSelection();
@@ -533,17 +597,14 @@ bool SUSY3L::hardLegSelection(){
         return: true (if the event has such a lepton with higher pT), false (else)
     */
 
-    //pt cut for hard leg
-    float pt_cut_hard = 20.;
-
     //check if one of the electrons fullfils hard pt cut
     for(int ie=0; ie<_nEls; ++ie){
-        if(_els[ie]->pt()>pt_cut_hard) return true;
+        if(_els[ie]->pt()>_pt_cut_hard_leg) return true;
     }
 
     //check if one of the muons fullfils hard pt cut
     for(int im=0; im<_nMus; ++im){
-        if(_mus[im]->pt()>pt_cut_hard) return true;
+        if(_mus[im]->pt()>_pt_cut_hard_leg) return true;
     }
 
     return false;
@@ -563,25 +624,23 @@ bool SUSY3L::ZEventSelection(){
 
     //Z mass
     float Zmass = 91.;
-    float low_mll_cut = 12.;
-
 
     //three electrons
     if(_nEls == 3){
         if(_els[0]->charge() != _els[1]->charge()){
             float mll = Candidate::create(_els[0], _els[1])->mass();
-            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
         }
         if(_els[0]->charge() != _els[2]->charge()){
             float mll = Candidate::create(_els[0], _els[2])->mass();
-            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
         }
         if(_els[1]->charge() != _els[2]->charge()){
             float mll = Candidate::create(_els[1], _els[2])->mass();
-            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
         }
     }
 
@@ -589,8 +648,8 @@ bool SUSY3L::ZEventSelection(){
     if(_nEls == 2){
         if(_els[0]->charge() != _els[1]->charge()){
             float mll = Candidate::create(_els[0], _els[1])->mass();
-            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
         }
     }
 
@@ -598,8 +657,8 @@ bool SUSY3L::ZEventSelection(){
     if(_nMus == 2){
         if(_mus[0]->charge() != _mus[1]->charge()){
             float mll = Candidate::create(_mus[0], _mus[1])->mass();
-            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
         }
     }
 
@@ -607,18 +666,18 @@ bool SUSY3L::ZEventSelection(){
     if(_nMus == 3){
         if(_mus[0]->charge() != _mus[1]->charge()){
             float mll = Candidate::create(_mus[0], _mus[1])->mass();
-            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
         }
         if(_mus[0]->charge() != _mus[2]->charge()){
             float mll = Candidate::create(_mus[0], _mus[2])->mass();
-            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
         }
         if(_mus[1]->charge() != _mus[2]->charge()){
             float mll = Candidate::create(_mus[1], _mus[2])->mass();
-            if(!makeCut<float>(mll, low_mll_cut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - 15., "<", "mll Z veto", Zmass + 15., konZEvents) ) return true;
+            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
         }
     }
 
@@ -634,4 +693,18 @@ bool SUSY3L::ZEventSelection(){
 
 
 
+//____________________________________________________________________________
+float SUSY3L::HT(){
+    /*
+        computes HT for a given list of selected jets
+        parameters: jet_label
+        return: HT
+    */
+
+        float ht = 0;
+        for(int i = 0; i < _nJets; ++i){
+            ht += _jets[i]->pt();
+        }
+        return ht;
+}
 

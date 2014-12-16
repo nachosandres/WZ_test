@@ -42,6 +42,8 @@ private:
     bool goodJetSelection(int);
 
     bool baseSelection();
+    void setBaselineRegion();
+    void setCut(std::string, float, std::string, float = 0);
     bool hardLegSelection();
     bool ZEventSelection();
 
@@ -50,12 +52,34 @@ private:
     float HT();
 
     string _pairmass;
-
+    string _BR;
 
 private:
 
     //counter categories, 0 is ALWAYS global (even if not specified later)
     enum {kGlobal=0, kElId, kElVeto, kMuId, kMuVeto, kJetId, kBJetId, konZEvents};
+
+    //cut variables
+    float _valCutLepMultiplicityBR;
+    float _pt_cut_hard_leg;
+    float _valCutNJetsBR;
+    float _valCutNBJetsBR;
+    float _ZMassWindow;
+    float _lowMllCut;
+    float _valCutHTBR;
+    float _valCutMETBR;
+    
+    std::string _cTypeLepMultiplicityBR;
+    std::string _cTypeNJetsBR;
+    std::string _cTypeNBJetsBR;
+    std::string _cTypeHTBR;
+    std::string _cTypeMETBR;
+
+    float _upValCutLepMultiplicityBR;
+    float _upValCutNJetsBR;
+    float _upValCutNBJetsBR;
+    float _upValCutHTBR;
+    float _upValCutMETBR;
 
     //vectors for electron and muon candidates
     std::vector<int> _elIdx;
@@ -79,6 +103,7 @@ private:
     Candidate* _met;
 
     float _HT;
+    
 };
 
 #endif
