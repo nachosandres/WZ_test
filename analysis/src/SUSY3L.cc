@@ -113,6 +113,8 @@ void SUSY3L::run(){
     _mus.clear();
     _elIdx.clear();
     _muIdx.clear();
+    _jets.clear();
+    _bJets.clear();
     
     // increment event counter, used as denominator for yield calculation
     counter("denominator");
@@ -580,11 +582,12 @@ bool SUSY3L::baseSelection(){
 
     //select on or off-Z events according to specification in config file
     bool is_reconstructed_Z = ZEventSelection();
+    //bool is_reconstructed_Z = ZEventSelectionLoop();
     if(_pairmass == "off"){
         if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
     }
     else if(_pairmass == "on"){
-        if(makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
+        if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
     }
     return true;
 }
@@ -614,8 +617,8 @@ bool SUSY3L::hardLegSelection(){
 bool SUSY3L::ZEventSelection(){
     /*
         Checks if there is a same-flavor opposite-charge pair with an invariant 
-        mass around the Z mass among the 3 leptons. If that is the case the event
-        is rejected to suppress leptons coming from on-shell Z decays
+        mass around the Z mass among the 3 leptons. Faster than ZEventSelectionLoop 
+        but no Z candidate extraction
         return: true (if a Z can be reconstructed from 2 leptons), false (else)
     */
     
@@ -684,6 +687,62 @@ bool SUSY3L::ZEventSelection(){
     return false;
 
 }
+
+
+//____________________________________________________________________________
+bool SUSY3L::ZEventSelectionLoop(){
+    /*
+        Checks if there is a same-flavor opposite-charge pair with an invariant 
+        mass around the Z mass among the 3 leptons. The lepton pair with an invariant mass closest to the Z mass is added as Z candidate.
+        return: true (if a Z can be reconstructed from 2 leptons), false (else)
+    */
+    
+    //count reconstructed Z bosons
+    //counter("denominator", konZEvents);
+
+    //Z mass
+    float Zmass = 91.1876;
+    float diff=1000000;
+    bool Zevent = false;
+/*
+    //loop over all possible combination of two electrons
+    for(int ie1=0; ie1 < _nEls; ie1++) {
+        for(int ie2 = ie1; ie2 < _nEls; ie2++) {
+            //continue with not an ossf pair
+            if(_vc->getI("LepGood_pdgId", ie1) != - _vc->getI("LepGood_pdgId", ie2) ) continue;
+            //create new Z candidate
+            Candidate* Ztmp = Candidate::create(_els[ie1], _els[ie2]);
+            //keep Z candidate if smallest difference to Z mass
+            if(std::abs(Ztmp->mass()-Zmass)<_ZMassWindow && std::abs(Ztmp->mass()-Zmass)<diff) {
+                Candidate* _Z = Ztmp;
+                diff = std::abs(_Z->mass()-Zmass);
+                Zevent = true;
+            }
+        }
+    }
+
+    diff=1000000;
+
+    //loop over all possible combination of two muons
+    for(int im1=0; im1 < _nMus; im1++) {
+        for(int im2 = im1; im2 < _nMus; im2++) {
+            //continue with not an ossf pair
+            if(_vc->getI("LepGood_pdgId", im1) != - _vc->getI("LepGood_pdgId", im2) ) continue;
+            //create new Z candidate
+            Candidate* Ztmp = Candidate::create(_mus[im1], _mus[im2]);
+            //keep Z candidate if smallest difference to Z mass
+            if(std::abs(Ztmp->mass()-Zmass)<_ZMassWindow && std::abs(Ztmp->mass()-Zmass)<diff) {
+                Candidate* _Z = Ztmp;
+                diff = std::abs(_Z->mass()-Zmass);
+                Zevent = true;
+            }
+        }
+    }*/
+    return Zevent;
+}
+
+
+
 
 /*******************************************************************************
 * ******************************************************************************

@@ -46,6 +46,7 @@ private:
     void setCut(std::string, float, std::string, float = 0);
     bool hardLegSelection();
     bool ZEventSelection();
+    bool ZEventSelectionLoop();
 
 
 
