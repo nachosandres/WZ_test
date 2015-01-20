@@ -411,7 +411,7 @@ void phys14exerc::collectKinematicObjects(){
   _nMus  = _mus .size();
   _nVEls = _vEls.size();
   _nVMus = _vMus.size();
-	
+  
   for(int i = 0; i < _vc->getI("nJet"); ++i){
 	//CH: replaced by tree variables 
     //if(bJetSelection(i) ) {
@@ -451,9 +451,15 @@ bool phys14exerc::goodJetSelection(int jetIdx){
   if(!makeCut<float>(fabs(_vc->getD("Jet_eta", jetIdx)),  2.4, "<", "eta selection", 0, kJetId) ) return false;
 
   // SF: here we require dR(j,every loose lepton) > 0.4
-  for(int il=0; il<_leps.size(); ++il){
+  for(unsigned int il=0; il<_leps.size(); ++il){
     float dr = KineUtils::dR(_leps[il]->eta(), _vc->getD("Jet_eta", jetIdx),
-                 _leps[il]->phi(), _vc->getD("Jet_phi", jetIdx));
+			     _leps[il]->phi(), _vc->getD("Jet_phi", jetIdx));
+    if(!makeCut<float>(dr, 0.4, ">", "dR selection", 0, kJetId) ) return false;
+  }
+
+  for(unsigned int il=0; il<_vetoleps.size(); ++il){
+    float dr = KineUtils::dR(_vetoleps[il]->eta(), _vc->getD("Jet_eta", jetIdx),
+			     _vetoleps[il]->phi(), _vc->getD("Jet_phi", jetIdx));
     if(!makeCut<float>(dr, 0.4, ">", "dR selection", 0, kJetId) ) return false;
   }
 
@@ -482,7 +488,7 @@ bool phys14exerc::electronSelection(int elIdx){
   if(!makeCut<int>( _vc->getI("LepGood_eleCutId2012_full5x5", elIdx), 3     , ">=" , "POG CB WP-M Id "   , 0    , kElId)) return false;
   if(!makeCut<int>( _vc->getI("LepGood_tightCharge", elIdx)         , 1     , ">"  , "charge selection"  , 0    , kElId)) return false;
   
-  bool conv= (_vc->getI("LepGood_convVeto", elIdx)>0 || _vc->getI("LepGood_lostHits", elIdx)>0);
+  bool conv= (_vc->getI("LepGood_convVeto", elIdx)>0 && _vc->getI("LepGood_lostHits", elIdx)==0);
   if(!makeCut( conv, "conversion rejection", "=", kElId)) return false;
   
   return true;
@@ -531,6 +537,7 @@ bool phys14exerc::vetoElectronSelection(int elIdx){
   //if(!makeCut<int>( _vc->getI("LepGood_tightId", elIdx)              , 0   , ">=", "POG CB WP-V Id 5x5", 0, kElVeto)) return false;
   bool conv = (_vc->getI("LepGood_convVeto", elIdx)>0 || _vc->getI("LepGood_lostHits", elIdx)>1);
   if(!makeCut( conv, "conversion rejection", "=", kElVeto)) return false;
+
   
   return true;
 
@@ -835,7 +842,6 @@ bool phys14exerc::ssEventSelection(){
   else if (_lepflav=="all" && isSS)               return true;
 
   return false;
-
 }
 
 
@@ -853,33 +859,32 @@ bool phys14exerc::vetoEventSelection(std::string electron_label, std::string muo
 	
   for(unsigned int i = 0; i < _vetoleps.size(); ++i){
 
-    // os pair with high-pt lepton
-    if(_au->simpleCut( _vetoleps[i] -> charge(), _first -> charge(), "!=") ) {
-      float mll = Candidate::create(_vetoleps[i], _first) -> mass();
+    // search for OS pair with high-pt lepton
+    if (_first->charge() == _vetoleps[i] -> charge()) continue;
 
-      // same flavor -> Z veto
-      if(_au->simpleCut( fabs(_vetoleps[i] -> pdgId()), fabs(_first -> pdgId()), "=") ) {
-        if(makeCut(mll > 76.0 && mll < 106.0, "Z veto selection", "=", kVetoLepSel) ) return true;
-      }
+    float mll = Candidate::create(_vetoleps[i], _first) -> mass();
 
-      // any flavor -> gamma star veto
-      if(makeCut(mll < 12.0, "gamma star veto selection", "=", kVetoLepSel) ) return true;
-
+    // same flavor -> Z veto
+    if(_au->simpleCut( fabs(_vetoleps[i] -> pdgId()), fabs(_first -> pdgId()), "=") ) {
+      if(makeCut(mll > 76.0 && mll < 106.0, "Z veto selection", "=", kVetoLepSel) ) return true;
     }
 
-    // os pair with low-pt lepton 
-    if(_au->simpleCut( _vetoleps[i] -> charge(), _second -> charge(), "!=") ) { 
-      float mll = Candidate::create(_vetoleps[i], _second) -> mass(); 
+    // any flavor -> gamma star veto
+    if(makeCut(mll < 12.0, "gamma star veto selection", "=", kVetoLepSel) ) return true;
+
+    // search for OS pair with low-pt lepton
+    if(_second->charge() == _vetoleps[i] -> charge()) continue;
+
+    float mll = Candidate::create(_vetoleps[i], _second) -> mass(); 
  
-      // same flavor -> Z veto 
-      if(_au->simpleCut( fabs(_vetoleps[i] -> pdgId()), fabs(_second -> pdgId()), "=") ) {   
-        if(makeCut(mll > 76.0 && mll < 106.0, "Z veto selection", "=", kVetoLepSel) ) return true; 
-      } 
- 
-      // any flavor -> gamma star veto 
-      if(makeCut(mll < 12.0, "gamma star veto selection", "=", kVetoLepSel) ) return true; 
- 
+    // same flavor -> Z veto 
+    if(_au->simpleCut( fabs(_vetoleps[i] -> pdgId()), fabs(_second -> pdgId()), "=") ) {   
+      if(makeCut(mll > 76.0 && mll < 106.0, "Z veto selection", "=", kVetoLepSel) ) return true; 
     } 
+ 
+    // any flavor -> gamma star veto 
+    if(makeCut(mll < 12.0, "gamma star veto selection", "=", kVetoLepSel) ) return true; 
+ 
   } 
  
   makeCut(true, "no veto event", "=", kVetoLepSel); 

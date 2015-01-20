@@ -636,137 +636,139 @@ bool synchRA5::baseSelection(){
   if(_isData && !makeCut<int>(_vc->getD("HLT_DoubleEl"), 1, "=", "HLT DoubleEl") ) return false;	
   if(_isData && !makeCut<int>(_vc->getD("HLT_MuEG")    , 1, "=", "HLT MuEG"    ) ) return false;	
 
- 
 
-  // CH: what follows is an attempt to implement the CERN tight-tight ssdl pair selection
-  // 25% off, reason unresolved as GP is not answering to emails or skype
-  // going back to CERN method, uncomment everything, remove the ETH stuff and also change Tools::compareSL!
-
-
-  // ETH stuff
-  if(_lepflav=="all")
-    if(!makeCut<int>( _nEls + _nMus, 2, ">=", "lepton multiplicity" ) ) return false;  
-  if(_lepflav=="ee")
-    if(!makeCut( _nEls>=2 && _nMus>=0, true, "=", "lepton multiplicity" ) ) return false;  
-  if(_lepflav=="mm")
-    if(!makeCut( _nEls>=0 && _nMus>=2, true, "=", "lepton multiplicity" ) ) return false;  
-  if(_lepflav=="em")
-    if(!makeCut( _nEls>=1 && _nMus>=1, true, "=", "lepton multiplicity" ) ) return false;
-
-  int charge = 0;
-  int flavor = 0; 
-  int flavortmp = 0; 
-
-  for(int il1 = 0; il1 < _nLeps-1; ++il1){ 
-    for(int il2 = il1+1; il2 < _nLeps; ++il2){ 
-
-      charge    = _leps[il1]->charge() * _leps[il2]->charge(); 
-      flavortmp = fabs(_leps[il1]->pdgId())+fabs( _leps[il2]->pdgId()); 
-
-      if (charge < 0)         continue; // if the pair is OS skip 
-      if (flavor > flavortmp) continue; // if the new pair has less muons skip. 
-       
-      if (_PT == "hh" && _leps[il1]->pt()<25.) continue; 
-      if (_PT == "hh" && _leps[il2]->pt()<25.) continue; 
-       
-      if (_PT == "hl" && _leps[il1]->pt()<25.) continue; 
-      if (_PT == "hl" && _leps[il2]->pt()>25.) continue; 
- 
-      if (_PT == "ll" && _leps[il1]->pt()>25.) continue; 
-      if (_PT == "ll" && _leps[il2]->pt()>25.) continue; 
-       
-      flavor = flavortmp; 
-      _first  = _leps[il1]; 
-      _second = _leps[il2]; 
-    } 
-  } 
-   
-  if      (!makeCut( _lepflav=="mm" && flavor==26, true, "=", "lepton multiplicity and flavor" ) ) return false;  
-  else if (!makeCut( _lepflav=="em" && flavor==24, true, "=", "lepton multiplicity and flavor" ) ) return false;
-  else if (!makeCut( _lepflav=="ee" && flavor==22, true, "=", "lepton multiplicity and flavor" ) ) return false;
+  // CH: working version by SF, gives closure to CERN up to 1%, 2015-01-20
+  bool is_ss_event = ssEventSelection(); 
+  if(!makeCut( is_ss_event , "same-sign selection", "=") ) return false; 
 
 
-  // CERN stuff
+  // CH: attempt to adapt ECO synch to this respect, closure less good, 2015-01-20
 
-  // two tight leptons, same-sign
-  //if(_au->simpleCut( _nLeps == 2 && _leps[0]->charge() == _leps[1]->charge(), true, "=") ){
+  //CH: retrieving high-pt and low-pt leptons
+  //CH: float pt_cache = 0; 
+  //CH: int   lep_idx1  = 0; 
+  //CH: for(int il = 0; il < _leps.size(); ++il){ 
+  //CH:   if(_leps[il]->pt() > pt_cache){ 
+  //CH:     lep_idx1 = il; 
+  //CH:     pt_cache = _leps[il]->pt(); 
+  //CH:   } 
+  //CH: } 
+  //CH: 
+  //CH: pt_cache = 0; 
+  //CH: int lep_idx2 = 0; 
+  //CH: for(int il = 0; il < _leps.size(); ++il){ 
+  //CH:   if(_leps[il]->pt() > pt_cache && il != lep_idx1){ 
+  //CH:     lep_idx2 = il; 
+  //CH:     pt_cache = _leps[il]->pt(); 
+  //CH:   } 
+  //CH: } 
+  //CH: 
+  //CH: _first  = _leps[lep_idx1]; // the highest pt lepton 
+  //CH: _second = _leps[lep_idx2]; // the second highest pt lepton 
 
-  //  unsigned int fidx;
-  //  if(_leps[0]->pt() > _leps[1]->pt()) fidx = 0;
-  //  else fidx = 1;
+  //CH: // any other (also tight) lepton is pushed into the veto
+  //CH: for(unsigned int il = 0; il < _leps.size(); ++il){
+  //CH:   if(il != lep_idx1 && il != lep_idx2) 
+  //CH:     _vetoleps.push_back(_leps[il]);
+  //CH: }
+  //CH: 
+  //CH: // same-sign
+  //CH: if(!makeCut<int>( _first -> charge() == _second -> charge(), true, "=", "same-sign leptons" ) ) return false; 
 
-  //  _first  = _leps[fidx];
-  //  _second = _leps[(fidx+1) % 2];
-  //}
+  //CH: // multiplicity and flavor
+  //CH: if(_lepflav=="mm" && !makeCut( fabs(_first->pdgId()) == 13 && fabs(_second->pdgId()) == 13, true, "=", "lepton multip     licity and flavor" ) ) return false; 
+  //CH: if(_lepflav=="em" && !makeCut( (fabs(_first->pdgId()) == 11 && fabs(_second->pdgId()) == 13) || (fabs(_first->pdgId()     ) == 13 && fabs(_second->pdgId()) == 11), true, "=", "lepton multiplicity and flavor" ) ) return false; 
+  //CH: if(_lepflav=="ee" && !makeCut( fabs(_first->pdgId()) == 11 && fabs(_second->pdgId()) == 11, true, "=", "lepton multip     licity and flavor" ) ) return false;
 
-  //// three or more tight leptons, search for same-sign pair
-  //else if(_au->simpleCut( _nLeps, 2, ">")){
-
-    // splitting up _leps into positively and negatively charged leps
-    //vector<SortableLep> pcl, ncl;
-    //for(unsigned int il = 0; il < _leps.size(); ++il) {
-    //  SortableLep sl = {il, _leps[il]->pdgId(), _leps[il]->pt()};
-    //  if(_leps[il]->charge() > 0) pcl.push_back(sl);
-    //  else                        ncl.push_back(sl);
-    //}
-
-    // sorting for flavor (muons before electrons), then pt (high-pt before low-pt)
-    //sort(pcl.begin(), pcl.end(), Tools::compareSL);
-	//sort(ncl.begin(), ncl.end(), Tools::compareSL);
-
-    // selecting best same-sign tight lepton pair, building _first and _second
-    //bool usePcl;
-    //if     (pcl.size() >= 2 && ncl.size() < 2) usePcl = true;
-	//else if(pcl.size() < 2 && ncl.size() >= 2) usePcl = false;
-	//else {
-    //  if     (fabs(pcl[0].pdgId) > ncl[0].pdgId || fabs(pcl[1].pdgId) > ncl[1].pdgId) usePcl = true;
-    //  else if(pcl[0].pt + pcl[1].pt >= ncl[0].pt + ncl[1].pt                        ) usePcl = true;
-    //  else                                                                            usePcl = false;
-    //}
-
-    //unsigned int fidx;
-    //unsigned int sidx;
-
-    //if(usePcl){
-    //  _first  = _leps[pcl[0].idx];
-    //  _second = _leps[pcl[1].idx];
-    //  fidx = pcl[0].idx;
-    //  sidx = pcl[1].idx;
-    //}
-    //else {
-    //  _first  = _leps[ncl[0].idx];
-    //  _second = _leps[ncl[1].idx];
-    //  fidx = ncl[0].idx;
-    //  sidx = ncl[1].idx;
-    //}
-
-    // any other (also tight) lepton is pushed into the veto
-    //for(unsigned int il = 0; il < _leps.size(); ++il){
-    //  if(il != fidx && il != sidx) 
-    //    _vetoleps.push_back(_leps[il]);
-    //}
-
-  //}
-  //
-  //// not enough same-sign leptons
-  //else {
-  //  makeCut( true, "lepton multiplicity and charge", "=" );
-  //  return false;
-  //}
+  //CH: // pt
+  //CH: if     (_PT == "hh" && !makeCut(_first->pt() > 25. && _second->pt() > 25., true, "=", "lepton pt") ) return false;
+  //CH: else if(_PT == "hl" && !makeCut(_first->pt() > 25. && _second->pt() < 25., true, "=", "lepton pt") ) return false;
+  //CH: else if(_PT == "ll" && !makeCut(_first->pt() < 25. && _second->pt() < 25., true, "=", "lepton pt") ) return false;
 
 
-  // lepton flavor
-  //if(_lepflav=="ee")
-  //  if(!makeCut( fabs(_first->pdgId()) == 11 && fabs(_second->pdgId()) == 11, true, "=", "lepton flavor" ) ) return false; 
-  //if(_lepflav=="mm")
-  //  if(!makeCut( fabs(_first->pdgId()) == 13 && fabs(_second->pdgId()) == 13, true, "=", "lepton flavor" ) ) return false; 
-  //if(_lepflav=="em")	
-  //  if(!makeCut( (fabs(_first->pdgId()) == 11 && fabs(_second->pdgId()) == 13) || (fabs(_first->pdgId()) == 13 && fabs(_second->pdgId()) == 11), true, "=", "lepton flavor" ) ) return false; 
 
-  // pt
-  if     (_PT == "hh" && !makeCut(_first->pt() > 25 && _second->pt() > 25, true, "=", "lepton pt 25-25") ) return false;
-  else if(_PT == "hl" && !makeCut(_first->pt() > 25 && _second->pt() < 25, true, "=", "lepton pt 25-10") ) return false;
-  else if(_PT == "ll" && !makeCut(_first->pt() < 25 && _second->pt() < 25, true, "=", "lepton pt 10-10") ) return false;
+
+  //CH: attempt to reproduce CERN's selection, not closing, January 2015
+
+  //CH: // two tight leptons, same-sign
+  //CH: if(_au->simpleCut( _nLeps == 2 && _leps[0]->charge() == _leps[1]->charge(), true, "=") ){
+
+  //CH:   unsigned int fidx;
+  //CH:   if(_leps[0]->pt() > _leps[1]->pt()) fidx = 0;
+  //CH:   else fidx = 1;
+
+  //CH:   _first  = _leps[fidx];
+  //CH:   _second = _leps[(fidx+1) % 2];
+  //CH: }
+
+  //CH: // three or more tight leptons, search for same-sign pair
+  //CH: else if(_au->simpleCut( _nLeps, 2, ">")){
+
+  //CH:   // splitting up _leps into positively and negatively charged leps
+  //CH:   vector<SortableLep> pcl, ncl;
+  //CH:   for(unsigned int il = 0; il < _leps.size(); ++il) {
+  //CH:     SortableLep sl = {il, _leps[il]->pdgId(), _leps[il]->pt()};
+  //CH:     if(_leps[il]->charge() > 0) pcl.push_back(sl);
+  //CH:     else                        ncl.push_back(sl);
+  //CH:   }
+
+  //CH:   // sorting for flavor (muons before electrons), then pt (high-pt before low-pt)
+  //CH:   sort(pcl.begin(), pcl.end(), Tools::compareSL);
+  //CH:   sort(ncl.begin(), ncl.end(), Tools::compareSL);
+
+  //CH:   // selecting best same-sign tight lepton pair, building _first and _second
+  //CH:   bool usePcl;
+  //CH:   if     (pcl.size() >= 2 && ncl.size() < 2) usePcl = true;
+  //CH:   else if(pcl.size() < 2 && ncl.size() >= 2) usePcl = false;
+  //CH:   else {
+  //CH:     if     (fabs(pcl[0].pdgId) > ncl[0].pdgId || fabs(pcl[1].pdgId) > ncl[1].pdgId) usePcl = true;
+  //CH:     else if(pcl[0].pt + pcl[1].pt >= ncl[0].pt + ncl[1].pt                        ) usePcl = true;
+  //CH:     else                                                                            usePcl = false;
+  //CH:   }
+
+  //CH:   unsigned int fidx;
+  //CH:   unsigned int sidx;
+
+  //CH:   if(usePcl){
+  //CH:     _first  = _leps[pcl[0].idx];
+  //CH:     _second = _leps[pcl[1].idx];
+  //CH:     fidx = pcl[0].idx;
+  //CH:     sidx = pcl[1].idx;
+  //CH:   }
+  //CH:   else {
+  //CH:     _first  = _leps[ncl[0].idx];
+  //CH:     _second = _leps[ncl[1].idx];
+  //CH:     fidx = ncl[0].idx;
+  //CH:     sidx = ncl[1].idx;
+  //CH:   }
+
+  //CH:   // any other (also tight) lepton is pushed into the veto
+  //CH:   for(unsigned int il = 0; il < _leps.size(); ++il){
+  //CH:     if(il != fidx && il != sidx) 
+  //CH:       _vetoleps.push_back(_leps[il]);
+  //CH:   }
+
+  //CH: }
+  //CH: 
+  //CH: // not enough same-sign leptons
+  //CH: else {
+  //CH:   makeCut( true, "lepton multiplicity and charge", "=" );
+  //CH:   return false;
+  //CH: }
+
+
+  //CH: // lepton flavor
+  //CH: if(_lepflav=="ee")
+  //CH:   if(!makeCut( fabs(_first->pdgId()) == 11 && fabs(_second->pdgId()) == 11, true, "=", "lepton flavor" ) ) return false; 
+  //CH: if(_lepflav=="mm")
+  //CH:   if(!makeCut( fabs(_first->pdgId()) == 13 && fabs(_second->pdgId()) == 13, true, "=", "lepton flavor" ) ) return false; 
+  //CH: if(_lepflav=="em")	
+  //CH:   if(!makeCut( (fabs(_first->pdgId()) == 11 && fabs(_second->pdgId()) == 13) || (fabs(_first->pdgId()) == 13 && fabs(_second->pdgId()) == 11), true, "=", "lepton flavor" ) ) return false; 
+
+  //CH: // pt
+  //CH: if     (_PT == "hh" && !makeCut(_first->pt() > 25 && _second->pt() > 25, true, "=", "lepton pt 25-25") ) return false;
+  //CH: else if(_PT == "hl" && !makeCut(_first->pt() > 25 && _second->pt() < 25, true, "=", "lepton pt 25-10") ) return false;
+  //CH: else if(_PT == "ll" && !makeCut(_first->pt() < 25 && _second->pt() < 25, true, "=", "lepton pt 10-10") ) return false;
 
   // Z and gammaStar veto
   bool isVetoEvent = vetoEventSelection();
@@ -808,6 +810,65 @@ bool synchRA5::srSelection(){
   return true;
 
 } 
+
+
+
+//____________________________________________________________________________
+bool synchRA5::ssEventSelection(){
+  /*
+    checks, if the leptons that have been found in the kinematic region are same-sign
+    parameters: none
+    return: true (if the leptons all have same-sign), false (else)
+  */
+
+  // SF: CHOOSE a SS PAIR, maximizing the number of muons and then pT
+  int charge = 0;
+  int flavor = 0;
+  int flavortmp = 0;
+  bool isSS = false;
+  unsigned int lep_idx2(0), lep_idx1(0);
+  for(unsigned int il1 = 0; il1 < _leps.size(); ++il1){
+    for(unsigned int il2 = il1+1; il2 < _leps.size(); ++il2){
+      charge    = _leps[il1]->charge() * _leps[il2]->charge();
+      flavortmp = fabs(_leps[il1]->pdgId())+fabs( _leps[il2]->pdgId());
+      if (charge < 0)         continue; // if the pair is OS skip
+      if (flavor > flavortmp) continue; // if the new pair has less muons skip.
+
+      if (_PT == "hh" && _leps[il1]->pt()<25.) continue;
+      if (_PT == "hh" && _leps[il2]->pt()<25.) continue;
+
+      if (_PT == "hl" && _leps[il1]->pt()<25.) continue;
+      if (_PT == "hl" && _leps[il2]->pt()>25.) continue;
+
+      if (_PT == "ll" && _leps[il1]->pt()>25.) continue;
+      if (_PT == "ll" && _leps[il2]->pt()>25.) continue;
+
+      flavor = flavortmp;
+      _first  = _leps[il1];   lep_idx1 = il1;
+      _second = _leps[il2];   lep_idx2 = il2;
+      isSS = true;
+    }
+  }
+
+
+  // any other (also tight) lepton is pushed into the veto
+  for(unsigned int il = 0; il < _leps.size(); ++il){
+    if(il != lep_idx1 && il != lep_idx2)
+      _vetoleps.push_back(_leps[il]);
+  }
+
+
+  if      (_lepflav=="mm"  && flavor==26 && isSS) return true;
+  else if (_lepflav=="em"  && flavor==24 && isSS) return true;
+  else if (_lepflav=="ee"  && flavor==22 && isSS) return true;
+  else if (_lepflav=="all" && isSS)               return true;
+
+  return false;
+
+}
+
+
+
 
 
 //____________________________________________________________________________

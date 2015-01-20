@@ -50,6 +50,7 @@ private:
 
   bool baseSelection();
   bool srSelection();
+  bool ssEventSelection();
   bool vetoEventSelection();
 
   void fillEventPlots(std::string);
