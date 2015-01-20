@@ -10,20 +10,20 @@
 ******************************************************************************
 *****************************************************************************/
 
-#ifndef SUSYSSDL_HH
-#define SUSYSSDL_HH
+#ifndef SYNCHECO_HH
+#define SYNCHECO_HH
 
 #include "analysis/core/MPAF.hh"
 
-class SUSYSSDL: public MPAF {
+class synchECO: public MPAF {
 
 public:
 
 
   // Member Functions
 
-  SUSYSSDL(std::string);
-  virtual ~SUSYSSDL();
+  synchECO(std::string);
+  virtual ~synchECO();
 
 
 private:
@@ -38,33 +38,11 @@ private:
 
   void modifySkimming();
 
-  bool bJetSelection(int);
   void collectKinematicObjects();
   bool electronSelection(int);
-  bool goodJetSelection(int);
   bool muonSelection(int);
-  bool vetoElectronSelection(int);
-  bool vetoMuonSelection(int);
-
-  void setBaselineRegion();
-  void setCut(std::string, float, std::string, float = 0); 
-  void setSignalRegion();
 
   bool baseSelection();
-  bool brSelection();
-  bool lowptEventSelection(std::string, std::string, std::string = "");
-  bool srSelection();
-  bool ssEventSelection();
-  bool vetoEventSelection(std::string, std::string, std::string = "");
-
-  void fillEventPlots(std::string);
-  void fillLeptonPlots(std::string);
-  void fillJetPlots(std::string);
-
-  int genMatchCateg(const Candidate*);
-
-  float HT();
-  int eventCharge();
 
 private: 
 

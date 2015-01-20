@@ -15,7 +15,7 @@
 
 #define DUMP(x) std::cout << #x << " = " << x << std::endl
 
-#define DUMPVECTOR(x) for(int i = 0; i < x.size(); ++i) std::cout << #x << "[" << i << "] = " << x[i] << std::endl;
+#define DUMPVECTOR(x) for(int i = 0; i < x.size(); ++i) std::cout << #x << "[" << i << "] = " << x[i] << std::endl
 
 
 #endif

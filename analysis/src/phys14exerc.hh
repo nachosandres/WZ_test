@@ -10,20 +10,20 @@
 ******************************************************************************
 *****************************************************************************/
 
-#ifndef SUSYSSDL_HH
-#define SUSYSSDL_HH
+#ifndef phys14exerc_HH
+#define phys14exerc_HH
 
 #include "analysis/core/MPAF.hh"
 
-class SUSYSSDL: public MPAF {
+class phys14exerc: public MPAF {
 
 public:
 
 
   // Member Functions
 
-  SUSYSSDL(std::string);
-  virtual ~SUSYSSDL();
+  phys14exerc(std::string);
+  virtual ~phys14exerc();
 
 
 private:
@@ -75,43 +75,25 @@ private:
 	kMisChargePdgId, kGenMatched};
 
   float _valCutHTSR;
-  float _valCutMETSR;
+  float _valCutHTCondSR;
+  float _valCutMETHighSR;
+  float _valCutMETLowSR;
   float _valCutNJetsSR;
   float _valCutNBJetsSR;
-  float _valCutCHSR;
-  float _valCutHTBR;
-  float _valCutHTCondBR;
-  float _valCutMETLowBR;
-  float _valCutMETHighBR;
-  float _valCutNJetsBR;
-  float _valCutNBJetsBR;
-  float _valCutCHBR;
 
   std::string _cTypeHTSR;
-  std::string _cTypeMETSR;
+  std::string _cTypeHTCondSR;
+  std::string _cTypeMETHighSR;
+  std::string _cTypeMETLowSR;
   std::string _cTypeNJetsSR;
   std::string _cTypeNBJetsSR;
-  std::string _cTypeCHSR;
-  std::string _cTypeHTBR;
-  std::string _cTypeHTCondBR;
-  std::string _cTypeMETLowBR;
-  std::string _cTypeMETHighBR;
-  std::string _cTypeNJetsBR;
-  std::string _cTypeNBJetsBR;
-  std::string _cTypeCHBR;
 
   float _upValCutHTSR;
-  float _upValCutMETSR;
+  float _upValCutHTCondSR;
+  float _upValCutMETHighSR;
+  float _upValCutMETLowSR;
   float _upValCutNJetsSR;
   float _upValCutNBJetsSR;
-  float _upValCutCHSR;
-  float _upValCutHTBR;
-  float _upValCutHTCondBR;
-  float _upValCutMETLowBR;
-  float _upValCutMETHighBR;
-  float _upValCutNJetsBR;
-  float _upValCutNBJetsBR;
-  float _upValCutCHBR;
 	
   std::vector<int> _elIdx;
   std::vector<int> _muIdx;
@@ -123,6 +105,8 @@ private:
   int _nJets;
   int _nBJets;
 
+  CandList _leps;
+  CandList _vetoleps;
   CandList _els;
   CandList _vEls;
   CandList _mus;
@@ -130,6 +114,8 @@ private:
   CandList _jets;
   CandList _bJets;
   Candidate* _met;
+  Candidate * _first;
+  Candidate * _second;
   
   float _HT;
 
