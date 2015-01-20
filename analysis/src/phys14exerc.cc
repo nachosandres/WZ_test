@@ -188,7 +188,7 @@ void phys14exerc::run(){
 
   //skim right after the basic selection
   fillSkimTree();
-  //return;
+  return;
 	
   //splitting the samples into categories
   if( _sampleName.find("DYJets")!=(size_t)-1 || _sampleName.find("TTJets")!=(size_t)-1 ) {
@@ -473,13 +473,14 @@ bool phys14exerc::electronSelection(int elIdx){
 
   counter("ElectronDenominator", kElId);
   
-  if(!makeCut<float>( _vc->getD("LepGood_pt"      , elIdx)          , 10., ">" , "pt selection"    , 0, kElId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_sip3d"   , elIdx)          , 4  , "<" , "SIP 3D"          , 0, kElId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03", elIdx)          , 0.1, "<" , "Isolation "      , 0, kElId)) return false;
-  if(!makeCut<float>(std::abs(_vc->getD("LepGood_dz" , elIdx))      , 0.1, "<" , "dz selection"    , 0, kElId)) return false;
-  if(!makeCut<int>( _vc->getI("LepGood_eleCutId2012_full5x5", elIdx), 3  , ">=", "POG CB WP-M Id " , 0, kElId)) return false;
-  //if(!makeCut<int>( _vc->getI("LepGood_tightId", elIdx)             , 2  , ">=", "POG CB WP-M Id"  , 0, kElId)) return false;
-  if(!makeCut<int>( _vc->getI("LepGood_tightCharge", elIdx)         , 1  , ">" , "charge selection", 0, kElId)) return false;
+  if(!makeCut<float>( _vc->getD("LepGood_pt"      , elIdx)          , 10.   , ">"  , "pt selection"      , 0    , kElId)) return false;
+  if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx))     , 2.4   , "<"  , "eta selection"     , 0    , kElId)) return false;
+  if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx))     , 1.4442, "[!]", "eta selection veto", 1.566, kElId)) return false;
+  if(!makeCut<float>( _vc->getD("LepGood_sip3d"   , elIdx)          , 4     , "<"  , "SIP 3D"            , 0    , kElId)) return false;
+  if(!makeCut<float>( _vc->getD("LepGood_relIso03", elIdx)          , 0.1   , "<"  , "Isolation "        , 0    , kElId)) return false;
+  if(!makeCut<float>(std::abs(_vc->getD("LepGood_dz" , elIdx))      , 0.1   , "<"  , "dz selection"      , 0    , kElId)) return false;
+  if(!makeCut<int>( _vc->getI("LepGood_eleCutId2012_full5x5", elIdx), 3     , ">=" , "POG CB WP-M Id "   , 0    , kElId)) return false;
+  if(!makeCut<int>( _vc->getI("LepGood_tightCharge", elIdx)         , 1     , ">"  , "charge selection"  , 0    , kElId)) return false;
   
   bool conv= (_vc->getI("LepGood_convVeto", elIdx)>0 || _vc->getI("LepGood_lostHits", elIdx)>0);
   if(!makeCut( conv, "conversion rejection", "=", kElId)) return false;
@@ -519,11 +520,15 @@ bool phys14exerc::vetoElectronSelection(int elIdx){
   */
 
   counter("VetoElectronDenominator", kElVeto);
-  
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03", elIdx)           , 0.5 , "<" , "Isolation"         , 0, kElVeto)) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_dz", elIdx))       , 0.1 , "<" , "dz selection"      , 0, kElVeto)) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_dxy", elIdx))      , 0.05, "<" , "dxy selection"     , 0, kElVeto)) return false;
-  if(!makeCut<int>( _vc->getI("LepGood_tightId", elIdx)              , 0   , ">=", "POG CB WP-V Id 5x5", 0, kElVeto)) return false;
+
+  if(!makeCut<float>( _vc->getD("LepGood_pt", elIdx) , 10.0   , ">"  , "pt selection"    , 0    , kElVeto)) return false; 
+  if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), 2.4   , "<"  , "eta selection"   , 0    , kElVeto)) return false;
+  if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), 1.4442, "[!]", "eta selection veto" , 1.566, kElVeto)) return false;
+ 
+  //if(!makeCut<float>( _vc->getD("LepGood_relIso03", elIdx)           , 0.5 , "<" , "Isolation"         , 0, kElVeto)) return false;
+  //if(!makeCut<float>( std::abs(_vc->getD("LepGood_dz", elIdx))       , 0.1 , "<" , "dz selection"      , 0, kElVeto)) return false;
+  //if(!makeCut<float>( std::abs(_vc->getD("LepGood_dxy", elIdx))      , 0.05, "<" , "dxy selection"     , 0, kElVeto)) return false;
+  //if(!makeCut<int>( _vc->getI("LepGood_tightId", elIdx)              , 0   , ">=", "POG CB WP-V Id 5x5", 0, kElVeto)) return false;
   bool conv = (_vc->getI("LepGood_convVeto", elIdx)>0 || _vc->getI("LepGood_lostHits", elIdx)>1);
   if(!makeCut( conv, "conversion rejection", "=", kElVeto)) return false;
   
@@ -541,11 +546,14 @@ bool phys14exerc::vetoMuonSelection(int muIdx){
   */
 
   counter("VetoMuonDenominator", kMuVeto);
-  
-  if(!makeCut<int>(   _vc->getI("LepGood_pfMuonId", muIdx)     , 1   , "=", "POG Loose Id" , 0, kMuVeto) ) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03", muIdx)     , 0.2 , "<", "Isolation "   , 0, kMuVeto)) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_dz" , muIdx)), 0.1 , "<", "dz selection" , 0, kMuVeto)) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_dxy", muIdx)), 0.05, "<", "dxy selection", 0, kMuVeto)) return false;
+
+  if(!makeCut<float>(  _vc->getD("LepGood_pt"     , muIdx), 10.0, ">", "pt selection", 0, kMuVeto ) ) return false;
+  if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", muIdx)), 2.4   , "<"  , "eta selection"   , 0    , kMuVeto)) return false;
+ 
+  //if(!makeCut<int>(   _vc->getI("LepGood_pfMuonId", muIdx)     , 1   , "=", "POG Loose Id" , 0, kMuVeto) ) return false;
+  //if(!makeCut<float>( _vc->getD("LepGood_relIso03", muIdx)     , 0.2 , "<", "Isolation "   , 0, kMuVeto)) return false;
+  //if(!makeCut<float>( std::abs(_vc->getD("LepGood_dz" , muIdx)), 0.1 , "<", "dz selection" , 0, kMuVeto)) return false;
+  //if(!makeCut<float>( std::abs(_vc->getD("LepGood_dxy", muIdx)), 0.05, "<", "dxy selection", 0, kMuVeto)) return false;
   
   return true;
 
@@ -685,56 +693,62 @@ bool phys14exerc::baseSelection(){
     parameters: none
     return: true (if event passes selection), false (else)
   */
-  
+
+
+  // triggers  
   if(_isData && !makeCut<int>(_vc->getI("HLT_DoubleMu"), 1, "=", "HLT DoubleMu") ) return false;	
   if(_isData && !makeCut<int>(_vc->getI("HLT_DoubleEl"), 1, "=", "HLT DoubleEl") ) return false;	
   if(_isData && !makeCut<int>(_vc->getI("HLT_MuEG")    , 1, "=", "HLT MuEG"    ) ) return false;	
 
-  float pt_cache = 0; 
-  int   lep_idx1  = 0; 
-  for(int il = 0; il < _leps.size(); ++il){ 
-    if(_leps[il]->pt() > pt_cache){ 
-      lep_idx1 = il; 
-      pt_cache = _leps[il]->pt(); 
-    } 
-  } 
-  
-  pt_cache = 0; 
-  int lep_idx2 = 0; 
-  for(int il = 0; il < _leps.size(); ++il){ 
-    if(_leps[il]->pt() > pt_cache && il != lep_idx1){ 
-      lep_idx2 = il; 
-      pt_cache = _leps[il]->pt(); 
-    } 
-  } 
-  
-  _first  = _leps[lep_idx1]; // the highest pt lepton 
-  _second = _leps[lep_idx2]; // the second highest pt lepton 
 
-  // any other (also tight) lepton is pushed into the veto
-  for(unsigned int il = 0; il < _leps.size(); ++il){
-    if(il != lep_idx1 && il != lep_idx2) 
-      _vetoleps.push_back(_leps[il]);
-  }
-  
+  // lepton multiplicity
+  if(!makeCut<int>( _nEls + _nMus, 2, ">=", "lepton multiplicity and flavor" ) ) return false; 
 
-  // same-sign
-  if(!makeCut<int>( _first -> charge() == _second -> charge(), true, "=", "same-sign leptons" ) ) return false; 
 
-  // multiplicity and flavor
-  if(_lepflav=="all")
-    if(!makeCut<int>( _nEls + _nMus, 2, ">=", "lepton multiplicity and flavor" ) ) return false; 
-  if(_lepflav=="mm")
-    if(!makeCut( fabs(_first->pdgId()) == 13 && fabs(_second->pdgId()) == 13, true, "=", "lepton multiplicity and flavor" ) ) return false; 
-  if(_lepflav=="em")    
-    if(!makeCut( (fabs(_first->pdgId()) == 11 && fabs(_second->pdgId()) == 13) || (fabs(_first->pdgId()) == 13 && fabs(_second->pdgId()) == 11), true, "=", "lepton multiplicity and flavor" ) ) return false; 
-  if(_lepflav=="ee")
-    if(!makeCut( fabs(_first->pdgId()) == 11 && fabs(_second->pdgId()) == 11, true, "=", "lepton multiplicity and flavor" ) ) return false;
+  bool is_ss_event = ssEventSelection();
+  if(!makeCut( is_ss_event , "same-sign selection", "=") ) return false;
 
-  // pt
-  if     (_PT == "hh" && !makeCut(_first->pt() > 25 && _second->pt() > 25, true, "=", "lepton pt") ) return false;
-  else if(_PT == "hl" && !makeCut(_first->pt() > 25 && _second->pt() < 25, true, "=", "lepton pt") ) return false;
-  else if(_PT == "ll" && !makeCut(_first->pt() < 25 && _second->pt() < 25, true, "=", "lepton pt") ) return false;
+  // retrieving high-pt and low-pt leptons
+  //SF: float pt_cache = 0; 
+  //SF: int   lep_idx1  = 0; 
+  //SF: for(int il = 0; il < _leps.size(); ++il){ 
+  //SF:   if(_leps[il]->pt() > pt_cache){ 
+  //SF:     lep_idx1 = il; 
+  //SF:     pt_cache = _leps[il]->pt(); 
+  //SF:   } 
+  //SF: } 
+  //SF: 
+  //SF: pt_cache = 0; 
+  //SF: int lep_idx2 = 0; 
+  //SF: for(int il = 0; il < _leps.size(); ++il){ 
+  //SF:   if(_leps[il]->pt() > pt_cache && il != lep_idx1){ 
+  //SF:     lep_idx2 = il; 
+  //SF:     pt_cache = _leps[il]->pt(); 
+  //SF:   } 
+  //SF: } 
+  //SF: 
+  //SF: _first  = _leps[lep_idx1]; // the highest pt lepton 
+  //SF: _second = _leps[lep_idx2]; // the second highest pt lepton 
+
+
+  //SF: // any other (also tight) lepton is pushed into the veto
+  //SF: for(unsigned int il = 0; il < _leps.size(); ++il){
+  //SF:   if(il != lep_idx1 && il != lep_idx2) 
+  //SF:     _vetoleps.push_back(_leps[il]);
+  //SF: }
+  //SF: 
+  //SF: // same-sign
+  //SF: if(!makeCut<int>( _first -> charge() == _second -> charge(), true, "=", "same-sign leptons" ) ) return false; 
+
+  //SF: // multiplicity and flavor
+  //SF: if(_lepflav=="mm" && !makeCut( fabs(_first->pdgId()) == 13 && fabs(_second->pdgId()) == 13, true, "=", "lepton multiplicity and flavor" ) ) return false; 
+  //SF: if(_lepflav=="em" && !makeCut( (fabs(_first->pdgId()) == 11 && fabs(_second->pdgId()) == 13) || (fabs(_first->pdgId()) == 13 && fabs(_second->pdgId()) == 11), true, "=", "lepton multiplicity and flavor" ) ) return false; 
+  //SF: if(_lepflav=="ee" && !makeCut( fabs(_first->pdgId()) == 11 && fabs(_second->pdgId()) == 11, true, "=", "lepton multiplicity and flavor" ) ) return false;
+
+  //SF: // pt
+  //SF: if     (_PT == "hh" && !makeCut(_first->pt() > 25. && _second->pt() > 25., true, "=", "lepton pt") ) return false;
+  //SF: else if(_PT == "hl" && !makeCut(_first->pt() > 25. && _second->pt() < 25., true, "=", "lepton pt") ) return false;
+  //SF: else if(_PT == "ll" && !makeCut(_first->pt() < 25. && _second->pt() < 25., true, "=", "lepton pt") ) return false;
 
   // veto on third lepton
   bool is_3l_event = vetoEventSelection("Electron", "Muon");
@@ -778,19 +792,49 @@ bool phys14exerc::ssEventSelection(){
     return: true (if the leptons all have same-sign), false (else)
   */
 
+  // SF: CHOOSE a SS PAIR, maximizing the number of muons and then pT
   int charge = 0;
+  int flavor = 0;
+  int flavortmp = 0;
+  bool isSS = false;
+  unsigned int lep_idx2(0), lep_idx1(0);
+  for(unsigned int il1 = 0; il1 < _leps.size(); ++il1){
+    for(unsigned int il2 = il1+1; il2 < _leps.size(); ++il2){
+      charge    = _leps[il1]->charge() * _leps[il2]->charge();
+      flavortmp = fabs(_leps[il1]->pdgId())+fabs( _leps[il2]->pdgId());
+      if (charge < 0)         continue; // if the pair is OS skip
+      if (flavor > flavortmp) continue; // if the new pair has less muons skip.
+      
+      if (_PT == "hh" && _leps[il1]->pt()<25.) continue;
+      if (_PT == "hh" && _leps[il2]->pt()<25.) continue;
+      
+      if (_PT == "hl" && _leps[il1]->pt()<25.) continue;
+      if (_PT == "hl" && _leps[il2]->pt()>25.) continue;
 
-  for(int ie = 0; ie < _nEls; ++ie){
-    if(charge == 0) charge = _els[ie]->charge();
-    if( _els[ie]->charge() != charge) return false;
-  }
-	
-  for(int im = 0; im < _nMus; ++im){
-    if(charge == 0) charge = _mus[im]->charge();
-    if( _mus[im]->charge() != charge) return false;
+      if (_PT == "ll" && _leps[il1]->pt()>25.) continue;
+      if (_PT == "ll" && _leps[il2]->pt()>25.) continue;
+      
+      flavor = flavortmp;
+      _first  = _leps[il1];   lep_idx1 = il1;
+      _second = _leps[il2];   lep_idx2 = il2; 
+      isSS = true;
+    }
   }
 
-  return true;
+
+  // any other (also tight) lepton is pushed into the veto
+  for(unsigned int il = 0; il < _leps.size(); ++il){
+    if(il != lep_idx1 && il != lep_idx2) 
+      _vetoleps.push_back(_leps[il]);
+  }
+
+  
+  if      (_lepflav=="mm"  && flavor==26 && isSS) return true;
+  else if (_lepflav=="em"  && flavor==24 && isSS) return true;
+  else if (_lepflav=="ee"  && flavor==22 && isSS) return true;
+  else if (_lepflav=="all" && isSS)               return true;
+
+  return false;
 
 }
 
@@ -807,11 +851,6 @@ bool phys14exerc::vetoEventSelection(std::string electron_label, std::string muo
 
   counter("denominator", kVetoLepSel);
 	
-  if(_au->simpleCut(_vetoleps.size() == 0) ){
-    makeCut( true, "no veto leptons in event", "=", kVetoLepSel);
-    return false;
-  }
-
   for(unsigned int i = 0; i < _vetoleps.size(); ++i){
 
     // os pair with high-pt lepton
@@ -819,7 +858,7 @@ bool phys14exerc::vetoEventSelection(std::string electron_label, std::string muo
       float mll = Candidate::create(_vetoleps[i], _first) -> mass();
 
       // same flavor -> Z veto
-      if(_au->simpleCut( _vetoleps[i] -> pdgId(), _first -> pdgId(), "=") ) {
+      if(_au->simpleCut( fabs(_vetoleps[i] -> pdgId()), fabs(_first -> pdgId()), "=") ) {
         if(makeCut(mll > 76.0 && mll < 106.0, "Z veto selection", "=", kVetoLepSel) ) return true;
       }
 
@@ -833,7 +872,7 @@ bool phys14exerc::vetoEventSelection(std::string electron_label, std::string muo
       float mll = Candidate::create(_vetoleps[i], _second) -> mass(); 
  
       // same flavor -> Z veto 
-      if(_au->simpleCut( _vetoleps[i] -> pdgId(), _second -> pdgId(), "=") ) {   
+      if(_au->simpleCut( fabs(_vetoleps[i] -> pdgId()), fabs(_second -> pdgId()), "=") ) {   
         if(makeCut(mll > 76.0 && mll < 106.0, "Z veto selection", "=", kVetoLepSel) ) return true; 
       } 
  
