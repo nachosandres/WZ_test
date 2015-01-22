@@ -535,7 +535,7 @@ bool phys14exerc::vetoElectronSelection(int elIdx){
   //if(!makeCut<float>( std::abs(_vc->getD("LepGood_dz", elIdx))       , 0.1 , "<" , "dz selection"      , 0, kElVeto)) return false;
   //if(!makeCut<float>( std::abs(_vc->getD("LepGood_dxy", elIdx))      , 0.05, "<" , "dxy selection"     , 0, kElVeto)) return false;
   //if(!makeCut<int>( _vc->getI("LepGood_tightId", elIdx)              , 0   , ">=", "POG CB WP-V Id 5x5", 0, kElVeto)) return false;
-  bool conv = (_vc->getI("LepGood_convVeto", elIdx)>0 || _vc->getI("LepGood_lostHits", elIdx)>1);
+  bool conv= (_vc->getI("LepGood_convVeto", elIdx)>0 && _vc->getI("LepGood_lostHits", elIdx)==0);
   if(!makeCut( conv, "conversion rejection", "=", kElVeto)) return false;
 
   
