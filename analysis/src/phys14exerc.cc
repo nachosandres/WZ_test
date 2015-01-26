@@ -188,7 +188,7 @@ void phys14exerc::run(){
 
   //skim right after the basic selection
   fillSkimTree();
-  return;
+  //return;
 	
   //splitting the samples into categories
   if( _sampleName.find("DYJets")!=(size_t)-1 || _sampleName.find("TTJets")!=(size_t)-1 ) {
@@ -535,7 +535,7 @@ bool phys14exerc::vetoElectronSelection(int elIdx){
   //if(!makeCut<float>( std::abs(_vc->getD("LepGood_dz", elIdx))       , 0.1 , "<" , "dz selection"      , 0, kElVeto)) return false;
   //if(!makeCut<float>( std::abs(_vc->getD("LepGood_dxy", elIdx))      , 0.05, "<" , "dxy selection"     , 0, kElVeto)) return false;
   //if(!makeCut<int>( _vc->getI("LepGood_tightId", elIdx)              , 0   , ">=", "POG CB WP-V Id 5x5", 0, kElVeto)) return false;
-  bool conv = (_vc->getI("LepGood_convVeto", elIdx)>0 || _vc->getI("LepGood_lostHits", elIdx)>1);
+  bool conv= (_vc->getI("LepGood_convVeto", elIdx)>0 && _vc->getI("LepGood_lostHits", elIdx)==0);
   if(!makeCut( conv, "conversion rejection", "=", kElVeto)) return false;
 
   
@@ -862,7 +862,8 @@ bool phys14exerc::vetoEventSelection(std::string electron_label, std::string muo
     // search for OS pair with high-pt lepton
     if (_first->charge() == _vetoleps[i] -> charge()) continue;
 
-    float mll = Candidate::create(_vetoleps[i], _first) -> mass();
+    float mll = 0;
+    mll = Candidate::create(_vetoleps[i], _first) -> mass();
 
     // same flavor -> Z veto
     if(_au->simpleCut( fabs(_vetoleps[i] -> pdgId()), fabs(_first -> pdgId()), "=") ) {
@@ -875,7 +876,7 @@ bool phys14exerc::vetoEventSelection(std::string electron_label, std::string muo
     // search for OS pair with low-pt lepton
     if(_second->charge() == _vetoleps[i] -> charge()) continue;
 
-    float mll = Candidate::create(_vetoleps[i], _second) -> mass(); 
+    mll = Candidate::create(_vetoleps[i], _second) -> mass(); 
  
     // same flavor -> Z veto 
     if(_au->simpleCut( fabs(_vetoleps[i] -> pdgId()), fabs(_second -> pdgId()), "=") ) {   
