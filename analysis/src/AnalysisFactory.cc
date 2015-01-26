@@ -11,9 +11,6 @@ using namespace std;
 
 MPAF*
 AnalysisFactory::get(const string& analysis, const string& cfg) {
-   
-MPAF*
-AnalysisFactory::get(const string& analysis, const string& cfg) {
  
 // list of analyzers and modules in alphabetical order 
   
