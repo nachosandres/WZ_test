@@ -75,6 +75,9 @@ public:
   
   void doPlot();
 
+
+  void makeDataCard(string dirname, string categ = "global", string cname = "");
+
   void getStatistics(string categ="global");
   void drawStatistics(string categ="global", string cname="");
 

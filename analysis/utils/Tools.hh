@@ -34,7 +34,6 @@
 #include "analysis/utils/CustomTypes.cc"
 
 
-
 namespace Tools {
 
 	// Non-template members
@@ -42,6 +41,8 @@ namespace Tools {
 	float AngleAddition(float, float);
 	float AngleSubtraction(float, float);
 	bool checkDirWritePermission(std::string);
+	//bool compareLeps(Candidate *&, Candidate *&);
+	bool compareSL(const SortableLep & i, const SortableLep & j);
 	float dPhi(float, float);
 	float dR(float, float, float, float);
 	int execCmd(std::string);

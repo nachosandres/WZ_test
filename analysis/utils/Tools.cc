@@ -71,6 +71,21 @@ bool Tools::checkDirWritePermission(std::string directory){
 
 
 //____________________________________________________________________________
+bool Tools::compareSL(const SortableLep & i, const SortableLep & j){
+	//if(i.pdgId != j.pdgId)
+	//	return i.pdgId > j.pdgId;
+	return i.pt > j.pt;
+}
+
+
+//____________________________________________________________________________
+//bool Tools::compareLeps(const Candidate *& i, const Candidate *& j){
+//	return i->pt() > j->pt();
+//}
+
+
+
+//____________________________________________________________________________
 float Tools::dPhi(float phi1, float phi2){
 	/*
 	computes delta Phi between two given azimuthal angles

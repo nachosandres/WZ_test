@@ -53,7 +53,6 @@ private:
   bool baseSelection();
   bool brSelection();
   bool lowptEventSelection(std::string, std::string, std::string = "");
-  bool someSelection();
   bool srSelection();
   bool ssEventSelection();
   bool vetoEventSelection(std::string, std::string, std::string = "");
