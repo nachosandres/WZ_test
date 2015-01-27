@@ -314,7 +314,7 @@ bool SUSY3L::electronSelection(int elIdx){
     float deltaR = 0.1;
     
     //apply the cuts
-    //makeCut(variable to cut on, cut value, direction of acception, name, 2nd cut value, ?)
+    //makeCut(variable to cut on, cut value, direction of acception, name, 2nd cut value, counter)
     if(!makeCut<float>( _vc->getF("LepGood_pt", elIdx) , pt_cut, ">"  , "pt selection"    , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->getF("LepGood_eta", elIdx)), eta_cut  , "<"  , "eta selection"   , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->getF("LepGood_eta", elIdx)), eta_veto_low, "[!]", "eta selection veto"   , eta_veto_high, kElId)) return false;
@@ -325,9 +325,9 @@ bool SUSY3L::electronSelection(int elIdx){
     if(!makeCut<float>( std::abs(_vc->getF("LepGood_dxy", elIdx)), vertex_dxy_cut  , "<"  , "dxy selection"   , 0    , kElId)) return false;
     if(!makeCut<int>( _vc->getI("LepGood_tightCharge", elIdx) , 1     , ">"  , "charge selection", 0    , kElId)) return false;
     //boolian variable if electron comes from gamme conversion or not (true if not from conversion)
-    bool conv= (_vc->getI("LepGood_convVeto", elIdx)>0 && _vc->getI("LepGood_lostHits", elIdx)==0);
+    bool conv = (_vc->getI("LepGood_convVeto", elIdx)>0 && _vc->getI("LepGood_lostHits", elIdx)==0);
     if(!makeCut( conv, "conversion rejection", "=", kElId)) return false;
-    //reject electrons with are within a cone of delta R around a muon candidate (potentially final state radiation, bremsstrahlung)
+    //reject electrons which are within a cone of delta R around a muon candidate (potentially final state radiation, bremsstrahlung)
     for(int im=0; im<_nMus; ++im){
         float dr = KineUtils::dR( _mus[im]->eta(), _vc->getF("LepGood_eta", elIdx), _mus[im]->phi(), _vc->getF("LepGood_phi", elIdx));
         if(!makeCut<float>(dr, deltaR, ">", "dR selection (mu)", 0, kElId) ) return false;
@@ -495,7 +495,7 @@ void SUSY3L::setBaselineRegion(){
     */
 
     if(_BR == "BR0"){
-        setCut("LepMultiplicity"    ,    3, "="  );     //number of isolated leptons
+        setCut("LepMultiplicity"    ,    3, ">="  );    //number of isolated leptons
         _pt_cut_hard_leg = 20.;                         //harsher pT requirement on one of the leptons
         setCut("NJets"              ,    2, ">=" );     //number of jets in event
         setCut("NBJets"             ,    1, ">=" );     //number of b-tagged jets in event
@@ -561,10 +561,10 @@ bool SUSY3L::baseSelection(){
         return: true (if event passes selection), false (else)
     */
 
-    //select 3 lepton events of all flavor combinations
+    //select events with at least 3 leptons of all flavor combinations
     if(!makeCut<int>( _nEls + _nMus, _valCutLepMultiplicityBR, _cTypeLepMultiplicityBR, "lepton multiplicity", _upValCutLepMultiplicityBR ) ) return false;
 
-    //require at least 1 of the 3 leptons to have higher pT than original cut
+    //require at least 1 of the leptons to have higher pT than original cut
     bool has_hard_leg = hardLegSelection();
     if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
 
@@ -581,8 +581,8 @@ bool SUSY3L::baseSelection(){
     if(!makeCut<float>( _met->pt(), _valCutMETBR, _cTypeMETBR, "missing transverse energy", _upValCutMETBR) ) return false;
 
     //select on or off-Z events according to specification in config file
-    bool is_reconstructed_Z = ZEventSelection();
-    //bool is_reconstructed_Z = ZEventSelectionLoop();
+    //bool is_reconstructed_Z = ZEventSelection();
+    bool is_reconstructed_Z = ZEventSelectionLoop();
     if(_pairmass == "off"){
         if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
     }
@@ -595,7 +595,7 @@ bool SUSY3L::baseSelection(){
 //____________________________________________________________________________
 bool SUSY3L::hardLegSelection(){
     /*
-        Checks if the selected event with 3 leptons has at least one lepton 
+        Checks if the selected event with at least 3 leptons has at least one lepton 
         fullfilling a harsher pT cut 
         return: true (if the event has such a lepton with higher pT), false (else)
     */
@@ -618,10 +618,11 @@ bool SUSY3L::ZEventSelection(){
     /*
         Checks if there is a same-flavor opposite-charge pair with an invariant 
         mass around the Z mass among the 3 leptons. Faster than ZEventSelectionLoop 
-        but no Z candidate extraction
+        but no Z candidate extraction, just immediate rejection of event
         return: true (if a Z can be reconstructed from 2 leptons), false (else)
     */
     
+    //TODO: modify forr more than 3 leptons
     //count reconstructed Z bosons
     counter("denominator", konZEvents);
 
@@ -702,18 +703,18 @@ bool SUSY3L::ZEventSelectionLoop(){
 
     //Z mass
     float Zmass = 91.1876;
-    float diff=1000000;
+    float diff = 1000000;
     bool Zevent = false;
-/*
+
     //loop over all possible combination of two electrons
     for(int ie1=0; ie1 < _nEls; ie1++) {
         for(int ie2 = ie1; ie2 < _nEls; ie2++) {
-            //continue with not an ossf pair
+            //continue if not an ossf pair
             if(_vc->getI("LepGood_pdgId", ie1) != - _vc->getI("LepGood_pdgId", ie2) ) continue;
             //create new Z candidate
             Candidate* Ztmp = Candidate::create(_els[ie1], _els[ie2]);
             //keep Z candidate if smallest difference to Z mass
-            if(std::abs(Ztmp->mass()-Zmass)<_ZMassWindow && std::abs(Ztmp->mass()-Zmass)<diff) {
+            if(std::abs(Ztmp->mass()-Zmass) < _ZMassWindow && std::abs(Ztmp->mass()-Zmass)<diff) {
                 Candidate* _Z = Ztmp;
                 diff = std::abs(_Z->mass()-Zmass);
                 Zevent = true;
@@ -721,12 +722,10 @@ bool SUSY3L::ZEventSelectionLoop(){
         }
     }
 
-    diff=1000000;
-
     //loop over all possible combination of two muons
     for(int im1=0; im1 < _nMus; im1++) {
         for(int im2 = im1; im2 < _nMus; im2++) {
-            //continue with not an ossf pair
+            //continue if not an ossf pair
             if(_vc->getI("LepGood_pdgId", im1) != - _vc->getI("LepGood_pdgId", im2) ) continue;
             //create new Z candidate
             Candidate* Ztmp = Candidate::create(_mus[im1], _mus[im2]);
@@ -737,7 +736,7 @@ bool SUSY3L::ZEventSelectionLoop(){
                 Zevent = true;
             }
         }
-    }*/
+    }
     return Zevent;
 }
 

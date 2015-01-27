@@ -102,6 +102,7 @@ private:
     CandList _jets;
     CandList _bJets;
     Candidate* _met;
+    Candidate* _Z;
 
     float _HT;
     
