@@ -85,7 +85,7 @@ void SUSY3L::initialize(){
     _au->addCategory( kMuVeto, "veto Mu");
     _au->addCategory( kJetId, "jet Id");
     _au->addCategory( kBJetId, "b-jet Id");
-    _au->addCategory( konZEvents, "Z events");
+    _au->addCategory( conZEvents, "Z events");
                  
     //config file input variables
     _pairmass = getCfgVarS("pairMass");
@@ -495,7 +495,7 @@ void SUSY3L::setBaselineRegion(){
     */
 
     if(_BR == "BR0"){
-        setCut("LepMultiplicity"    ,    3, ">="  );    //number of isolated leptons
+        setCut("LepMultiplicity"    ,    3, "="  );     //number of isolated leptons
         _pt_cut_hard_leg = 20.;                         //harsher pT requirement on one of the leptons
         setCut("NJets"              ,    2, ">=" );     //number of jets in event
         setCut("NBJets"             ,    1, ">=" );     //number of b-tagged jets in event
@@ -580,8 +580,12 @@ bool SUSY3L::baseSelection(){
     //require minimum missing transvers energy (actually missing momentum)
     if(!makeCut<float>( _met->pt(), _valCutMETBR, _cTypeMETBR, "missing transverse energy", _upValCutMETBR) ) return false;
 
+    //reject event if ossf lepton pair with low invariant mass is found
+    bool has_low_mll = lowMllPair();
+    if(!makeCut( !has_low_mll , "low mll rejection", "=") ) return false;
+
     //select on or off-Z events according to specification in config file
-    //bool is_reconstructed_Z = ZEventSelection();
+    //bool is_reconstructed_Z = !ZEventSelection();
     bool is_reconstructed_Z = ZEventSelectionLoop();
     if(_pairmass == "off"){
         if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
@@ -589,6 +593,7 @@ bool SUSY3L::baseSelection(){
     else if(_pairmass == "on"){
         if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
     }
+
     return true;
 }
 
@@ -614,37 +619,70 @@ bool SUSY3L::hardLegSelection(){
 }
 
 //____________________________________________________________________________
-bool SUSY3L::ZEventSelection(){
+bool SUSY3L::lowMllPair(){
+    /*
+        Checks event has ossf lepton pair with low invariant mass 
+        return: true (if the event has such a lepton pair), false (else)
+    */
+
+    //loop over all possible combination of two electrons
+    for(int ie1=0; ie1 < _nEls; ie1++) {
+        for(int ie2 = ie1; ie2 < _nEls; ie2++) {
+            //continue if not an ossf pair
+            if(_vc->getI("LepGood_pdgId", ie1) != - _vc->getI("LepGood_pdgId", ie2) ) continue;
+            //return true if low mass pair is found
+            float mll = Candidate::create(_els[ie1], _els[ie2])->mass();
+            if(mll < _lowMllCut) return true;
+           }
+        }
+
+    //loop over all possible combination of two muons
+    for(int im1=0; im1 < _nMus; im1++) {
+        for(int im2 = im1; im2 < _nMus; im2++) {
+            //continue if not an ossf pair
+            if(_vc->getI("LepGood_pdgId", im1) != - _vc->getI("LepGood_pdgId", im2) ) continue;
+            //return true if low mass pair is found
+            float mll = Candidate::create(_mus[im1], _mus[im2])->mass();
+            if(mll < _lowMllCut) return true;
+           }
+        }
+ 
+     return false;
+}
+
+
+//____________________________________________________________________________
+//bool SUSY3L::ZEventSelection(){
     /*
         Checks if there is a same-flavor opposite-charge pair with an invariant 
         mass around the Z mass among the 3 leptons. Faster than ZEventSelectionLoop 
         but no Z candidate extraction, just immediate rejection of event
-        return: true (if a Z can be reconstructed from 2 leptons), false (else)
+        return: true (if a Z can not be reconstructed from 2 leptons), false (else)
     */
-    
-    //TODO: modify forr more than 3 leptons
+/*    
+    //TODO: modify for more than 3 leptons
     //count reconstructed Z bosons
-    counter("denominator", konZEvents);
+    counter("denominator", conZEvents);
 
     //Z mass
-    float Zmass = 91.;
+    float Zmass = 91.1876;
 
     //three electrons
     if(_nEls == 3){
         if(_els[0]->charge() != _els[1]->charge()){
             float mll = Candidate::create(_els[0], _els[1])->mass();
-            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
+            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
         }
         if(_els[0]->charge() != _els[2]->charge()){
             float mll = Candidate::create(_els[0], _els[2])->mass();
-            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
+            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
         }
         if(_els[1]->charge() != _els[2]->charge()){
             float mll = Candidate::create(_els[1], _els[2])->mass();
-            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
+            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
         }
     }
 
@@ -652,8 +690,8 @@ bool SUSY3L::ZEventSelection(){
     if(_nEls == 2){
         if(_els[0]->charge() != _els[1]->charge()){
             float mll = Candidate::create(_els[0], _els[1])->mass();
-            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
+            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
         }
     }
 
@@ -661,8 +699,8 @@ bool SUSY3L::ZEventSelection(){
     if(_nMus == 2){
         if(_mus[0]->charge() != _mus[1]->charge()){
             float mll = Candidate::create(_mus[0], _mus[1])->mass();
-            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
+            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
         }
     }
 
@@ -670,36 +708,37 @@ bool SUSY3L::ZEventSelection(){
     if(_nMus == 3){
         if(_mus[0]->charge() != _mus[1]->charge()){
             float mll = Candidate::create(_mus[0], _mus[1])->mass();
-            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
+            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
         }
         if(_mus[0]->charge() != _mus[2]->charge()){
             float mll = Candidate::create(_mus[0], _mus[2])->mass();
-            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
+            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
         }
         if(_mus[1]->charge() != _mus[2]->charge()){
             float mll = Candidate::create(_mus[1], _mus[2])->mass();
-            if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, konZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, konZEvents) ) return true;
+            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
         }
     }
 
-    return false;
+    return true;
 
 }
-
+*/
 
 //____________________________________________________________________________
 bool SUSY3L::ZEventSelectionLoop(){
     /*
-        Checks if there is a same-flavor opposite-charge pair with an invariant 
-        mass around the Z mass among the 3 leptons. The lepton pair with an invariant mass closest to the Z mass is added as Z candidate.
+        Checks if there is a same-flavor opposite-charge lepton pair with an invariant 
+        mass around the Z mass. The ossf pair with an invariant mass closest to the 
+        Z mass is added as Z candidate.
         return: true (if a Z can be reconstructed from 2 leptons), false (else)
     */
     
     //count reconstructed Z bosons
-    //counter("denominator", konZEvents);
+    counter("denominator", conZEvents);
 
     //Z mass
     float Zmass = 91.1876;
@@ -714,7 +753,7 @@ bool SUSY3L::ZEventSelectionLoop(){
             //create new Z candidate
             Candidate* Ztmp = Candidate::create(_els[ie1], _els[ie2]);
             //keep Z candidate if smallest difference to Z mass
-            if(std::abs(Ztmp->mass()-Zmass) < _ZMassWindow && std::abs(Ztmp->mass()-Zmass)<diff) {
+            if((std::abs(Ztmp->mass()-Zmass) < _ZMassWindow) && (std::abs(Ztmp->mass()-Zmass)<diff)) {
                 Candidate* _Z = Ztmp;
                 diff = std::abs(_Z->mass()-Zmass);
                 Zevent = true;
@@ -730,7 +769,7 @@ bool SUSY3L::ZEventSelectionLoop(){
             //create new Z candidate
             Candidate* Ztmp = Candidate::create(_mus[im1], _mus[im2]);
             //keep Z candidate if smallest difference to Z mass
-            if(std::abs(Ztmp->mass()-Zmass)<_ZMassWindow && std::abs(Ztmp->mass()-Zmass)<diff) {
+            if((std::abs(Ztmp->mass()-Zmass)<_ZMassWindow) && (std::abs(Ztmp->mass()-Zmass)<diff)) {
                 Candidate* _Z = Ztmp;
                 diff = std::abs(_Z->mass()-Zmass);
                 Zevent = true;

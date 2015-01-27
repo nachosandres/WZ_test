@@ -45,6 +45,7 @@ private:
     void setBaselineRegion();
     void setCut(std::string, float, std::string, float = 0);
     bool hardLegSelection();
+    bool lowMllPair();
     bool ZEventSelection();
     bool ZEventSelectionLoop();
 
@@ -58,7 +59,7 @@ private:
 private:
 
     //counter categories, 0 is ALWAYS global (even if not specified later)
-    enum {kGlobal=0, kElId, kElVeto, kMuId, kMuVeto, kJetId, kBJetId, konZEvents};
+    enum {kGlobal=0, kElId, kElVeto, kMuId, kMuVeto, kJetId, kBJetId, conZEvents};
 
     //cut variables
     float _valCutLepMultiplicityBR;
