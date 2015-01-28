@@ -183,8 +183,9 @@ void SUSY3L::writeOutput(){
 }
 
 
-// if adding variables int he skimming tree is needed...
+//____________________________________________________________________________
 void SUSY3L::modifySkimming(){
+// if adding variables int he skimming tree is needed...
 
 }
 
@@ -802,17 +803,6 @@ bool SUSY3L::ZEventSelectionLoop(){
 * ** EXECUTING TASKS                                                          **
 * ******************************************************************************
 * *****************************************************************************/
-
-
-//____________________________________________________________________________
-//void SUSYSSDL::fillEventPlots(std::string kr){
-  /*
-     fills the control plots for event quantities
-/          parameters: none
-/              return: none
-//                */
-//
-//
 
 
 //____________________________________________________________________________
