@@ -142,6 +142,14 @@ void SUSY3L::defineOutput(){
         parameters: none
         return: none
     */
+
+    _hm->addVariable("Zmass" ,   150, 0,   150, "Z candidate mass [GeV]"        );
+
+
+
+
+
+
 }
 
 
@@ -168,6 +176,9 @@ void SUSY3L::writeOutput(){
         paramters: none
         return: none
     */
+
+    _hm -> saveHistos("SUSY3L", _cfgName);
+    _au -> saveNumbers("SUSY3L", _cfgName);
 
 }
 
@@ -587,6 +598,10 @@ bool SUSY3L::baseSelection(){
     //select on or off-Z events according to specification in config file
     //bool is_reconstructed_Z = !ZEventSelection();
     bool is_reconstructed_Z = ZEventSelectionLoop();
+    
+    if(is_reconstructed_Z){
+        fill("Zmass" , _Z->mass()        , _weight);
+    }
     if(_pairmass == "off"){
         if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
     }
@@ -754,7 +769,7 @@ bool SUSY3L::ZEventSelectionLoop(){
             Candidate* Ztmp = Candidate::create(_els[ie1], _els[ie2]);
             //keep Z candidate if smallest difference to Z mass
             if((std::abs(Ztmp->mass()-Zmass) < _ZMassWindow) && (std::abs(Ztmp->mass()-Zmass)<diff)) {
-                Candidate* _Z = Ztmp;
+                _Z = Ztmp;
                 diff = std::abs(_Z->mass()-Zmass);
                 Zevent = true;
             }
@@ -770,7 +785,7 @@ bool SUSY3L::ZEventSelectionLoop(){
             Candidate* Ztmp = Candidate::create(_mus[im1], _mus[im2]);
             //keep Z candidate if smallest difference to Z mass
             if((std::abs(Ztmp->mass()-Zmass)<_ZMassWindow) && (std::abs(Ztmp->mass()-Zmass)<diff)) {
-                Candidate* _Z = Ztmp;
+                _Z = Ztmp;
                 diff = std::abs(_Z->mass()-Zmass);
                 Zevent = true;
             }
@@ -788,6 +803,16 @@ bool SUSY3L::ZEventSelectionLoop(){
 * ******************************************************************************
 * *****************************************************************************/
 
+
+//____________________________________________________________________________
+//void SUSYSSDL::fillEventPlots(std::string kr){
+  /*
+     fills the control plots for event quantities
+/          parameters: none
+/              return: none
+//                */
+//
+//
 
 
 //____________________________________________________________________________
