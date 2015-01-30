@@ -43,11 +43,13 @@ private:
 
     bool baseSelection();
     void setBaselineRegion();
+    void setSignalRegion();
     void setCut(std::string, float, std::string, float = 0);
     bool hardLegSelection();
     bool lowMllPair();
     bool ZEventSelection();
     bool ZEventSelectionLoop();
+    bool srSelection();
 
 
 
@@ -55,6 +57,7 @@ private:
 
     string _pairmass;
     string _BR;
+    string _SR;
 
 private:
 
@@ -70,18 +73,30 @@ private:
     float _lowMllCut;
     float _valCutHTBR;
     float _valCutMETBR;
+    float _valCutHTSR;
+    float _valCutMETSR;
+    float _valCutNJetsSR;
+    float _valCutNBJetsSR;
     
     std::string _cTypeLepMultiplicityBR;
     std::string _cTypeNJetsBR;
     std::string _cTypeNBJetsBR;
     std::string _cTypeHTBR;
     std::string _cTypeMETBR;
+    std::string _cTypeNJetsSR;
+    std::string _cTypeNBJetsSR;
+    std::string _cTypeHTSR;
+    std::string _cTypeMETSR;
 
     float _upValCutLepMultiplicityBR;
     float _upValCutNJetsBR;
     float _upValCutNBJetsBR;
     float _upValCutHTBR;
     float _upValCutMETBR;
+    float _upValCutNJetsSR;
+    float _upValCutNBJetsSR;
+    float _upValCutHTSR;
+    float _upValCutMETSR;
 
     //vectors for electron and muon candidates
     std::vector<int> _elIdx;
