@@ -382,7 +382,6 @@ Candidate::init()
 
   _mother = 0;
   //_info   = 0;
-  cout<<_uid<<"   "<<_curUid<<endl;
 }
 
 void
