@@ -184,6 +184,16 @@ void FakeRatio::run(){
   _tMuIdx.clear();
   _vMuIdx.clear();
 
+  vector<int>().swap(_lElIdx);
+  vector<int>().swap(_tElIdx);
+  vector<int>().swap(_vElIdx);
+  vector<int>().swap(_lLepIdx);
+  vector<int>().swap(_tLepIdx);
+  vector<int>().swap(_vLepIdx);
+  vector<int>().swap(_lMuIdx);
+  vector<int>().swap(_tMuIdx);
+  vector<int>().swap(_vMuIdx);
+
 
   counter("denominator");
 	

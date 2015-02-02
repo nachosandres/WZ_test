@@ -34,9 +34,6 @@ Candidate::Candidate()
 Candidate::~Candidate() {
 }
 
-Candidate::~Candidate() {
-}
-
 Candidate::Candidate( const TVector3& mom,
 		      float charge,
 		      float mass,  
