@@ -58,25 +58,25 @@ void SUSY3L::initialize(){
     // _vc->registerVar("name"           , "type");
     _vc->registerVar("nLepGood"                         , "I" );    //number of leptons in event
     _vc->registerVar("LepGood_pdgId"                    , "AI");    //identifier for leptons (11: electron, 13: muon)
-    _vc->registerVar("LepGood_pt"                       , "AF");    //pT of leptons
-    _vc->registerVar("LepGood_eta"                      , "AF");    //eta of leptons
-    _vc->registerVar("LepGood_phi"                      , "AF");    //phi of leptons
+    _vc->registerVar("LepGood_pt"                       , "AD");    //pT of leptons
+    _vc->registerVar("LepGood_eta"                      , "AD");    //eta of leptons
+    _vc->registerVar("LepGood_phi"                      , "AD");    //phi of leptons
     _vc->registerVar("LepGood_charge"                   , "AI");    //charge of lepton +1 or -1
-    _vc->registerVar("LepGood_relIso03"                 , "AF");    //relative isolation of the lepton, cone dimensions?
-    _vc->registerVar("LepGood_dz"                       , "AF");    //difference to reconstructed primary vertex in z direction
-    _vc->registerVar("LepGood_dxy"                      , "AF");    //difference to reconstructed primary vertex in xy plane
+    _vc->registerVar("LepGood_relIso03"                 , "AD");    //relative isolation of the lepton, cone dimensions?
+    _vc->registerVar("LepGood_dz"                       , "AD");    //difference to reconstructed primary vertex in z direction
+    _vc->registerVar("LepGood_dxy"                      , "AD");    //difference to reconstructed primary vertex in xy plane
     _vc->registerVar("LepGood_tightCharge"              , "AI");    //indicates reliability of charge measurement, values 0,1,2
     _vc->registerVar("LepGood_eleCutIdCSA14_50ns_v1"    , "AI");    //indicates reliability of electron identification [-1;4]
     _vc->registerVar("LepGood_convVeto"                 , "AI");    //0 (veto) or 1 (no veto), calculated from partner track
     _vc->registerVar("LepGood_lostHits"                 , "AI");    //number of missing hits in pixel detector
     _vc->registerVar("LepGood_tightId"                  , "AI");    //0 or 1 (loose and tight criteria?)
     _vc->registerVar("nJet"                             , "I" );    //number of jets in the event
-    _vc->registerVar("Jet_pt"                           , "AF");    //pT of each of the nJet jets
-    _vc->registerVar("Jet_eta"                          , "AF");    //eta of each of the nJet jets
-    _vc->registerVar("Jet_phi"                          , "AF");    //phi of each of the nJet jets
-    _vc->registerVar("met_pt"                           , "F" );     //missing tranvers momentum
-    _vc->registerVar("met_phi"                          , "F" );     //phi of missing transvers momentum
-    _vc->registerVar("Jet_btagCSV"                      , "AF" );     //b-tagging quantity (-1 or [0;1]
+    _vc->registerVar("Jet_pt"                           , "AD");    //pT of each of the nJet jets
+    _vc->registerVar("Jet_eta"                          , "AD");    //eta of each of the nJet jets
+    _vc->registerVar("Jet_phi"                          , "AD");    //phi of each of the nJet jets
+    _vc->registerVar("met_pt"                           , "D" );     //missing tranvers momentum
+    _vc->registerVar("met_phi"                          , "D" );     //phi of missing transvers momentum
+    _vc->registerVar("Jet_btagCSV"                      , "AD" );     //b-tagging quantity (-1 or [0;1]
 
     //additional counter categories
     _au->addCategory( kElId, "el Id");
@@ -229,9 +229,9 @@ void SUSY3L::collectKinematicObjects(){
         if(std::abs(_vc->getI("LepGood_pdgId",i)) == 13){
             //differentiate muons for muon selecton and veto muon selection
             if(muonSelection(i)) {
-                _mus.push_back( Candidate::create(_vc->getF("LepGood_pt", i),
-                                                  _vc->getF("LepGood_eta", i),
-                                                  _vc->getF("LepGood_phi", i),
+                _mus.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
+                                                  _vc->getD("LepGood_eta", i),
+                                                  _vc->getD("LepGood_phi", i),
                                                   _vc->getI("LepGood_pdgId", i),
                                                   _vc->getI("LepGood_charge", i),
                                                   0.105) );     //muon mass
@@ -240,9 +240,9 @@ void SUSY3L::collectKinematicObjects(){
             /*
             else {
                 if(vetoMuonSelection(i))  {
-                    _vMus.push_back( Candidate::create(_vc->getF("LepGood_pt", i),
-                                                       _vc->getF("LepGood_eta", i),
-                                                       _vc->getF("LepGood_phi", i),
+                    _vMus.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
+                                                       _vc->getD("LepGood_eta", i),
+                                                       _vc->getD("LepGood_phi", i),
                                                        _vc->getI("LepGood_pdgId", i),
                                                        _vc->getI("LepGood_charge", i),
                                                        0.105) );    //muon mass
@@ -257,9 +257,9 @@ void SUSY3L::collectKinematicObjects(){
             if(electronSelection(i)) {
                 //if electron passes electron selection, create electron candidate 
                 //with respective kinematic variables and append it to _els vector
-                _els.push_back( Candidate::create(_vc->getF("LepGood_pt", i),
-                                                  _vc->getF("LepGood_eta", i),
-                                                  _vc->getF("LepGood_phi", i),
+                _els.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
+                                                  _vc->getD("LepGood_eta", i),
+                                                  _vc->getD("LepGood_phi", i),
                                                   _vc->getI("LepGood_pdgId", i),
                                                   _vc->getI("LepGood_charge", i),
                                                   0.0005) );    //electron mass
@@ -270,9 +270,9 @@ void SUSY3L::collectKinematicObjects(){
                 //if electron passes veto selection, create veto electron candidate
                 //and append to _vEls vector
                 if(vetoElectronSelection(i))  {
-                    _vEls.push_back( Candidate::create(_vc->getF("LepGood_pt", i),
-                                                       _vc->getF("LepGood_eta", i),
-                                                       _vc->getF("LepGood_phi", i),
+                    _vEls.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
+                                                       _vc->getD("LepGood_eta", i),
+                                                       _vc->getD("LepGood_phi", i),
                                                        _vc->getI("LepGood_pdgId", i),
                                                        _vc->getI("LepGood_charge", i),
                                                        0.0005) );   //electron mass
@@ -293,15 +293,15 @@ void SUSY3L::collectKinematicObjects(){
     for(int i = 0; i < _vc->getI("nJet"); ++i){
         //if jet passes bjet selection, create a b-jet candidate and fetch kinematics  
         if(bJetSelection(i) ) {
-            _bJets.push_back( Candidate::create(_vc->getF("Jet_pt", i),
-                                                _vc->getF("Jet_eta", i),
-                                                _vc->getF("Jet_phi", i)));
+            _bJets.push_back( Candidate::create(_vc->getD("Jet_pt", i),
+                                                _vc->getD("Jet_eta", i),
+                                                _vc->getD("Jet_phi", i)));
         }
         //if jet passes good jet selection, create a jet candidate and fetch kinematics  
         if(goodJetSelection(i)) {
-            _jets.push_back( Candidate::create(_vc->getF("Jet_pt", i),
-                                               _vc->getF("Jet_eta", i),
-                                               _vc->getF("Jet_phi", i)));
+            _jets.push_back( Candidate::create(_vc->getD("Jet_pt", i),
+                                               _vc->getD("Jet_eta", i),
+                                               _vc->getD("Jet_phi", i)));
         }
     }
 
@@ -312,7 +312,7 @@ void SUSY3L::collectKinematicObjects(){
    //compute sum of jet pT's 
     _HT = HT();
     //create met candidate for every event
-    _met = Candidate::create(_vc->getF("met_pt"), _vc->getF("met_phi") );
+    _met = Candidate::create(_vc->getD("met_pt"), _vc->getD("met_phi") );
 
 
 }
@@ -346,21 +346,21 @@ bool SUSY3L::electronSelection(int elIdx){
     
     //apply the cuts
     //makeCut(variable to cut on, cut value, direction of acception, name, 2nd cut value, counter)
-    if(!makeCut<float>( _vc->getF("LepGood_pt", elIdx) , pt_cut, ">"  , "pt selection"    , 0    , kElId)) return false;
-    if(!makeCut<float>( std::abs(_vc->getF("LepGood_eta", elIdx)), eta_cut  , "<"  , "eta selection"   , 0    , kElId)) return false;
-    if(!makeCut<float>( std::abs(_vc->getF("LepGood_eta", elIdx)), eta_veto_low, "[!]", "eta selection veto"   , eta_veto_high, kElId)) return false;
+    if(!makeCut<float>( _vc->getD("LepGood_pt", elIdx) , pt_cut, ">"  , "pt selection"    , 0    , kElId)) return false;
+    if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), eta_cut  , "<"  , "eta selection"   , 0    , kElId)) return false;
+    if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), eta_veto_low, "[!]", "eta selection veto"   , eta_veto_high, kElId)) return false;
 
     if(!makeCut<int>( _vc->getI("LepGood_eleCutIdCSA14_50ns_v1", elIdx) , 3     , ">=" , "POG CB WP-M Id " , 0    , kElId)) return false;
-    if(!makeCut<float>( _vc->getF("LepGood_relIso03", elIdx) , isolation_cut   , "<"  , "isolation "      , 0    , kElId)) return false;
-    if(!makeCut<float>( std::abs(_vc->getF("LepGood_dz", elIdx)), vertex_dz_cut   , "<"  , "dz selection"    , 0    , kElId)) return false;
-    if(!makeCut<float>( std::abs(_vc->getF("LepGood_dxy", elIdx)), vertex_dxy_cut  , "<"  , "dxy selection"   , 0    , kElId)) return false;
+    if(!makeCut<float>( _vc->getD("LepGood_relIso03", elIdx) , isolation_cut   , "<"  , "isolation "      , 0    , kElId)) return false;
+    if(!makeCut<float>( std::abs(_vc->getD("LepGood_dz", elIdx)), vertex_dz_cut   , "<"  , "dz selection"    , 0    , kElId)) return false;
+    if(!makeCut<float>( std::abs(_vc->getD("LepGood_dxy", elIdx)), vertex_dxy_cut  , "<"  , "dxy selection"   , 0    , kElId)) return false;
     if(!makeCut<int>( _vc->getI("LepGood_tightCharge", elIdx) , 1     , ">"  , "charge selection", 0    , kElId)) return false;
     //boolian variable if electron comes from gamme conversion or not (true if not from conversion)
     bool conv = (_vc->getI("LepGood_convVeto", elIdx)>0 && _vc->getI("LepGood_lostHits", elIdx)==0);
     if(!makeCut( conv, "conversion rejection", "=", kElId)) return false;
     //reject electrons which are within a cone of delta R around a muon candidate (potentially final state radiation, bremsstrahlung)
     for(int im=0; im<_nMus; ++im){
-        float dr = KineUtils::dR( _mus[im]->eta(), _vc->getF("LepGood_eta", elIdx), _mus[im]->phi(), _vc->getF("LepGood_phi", elIdx));
+        float dr = KineUtils::dR( _mus[im]->eta(), _vc->getD("LepGood_eta", elIdx), _mus[im]->phi(), _vc->getD("LepGood_phi", elIdx));
         if(!makeCut<float>(dr, deltaR, ">", "dR selection (mu)", 0, kElId) ) return false;
     }
 
@@ -387,12 +387,12 @@ bool SUSY3L::muonSelection(int muIdx){
     float vertex_dxy_cut = 0.005;
     
     //apply the cuts
-    if(!makeCut<float>( _vc->getF("LepGood_pt", muIdx), pt_cut, ">", "pt selection"    , 0, kMuId)) return false;
-    if(!makeCut<float>( std::abs( _vc->getF("LepGood_eta", muIdx)), eta_cut, "<", "eta selection", 0, kMuId)) return false;
+    if(!makeCut<float>( _vc->getD("LepGood_pt", muIdx), pt_cut, ">", "pt selection"    , 0, kMuId)) return false;
+    if(!makeCut<float>( std::abs( _vc->getD("LepGood_eta", muIdx)), eta_cut, "<", "eta selection", 0, kMuId)) return false;
     if(!makeCut<int>( _vc->getI("LepGood_tightId", muIdx) , 1     , "=", "POG Tight Id "   , 0, kMuId)) return false;
-    if(!makeCut<float>( _vc->getF("LepGood_relIso03", muIdx) , isolation_cut   , "<", "isolation "      , 0, kMuId)) return false;
-    if(!makeCut<float>(std::abs(_vc->getF("LepGood_dz", muIdx)), vertex_dz_cut   , "<", "dz selection"    , 0, kMuId)) return false;
-    if(!makeCut<float>(std::abs(_vc->getF("LepGood_dxy", muIdx)), vertex_dxy_cut , "<", "dxy selection"   , 0, kMuId)) return false;
+    if(!makeCut<float>( _vc->getD("LepGood_relIso03", muIdx) , isolation_cut   , "<", "isolation "      , 0, kMuId)) return false;
+    if(!makeCut<float>(std::abs(_vc->getD("LepGood_dz", muIdx)), vertex_dz_cut   , "<", "dz selection"    , 0, kMuId)) return false;
+    if(!makeCut<float>(std::abs(_vc->getD("LepGood_dxy", muIdx)), vertex_dxy_cut , "<", "dxy selection"   , 0, kMuId)) return false;
  
  
     return true;
@@ -418,11 +418,11 @@ bool SUSY3L::vetoElectronSelection(int elIdx){
     float isolation_cut = 0.2;
  
     //cuts like electron selection, only lower pt cut, looser electron identification id, looser isolation cut
-    if(!makeCut<float>( _vc->getF("LepGood_pt", elIdx) , pt_cut   , ">"  , "pt selection"    , 0    , kElVeto)) return false;
-    if(!makeCut<float>( std::abs(_vc->getF("LepGood_eta", elIdx)), eta_cut   , "<"  , "eta selection"   , 0    , kElVeto)) return false;
-    if(!makeCut<float>( std::abs(_vc->getF("LepGood_eta", elIdx)), eta_veto_low, "[!]", "eta selection"   , eta_veto_high, kElVeto)) return false;
+    if(!makeCut<float>( _vc->getD("LepGood_pt", elIdx) , pt_cut   , ">"  , "pt selection"    , 0    , kElVeto)) return false;
+    if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), eta_cut   , "<"  , "eta selection"   , 0    , kElVeto)) return false;
+    if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), eta_veto_low, "[!]", "eta selection"   , eta_veto_high, kElVeto)) return false;
     if(!makeCut<int>( _vc->getI("LepGood_eleCutIdCSA14_50ns_v1", elIdx), 1, ">=" , "POG CB WP-L Id " , 0    , kElVeto)) return false;
-    if(!makeCut<float>( _vc->getF("LepGood_relIso03", elIdx), isolation_cut    , "<"  , "isolation "      , 0    , kElVeto)) return false;
+    if(!makeCut<float>( _vc->getD("LepGood_relIso03", elIdx), isolation_cut    , "<"  , "isolation "      , 0    , kElVeto)) return false;
 
     return true;
 }
@@ -444,8 +444,8 @@ bool SUSY3L::vetoMuonSelection(int muIdx){
     float isolation_cut = 0.2;
 
     if(!makeCut<int>(   _vc->getI("LepGood_tightId", muIdx), 1  , "=", "POG Tight Id", 0, kMuVeto) ) return false;
-    if(!makeCut<float>( _vc->getF("LepGood_relIso03", muIdx),  isolation_cut  , "<", "isolation "   , 0, kMuVeto)) return false;
-    if(!makeCut<float>(  _vc->getF("LepGood_pt"     , muIdx), pt_cut, ">", "pt selection", 0, kMuVeto ) ) return false;
+    if(!makeCut<float>( _vc->getD("LepGood_relIso03", muIdx),  isolation_cut  , "<", "isolation "   , 0, kMuVeto)) return false;
+    if(!makeCut<float>(  _vc->getD("LepGood_pt"     , muIdx), pt_cut, ">", "pt selection", 0, kMuVeto ) ) return false;
  
     return true;
 }
@@ -466,7 +466,7 @@ bool SUSY3L::bJetSelection(int jetIdx){
     if(!makeCut(goodJetSelection(jetIdx), "jet Id", "=", kBJetId) ) return false;
     //cut on b-tagger parameter
     //TODO: which criteria for b-tagging? Which cut value?
-    if(!makeCut<float>(_vc->getF("Jet_btagCSV", jetIdx), 0.679, ">=", "csv btag selection", 0, kBJetId) ) return false;
+    if(!makeCut<float>(_vc->getD("Jet_btagCSV", jetIdx), 0.679, ">=", "csv btag selection", 0, kBJetId) ) return false;
 
     return true;
 
@@ -489,19 +489,19 @@ bool SUSY3L::goodJetSelection(int jetIdx){
     float eta_cut = 2.4;
     float deltaR = 0.4;
 
-    if(!makeCut<float>(_vc->getF("Jet_pt", jetIdx)       , pt_cut, ">", "pt selection" , 0, kJetId) ) return false;
-    if(!makeCut<float>(fabs(_vc->getF("Jet_eta", jetIdx)),  eta_cut, "<", "eta selection", 0, kJetId) ) return false;
+    if(!makeCut<float>(_vc->getD("Jet_pt", jetIdx)       , pt_cut, ">", "pt selection" , 0, kJetId) ) return false;
+    if(!makeCut<float>(fabs(_vc->getD("Jet_eta", jetIdx)),  eta_cut, "<", "eta selection", 0, kJetId) ) return false;
 
     //exclude jets which are within a cone of deltaR < 0.4 around lepton candidate
     //loop over all electron candidates
     for(int ie=0; ie<_nEls; ++ie){
         //calculate delta R, input eta1, eta2, phi1, phi2
-        float dr = KineUtils::dR( _els[ie]->eta(), _vc->getF("Jet_eta", jetIdx), _els[ie]->phi(), _vc->getF("Jet_phi", jetIdx));
+        float dr = KineUtils::dR( _els[ie]->eta(), _vc->getD("Jet_eta", jetIdx), _els[ie]->phi(), _vc->getD("Jet_phi", jetIdx));
         if(!makeCut<float>(dr, deltaR, ">", "dR selection (el)", 0, kJetId) ) return false;
     }
     //loop over all muon candidates, exclude jets as above
     for(int im=0; im<_nMus; ++im){
-        float dr = KineUtils::dR( _mus[im]->eta(), _vc->getF("Jet_eta", jetIdx), _mus[im]->phi(), _vc->getF("Jet_phi", jetIdx));
+        float dr = KineUtils::dR( _mus[im]->eta(), _vc->getD("Jet_eta", jetIdx), _mus[im]->phi(), _vc->getD("Jet_phi", jetIdx));
         if(!makeCut<float>(dr, deltaR, ">", "dR selection (mu)", 0, kJetId) ) return false;
     }
 

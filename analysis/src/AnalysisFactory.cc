@@ -17,9 +17,6 @@ AnalysisFactory::get(const string& analysis, const string& cfg) {
  
 // list of analyzers and modules in alphabetical order 
   
-  if(analysis=="SUSYSSDL") {
-    return new SUSYSSDL(cfg);
-  }
   if(analysis=="csa14exerc") {
     return new csa14exerc(cfg);
   }
