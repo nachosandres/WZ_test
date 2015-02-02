@@ -1,128 +1,135 @@
 {
-  if(Recompute) {
-    MPAFDisplay md;
+    if(Recompute) {
+        MPAFDisplay md;
  
-    //Bloody René Brun
-    bool * rtmp= const_cast<bool*> pr;
-    *rtmp = false;
+        bool * rtmp= const_cast<bool*> pr;
+        *rtmp = false;
 
-  }
-  else md.refresh();
+    }
+    else md.refresh();
 
+    //general parameters ********************* general parameters
+    string dir="SUSY3L";
+    string fileName="template3L"; //was treeName in LUNE susy_cut_lowpt
+    string fileList="template3L"; //CH: since AnaConfig needs a fileName to open, we need to put the data files into a different variable
+    string hName="";
 
-  //general parameters ********************* general parameters
-  string dir="SUSY3L";
-  string fileName="template3L"; //was treeName in LUNE susy_cut_lowpt
-  string fileList="template3L"; //CH: since AnaConfig needs a fileName to open, we need to put the data files into a different variable
-  string hName="";
-
-  bool mcOnly = false;
+    bool mcOnly = false;
   
-  //if(md.isInitStatus()) {
+    //if(md.isInitStatus()) {
     md.anConf.configureNames( dir, fileName, fileList, hName );
     md.anConf.configureData(false, 0, mcOnly);
     //}
   
-  //observables **********************
-  //string obs[6]={"","","","","",""};
-    md.dp.setObservables("Zmass");
+    //observables **********************
+    //string obs[6]={"","","","","",""};
+    //md.dp.setObservables("Zmass");
+    md.dp.setObservables("BR_NJets");
+    md.dp.setObservables("BR_NBJets");
+    md.dp.setObservables("BR_HT");
+    md.dp.setObservables("BR_MET");
+    //md.dp.setObservables("SR_NJets");
+    //md.dp.setObservables("SR_NBJets");
+    //md.dp.setObservables("SR_HT");
+    //md.dp.setObservables("SR_MET");
 
-  //Binning & title ************************* Binning & titre
-  string yTitle="number of events";
-  int binning=1;
-  int addBinBkg=1; //BinB = binning*AddBin
-  double rangeY[2]={0,0};
-  double rangeX[2]={60.,120.};
-  int xDiv[3]={8,6,0};
-  int yDiv[3]={6,6,0}; //Nlabel /  sous-Div /ssdiv
-  bool logYScale=false;
-  bool overFlowBin=false;
-  bool underFlowBin=false;
-  bool showDMCRatio=true;
-  bool showGrid=false;
-  float markerSize=0.8;
-  float lineWidth=2;
 
-  bool summedSignal=false;
-  bool stacking=true;
+    //Binning & title ************************* Binning & titre
+    string yTitle="number of events";
+    int binning=1;
+    int addBinBkg=1; //BinB = binning*AddBin
+    double rangeY[2]={0,0};
+    double rangeX[2]={60.,120.};
+    int xDiv[3]={8,6,0};
+    int yDiv[3]={6,6,0}; //Nlabel /  sous-Div /ssdiv
+    bool logYScale=false;
+    bool overFlowBin=false;
+    bool underFlowBin=false;
+    bool showDMCRatio=true;
+    bool showGrid=false;
+    float markerSize=0.8;
+    float lineWidth=2;
 
-  bool cmsPrel=true;
+    bool summedSignal=false;
+    bool stacking=true;
 
-  float xt=0.68;
-  float yt=0.48;
-  float st=0.039;
-  string addText="";
+    bool cmsPrel=true;
 
-  //string autoBinFile="susybinninghigh";
-  //md.dp.loadAutoBinning(autoBinFile);
+    float xt=0.68;
+    float yt=0.48;
+    float st=0.039;
+    string addText="";
 
-  //Systematic uncertainties ********************************
-  bool addSystematics=true;
+    //string autoBinFile="susybinninghigh";
+    //md.dp.loadAutoBinning(autoBinFile);
+
+    //Systematic uncertainties ********************************
+    bool addSystematics=true;
   
-  bool mcStatSyst=true;
-  string systSources="";
+    bool mcStatSyst=true;
+    string systSources="";
 
-  bool uncDet=false;
+    bool uncDet=false;
 
-  string Norm="";
+    string Norm="";
   
-  //Lumis( or XSections ) pb-1 & KFactors ************************************
-  float lumi=10000; //pb-1 19470
-  float energy=13; //TeV
+    //Lumis( or XSections ) pb-1 & KFactors ************************************
+    float lumi=10000; //pb-1 19470
+    float energy=13; //TeV
 
-  bool useXS=false;
+    bool useXS=false;
 
-  map<string,float> LumisXS;
+    map<string,float> LumisXS;
     
-  LumisXS[ "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skim"] =      5107581 / (1817.0   * 1.23);
-  LumisXS[ "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skim"] =      4914555 / ( 471.6   * 1.23); 
-  LumisXS[ "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skim"] =      4607172 / (  55.61  * 1.23);
-  LumisXS[ "WJetsToLNu_HT600toInf_PU_S14_POSTLS170_skim"] =      4634717 / (  18.81  * 1.23);
+    LumisXS[ "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skim"] =      5107581 / (1817.0   * 1.23);
+    LumisXS[ "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skim"] =      4914555 / ( 471.6   * 1.23); 
+    LumisXS[ "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skim"] =      4607172 / (  55.61  * 1.23);
+    LumisXS[ "WJetsToLNu_HT600toInf_PU_S14_POSTLS170_skim"] =      4634717 / (  18.81  * 1.23);
 
-  // LumisXS[ "DYJetsM50_HT100to200_PU_S14_POSTLS170_skim"] =      4063169 / ( 194.3   * 1.27);
-  // LumisXS[ "DYJetsM50_HT200to400_PU_S14_POSTLS170_skim"] =      9195874 / (  52.24  * 1.27);
-  // LumisXS[ "DYJetsM50_HT400to600_PU_S14_POSTLS170_skim"] =      4925656 / (   6.546 * 1.27);
-  // LumisXS[ "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skim"] =      4515183 / (   2.179 * 1.27);
-  // LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skim"] =      24958802 / 809.1;
+    // LumisXS[ "DYJetsM50_HT100to200_PU_S14_POSTLS170_skim"] =      4063169 / ( 194.3   * 1.27);
+    // LumisXS[ "DYJetsM50_HT200to400_PU_S14_POSTLS170_skim"] =      9195874 / (  52.24  * 1.27);
+    // LumisXS[ "DYJetsM50_HT400to600_PU_S14_POSTLS170_skim"] =      4925656 / (   6.546 * 1.27);
+    // LumisXS[ "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skim"] =      4515183 / (   2.179 * 1.27);
+    // LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skim"] =      24958802 / 809.1;
 
-  LumisXS[ "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimfake"] =      4063169 / ( 194.3   * 1.27);
-  LumisXS[ "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimfake"] =      9195874 / (  52.24  * 1.27);
-  LumisXS[ "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimfake"] =      4925656 / (   6.546 * 1.27);
-  LumisXS[ "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimfake"] =      4515183 / (   2.179 * 1.27);
-  LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimfake"] =      24958802 / 809.1;
-
-
-  LumisXS[ "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimmisId"] =      4063169 / ( 194.3   * 1.27);
-  LumisXS[ "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimmisId"] =      9195874 / (  52.24  * 1.27);
-  LumisXS[ "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimmisId"] =      4925656 / (   6.546 * 1.27);
-  LumisXS[ "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimmisId"] =      4515183 / (   2.179 * 1.27);
-  LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimmisId"] =      24958802 / 809.1;
+    LumisXS[ "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimfake"] =      4063169 / ( 194.3   * 1.27);
+    LumisXS[ "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimfake"] =      9195874 / (  52.24  * 1.27);
+    LumisXS[ "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimfake"] =      4925656 / (   6.546 * 1.27);
+    LumisXS[ "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimfake"] =      4515183 / (   2.179 * 1.27);
+    LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimfake"] =      24958802 / 809.1;
 
 
-  LumisXS[ "TTHnlo_S14_skim"] =      213300 / 0.5085;
-  LumisXS[ "TTWJets_S14_skim"] =      249415 / 0.6647;
-  LumisXS[ "TTZJets_S14_skim"] =      249275 / 0.8565;
-  LumisXS[ "WZJetsTo3LNu_S14_skim"] =      231127 / 2.29;
+    LumisXS[ "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimmisId"] =      4063169 / ( 194.3   * 1.27);
+    LumisXS[ "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimmisId"] =      9195874 / (  52.24  * 1.27);
+    LumisXS[ "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimmisId"] =      4925656 / (   6.546 * 1.27);
+    LumisXS[ "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimmisId"] =      4515183 / (   2.179 * 1.27);
+    LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimmisId"] =      24958802 / 809.1;
 
-  LumisXS[ "SMS_T1tttt_2J_mGl1200_mLSP800_PU_S14_POSTLS170_skim"] =      100322 / (0.0856418 *20) ;
-  LumisXS[ "SMS_T1tttt_2J_mGl1500_mLSP100_PU_S14_POSTLS170_skim"] =      105679 / (0.0141903 *20) ;
-  LumisXS[ "T1tttt_2J_mGo1300_mStop300_mCh285_mChi280_pythia8_S14_skim"] =      35288 / (0.0460525 *20);
-  LumisXS[ "T1tttt_2J_mGo1300_mStop300_mChi280_pythia8_S14_skim"] =      16360 / (0.0460525 *20);
-  LumisXS[ "T1tttt_2J_mGo800_mStop300_mCh285_mChi280_pythia8_S14_skim"] =      30344 / (1.4891* 5);
-  LumisXS[ "T1tttt_2J_mGo800_mStop300_mChi280_pythia8_S14_skim"] =      23343 / (1.4891* 5);
-  LumisXS[ "T5Full_1200_1000_800_skim"] =       121497 / (0.0856418 *20);
-  LumisXS[ "T5Full_1500_800_100_skim"] =       127139 / (0.0141903 *20) ;
 
-  //via XSect
+    LumisXS[ "TTHnlo_S14_skim"] =      213300 / 0.5085;
+    LumisXS[ "TTWJets_S14_skim"] =      249415 / 0.6647;
+    LumisXS[ "TTZJets_S14_skim"] =      249275 / 0.8565;
+    LumisXS[ "WZJetsTo3LNu_S14_skim"] =      231127 / 2.29;
+
+    LumisXS[ "SMS_T1tttt_2J_mGl1200_mLSP800_PU_S14_POSTLS170_skim"] =      100322 / (0.0856418 *20) ;
+    LumisXS[ "SMS_T1tttt_2J_mGl1500_mLSP100_PU_S14_POSTLS170_skim"] =      105679 / (0.0141903 *20) ;
+    LumisXS[ "T1tttt_2J_mGo1300_mStop300_mCh285_mChi280_pythia8_S14_skim"] =      35288 / (0.0460525 *20);
+    LumisXS[ "T1tttt_2J_mGo1300_mStop300_mChi280_pythia8_S14_skim"] =      16360 / (0.0460525 *20);
+    LumisXS[ "T1tttt_2J_mGo800_mStop300_mCh285_mChi280_pythia8_S14_skim"] =      30344 / (1.4891* 5);
+    LumisXS[ "T1tttt_2J_mGo800_mStop300_mChi280_pythia8_S14_skim"] =      23343 / (1.4891* 5);
+    LumisXS[ "T5Full_1200_1000_800_skim"] =       121497 / (0.0856418 *20);
+    LumisXS[ "T5Full_1500_800_100_skim"] =       127139 / (0.0141903 *20) ;
+
+    //via XSect
   
-  map<string,float> KFactors;
-     // if( md.isInitStatus() )
-  md.anConf.configureLumi( LumisXS, KFactors, lumi, useXS );
+    map<string,float> KFactors;
+    // if( md.isInitStatus() )
+    md.anConf.configureLumi( LumisXS, KFactors, lumi, useXS );
 
-  //===============================================================
-  // SDYJetsM50_HT600toInf_PU_S14_POSTLS170_skimamples **************************  samples
-  //if( md.isInitStatus() ) {
-//  md.anConf.addSample( "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skim",             "t#bar{t}",    kBlue+1 );
+    //===============================================================
+    // SDYJetsM50_HT600toInf_PU_S14_POSTLS170_skimamples **************************  samples
+    //if( md.isInitStatus() ) {
+        //  md.anConf.addSample( "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skim",             "t#bar{t}",    kBlue+1 );
 //  md.anConf.addSample( "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skim",             "W+jets",    kAzure-2 );
 //  md.anConf.addSample( "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skim",             "W+jets",    kAzure-2 );
 //  md.anConf.addSample( "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skim",             "W+jets",    kAzure-2 );

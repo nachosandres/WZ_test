@@ -123,13 +123,19 @@ void SUSY3L::run(){
     // do the minimal selection and collect kinematic variables for events passing it
     collectKinematicObjects();
 
-    // baseline event selection and initialization of baseline region cuts
+    // initialization of baseline region cuts, baseline event selection, and filling of
+    // event based observables in plots
     setBaselineRegion();
     if(!baseSelection()) return;	
+    fillEventPlots("BR");
 
-    // categorization of events passing the base selection into different signal regions
+
+
+    // initialization of signal region cuts, categorization of events passing the baseline 
+    // selection into different signal regions, and filling of plots
     setSignalRegion();
     if(!srSelection()) return;	
+    fillEventPlots("SR");
 
 }
 
@@ -148,14 +154,21 @@ void SUSY3L::defineOutput(){
         parameters: none
         return: none
     */
+    
+    //event based observables for baseline region 
+    _hm->addVariable("BR_HT"        , 1000,   0.0, 1000.0, "H_T [GeV]"                      );
+    _hm->addVariable("BR_MET"       , 1000,   0.0, 1000.0, "#slash{E}_T [GeV]"              );
+    _hm->addVariable("BR_NBJets"    ,   20,   0.0,   20.0, "b-jet multiplicity"             );
+    _hm->addVariable("BR_NJets"     ,   20,   0.0,   20.0, "jet multiplicity"               ); 
 
-    _hm->addVariable("Zmass" ,   150, 0,   150, "Z candidate mass [GeV]"        );
+    //event based observables for signal region 
+    _hm->addVariable("SR_HT"        , 1000,   0.0, 1000.0, "H_T [GeV]"                      );
+    _hm->addVariable("SR_MET"       , 1000,   0.0, 1000.0, "#slash{E}_T [GeV]"              );
+    _hm->addVariable("SR_NBJets"    ,   20,   0.0,   20.0, "b-jet multiplicity"             );
+    _hm->addVariable("SR_NJets"     ,   20,   0.0,   20.0, "jet multiplicity"               ); 
 
-
-
-
-
-
+    //additional observables
+    _hm->addVariable("Zmass"        ,  150,   0.0,  150.0, "Z candidate mass [GeV]"         );
 }
 
 
@@ -1079,6 +1092,24 @@ bool SUSY3L::srSelection(){
 * ** EXECUTING TASKS                                                          **
 * ******************************************************************************
 * *****************************************************************************/
+
+//____________________________________________________________________________
+void SUSY3L::fillEventPlots(std::string kr){
+    /*
+        fills the control plots for event quantities
+        parameters: none
+        return: none
+    */
+
+    fill(kr + "_HT"        , _HT                    , _weight);
+    fill(kr + "_MET"       , _met->pt()             , _weight);
+    fill(kr + "_NBJets"    , _nBJets                , _weight);
+    fill(kr + "_NJets"     , _nJets                 , _weight);
+
+}
+
+
+
 
 
 //____________________________________________________________________________

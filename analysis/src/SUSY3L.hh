@@ -51,6 +51,8 @@ private:
     bool ZEventSelectionLoop();
     bool srSelection();
 
+    void fillEventPlots(std::string);
+
 
 
     float HT();
