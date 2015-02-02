@@ -173,6 +173,7 @@ void FakeRatio::run(){
   _lMus.clear();
   _tMus.clear();
   _vMus.clear();
+  _jets.clear();
 
   _lElIdx.clear();
   _tElIdx.clear();
@@ -201,12 +202,12 @@ void FakeRatio::run(){
   collectKinematicObjects();
 	
   // measurement region selection
-  //if(!skimSelection()) return;
-  if(!mrSelection()) return;
+  if(!skimSelection()) return;
+  //if(!mrSelection()) return;
 
   //skim right after the basic selection
-  //fillSkimTree();
-  //return;
+  fillSkimTree();
+  return;
 	
   ////splitting the samples into categories
   //if( _sampleName.find("DYJets")!=(size_t)-1 || _sampleName.find("TTJets")!=(size_t)-1 ) {
@@ -657,9 +658,9 @@ bool FakeRatio::tightElectronSelection(int elIdx){
 
   if(!makeCut<float>( _vc->getD("LepGood_sip3d"   , elIdx)            , 4     , "<"  , "SIP 3D"            , 0    , kTElId)) return false;
   if(!makeCut<int>( _vc->getI("LepGood_tightCharge", elIdx)           , 1     , ">"  , "charge selection"  , 0    , kTElId)) return false;
-  
+
   bool conv= (_vc->getI("LepGood_convVeto", elIdx) > 0 && _vc->getI("LepGood_lostHits", elIdx)==0);
-  if(!makeCut( conv, "conversion rejection", "=", kTElId)) return false;
+  if(!makeCut( conv, "conversion rejection", "=", kTElId)) return false; 
   
   return true;
 

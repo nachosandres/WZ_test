@@ -21,8 +21,8 @@ for sr in ${SRS[@]}; do
       sed -i 's|PTSCENARIO|'$leppt'|' cfg/tmpFiles/phys14exerc_${sregion}_${leppt}_${flavor}.cfg
       sed -i 's|FLAVORS|'$flavor'|' cfg/tmpFiles/phys14exerc_${sregion}_${leppt}_${flavor}.cfg
 
-      analysis -c $MPAF/cfg/tmpFiles/phys14exerc_${sregion}_${leppt}_${flavor}.cfg
-      #qsub -q all.q -N MPAFjob -o $MPAF/workdir/logs/phys14exerc/phys14exerc_${sregion}_${leppt}_${flavor}.out -e $MPAF/workdir/logs/phys14exerc/phys14exerc_${sregion}_${leppt}_${flavor}.err $MPAF/scripts/submit.sh $MPAF/cfg/tmpFiles/phys14exerc_${sregion}_${leppt}_${flavor}.cfg
+      #analysis -c $MPAF/cfg/tmpFiles/phys14exerc_${sregion}_${leppt}_${flavor}.cfg
+      qsub -q all.q -N MPAFjob -o $MPAF/workdir/logs/phys14exerc/phys14exerc_${sregion}_${leppt}_${flavor}.out -e $MPAF/workdir/logs/phys14exerc/phys14exerc_${sregion}_${leppt}_${flavor}.err $MPAF/scripts/submit.sh $MPAF/cfg/tmpFiles/phys14exerc_${sregion}_${leppt}_${flavor}.cfg
 
     done
   done

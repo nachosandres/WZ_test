@@ -176,13 +176,19 @@ void phys14exerc::run(){
   _vMus    .clear();
 
   counter("denominator");
+
+  if(_vc->getI("run") != 1 || _vc->getI("lumi") != 228310 || _vc->getI("evt") != 22663102) return;
+  cout << "looping on event " << _vc->getI("run") << ":" << _vc->getI("lumi") << ":" << _vc->getI("evt") << endl;
 	
   // prepare event selection
   collectKinematicObjects();
-	
+
+  cout << "still here 1 " << endl;	
+
   // basic event selection (triggers, 2 ss leptons, veto)
   //if(!skimSelection()) return;
   if(!baseSelection()) return;
+  cout << "still here 2 " << endl;	
 
   //skim right after the basic selection
   //fillSkimTree();
@@ -227,6 +233,7 @@ void phys14exerc::run(){
 	
   // sr event selection
   if(!srSelection()) return;
+  cout << "still here 3 " << endl;	
 	
   // calling the modules
   fillEventPlots("SR");
@@ -705,9 +712,11 @@ bool phys14exerc::baseSelection(){
   // lepton multiplicity
   if(!makeCut<int>( _nEls + _nMus, 2, ">=", "lepton multiplicity and flavor" ) ) return false; 
 
+  cout << "still here 2.1" << endl;
 
   bool is_ss_event = ssEventSelection();
   if(!makeCut( is_ss_event , "same-sign selection", "=") ) return false;
+  cout << "still here 2.2" << endl;
 
   // retrieving high-pt and low-pt leptons
   //SF: float pt_cache = 0; 
@@ -754,10 +763,13 @@ bool phys14exerc::baseSelection(){
   // veto on third lepton
   bool is_3l_event = vetoEventSelection("Electron", "Muon");
   if(!makeCut( !is_3l_event, "veto on 3 leptons"  , "=") ) return false;
+  cout << "still here 2.3" << endl;
 	
   // mll
-  Candidate* Z = Candidate::create( _first, _second);
+  Candidate* Z = nullptr;
+  Z = Candidate::create( _first, _second);
   if(!makeCut<float>( Z->mass() , 8.0, ">", "MLL selection") ) return false;
+  cout << "still here 2.4" << endl;
 
   return true;
 
@@ -920,9 +932,8 @@ void phys14exerc::fillEventPlots(std::string kr){
   fill(kr + "_HT"        , _HT                  , _weight);
   fill(kr + "_MET"       , _met->pt() , _weight);
   
-  //ugly
-  Candidate* Z = Candidate::create( _first, _second);
-  
+  Candidate* Z = nullptr;
+  Z = Candidate::create( _first, _second);
   fill(kr + "_MLL"       , Z->mass()          , _weight);
   //fill(kr + "_NBJets"    , _NumKinObj["BJet"]                               , _weight);
   fill(kr + "_NBJets"    , _vc->getI(_bvar)    , _weight);
@@ -944,11 +955,11 @@ void phys14exerc::fillLeptonPlots(std::string kr){
   */
 
   for(int i = 0; i < _nEls; ++i){
-    fill(kr + "_ElDXY", std::abs(_vc->getD("LepGood_dxy"     , _elIdx[i])), _weight);
-    fill(kr + "_ElEta", std::abs(_vc->getD("LepGood_eta"     , _elIdx[i])), _weight);
+    fill(kr + "_ElDXY", fabs(_vc->getD("LepGood_dxy"     , _elIdx[i])), _weight);
+    fill(kr + "_ElEta", fabs(_vc->getD("LepGood_eta"     , _elIdx[i])), _weight);
     fill(kr + "_ElIso",      _vc->getD("LepGood_relIso03", _elIdx[i]) , _weight);
     fill(kr + "_ElPt" ,      _vc->getD("LepGood_pt"      , _elIdx[i]) , _weight);
-    fill(kr + "_ElMT" , Candidate::create( _els[i], _met)->mass(), _weight);
+    fill(kr + "_ElMT" , Candidate::create( _els[i], _met) -> mass()   , _weight);
   }
 
   for(int i = 0; i < _nMus; ++i){
