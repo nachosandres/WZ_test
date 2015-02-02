@@ -17,12 +17,14 @@ map<size_t,const Candidate*> Candidate::_baseCand;
 void
 Candidate::reset()
 {
+ 
   _curUid=0;
   for(map<size_t,const Candidate*>::iterator it=_baseCand.begin();
       it!=_baseCand.end(); ++it) {
     delete it->second;
   }
   _baseCand.clear();
+ 
 }
 
 Candidate::Candidate()
@@ -105,6 +107,7 @@ Candidate::Candidate( Vertex* vtx )
       addDaughter( _vtx->outgoingCand( ii ) );
     }
   lock();
+  
 }
 
 //Candidate::Candidate( const vector< const Candidate* >& listOfDau )
@@ -186,6 +189,7 @@ Candidate::Candidate( const Candidate& o )
     {
       addDaughter( o.daughter(idau)->clone() );
     } 
+
   lock();
 }
 
