@@ -2722,7 +2722,8 @@ Display::printInteg(float x1, float x2, float y1, float y2) {
 	  cout<<"\t"<<_names[ih]<<" : "
 	      <<_hClones[_nhmc-ih-1]->IntegralAndError(_hClones[_nhmc-ih-1]->GetXaxis()->FindBin(x1),_hClones[_nhmc-ih-1]->GetXaxis()->FindBin(x2), errors[ih])-tmp;
 	  cout<<" +- "<<sqrt(errors[ih]*errors[ih]-tmp2*tmp2)<<endl;
-	  tmp = _hClones[_nhmc-ih-1]->IntegralAndError(_hClones[_nhmc-ih-1]->GetXaxis()->FindBin(x1),_hClones[_nhmc-ih-1]->GetXaxis()->FindBin(x2), tmp2);
+	  if(_normOpts.find("norm")==_normOpts.end() )
+	    tmp = _hClones[_nhmc-ih-1]->IntegralAndError(_hClones[_nhmc-ih-1]->GetXaxis()->FindBin(x1),_hClones[_nhmc-ih-1]->GetXaxis()->FindBin(x2), tmp2);
 	}
 	else {
 	  cout<<"\t"<<_names[ih]<<" : "

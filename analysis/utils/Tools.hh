@@ -45,6 +45,7 @@ namespace Tools {
 	bool compareSL(const SortableLep & i, const SortableLep & j);
 	float dPhi(float, float);
 	float dR(float, float, float, float);
+        float dR2(float, float, float, float);
 	int execCmd(std::string);
 	std::vector<std::string> explodeString(std::string, std::string);
 	TDirectory * findOrCreateTDir(TString&, TFile*);
