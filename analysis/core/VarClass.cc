@@ -68,6 +68,18 @@ void VarClass::reset() {
 	varmVB.clear();
 	varmVS.clear();
 
+
+	for(itAI=varmAI.begin();itAI!=varmAI.end();itAI++) {
+	  string i = itAI->first;
+	  delete [] varmAI[i];
+	  delete [] varmAUI[i];
+	  delete [] varmAUL[i];
+	  delete [] varmAD[i];
+	  delete [] varmAF[i];
+	  delete [] varmAB[i];
+	  delete [] varmAS[i];
+	}
+
 	varmAI.clear();
 	varmAUI.clear();
 	varmAUL.clear();

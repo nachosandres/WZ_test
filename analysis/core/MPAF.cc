@@ -139,11 +139,6 @@ void MPAF::analyze(){
       ++show_progress;
       stw.Start();
 		  
-      //destroy old Candidate pointers ======
-      Candidate::reset();
-      ObjectStore::clear();
-      //===========================
-
       //MM : preparation for uncertainty variation over one variable
       // keeping line for future development
       // _vc->applySystVar( _vc->_su->getSystInfos(_unc, _uDir) );
@@ -171,6 +166,11 @@ void MPAF::analyze(){
 		
     //cleaning memory
     _datasets[i]->freeMemory();
+    //destroy old Candidate pointers ======
+    Candidate::reset();
+    ObjectStore::clear();
+    //===========================
+
   }
 
 

@@ -19,6 +19,8 @@ AnaUtils::AnaUtils() {
   
   _uncSrc="";
 
+  _useAccForEff=false;
+
 }
 
 AnaUtils::~AnaUtils() {

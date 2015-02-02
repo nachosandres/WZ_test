@@ -18,12 +18,17 @@ void
 Candidate::reset()
 {
   _curUid=0;
+  for(map<size_t,const Candidate*>::iterator it=_baseCand.begin();
+      it!=_baseCand.end(); ++it) {
+    delete it->second;
+  }
   _baseCand.clear();
 }
 
 Candidate::Candidate()
 {
   init();
+  lock();
 }
 
 Candidate::~Candidate() {
@@ -38,6 +43,7 @@ Candidate::Candidate( const TVector3& mom,
   _q = charge;
   _m = mass;  
   _vtx = vtx;
+  lock();
 }
 
 
@@ -52,6 +58,7 @@ Candidate::Candidate(float pt, float eta, float phi,
   _q = charge;
   _m = mass;  
   _vtx = vtx;
+  lock();
 }
 
 
@@ -73,6 +80,7 @@ Candidate::Candidate( const TVector2& tmom,
   _phi  = tmom.Phi();
   _eta  = 0.;
   _vtx  = vtx;
+  lock();
 }
 
 Candidate::Candidate( float pt, float phi,
@@ -83,6 +91,7 @@ Candidate::Candidate( float pt, float phi,
   _phi  = phi;
   _eta  = 0.;
   _vtx  = vtx;
+  lock();
 }
 
 Candidate::Candidate( Vertex* vtx )  
@@ -95,6 +104,7 @@ Candidate::Candidate( Vertex* vtx )
     {
       addDaughter( _vtx->outgoingCand( ii ) );
     }
+  lock();
 }
 
 //Candidate::Candidate( const vector< const Candidate* >& listOfDau )
@@ -150,6 +160,7 @@ Candidate::Candidate( const CandList& listOfDau )
   if( m2_<0 ) m2_=0;
   _m = sqrt(m2_);
   if( sameVtx ) setVertex( vtx_ );
+  lock();
 }
 
 Candidate::Candidate( const Candidate& o )
@@ -175,6 +186,7 @@ Candidate::Candidate( const Candidate& o )
     {
       addDaughter( o.daughter(idau)->clone() );
     } 
+  lock();
 }
 
 
@@ -198,6 +210,7 @@ Candidate::create( float pt, float eta, float phi,
 		   float charge,
 		   float mass,  
 		   Vertex* vtx ) { 
+
   return new Candidate( pt, eta, phi, pdgId, charge, mass, vtx ); 
 } 
 
