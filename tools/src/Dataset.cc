@@ -175,7 +175,7 @@ Dataset::getNProcEvents(string path, string dir, string fileName, string sname) 
 
   string p= string(getenv ("MPAF"))+"/workdir";
   string NameF = p+"/"+dir+"/"+fileName+".root";
-  if(dir.find(":")!=(size_t)-1) NameF=path+"/"+fileName+".root";
+  if(path.find(":")!=(size_t)-1) NameF=path+"/"+fileName+".root";
   if(dir.find("psi.ch")!=(size_t)-1)
     NameF="dcap://t3se01.psi.ch:22125/"+dir+"/"+sname+".root";
   TFile* file = TFile::Open( NameF.c_str() );
