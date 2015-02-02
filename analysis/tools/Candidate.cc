@@ -6,7 +6,7 @@
 using namespace std;
 
 // instanciate static counter
-//#include "analysis/utils/Counter.cc"
+#include "analysis/utils/Counter.cc"
 
 #include "analysis/utils/Constants.hh"
 #include "analysis/utils/KineUtils.hh"
