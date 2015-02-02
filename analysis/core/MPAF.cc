@@ -138,7 +138,7 @@ void MPAF::analyze(){
     for(_ie = _nSkip; _ie < nEvts; ++_ie) {
       ++show_progress;
       stw.Start();
-      
+   
       //MM : preparation for uncertainty variation over one variable
       // keeping line for future development
       // _vc->applySystVar( _vc->_su->getSystInfos(_unc, _uDir) );

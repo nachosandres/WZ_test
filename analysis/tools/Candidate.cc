@@ -45,6 +45,7 @@ Candidate::Candidate( const TVector3& mom,
   _q = charge;
   _m = mass;  
   _vtx = vtx;
+  
   lock();
 }
 
@@ -60,6 +61,7 @@ Candidate::Candidate(float pt, float eta, float phi,
   _q = charge;
   _m = mass;  
   _vtx = vtx;
+  
   lock();
 }
 
@@ -82,6 +84,7 @@ Candidate::Candidate( const TVector2& tmom,
   _phi  = tmom.Phi();
   _eta  = 0.;
   _vtx  = vtx;
+  
   lock();
 }
 
@@ -93,6 +96,7 @@ Candidate::Candidate( float pt, float phi,
   _phi  = phi;
   _eta  = 0.;
   _vtx  = vtx;
+  
   lock();
 }
 
@@ -106,6 +110,7 @@ Candidate::Candidate( Vertex* vtx )
     {
       addDaughter( _vtx->outgoingCand( ii ) );
     }
+  
   lock();
   
 }
@@ -168,7 +173,7 @@ Candidate::Candidate( const CandList& listOfDau )
 
 Candidate::Candidate( const Candidate& o )
   : 
-  _uid(    o._uid  ),
+  _uid(    ++_curUid  ),
   _type(   o._type ),
   _name(   o._name ),
   _q(      o._q    ),
@@ -181,16 +186,17 @@ Candidate::Candidate( const Candidate& o )
   //_info(   o._info )
 {
   _status = kUnlocked;
-
+  
   // make sure the original is in the bank of base candidates
-  if( _baseCand.count(_uid)==0 ) _baseCand[_uid]=&o;
+  if( _baseCand.count(o.uid())==0 ) _baseCand[_uid]=&o;
+
+  lock();
 
   for( size_t idau=0; idau<o.nDaughters(); idau++ )
     {
       addDaughter( o.daughter(idau)->clone() );
     } 
-
-  lock();
+  
 }
 
 
@@ -663,7 +669,7 @@ Candidate::daughter( size_t idau )
 void 
 Candidate::setMother( Candidate* mo )
 {
-  assert( !isLocked() );
+  //  assert( !isLocked() );
   assert( mo!=0 );
   _mother = mo;
   //  mo->addDaughter(this);
@@ -672,7 +678,7 @@ Candidate::setMother( Candidate* mo )
 void 
 Candidate::addDaughter( Candidate* dau )
 {
-  assert( !isLocked() );  
+  //  assert( !isLocked() );  
   assert( dau!=0 );
   _daughter.push_back( dau );
   dau->setMother(this);
