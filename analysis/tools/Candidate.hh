@@ -1,8 +1,8 @@
 #ifndef Candidate_hh
 #define Candidate_hh
 
-#include "analysis/utils/ObjectStore.hh"
-#include "analysis/utils/Counter.hh"
+//#include "analysis/utils/ObjectStore.hh"
+//#include "analysis/utils/Counter.hh"
 
 #include <vector>
 
@@ -13,9 +13,11 @@
 #include "analysis/tools/Vertex.hh"
 #include "analysis/tools/CandFwd.hh"
 
-class Candidate : public ObjectStore, public Counter<Candidate>
+class Candidate //: public ObjectStore, public Counter<Candidate>
 {
 public:
+
+  //  ~Candidate();
 
   // states
   enum Type   { kFull=0,     kTransverse };
@@ -154,6 +156,9 @@ public:
   // equality operator (based on uids)
   bool  operator==( const Candidate& )  const;
   
+  //less than oeprator (sort for pts)
+  bool operator<(const Candidate&) const;
+
   // resets uids
   static void reset();
 

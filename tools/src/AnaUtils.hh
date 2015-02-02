@@ -164,6 +164,8 @@ public:
 
   void reset();
 
+  void init();
+
   static hObs cloneHObs(const hObs* o1);
 
   void addDataset(string dsName); 

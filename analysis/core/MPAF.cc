@@ -139,6 +139,11 @@ void MPAF::analyze(){
       ++show_progress;
       stw.Start();
 		  
+      //destroy old Candidate pointers ======
+      Candidate::reset();
+      ObjectStore::clear();
+      //===========================
+
       //MM : preparation for uncertainty variation over one variable
       // keeping line for future development
       // _vc->applySystVar( _vc->_su->getSystInfos(_unc, _uDir) );
@@ -289,6 +294,8 @@ void MPAF::loadConfigurationFile(std::string cfg){
     _datasets.back()->addSample(it->second.val, _inputPath, dirName, tName, "", 1.0, 1.0, 1.0, 1.0);
     _au->addDataset( dsName );
   }
+
+  _au->init();
 
 }
 

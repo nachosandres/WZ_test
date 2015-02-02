@@ -98,7 +98,8 @@ void
 MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
   
   if(filename=="") return;
-
+  _au->init();
+  
   string ndb = filename;
   ifstream fDb( ndb.c_str(), ios::in );
 

@@ -92,11 +92,23 @@ float Tools::dR(float eta1, float eta2, float phi1, float phi2){
 	return: delta R
 	*/
 	
+  return sqrt( dR2(eta1, eta2, phi1, phi2) );
+
+}
+
+
+float Tools::dR2(float eta1, float eta2, float phi1, float phi2){
+	/* 
+	computes delta R between two particles, whose pseudorapidity and azimuthal
+	angles are given
+	parameters: eta1, eta2, phi1, phi2
+	return: delta R
+	*/
+	
 	float deta = eta1 - eta2;
 	float dphi = Tools::dPhi(phi1, phi2);
 	
-	return sqrt( deta*deta + dphi*dphi );
-
+	return deta*deta + dphi*dphi;
 }
 
 
