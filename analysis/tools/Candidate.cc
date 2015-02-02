@@ -6,13 +6,13 @@
 using namespace std;
 
 // instanciate static counter
-//#include "analysis/utils/Counter.cc"
+#include "analysis/utils/Counter.cc"
 
 #include "analysis/utils/Constants.hh"
 #include "analysis/utils/KineUtils.hh"
 
-//size_t Candidate::_curUid=0;
-//map<size_t,const Candidate*> Candidate::_baseCand;
+size_t Candidate::_curUid=0;
+map<size_t,const Candidate*> Candidate::_baseCand;
 
 void
 Candidate::reset()
@@ -165,7 +165,7 @@ Candidate::Candidate( const CandList& listOfDau )
 
 Candidate::Candidate( const Candidate& o )
   : 
-  //  _uid(    o._uid  ),
+  _uid(    o._uid  ),
   _type(   o._type ),
   _name(   o._name ),
   _q(      o._q    ),
@@ -180,7 +180,7 @@ Candidate::Candidate( const Candidate& o )
   _status = kUnlocked;
 
   // make sure the original is in the bank of base candidates
-  // if( _baseCand.count(_uid)==0 ) _baseCand[_uid]=&o;
+  if( _baseCand.count(_uid)==0 ) _baseCand[_uid]=&o;
 
   for( size_t idau=0; idau<o.nDaughters(); idau++ )
     {
@@ -366,7 +366,7 @@ Candidate::init()
 {
   _name = "";
   _status = kUnlocked;
-  //_uid  = ++_curUid;
+  _uid  = ++_curUid;
   _type = kFull;
   _q    = 0.;
   _m    = 0.;
@@ -384,8 +384,8 @@ void
 Candidate::lock()
 {
   _status=kLocked;   
-  // assert( _baseCand.count(_uid)==0 );
-  //_baseCand[_uid]=this;
+  assert( _baseCand.count(_uid)==0 );
+  _baseCand[_uid]=this;
 }
 
 float          
@@ -601,7 +601,7 @@ Candidate::print( ostream& o ) const
 bool  
 Candidate::operator==( const Candidate& o ) const
 {
-  //return _uid == o._uid;
+  return _uid == o._uid;
 }
 
 bool  

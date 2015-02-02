@@ -1,8 +1,8 @@
 #ifndef Candidate_hh
 #define Candidate_hh
 
-//#include "analysis/utils/ObjectStore.hh"
-//#include "analysis/utils/Counter.hh"
+#include "analysis/utils/ObjectStore.hh"
+#include "analysis/utils/Counter.hh"
 
 #include <vector>
 
