@@ -181,6 +181,7 @@
   // md.anConf.addSample( "TTHnlo_S14_skim"                                      ,  "Rare"             , kOrange-2 );
   // md.anConf.addSample( "TTWJets_S14_skim"                                     ,  "Rare"             , kOrange-2 );
   md.anConf.addSample( "ZZTo4L_Tune4C_13TeV-powheg-pythia8"                                             ,  "WZ+ZZ"             , kGreen );
+  md.anConf.addSample( "WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola"                                             ,  "WZ+ZZ"             , kGreen );
   
   //md.anConf.addSample( "SMS_T1tttt_2J_mGl1200_mLSP800_PU_S14_POSTLS170_skim"                     ,  "T1tttt(HL)*20 sig", kViolet-3  );
   // md.anConf.addSample( "SMS_T1tttt_2J_mGl1500_mLSP100_PU_S14_POSTLS170_skim"                     ,  "T1tttt(HM)*20 sig", kGreen+2  );
