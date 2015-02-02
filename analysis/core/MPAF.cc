@@ -138,7 +138,7 @@ void MPAF::analyze(){
     for(_ie = _nSkip; _ie < nEvts; ++_ie) {
       ++show_progress;
       stw.Start();
-		  
+      cout<<_ie<<endl;
       //MM : preparation for uncertainty variation over one variable
       // keeping line for future development
       // _vc->applySystVar( _vc->_su->getSystInfos(_unc, _uDir) );
@@ -154,9 +154,14 @@ void MPAF::analyze(){
       // do something at every entry	
       run();
 
+      //destroy old Candidate pointers ======
+      Candidate::reset();
+      ObjectStore::clear();
+      //===========================
+
       timeWall+=stw.RealTime();
       timeCPU+=stw.CpuTime();
-      nE++;
+      nE++;   
     }
 
     //write skimmed file
@@ -166,10 +171,7 @@ void MPAF::analyze(){
 		
     //cleaning memory
     _datasets[i]->freeMemory();
-    //destroy old Candidate pointers ======
-    Candidate::reset();
-    ObjectStore::clear();
-    //===========================
+  
 
   }
 
@@ -283,16 +285,26 @@ void MPAF::loadConfigurationFile(std::string cfg){
     
     string dsName=it->second.val;
     string dirName="";
+    bool absdir=false;
     vector<string> opts= it->second.opts;
     if(opts.size()!=0) {
       for(size_t i=0;i<opts.size();i++) {
-        if(opts[i].substr(0,4)=="dir:")
+        if(opts[i].substr(0,4)=="dir:") {
           dirName=opts[i].substr(4, opts[i].size()-4 );
+	}
+	if(opts[i].substr(0,7)=="absdir:") {
+          dirName=opts[i].substr(7, opts[i].size()-7 );
+	  absdir=true;
+	}
       }
     }
     _datasets.push_back(new Dataset(dsName));
-	cout << it->second.val << ":"<< _inputPath << ":" << dirName << ":" << tName << endl; 
-    _datasets.back()->addSample(it->second.val, _inputPath, dirName, tName, "", 1.0, 1.0, 1.0, 1.0);
+    
+    if(!absdir)
+      _datasets.back()->addSample(it->second.val, _inputPath, dirName, tName, "", 1.0, 1.0, 1.0, 1.0);
+    else
+      _datasets.back()->addSample(it->second.val, "://"+dirName, "", tName, "", 1.0, 1.0, 1.0, 1.0);
+    
     _au->addDataset( dsName );
   }
 
