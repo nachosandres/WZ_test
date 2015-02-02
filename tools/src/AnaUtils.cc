@@ -118,7 +118,8 @@ void AnaUtils::setEfficiency(int ids, string cName, int iCateg, float w, bool ac
 
 
 void AnaUtils::setEffFromStat(int ids, string cName, int iCateg, float sw, float esw, int ngen) {
-  
+ 
+
   //  Acceptance
   // if(_useAccForEff)
   //   if(!_inAcc) w=0;
@@ -132,7 +133,10 @@ void AnaUtils::setEffFromStat(int ids, string cName, int iCateg, float sw, float
     tmp.N = 0;    
     tmp.sumwTot = 0; tmp.sumw2Tot = 0;
     tmp.NTot = 0;    
-    
+   
+
+   
+ 
     _effMap[ ids ][ iCateg ][ cName ] = tmp;
 
     bool exists=false;
@@ -591,11 +595,11 @@ AnaUtils::printTables(string categ) {
       cout<<" Cut  "<<fixed<<setprecision(2);
       for(size_t ids=0;ids<dsNames.size();ids++) { //_itEMap
 
-  	//_itEMap = _effMap[ ids ].find( dsNames[ ids ] );
-  	// if(_itEMap->first=="data" || _itEMap->first=="Data") 
-  	//   cout<<" & MC   "<<"  & "<<_itEMap->first<<"   ";
-  	// else
-	cout<<" & "<<dsNames[ ids ]<<"   ";
+        //_itEMap = _effMap[ ids ].find( dsNames[ ids ] );
+        // if(_itEMap->first=="data" || _itEMap->first=="Data") 
+        //   cout<<" & MC   "<<"  & "<<_itEMap->first<<"   ";
+        // else
+        cout<<" & "<<dsNames[ ids ]<<"   ";
       }
       cout<<" \\\\ "<<endl;
       header=false;
@@ -657,29 +661,29 @@ AnaUtils::printTables(string categ) {
     for(size_t id=0;id<dsNames.size();id++) { //datasets
       int ids = idxs[id];
       { //simulation detail
-  	_itEIMap=_effMap[ ids ][ icat ].find( _effNames[ icat ][ ic ] );
-  	if(_itEIMap==_effMap[ ids ][ icat ].end()) 
-  	  cout<<setw(20)<<" - ";
-  	//cout<<" - ";
-  	else {
-  	  if(_itEIMap->second.sumw>0.000001 ) {
-	    
-  	    ostringstream os,os2;
-  	    os <<fixed<<setprecision(2)<<_itEIMap->second.sumw;
-  	    os2 <<fixed<<setprecision(2)<<sqrt(_itEIMap->second.sumw2);
-
-  	    string tmps=os.str()+" +- "+os2.str();
-  	    cout<<setw(20)<<tmps;
-	  }
-  	  else
-  	    cout<<" - "; 
-  	}
-
-	if(dsNames[id]=="data" || dsNames[id]=="Data" || 
-	   (!hasData && (dsNames[id]=="MC" || (size_t)ids==dsNames.size() ) ) )  
-   	  cout<<endl;
-  	else
-	  cout<<"\t";
+        _itEIMap=_effMap[ ids ][ icat ].find( _effNames[ icat ][ ic ] );
+        if(_itEIMap==_effMap[ ids ][ icat ].end()) 
+          cout<<setw(20)<<" - ";
+        //cout<<" - ";
+        else {
+          if(_itEIMap->second.sumw>0.000001 ) {
+            
+            ostringstream os,os2;
+            os <<fixed<<setprecision(2)<<_itEIMap->second.sumw;
+            os2 <<fixed<<setprecision(2)<<sqrt(_itEIMap->second.sumw2);
+        
+            string tmps=os.str()+" +- "+os2.str();
+            cout<<setw(20)<<tmps;
+          }
+          else
+            cout<<" - "; 
+        }
+        
+        if(dsNames[id]=="data" || dsNames[id]=="Data" || 
+           (!hasData && (dsNames[id]=="MC" || (size_t)ids==dsNames.size() ) ) )  
+          cout<<endl;
+        else
+          cout<<"\t";
       }
       
     }//datasets
@@ -700,7 +704,7 @@ AnaUtils::findElement(vector<string> v, string e){
 
 vector< pair<string, vector<vector<float> > > >
 AnaUtils::retrieveNumbers(string categ, bool mcat, string cname) {
-  
+
   vector< pair<string, vector<vector<float> > > > onums;
 
   int cat= getCategId(categ);
@@ -713,16 +717,18 @@ AnaUtils::retrieveNumbers(string categ, bool mcat, string cname) {
   if(mcat) { //multicateg 
     for(map<int, vector<string> >::const_iterator itc=_effNames.begin();
 	itc!=_effNames.end();itc++) { //cuts for uni-categ
-      
+
       string catname = _catNames[ itc->first ];
-      if(itc->first==_kGlobal || catname.find(categ)==(size_t)-1 ) continue;
-      
+
+      //if(itc->first==_kGlobal || catname.find(categ)==(size_t)-1 ) continue;
+      if(catname.find(categ)==(size_t)-1 ) continue;     
+
       cat= getCategId(catname);
       int ic = -1;
       for(size_t i=0;i<_effNames[cat].size();i++) {
-        if(itc->second[i]==cname) {ic=i; break;}
+        if(itc->second[i].find(cname) != string::npos) {ic=i; break;}
       } 
-      
+
       if(ic==-1) {
         cout<<"Error, no such selection name : ["<<cname<<"], please check name"<<endl;
         return onums;
@@ -738,7 +744,8 @@ AnaUtils::retrieveNumbers(string categ, bool mcat, string cname) {
       catIds.push_back( cat );
     }
   }
-  
+
+ 
   //common retrieving of numbers =====================
   for(size_t ic=0;ic<cNames.size();ic++) {
     int icat = catIds[ic];
@@ -828,8 +835,8 @@ void AnaUtils::setNumbers(int ids,string cName, int iCateg, float w, bool acc) {
 }
 
 
-void AnaUtils::setNumFromStat(int ids,string cName, int iCateg, float sw, float esw, int ngen) {
-  
+void AnaUtils::setNumFromStat(int ids, string cName, int iCateg, float sw, float esw, int ngen) {
+ 
   _effMap[ ids ][ iCateg ][ cName ].NTot +=ngen;
   _effMap[ ids ][ iCateg ][ cName ].sumwTot +=sw;
   _effMap[ ids ][ iCateg ][ cName ].sumw2Tot +=esw*esw;

@@ -1,0 +1,1241 @@
+
+RooFit v3.60 -- Developed by Wouter Verkerke and David Kirkby 
+                Copyright (C) 2000-2013 NIKHEF, University of California & Stanford University
+                All rights reserved, please read http://roofit.sourceforge.net/license.txt
+
+>> STARTING MPAF
+DYJetsToLL_M-50_13TeV-madgraph-pythia8:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/::tree
+ Adding DYJetsToLL_M-50_13TeV-madgraph-pythia8  to DYJetsToLL_M-50_13TeV-madgraph-pythia8   :  nEvt 737829 (0 gen)  / w (/pb-1) = 1
+DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/::tree
+ Adding DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola  to DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola   :  nEvt 1333278 (0 gen)  / w (/pb-1) = 1
+DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/::tree
+ Adding DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola  to DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola   :  nEvt 1651620 (0 gen)  / w (/pb-1) = 1
+DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/::tree
+Warning in <TDCacheFile::Init>: file dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola.root probably not closed, trying to recover
+Info in <TDCacheFile::Recover>: dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola.root, recovered key TTree:tree at address 429938371
+Warning in <TDCacheFile::Init>: successfully recovered 1 keys
+Warning in <TDCacheFile::Init>: file dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola.root probably not closed, trying to recover
+Info in <TDCacheFile::Recover>: dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola.root, recovered key TTree:tree at address 429938371
+Warning in <TDCacheFile::Init>: successfully recovered 1 keys
+ Adding DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola  to DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola   :  nEvt 258300 (0 gen)  / w (/pb-1) = 1
+DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/::tree
+ Adding DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola  to DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola   :  nEvt 1808178 (0 gen)  / w (/pb-1) = 1
+SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/::tree
+ Adding SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola  to SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola   :  nEvt 19513 (0 gen)  / w (/pb-1) = 1
+SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/::tree
+ Adding SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola  to SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola   :  nEvt 18479 (0 gen)  / w (/pb-1) = 1
+T1ttbbWW_mGo1000_mCh725_mChi720:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/:root/:tree
+ Adding T1ttbbWW_mGo1000_mCh725_mChi720  to T1ttbbWW_mGo1000_mCh725_mChi720   :  nEvt 3556 (0 gen)  / w (/pb-1) = 1
+T1ttbbWW_mGo1300_mCh300_mChi290:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/:root/:tree
+ Adding T1ttbbWW_mGo1300_mCh300_mChi290  to T1ttbbWW_mGo1300_mCh300_mChi290   :  nEvt 4522 (0 gen)  / w (/pb-1) = 1
+T5qqqqWW_mGo1200_mCh1000_mChi800:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/:root/:tree
+ Adding T5qqqqWW_mGo1200_mCh1000_mChi800  to T5qqqqWW_mGo1200_mCh1000_mChi800   :  nEvt 5101 (0 gen)  / w (/pb-1) = 1
+T5ttttDeg_mGo1000_mStop300_mCh285_mChi280:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/:root/:tree
+ Adding T5ttttDeg_mGo1000_mStop300_mCh285_mChi280  to T5ttttDeg_mGo1000_mStop300_mCh285_mChi280   :  nEvt 4121 (0 gen)  / w (/pb-1) = 1
+T5ttttDeg_mGo1000_mStop300_mChi280:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/:root/:tree
+ Adding T5ttttDeg_mGo1000_mStop300_mChi280  to T5ttttDeg_mGo1000_mStop300_mChi280   :  nEvt 5696 (0 gen)  / w (/pb-1) = 1
+T6ttWW_mSbot600_mCh425_mChi50:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/:root/:tree
+ Adding T6ttWW_mSbot600_mCh425_mChi50  to T6ttWW_mSbot600_mCh425_mChi50   :  nEvt 10578 (0 gen)  / w (/pb-1) = 1
+T6ttWW_mSbot650_mCh150_mChi50:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/:root/:tree
+ Adding T6ttWW_mSbot650_mCh150_mChi50  to T6ttWW_mSbot650_mCh150_mChi50   :  nEvt 20814 (0 gen)  / w (/pb-1) = 1
+TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/::tree
+ Adding TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola  to TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola   :  nEvt 1340988 (0 gen)  / w (/pb-1) = 1
+TTWJets_Tune4C_13TeV-madgraph-tauola:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/::tree
+ Adding TTWJets_Tune4C_13TeV-madgraph-tauola  to TTWJets_Tune4C_13TeV-madgraph-tauola   :  nEvt 27379 (0 gen)  / w (/pb-1) = 1
+TTZJets_Tune4C_13TeV-madgraph-tauola:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/::tree
+ Adding TTZJets_Tune4C_13TeV-madgraph-tauola  to TTZJets_Tune4C_13TeV-madgraph-tauola   :  nEvt 25440 (0 gen)  / w (/pb-1) = 1
+WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/::tree
+ Adding WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola  to WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola   :  nEvt 16649 (0 gen)  / w (/pb-1) = 1
+WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/::tree
+ Adding WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola  to WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola   :  nEvt 22403 (0 gen)  / w (/pb-1) = 1
+WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/::tree
+ Adding WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola  to WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola   :  nEvt 27481 (0 gen)  / w (/pb-1) = 1
+WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/:root/:tree
+ Adding WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola  to WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola   :  nEvt 31002 (0 gen)  / w (/pb-1) = 1
+WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola:/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/trees/2015-01-04_phys14-first-production/root/::tree
+ Adding WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola  to WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola   :  nEvt 109302 (0 gen)  / w (/pb-1) = 1
+ Warning, nLepGood already registered
+ Starting processing dataset : DYJetsToLL_M-50_13TeV-madgraph-pythia8  (running on 737829 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Warning, nLepGood already registered
+ Starting processing dataset : DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola  (running on 1333278 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Warning, nLepGood already registered
+ Starting processing dataset : DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola  (running on 1651620 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Warning, nLepGood already registered
+ Starting processing dataset : DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola  (running on 258300 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Warning, nLepGood already registered
+ Starting processing dataset : DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola  (running on 1808178 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Warning, nLepGood already registered
+ Starting processing dataset : SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola  (running on 19513 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Warning, nLepGood already registered
+ Starting processing dataset : SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola  (running on 18479 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Starting processing dataset : T1ttbbWW_mGo1000_mCh725_mChi720  (running on 3556 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Starting processing dataset : T1ttbbWW_mGo1300_mCh300_mChi290  (running on 4522 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Starting processing dataset : T5qqqqWW_mGo1200_mCh1000_mChi800  (running on 5101 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Starting processing dataset : T5ttttDeg_mGo1000_mStop300_mCh285_mChi280  (running on 4121 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Starting processing dataset : T5ttttDeg_mGo1000_mStop300_mChi280  (running on 5696 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Starting processing dataset : T6ttWW_mSbot600_mCh425_mChi50  (running on 10578 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Starting processing dataset : T6ttWW_mSbot650_mCh150_mChi50  (running on 20814 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Warning, nLepGood already registered
+ Starting processing dataset : TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola  (running on 1340988 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Warning, nLepGood already registered
+ Starting processing dataset : TTWJets_Tune4C_13TeV-madgraph-tauola  (running on 27379 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Warning, nLepGood already registered
+ Starting processing dataset : TTZJets_Tune4C_13TeV-madgraph-tauola  (running on 25440 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Warning, nLepGood already registered
+ Starting processing dataset : WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola  (running on 16649 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Warning, nLepGood already registered
+ Starting processing dataset : WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola  (running on 22403 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Warning, nLepGood already registered
+ Starting processing dataset : WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola  (running on 27481 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Starting processing dataset : WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola  (running on 31002 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ Warning, nLepGood already registered
+ Starting processing dataset : WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola  (running on 109302 events)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+ +++ Execution frequency +++ 
+   Real time = 0.00037701 s/evt ->2652.45 Hz
+   CPU time = 0.000330234 s/evt ->3028.16 Hz
+
+Will write histograms in output file /shome/cheidegg/MPAF/workdir/root/phys14exerc/phys14exerc.root
+
+
+ ===================================================================== 
+ ============= Efficiency category :             el Id =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsToLL_M-50_13TeV-madgraph-pythia8   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 616037.000  / 616037.000  (616037.000 / 616037.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.994 +- 0.000 		 612429.000  / 616037.000  (612429.000 / 616037.000)  ---> 	 = 99.414 +- 0.010
+ -->                  eta selection	  = 1.000 +- 0.000 		 612429.000  / 612429.000  (612429.000 / 612429.000)  ---> 	 = 99.414 +- 0.010
+ -->             eta selection veto	  = 0.968 +- 0.000 		 592799.000  / 612429.000  (592799.000 / 612429.000)  ---> 	 = 96.228 +- 0.024
+ -->                         SIP 3D	  = 0.967 +- 0.000 		 573335.000  / 592799.000  (573335.000 / 592799.000)  ---> 	 = 93.068 +- 0.032
+ -->                     Isolation 	  = 0.915 +- 0.000 		 524848.000  / 573335.000  (524848.000 / 573335.000)  ---> 	 = 85.197 +- 0.045
+ -->                   dz selection	  = 1.000 +- 0.000 		 524848.000  / 524848.000  (524848.000 / 524848.000)  ---> 	 = 85.197 +- 0.045
+ -->                POG CB WP-M Id 	  = 0.924 +- 0.000 		 484932.000  / 524848.000  (484932.000 / 524848.000)  ---> 	 = 78.718 +- 0.052
+ -->               charge selection	  = 0.970 +- 0.000 		 470416.000  / 484932.000  (470416.000 / 484932.000)  ---> 	 = 76.362 +- 0.054
+ -->           conversion rejection	  = 0.018 +- 0.000 		 8264.000  / 470416.000  (8264.000 / 470416.000)  ---> 	 = 1.341 +- 0.015
+
+Begin efficiencies for DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 1138062.000  / 1138062.000  (1138062.000 / 1138062.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.991 +- 0.000 		 1128280.000  / 1138062.000  (1128280.000 / 1138062.000)  ---> 	 = 99.140 +- 0.009
+ -->                  eta selection	  = 1.000 +- 0.000 		 1128280.000  / 1128280.000  (1128280.000 / 1128280.000)  ---> 	 = 99.140 +- 0.009
+ -->             eta selection veto	  = 0.968 +- 0.000 		 1092248.000  / 1128280.000  (1092248.000 / 1128280.000)  ---> 	 = 95.974 +- 0.018
+ -->                         SIP 3D	  = 0.960 +- 0.000 		 1048973.000  / 1092248.000  (1048973.000 / 1092248.000)  ---> 	 = 92.172 +- 0.025
+ -->                     Isolation 	  = 0.906 +- 0.000 		 950278.000  / 1048973.000  (950278.000 / 1048973.000)  ---> 	 = 83.500 +- 0.035
+ -->                   dz selection	  = 1.000 +- 0.000 		 950278.000  / 950278.000  (950278.000 / 950278.000)  ---> 	 = 83.500 +- 0.035
+ -->                POG CB WP-M Id 	  = 0.933 +- 0.000 		 886603.000  / 950278.000  (886603.000 / 950278.000)  ---> 	 = 77.905 +- 0.039
+ -->               charge selection	  = 0.964 +- 0.000 		 854533.000  / 886603.000  (854533.000 / 886603.000)  ---> 	 = 75.087 +- 0.041
+ -->           conversion rejection	  = 0.018 +- 0.000 		 15681.000  / 854533.000  (15681.000 / 854533.000)  --->  = 1.378 +- 0.011
+
+Begin efficiencies for DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 1425359.000  / 1425359.000  (1425359.000 / 1425359.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.991 +- 0.000 		 1412595.000  / 1425359.000  (1412595.000 / 1425359.000)  ---> 	 = 99.105 +- 0.008
+ -->                  eta selection	  = 1.000 +- 0.000 		 1412595.000  / 1412595.000  (1412595.000 / 1412595.000)  ---> 	 = 99.105 +- 0.008
+ -->             eta selection veto	  = 0.968 +- 0.000 		 1366943.000  / 1412595.000  (1366943.000 / 1412595.000)  ---> 	 = 95.902 +- 0.017
+ -->                         SIP 3D	  = 0.955 +- 0.000 		 1304847.000  / 1366943.000  (1304847.000 / 1366943.000)  ---> 	 = 91.545 +- 0.023
+ -->                     Isolation 	  = 0.906 +- 0.000 		 1181774.000  / 1304847.000  (1181774.000 / 1304847.000)  ---> 	 = 82.911 +- 0.032
+ -->                   dz selection	  = 1.000 +- 0.000 		 1181774.000  / 1181774.000  (1181774.000 / 1181774.000)  ---> 	 = 82.911 +- 0.032
+ -->                POG CB WP-M Id 	  = 0.940 +- 0.000 		 1111179.000  / 1181774.000  (1111179.000 / 1181774.000)  ---> 	 = 77.958 +- 0.035
+ -->               charge selection	  = 0.958 +- 0.000 		 1065009.000  / 1111179.000  (1065009.000 / 1111179.000)  ---> 	 = 74.719 +- 0.036
+ -->           conversion rejection	  = 0.020 +- 0.000 		 21093.000  / 1065009.000  (21093.000 / 1065009.000)  ---> 	 = 1.480 +- 0.010
+
+Begin efficiencies for DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 225544.000  / 225544.000  (225544.000 / 225544.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.991 +- 0.000 		 223542.000  / 225544.000  (223542.000 / 225544.000)  ---> 	 = 99.112 +- 0.020
+ -->                  eta selection	  = 1.000 +- 0.000 		 223542.000  / 223542.000  (223542.000 / 223542.000)  ---> 	 = 99.112 +- 0.020
+ -->             eta selection veto	  = 0.967 +- 0.000 		 216274.000  / 223542.000  (216274.000 / 223542.000)  ---> 	 = 95.890 +- 0.042
+ -->                         SIP 3D	  = 0.949 +- 0.000 		 205240.000  / 216274.000  (205240.000 / 216274.000)  ---> 	 = 90.998 +- 0.060
+ -->                     Isolation 	  = 0.905 +- 0.001 		 185732.000  / 205240.000  (185732.000 / 205240.000)  ---> 	 = 82.348 +- 0.080
+ -->                   dz selection	  = 1.000 +- 0.000 		 185732.000  / 185732.000  (185732.000 / 185732.000)  ---> 	 = 82.348 +- 0.080
+ -->                POG CB WP-M Id 	  = 0.945 +- 0.001 		 175535.000  / 185732.000  (175535.000 / 185732.000)  ---> 	 = 77.827 +- 0.087
+ -->               charge selection	  = 0.951 +- 0.001 		 166917.000  / 175535.000  (166917.000 / 175535.000)  ---> 	 = 74.006 +- 0.092
+ -->           conversion rejection	  = 0.021 +- 0.000 		 3536.000  / 166917.000  (3536.000 / 166917.000)  ---> 	 = 1.568 +- 0.026
+
+Begin efficiencies for DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 1588211.000  / 1588211.000  (1588211.000 / 1588211.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.992 +- 0.000 		 1575594.000  / 1588211.000  (1575594.000 / 1588211.000)  ---> 	 = 99.206 +- 0.007
+ -->                  eta selection	  = 1.000 +- 0.000 		 1575594.000  / 1575594.000  (1575594.000 / 1575594.000)  ---> 	 = 99.206 +- 0.007
+ -->             eta selection veto	  = 0.966 +- 0.000 		 1522673.000  / 1575594.000  (1522673.000 / 1575594.000)  ---> 	 = 95.873 +- 0.016
+ -->                         SIP 3D	  = 0.945 +- 0.000 		 1439646.000  / 1522673.000  (1439646.000 / 1522673.000)  ---> 	 = 90.646 +- 0.023
+ -->                     Isolation 	  = 0.900 +- 0.000 		 1296092.000  / 1439646.000  (1296092.000 / 1439646.000)  ---> 	 = 81.607 +- 0.031
+ -->                   dz selection	  = 1.000 +- 0.000 		 1296092.000  / 1296092.000  (1296092.000 / 1296092.000)  ---> 	 = 81.607 +- 0.031
+ -->                POG CB WP-M Id 	  = 0.949 +- 0.000 		 1229580.000  / 1296092.000  (1229580.000 / 1296092.000)  ---> 	 = 77.419 +- 0.033
+ -->               charge selection	  = 0.946 +- 0.000 		 1163162.000  / 1229580.000  (1163162.000 / 1229580.000)  ---> 	 = 73.237 +- 0.035
+ -->           conversion rejection	  = 0.022 +- 0.000 		 26130.000  / 1163162.000  (26130.000 / 1163162.000)  ---> 	 = 1.645 +- 0.010
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 19467.000  / 19467.000  (19467.000 / 19467.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.980 +- 0.001 		 19083.000  / 19467.000  (19083.000 / 19467.000)  ---> 	 = 98.027 +- 0.100
+ -->                  eta selection	  = 1.000 +- 0.000 		 19083.000  / 19083.000  (19083.000 / 19083.000)  ---> 	 = 98.027 +- 0.100
+ -->             eta selection veto	  = 0.981 +- 0.001 		 18718.000  / 19083.000  (18718.000 / 19083.000)  ---> 	 = 96.152 +- 0.138
+ -->                         SIP 3D	  = 0.930 +- 0.002 		 17413.000  / 18718.000  (17413.000 / 18718.000)  ---> 	 = 89.449 +- 0.220
+ -->                     Isolation 	  = 0.766 +- 0.003 		 13345.000  / 17413.000  (13345.000 / 17413.000)  ---> 	 = 68.552 +- 0.333
+ -->                   dz selection	  = 1.000 +- 0.000 		 13345.000  / 13345.000  (13345.000 / 13345.000)  ---> 	 = 68.552 +- 0.333
+ -->                POG CB WP-M Id 	  = 0.931 +- 0.002 		 12429.000  / 13345.000  (12429.000 / 13345.000)  ---> 	 = 63.847 +- 0.344
+ -->               charge selection	  = 0.975 +- 0.001 		 12119.000  / 12429.000  (12119.000 / 12429.000)  ---> 	 = 62.254 +- 0.347
+ -->           conversion rejection	  = 0.016 +- 0.001 		 192.000  / 12119.000  (192.000 / 12119.000)  ---> 	 = 0.986 +- 0.071
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 18652.000  / 18652.000  (18652.000 / 18652.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.985 +- 0.001 		 18379.000  / 18652.000  (18379.000 / 18652.000)  ---> 	 = 98.536 +- 0.088
+ -->                  eta selection	  = 1.000 +- 0.000 		 18379.000  / 18379.000  (18379.000 / 18379.000)  ---> 	 = 98.536 +- 0.088
+ -->             eta selection veto	  = 0.979 +- 0.001 		 18000.000  / 18379.000  (18000.000 / 18379.000)  ---> 	 = 96.504 +- 0.134
+ -->                         SIP 3D	  = 0.919 +- 0.002 		 16539.000  / 18000.000  (16539.000 / 18000.000)  ---> 	 = 88.671 +- 0.232
+ -->                     Isolation 	  = 0.785 +- 0.003 		 12981.000  / 16539.000  (12981.000 / 16539.000)  ---> 	 = 69.596 +- 0.337
+ -->                   dz selection	  = 1.000 +- 0.000 		 12981.000  / 12981.000  (12981.000 / 12981.000)  ---> 	 = 69.596 +- 0.337
+ -->                POG CB WP-M Id 	  = 0.954 +- 0.002 		 12378.000  / 12981.000  (12378.000 / 12981.000)  ---> 	 = 66.363 +- 0.346
+ -->               charge selection	  = 0.964 +- 0.002 		 11927.000  / 12378.000  (11927.000 / 12378.000)  ---> 	 = 63.945 +- 0.352
+ -->           conversion rejection	  = 0.018 +- 0.001 		 219.000  / 11927.000  (219.000 / 11927.000)  ---> 	 = 1.174 +- 0.079
+
+Begin efficiencies for T1ttbbWW_mGo1000_mCh725_mChi720   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 3071.000  / 3071.000  (3071.000 / 3071.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.972 +- 0.003 		 2985.000  / 3071.000  (2985.000 / 3071.000)  ---> 	 = 97.200 +- 0.298
+ -->                  eta selection	  = 1.000 +- 0.000 		 2985.000  / 2985.000  (2985.000 / 2985.000)  ---> 	 = 97.200 +- 0.298
+ -->             eta selection veto	  = 0.979 +- 0.003 		 2922.000  / 2985.000  (2922.000 / 2985.000)  ---> 	 = 95.148 +- 0.388
+ -->                         SIP 3D	  = 0.889 +- 0.006 		 2598.000  / 2922.000  (2598.000 / 2922.000)  ---> 	 = 84.598 +- 0.651
+ -->                     Isolation 	  = 0.773 +- 0.008 		 2009.000  / 2598.000  (2009.000 / 2598.000)  ---> 	 = 65.418 +- 0.858
+ -->                   dz selection	  = 1.000 +- 0.000 		 2009.000  / 2009.000  (2009.000 / 2009.000)  ---> 	 = 65.418 +- 0.858
+ -->                POG CB WP-M Id 	  = 0.929 +- 0.006 		 1866.000  / 2009.000  (1866.000 / 2009.000)  ---> 	 = 60.762 +- 0.881
+ -->               charge selection	  = 0.982 +- 0.003 		 1832.000  / 1866.000  (1832.000 / 1866.000)  ---> 	 = 59.655 +- 0.885
+ -->           conversion rejection	  = 0.012 +- 0.003 		 22.000  / 1832.000  (22.000 / 1832.000)  ---> 	 = 0.716 +- 0.152
+
+Begin efficiencies for T1ttbbWW_mGo1300_mCh300_mChi290   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 4085.000  / 4085.000  (4085.000 / 4085.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.938 +- 0.004 		 3831.000  / 4085.000  (3831.000 / 4085.000)  ---> 	 = 93.782 +- 0.378
+ -->                  eta selection	  = 1.000 +- 0.000 		 3831.000  / 3831.000  (3831.000 / 3831.000)  ---> 	 = 93.782 +- 0.378
+ -->             eta selection veto	  = 0.978 +- 0.002 		 3747.000  / 3831.000  (3747.000 / 3831.000)  ---> 	 = 91.726 +- 0.431
+ -->                         SIP 3D	  = 0.915 +- 0.005 		 3427.000  / 3747.000  (3427.000 / 3747.000)  ---> 	 = 83.892 +- 0.575
+ -->                     Isolation 	  = 0.768 +- 0.007 		 2631.000  / 3427.000  (2631.000 / 3427.000)  ---> 	 = 64.406 +- 0.749
+ -->                   dz selection	  = 1.000 +- 0.000 		 2631.000  / 2631.000  (2631.000 / 2631.000)  ---> 	 = 64.406 +- 0.749
+ -->                POG CB WP-M Id 	  = 0.935 +- 0.005 		 2461.000  / 2631.000  (2461.000 / 2631.000)  ---> 	 = 60.245 +- 0.766
+ -->               charge selection	  = 0.966 +- 0.004 		 2378.000  / 2461.000  (2378.000 / 2461.000)  ---> 	 = 58.213 +- 0.772
+ -->           conversion rejection	  = 0.013 +- 0.002 		 31.000  / 2378.000  (31.000 / 2378.000)  ---> 	 = 0.759 +- 0.136
+
+Begin efficiencies for T5qqqqWW_mGo1200_mCh1000_mChi800   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 5030.000  / 5030.000  (5030.000 / 5030.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.986 +- 0.002 		 4961.000  / 5030.000  (4961.000 / 5030.000)  ---> 	 = 98.628 +- 0.164
+ -->                  eta selection	  = 1.000 +- 0.000 		 4961.000  / 4961.000  (4961.000 / 4961.000)  ---> 	 = 98.628 +- 0.164
+ -->             eta selection veto	  = 0.978 +- 0.002 		 4851.000  / 4961.000  (4851.000 / 4961.000)  ---> 	 = 96.441 +- 0.261
+ -->                         SIP 3D	  = 0.938 +- 0.003 		 4552.000  / 4851.000  (4552.000 / 4851.000)  ---> 	 = 90.497 +- 0.413
+ -->                     Isolation 	  = 0.829 +- 0.006 		 3772.000  / 4552.000  (3772.000 / 4552.000)  ---> 	 = 74.990 +- 0.611
+ -->                   dz selection	  = 1.000 +- 0.000 		 3772.000  / 3772.000  (3772.000 / 3772.000)  ---> 	 = 74.990 +- 0.611
+ -->                POG CB WP-M Id 	  = 0.950 +- 0.004 		 3583.000  / 3772.000  (3583.000 / 3772.000)  ---> 	 = 71.233 +- 0.638
+ -->               charge selection	  = 0.969 +- 0.003 		 3471.000  / 3583.000  (3471.000 / 3583.000)  ---> 	 = 69.006 +- 0.652
+ -->           conversion rejection	  = 0.012 +- 0.002 		 43.000  / 3471.000  (43.000 / 3471.000)  ---> 	 = 0.855 +- 0.130
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mCh285_mChi280   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 3493.000  / 3493.000  (3493.000 / 3493.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.937 +- 0.004 		 3274.000  / 3493.000  (3274.000 / 3493.000)  ---> 	 = 93.730 +- 0.410
+ -->                  eta selection	  = 1.000 +- 0.000 		 3274.000  / 3274.000  (3274.000 / 3274.000)  ---> 	 = 93.730 +- 0.410
+ -->             eta selection veto	  = 0.981 +- 0.002 		 3212.000  / 3274.000  (3212.000 / 3274.000)  ---> 	 = 91.955 +- 0.460
+ -->                         SIP 3D	  = 0.896 +- 0.005 		 2878.000  / 3212.000  (2878.000 / 3212.000)  ---> 	 = 82.393 +- 0.644
+ -->                     Isolation 	  = 0.780 +- 0.008 		 2246.000  / 2878.000  (2246.000 / 2878.000)  ---> 	 = 64.300 +- 0.811
+ -->                   dz selection	  = 1.000 +- 0.000 		 2246.000  / 2246.000  (2246.000 / 2246.000)  ---> 	 = 64.300 +- 0.811
+ -->                POG CB WP-M Id 	  = 0.948 +- 0.005 		 2130.000  / 2246.000  (2130.000 / 2246.000)  ---> 	 = 60.979 +- 0.825
+ -->               charge selection	  = 0.959 +- 0.004 		 2042.000  / 2130.000  (2042.000 / 2130.000)  ---> 	 = 58.460 +- 0.834
+ -->           conversion rejection	  = 0.017 +- 0.003 		 34.000  / 2042.000  (34.000 / 2042.000)  ---> 	 = 0.973 +- 0.166
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mChi280   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 5001.000  / 5001.000  (5001.000 / 5001.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.939 +- 0.003 		 4694.000  / 5001.000  (4694.000 / 5001.000)  ---> 	 = 93.861 +- 0.339
+ -->                  eta selection	  = 1.000 +- 0.000 		 4694.000  / 4694.000  (4694.000 / 4694.000)  ---> 	 = 93.861 +- 0.339
+ -->             eta selection veto	  = 0.980 +- 0.002 		 4599.000  / 4694.000  (4599.000 / 4694.000)  ---> 	 = 91.962 +- 0.384
+ -->                         SIP 3D	  = 0.923 +- 0.004 		 4245.000  / 4599.000  (4245.000 / 4599.000)  ---> 	 = 84.883 +- 0.507
+ -->                     Isolation 	  = 0.743 +- 0.007 		 3156.000  / 4245.000  (3156.000 / 4245.000)  ---> 	 = 63.107 +- 0.682
+ -->                   dz selection	  = 1.000 +- 0.000 		 3156.000  / 3156.000  (3156.000 / 3156.000)  ---> 	 = 63.107 +- 0.682
+ -->                POG CB WP-M Id 	  = 0.946 +- 0.004 		 2984.000  / 3156.000  (2984.000 / 3156.000)  ---> 	 = 59.668 +- 0.694
+ -->               charge selection	  = 0.962 +- 0.003 		 2871.000  / 2984.000  (2871.000 / 2984.000)  ---> 	 = 57.409 +- 0.699
+ -->           conversion rejection	  = 0.015 +- 0.002 		 43.000  / 2871.000  (43.000 / 2871.000)  ---> 	 = 0.860 +- 0.131
+
+Begin efficiencies for T6ttWW_mSbot600_mCh425_mChi50   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 10691.000  / 10691.000  (10691.000 / 10691.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.985 +- 0.001 		 10535.000  / 10691.000  (10535.000 / 10691.000)  ---> 	 = 98.541 +- 0.116
+ -->                  eta selection	  = 1.000 +- 0.000 		 10535.000  / 10535.000  (10535.000 / 10535.000)  ---> 	 = 98.541 +- 0.116
+ -->             eta selection veto	  = 0.975 +- 0.002 		 10273.000  / 10535.000  (10273.000 / 10535.000)  ---> 	 = 96.090 +- 0.187
+ -->                         SIP 3D	  = 0.930 +- 0.003 		 9552.000  / 10273.000  (9552.000 / 10273.000)  ---> 	 = 89.346 +- 0.298
+ -->                     Isolation 	  = 0.820 +- 0.004 		 7834.000  / 9552.000  (7834.000 / 9552.000)  ---> 	 = 73.277 +- 0.428
+ -->                   dz selection	  = 1.000 +- 0.000 		 7834.000  / 7834.000  (7834.000 / 7834.000)  ---> 	 = 73.277 +- 0.428
+ -->                POG CB WP-M Id 	  = 0.943 +- 0.003 		 7389.000  / 7834.000  (7389.000 / 7834.000)  ---> 	 = 69.114 +- 0.447
+ -->               charge selection	  = 0.970 +- 0.002 		 7170.000  / 7389.000  (7170.000 / 7389.000)  ---> 	 = 67.066 +- 0.455
+ -->           conversion rejection	  = 0.016 +- 0.001 		 115.000  / 7170.000  (115.000 / 7170.000)  ---> 	 = 1.076 +- 0.100
+
+Begin efficiencies for T6ttWW_mSbot650_mCh150_mChi50   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 21270.000  / 21270.000  (21270.000 / 21270.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.987 +- 0.001 		 21002.000  / 21270.000  (21002.000 / 21270.000)  ---> 	 = 98.740 +- 0.076
+ -->                  eta selection	  = 1.000 +- 0.000 		 21002.000  / 21002.000  (21002.000 / 21002.000)  ---> 	 = 98.740 +- 0.076
+ -->             eta selection veto	  = 0.977 +- 0.001 		 20509.000  / 21002.000  (20509.000 / 21002.000)  ---> 	 = 96.422 +- 0.127
+ -->                         SIP 3D	  = 0.926 +- 0.002 		 19000.000  / 20509.000  (19000.000 / 20509.000)  ---> 	 = 89.328 +- 0.212
+ -->                     Isolation 	  = 0.853 +- 0.003 		 16205.000  / 19000.000  (16205.000 / 19000.000)  ---> 	 = 76.187 +- 0.292
+ -->                   dz selection	  = 1.000 +- 0.000 		 16205.000  / 16205.000  (16205.000 / 16205.000)  ---> 	 = 76.187 +- 0.292
+ -->                POG CB WP-M Id 	  = 0.950 +- 0.002 		 15398.000  / 16205.000  (15398.000 / 16205.000)  ---> 	 = 72.393 +- 0.307
+ -->               charge selection	  = 0.963 +- 0.002 		 14830.000  / 15398.000  (14830.000 / 15398.000)  ---> 	 = 69.723 +- 0.315
+ -->           conversion rejection	  = 0.018 +- 0.001 		 267.000  / 14830.000  (267.000 / 14830.000)  ---> 	 = 1.255 +- 0.076
+
+Begin efficiencies for TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 1225672.000  / 1225672.000  (1225672.000 / 1225672.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.977 +- 0.000 		 1197469.000  / 1225672.000  (1197469.000 / 1225672.000)  ---> 	 = 97.699 +- 0.014
+ -->                  eta selection	  = 1.000 +- 0.000 		 1197469.000  / 1197469.000  (1197469.000 / 1197469.000)  ---> 	 = 97.699 +- 0.014
+ -->             eta selection veto	  = 0.970 +- 0.000 		 1161240.000  / 1197469.000  (1161240.000 / 1197469.000)  ---> 	 = 94.743 +- 0.020
+ -->                         SIP 3D	  = 0.916 +- 0.000 		 1063642.000  / 1161240.000  (1063642.000 / 1161240.000)  ---> 	 = 86.780 +- 0.031
+ -->                     Isolation 	  = 0.828 +- 0.000 		 881080.000  / 1063642.000  (881080.000 / 1063642.000)  ---> 	 = 71.885 +- 0.041
+ -->                   dz selection	  = 1.000 +- 0.000 		 881080.000  / 881080.000  (881080.000 / 881080.000)  ---> 	 = 71.885 +- 0.041
+ -->                POG CB WP-M Id 	  = 0.926 +- 0.000 		 815950.000  / 881080.000  (815950.000 / 881080.000)  ---> 	 = 66.572 +- 0.043
+ -->               charge selection	  = 0.968 +- 0.000 		 789850.000  / 815950.000  (789850.000 / 815950.000)  ---> 	 = 64.442 +- 0.043
+ -->           conversion rejection	  = 0.017 +- 0.000 		 13083.000  / 789850.000  (13083.000 / 789850.000)  --->  = 1.067 +- 0.009
+
+Begin efficiencies for TTWJets_Tune4C_13TeV-madgraph-tauola   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 26707.000  / 26707.000  (26707.000 / 26707.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.984 +- 0.001 		 26279.000  / 26707.000  (26279.000 / 26707.000)  ---> 	 = 98.397 +- 0.077
+ -->                  eta selection	  = 1.000 +- 0.000 		 26279.000  / 26279.000  (26279.000 / 26279.000)  ---> 	 = 98.397 +- 0.077
+ -->             eta selection veto	  = 0.969 +- 0.001 		 25461.000  / 26279.000  (25461.000 / 26279.000)  ---> 	 = 95.335 +- 0.129
+ -->                         SIP 3D	  = 0.927 +- 0.002 		 23595.000  / 25461.000  (23595.000 / 25461.000)  ---> 	 = 88.348 +- 0.196
+ -->                     Isolation 	  = 0.825 +- 0.002 		 19464.000  / 23595.000  (19464.000 / 23595.000)  ---> 	 = 72.880 +- 0.272
+ -->                   dz selection	  = 1.000 +- 0.000 		 19464.000  / 19464.000  (19464.000 / 19464.000)  ---> 	 = 72.880 +- 0.272
+ -->                POG CB WP-M Id 	  = 0.931 +- 0.002 		 18118.000  / 19464.000  (18118.000 / 19464.000)  ---> 	 = 67.840 +- 0.286
+ -->               charge selection	  = 0.962 +- 0.001 		 17428.000  / 18118.000  (17428.000 / 18118.000)  ---> 	 = 65.256 +- 0.291
+ -->           conversion rejection	  = 0.021 +- 0.001 		 368.000  / 17428.000  (368.000 / 17428.000)  ---> 	 = 1.378 +- 0.071
+
+Begin efficiencies for TTZJets_Tune4C_13TeV-madgraph-tauola   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 25963.000  / 25963.000  (25963.000 / 25963.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.987 +- 0.001 		 25636.000  / 25963.000  (25636.000 / 25963.000)  ---> 	 = 98.741 +- 0.069
+ -->                  eta selection	  = 1.000 +- 0.000 		 25636.000  / 25636.000  (25636.000 / 25636.000)  ---> 	 = 98.741 +- 0.069
+ -->             eta selection veto	  = 0.973 +- 0.001 		 24939.000  / 25636.000  (24939.000 / 25636.000)  ---> 	 = 96.056 +- 0.121
+ -->                         SIP 3D	  = 0.936 +- 0.002 		 23354.000  / 24939.000  (23354.000 / 24939.000)  ---> 	 = 89.951 +- 0.187
+ -->                     Isolation 	  = 0.836 +- 0.002 		 19517.000  / 23354.000  (19517.000 / 23354.000)  ---> 	 = 75.172 +- 0.268
+ -->                   dz selection	  = 1.000 +- 0.000 		 19517.000  / 19517.000  (19517.000 / 19517.000)  ---> 	 = 75.172 +- 0.268
+ -->                POG CB WP-M Id 	  = 0.941 +- 0.002 		 18357.000  / 19517.000  (18357.000 / 19517.000)  ---> 	 = 70.704 +- 0.282
+ -->               charge selection	  = 0.964 +- 0.001 		 17691.000  / 18357.000  (17691.000 / 18357.000)  ---> 	 = 68.139 +- 0.289
+ -->           conversion rejection	  = 0.017 +- 0.001 		 305.000  / 17691.000  (305.000 / 17691.000)  ---> 	 = 1.175 +- 0.067
+
+Begin efficiencies for WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 18540.000  / 18540.000  (18540.000 / 18540.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.943 +- 0.002 		 17491.000  / 18540.000  (17491.000 / 18540.000)  ---> 	 = 94.342 +- 0.170
+ -->                  eta selection	  = 1.000 +- 0.000 		 17491.000  / 17491.000  (17491.000 / 17491.000)  ---> 	 = 94.342 +- 0.170
+ -->             eta selection veto	  = 0.954 +- 0.002 		 16684.000  / 17491.000  (16684.000 / 17491.000)  ---> 	 = 89.989 +- 0.220
+ -->                         SIP 3D	  = 0.919 +- 0.002 		 15336.000  / 16684.000  (15336.000 / 16684.000)  ---> 	 = 82.718 +- 0.278
+ -->                     Isolation 	  = 0.513 +- 0.004 		 7871.000  / 15336.000  (7871.000 / 15336.000)  ---> 	 = 42.454 +- 0.363
+ -->                   dz selection	  = 1.000 +- 0.000 		 7871.000  / 7871.000  (7871.000 / 7871.000)  ---> 	 = 42.454 +- 0.363
+ -->                POG CB WP-M Id 	  = 0.827 +- 0.004 		 6511.000  / 7871.000  (6511.000 / 7871.000)  ---> 	 = 35.119 +- 0.351
+ -->               charge selection	  = 0.933 +- 0.003 		 6073.000  / 6511.000  (6073.000 / 6511.000)  ---> 	 = 32.756 +- 0.345
+ -->           conversion rejection	  = 0.037 +- 0.002 		 223.000  / 6073.000  (223.000 / 6073.000)  ---> 	 = 1.203 +- 0.080
+
+Begin efficiencies for WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 26014.000  / 26014.000  (26014.000 / 26014.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.959 +- 0.001 		 24950.000  / 26014.000  (24950.000 / 26014.000)  ---> 	 = 95.910 +- 0.123
+ -->                  eta selection	  = 1.000 +- 0.000 		 24950.000  / 24950.000  (24950.000 / 24950.000)  ---> 	 = 95.910 +- 0.123
+ -->             eta selection veto	  = 0.955 +- 0.001 		 23838.000  / 24950.000  (23838.000 / 24950.000)  ---> 	 = 91.635 +- 0.172
+ -->                         SIP 3D	  = 0.903 +- 0.002 		 21518.000  / 23838.000  (21518.000 / 23838.000)  ---> 	 = 82.717 +- 0.234
+ -->                     Isolation 	  = 0.493 +- 0.003 		 10614.000  / 21518.000  (10614.000 / 21518.000)  ---> 	 = 40.801 +- 0.305
+ -->                   dz selection	  = 1.000 +- 0.000 		 10614.000  / 10614.000  (10614.000 / 10614.000)  ---> 	 = 40.801 +- 0.305
+ -->                POG CB WP-M Id 	  = 0.833 +- 0.004 		 8846.000  / 10614.000  (8846.000 / 10614.000)  ---> 	 = 34.005 +- 0.294
+ -->               charge selection	  = 0.922 +- 0.003 		 8152.000  / 8846.000  (8152.000 / 8846.000)  ---> 	 = 31.337 +- 0.288
+ -->           conversion rejection	  = 0.039 +- 0.002 		 322.000  / 8152.000  (322.000 / 8152.000)  ---> 	 = 1.238 +- 0.069
+
+Begin efficiencies for WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 33182.000  / 33182.000  (33182.000 / 33182.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.966 +- 0.001 		 32063.000  / 33182.000  (32063.000 / 33182.000)  ---> 	 = 96.628 +- 0.099
+ -->                  eta selection	  = 1.000 +- 0.000 		 32063.000  / 32063.000  (32063.000 / 32063.000)  ---> 	 = 96.628 +- 0.099
+ -->             eta selection veto	  = 0.956 +- 0.001 		 30652.000  / 32063.000  (30652.000 / 32063.000)  ---> 	 = 92.375 +- 0.146
+ -->                         SIP 3D	  = 0.891 +- 0.002 		 27324.000  / 30652.000  (27324.000 / 30652.000)  ---> 	 = 82.346 +- 0.209
+ -->                     Isolation 	  = 0.486 +- 0.003 		 13286.000  / 27324.000  (13286.000 / 27324.000)  ---> 	 = 40.040 +- 0.269
+ -->                   dz selection	  = 1.000 +- 0.000 		 13286.000  / 13286.000  (13286.000 / 13286.000)  ---> 	 = 40.040 +- 0.269
+ -->                POG CB WP-M Id 	  = 0.834 +- 0.003 		 11078.000  / 13286.000  (11078.000 / 13286.000)  ---> 	 = 33.386 +- 0.259
+ -->               charge selection	  = 0.904 +- 0.003 		 10015.000  / 11078.000  (10015.000 / 11078.000)  ---> 	 = 30.182 +- 0.252
+ -->           conversion rejection	  = 0.045 +- 0.002 		 451.000  / 10015.000  (451.000 / 10015.000)  ---> 	 = 1.359 +- 0.064
+
+Begin efficiencies for WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 38053.000  / 38053.000  (38053.000 / 38053.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.971 +- 0.001 		 36968.000  / 38053.000  (36968.000 / 38053.000)  ---> 	 = 97.149 +- 0.085
+ -->                  eta selection	  = 1.000 +- 0.000 		 36968.000  / 36968.000  (36968.000 / 36968.000)  ---> 	 = 97.149 +- 0.085
+ -->             eta selection veto	  = 0.954 +- 0.001 		 35253.000  / 36968.000  (35253.000 / 36968.000)  ---> 	 = 92.642 +- 0.134
+ -->                         SIP 3D	  = 0.873 +- 0.002 		 30789.000  / 35253.000  (30789.000 / 35253.000)  ---> 	 = 80.911 +- 0.201
+ -->                     Isolation 	  = 0.506 +- 0.003 		 15572.000  / 30789.000  (15572.000 / 30789.000)  ---> 	 = 40.922 +- 0.252
+ -->                   dz selection	  = 1.000 +- 0.000 		 15572.000  / 15572.000  (15572.000 / 15572.000)  ---> 	 = 40.922 +- 0.252
+ -->                POG CB WP-M Id 	  = 0.832 +- 0.003 		 12962.000  / 15572.000  (12962.000 / 15572.000)  ---> 	 = 34.063 +- 0.243
+ -->               charge selection	  = 0.887 +- 0.003 		 11494.000  / 12962.000  (11494.000 / 12962.000)  ---> 	 = 30.205 +- 0.235
+ -->           conversion rejection	  = 0.045 +- 0.002 		 519.000  / 11494.000  (519.000 / 11494.000)  ---> 	 = 1.364 +- 0.059
+
+Begin efficiencies for WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola   10  ********* 
+ -->            ElectronDenominator	  = 1.000 +- 0.000 		 112294.000  / 112294.000  (112294.000 / 112294.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.978 +- 0.000 		 109879.000  / 112294.000  (109879.000 / 112294.000)  ---> 	 = 97.849 +- 0.043
+ -->                  eta selection	  = 1.000 +- 0.000 		 109879.000  / 109879.000  (109879.000 / 109879.000)  ---> 	 = 97.849 +- 0.043
+ -->             eta selection veto	  = 0.968 +- 0.001 		 106376.000  / 109879.000  (106376.000 / 109879.000)  ---> 	 = 94.730 +- 0.067
+ -->                         SIP 3D	  = 0.955 +- 0.001 		 101543.000  / 106376.000  (101543.000 / 106376.000)  ---> 	 = 90.426 +- 0.088
+ -->                     Isolation 	  = 0.906 +- 0.001 		 91954.000  / 101543.000  (91954.000 / 101543.000)  --->  = 81.887 +- 0.115
+ -->                   dz selection	  = 1.000 +- 0.000 		 91954.000  / 91954.000  (91954.000 / 91954.000)  ---> 	 = 81.887 +- 0.115
+ -->                POG CB WP-M Id 	  = 0.922 +- 0.001 		 84801.000  / 91954.000  (84801.000 / 91954.000)  ---> 	 = 75.517 +- 0.128
+ -->               charge selection	  = 0.963 +- 0.001 		 81661.000  / 84801.000  (81661.000 / 84801.000)  ---> 	 = 72.721 +- 0.133
+ -->           conversion rejection	  = 0.018 +- 0.000 		 1446.000  / 81661.000  (1446.000 / 81661.000)  ---> 	 = 1.288 +- 0.034
+
+
+ ===================================================================== 
+ ============= Efficiency category :           veto El =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsToLL_M-50_13TeV-madgraph-pythia8   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 607773.000  / 607773.000  (607773.000 / 607773.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.994 +- 0.000 		 604165.000  / 607773.000  (604165.000 / 607773.000)  ---> 	 = 99.406 +- 0.010
+ -->                  eta selection	  = 1.000 +- 0.000 		 604165.000  / 604165.000  (604165.000 / 604165.000)  ---> 	 = 99.406 +- 0.010
+ -->             eta selection veto	  = 0.968 +- 0.000 		 584535.000  / 604165.000  (584535.000 / 604165.000)  ---> 	 = 96.177 +- 0.025
+ -->           conversion rejection	  = 0.010 +- 0.000 		 5611.000  / 584535.000  (5611.000 / 584535.000)  ---> 	 = 0.923 +- 0.012
+
+Begin efficiencies for DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 1122381.000  / 1122381.000  (1122381.000 / 1122381.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.991 +- 0.000 		 1112599.000  / 1122381.000  (1112599.000 / 1122381.000)  ---> 	 = 99.128 +- 0.009
+ -->                  eta selection	  = 1.000 +- 0.000 		 1112599.000  / 1112599.000  (1112599.000 / 1112599.000)  ---> 	 = 99.128 +- 0.009
+ -->             eta selection veto	  = 0.968 +- 0.000 		 1076567.000  / 1112599.000  (1076567.000 / 1112599.000)  ---> 	 = 95.918 +- 0.019
+ -->           conversion rejection	  = 0.010 +- 0.000 		 11028.000  / 1076567.000  (11028.000 / 1076567.000)  ---> 	 = 0.983 +- 0.009
+
+Begin efficiencies for DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 1404266.000  / 1404266.000  (1404266.000 / 1404266.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.991 +- 0.000 		 1391502.000  / 1404266.000  (1391502.000 / 1404266.000)  ---> 	 = 99.091 +- 0.008
+ -->                  eta selection	  = 1.000 +- 0.000 		 1391502.000  / 1391502.000  (1391502.000 / 1391502.000)  ---> 	 = 99.091 +- 0.008
+ -->             eta selection veto	  = 0.967 +- 0.000 		 1345850.000  / 1391502.000  (1345850.000 / 1391502.000)  ---> 	 = 95.840 +- 0.017
+ -->           conversion rejection	  = 0.011 +- 0.000 		 15318.000  / 1345850.000  (15318.000 / 1345850.000)  ---> 	 = 1.091 +- 0.009
+
+Begin efficiencies for DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 222008.000  / 222008.000  (222008.000 / 222008.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.991 +- 0.000 		 220006.000  / 222008.000  (220006.000 / 222008.000)  ---> 	 = 99.098 +- 0.020
+ -->                  eta selection	  = 1.000 +- 0.000 		 220006.000  / 220006.000  (220006.000 / 220006.000)  ---> 	 = 99.098 +- 0.020
+ -->             eta selection veto	  = 0.967 +- 0.000 		 212738.000  / 220006.000  (212738.000 / 220006.000)  ---> 	 = 95.824 +- 0.042
+ -->           conversion rejection	  = 0.012 +- 0.000 		 2617.000  / 212738.000  (2617.000 / 212738.000)  ---> 	 = 1.179 +- 0.023
+
+Begin efficiencies for DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 1562081.000  / 1562081.000  (1562081.000 / 1562081.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.992 +- 0.000 		 1549464.000  / 1562081.000  (1549464.000 / 1562081.000)  ---> 	 = 99.192 +- 0.007
+ -->                  eta selection	  = 1.000 +- 0.000 		 1549464.000  / 1549464.000  (1549464.000 / 1549464.000)  ---> 	 = 99.192 +- 0.007
+ -->             eta selection veto	  = 0.966 +- 0.000 		 1496543.000  / 1549464.000  (1496543.000 / 1549464.000)  ---> 	 = 95.804 +- 0.016
+ -->           conversion rejection	  = 0.013 +- 0.000 		 18914.000  / 1496543.000  (18914.000 / 1496543.000)  ---> 	 = 1.211 +- 0.009
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 19275.000  / 19275.000  (19275.000 / 19275.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.980 +- 0.001 		 18891.000  / 19275.000  (18891.000 / 19275.000)  ---> 	 = 98.008 +- 0.101
+ -->                  eta selection	  = 1.000 +- 0.000 		 18891.000  / 18891.000  (18891.000 / 18891.000)  ---> 	 = 98.008 +- 0.101
+ -->             eta selection veto	  = 0.981 +- 0.001 		 18526.000  / 18891.000  (18526.000 / 18891.000)  ---> 	 = 96.114 +- 0.139
+ -->           conversion rejection	  = 0.009 +- 0.001 		 174.000  / 18526.000  (174.000 / 18526.000)  ---> 	 = 0.903 +- 0.068
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 18433.000  / 18433.000  (18433.000 / 18433.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.985 +- 0.001 		 18160.000  / 18433.000  (18160.000 / 18433.000)  ---> 	 = 98.519 +- 0.089
+ -->                  eta selection	  = 1.000 +- 0.000 		 18160.000  / 18160.000  (18160.000 / 18160.000)  ---> 	 = 98.519 +- 0.089
+ -->             eta selection veto	  = 0.979 +- 0.001 		 17781.000  / 18160.000  (17781.000 / 18160.000)  ---> 	 = 96.463 +- 0.136
+ -->           conversion rejection	  = 0.012 +- 0.001 		 218.000  / 17781.000  (218.000 / 17781.000)  ---> 	 = 1.183 +- 0.080
+
+Begin efficiencies for T1ttbbWW_mGo1000_mCh725_mChi720   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 3049.000  / 3049.000  (3049.000 / 3049.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.972 +- 0.003 		 2963.000  / 3049.000  (2963.000 / 3049.000)  ---> 	 = 97.179 +- 0.300
+ -->                  eta selection	  = 1.000 +- 0.000 		 2963.000  / 2963.000  (2963.000 / 2963.000)  ---> 	 = 97.179 +- 0.300
+ -->             eta selection veto	  = 0.979 +- 0.003 		 2900.000  / 2963.000  (2900.000 / 2963.000)  ---> 	 = 95.113 +- 0.390
+ -->           conversion rejection	  = 0.011 +- 0.002 		 31.000  / 2900.000  (31.000 / 2900.000)  ---> 	 = 1.017 +- 0.182
+
+Begin efficiencies for T1ttbbWW_mGo1300_mCh300_mChi290   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 4054.000  / 4054.000  (4054.000 / 4054.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.937 +- 0.004 		 3800.000  / 4054.000  (3800.000 / 4054.000)  ---> 	 = 93.735 +- 0.381
+ -->                  eta selection	  = 1.000 +- 0.000 		 3800.000  / 3800.000  (3800.000 / 3800.000)  ---> 	 = 93.735 +- 0.381
+ -->             eta selection veto	  = 0.978 +- 0.002 		 3716.000  / 3800.000  (3716.000 / 3800.000)  ---> 	 = 91.663 +- 0.434
+ -->           conversion rejection	  = 0.012 +- 0.002 		 44.000  / 3716.000  (44.000 / 3716.000)  ---> 	 = 1.085 +- 0.163
+
+Begin efficiencies for T5qqqqWW_mGo1200_mCh1000_mChi800   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 4987.000  / 4987.000  (4987.000 / 4987.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.986 +- 0.002 		 4918.000  / 4987.000  (4918.000 / 4987.000)  ---> 	 = 98.616 +- 0.165
+ -->                  eta selection	  = 1.000 +- 0.000 		 4918.000  / 4918.000  (4918.000 / 4918.000)  ---> 	 = 98.616 +- 0.165
+ -->             eta selection veto	  = 0.978 +- 0.002 		 4808.000  / 4918.000  (4808.000 / 4918.000)  ---> 	 = 96.411 +- 0.263
+ -->           conversion rejection	  = 0.013 +- 0.002 		 63.000  / 4808.000  (63.000 / 4808.000)  ---> 	 = 1.263 +- 0.158
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mCh285_mChi280   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 3459.000  / 3459.000  (3459.000 / 3459.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.937 +- 0.004 		 3240.000  / 3459.000  (3240.000 / 3459.000)  ---> 	 = 93.669 +- 0.414
+ -->                  eta selection	  = 1.000 +- 0.000 		 3240.000  / 3240.000  (3240.000 / 3240.000)  ---> 	 = 93.669 +- 0.414
+ -->             eta selection veto	  = 0.981 +- 0.002 		 3178.000  / 3240.000  (3178.000 / 3240.000)  ---> 	 = 91.876 +- 0.465
+ -->           conversion rejection	  = 0.009 +- 0.002 		 28.000  / 3178.000  (28.000 / 3178.000)  ---> 	 = 0.809 +- 0.152
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mChi280   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 4958.000  / 4958.000  (4958.000 / 4958.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.938 +- 0.003 		 4651.000  / 4958.000  (4651.000 / 4958.000)  ---> 	 = 93.808 +- 0.342
+ -->                  eta selection	  = 1.000 +- 0.000 		 4651.000  / 4651.000  (4651.000 / 4651.000)  ---> 	 = 93.808 +- 0.342
+ -->             eta selection veto	  = 0.980 +- 0.002 		 4556.000  / 4651.000  (4556.000 / 4651.000)  ---> 	 = 91.892 +- 0.388
+ -->           conversion rejection	  = 0.010 +- 0.001 		 44.000  / 4556.000  (44.000 / 4556.000)  ---> 	 = 0.887 +- 0.133
+
+Begin efficiencies for T6ttWW_mSbot600_mCh425_mChi50   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 10576.000  / 10576.000  (10576.000 / 10576.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.985 +- 0.001 		 10420.000  / 10576.000  (10420.000 / 10576.000)  ---> 	 = 98.525 +- 0.117
+ -->                  eta selection	  = 1.000 +- 0.000 		 10420.000  / 10420.000  (10420.000 / 10420.000)  ---> 	 = 98.525 +- 0.117
+ -->             eta selection veto	  = 0.975 +- 0.002 		 10158.000  / 10420.000  (10158.000 / 10420.000)  ---> 	 = 96.048 +- 0.189
+ -->           conversion rejection	  = 0.011 +- 0.001 		 107.000  / 10158.000  (107.000 / 10158.000)  ---> 	 = 1.012 +- 0.097
+
+Begin efficiencies for T6ttWW_mSbot650_mCh150_mChi50   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 21003.000  / 21003.000  (21003.000 / 21003.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.987 +- 0.001 		 20735.000  / 21003.000  (20735.000 / 21003.000)  ---> 	 = 98.724 +- 0.077
+ -->                  eta selection	  = 1.000 +- 0.000 		 20735.000  / 20735.000  (20735.000 / 20735.000)  ---> 	 = 98.724 +- 0.077
+ -->             eta selection veto	  = 0.976 +- 0.001 		 20242.000  / 20735.000  (20242.000 / 20735.000)  ---> 	 = 96.377 +- 0.129
+ -->           conversion rejection	  = 0.011 +- 0.001 		 219.000  / 20242.000  (219.000 / 20242.000)  ---> 	 = 1.043 +- 0.070
+
+Begin efficiencies for TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 1212589.000  / 1212589.000  (1212589.000 / 1212589.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.977 +- 0.000 		 1184386.000  / 1212589.000  (1184386.000 / 1212589.000)  ---> 	 = 97.674 +- 0.014
+ -->                  eta selection	  = 1.000 +- 0.000 		 1184386.000  / 1184386.000  (1184386.000 / 1184386.000)  ---> 	 = 97.674 +- 0.014
+ -->             eta selection veto	  = 0.969 +- 0.000 		 1148157.000  / 1184386.000  (1148157.000 / 1184386.000)  ---> 	 = 94.686 +- 0.020
+ -->           conversion rejection	  = 0.013 +- 0.000 		 15201.000  / 1148157.000  (15201.000 / 1148157.000)  ---> 	 = 1.254 +- 0.010
+
+Begin efficiencies for TTWJets_Tune4C_13TeV-madgraph-tauola   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 26339.000  / 26339.000  (26339.000 / 26339.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.984 +- 0.001 		 25911.000  / 26339.000  (25911.000 / 26339.000)  ---> 	 = 98.375 +- 0.078
+ -->                  eta selection	  = 1.000 +- 0.000 		 25911.000  / 25911.000  (25911.000 / 25911.000)  ---> 	 = 98.375 +- 0.078
+ -->             eta selection veto	  = 0.968 +- 0.001 		 25093.000  / 25911.000  (25093.000 / 25911.000)  ---> 	 = 95.269 +- 0.131
+ -->           conversion rejection	  = 0.013 +- 0.001 		 332.000  / 25093.000  (332.000 / 25093.000)  ---> 	 = 1.260 +- 0.069
+
+Begin efficiencies for TTZJets_Tune4C_13TeV-madgraph-tauola   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 25658.000  / 25658.000  (25658.000 / 25658.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.987 +- 0.001 		 25331.000  / 25658.000  (25331.000 / 25658.000)  ---> 	 = 98.726 +- 0.070
+ -->                  eta selection	  = 1.000 +- 0.000 		 25331.000  / 25331.000  (25331.000 / 25331.000)  ---> 	 = 98.726 +- 0.070
+ -->             eta selection veto	  = 0.972 +- 0.001 		 24634.000  / 25331.000  (24634.000 / 25331.000)  ---> 	 = 96.009 +- 0.122
+ -->           conversion rejection	  = 0.013 +- 0.001 		 321.000  / 24634.000  (321.000 / 24634.000)  ---> 	 = 1.251 +- 0.069
+
+Begin efficiencies for WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 18317.000  / 18317.000  (18317.000 / 18317.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.943 +- 0.002 		 17268.000  / 18317.000  (17268.000 / 18317.000)  ---> 	 = 94.273 +- 0.172
+ -->                  eta selection	  = 1.000 +- 0.000 		 17268.000  / 17268.000  (17268.000 / 17268.000)  ---> 	 = 94.273 +- 0.172
+ -->             eta selection veto	  = 0.953 +- 0.002 		 16461.000  / 17268.000  (16461.000 / 17268.000)  ---> 	 = 89.867 +- 0.223
+ -->           conversion rejection	  = 0.062 +- 0.002 		 1022.000  / 16461.000  (1022.000 / 16461.000)  ---> 	 = 5.580 +- 0.170
+
+Begin efficiencies for WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 25692.000  / 25692.000  (25692.000 / 25692.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.959 +- 0.001 		 24628.000  / 25692.000  (24628.000 / 25692.000)  ---> 	 = 95.859 +- 0.124
+ -->                  eta selection	  = 1.000 +- 0.000 		 24628.000  / 24628.000  (24628.000 / 24628.000)  ---> 	 = 95.859 +- 0.124
+ -->             eta selection veto	  = 0.955 +- 0.001 		 23516.000  / 24628.000  (23516.000 / 24628.000)  ---> 	 = 91.530 +- 0.174
+ -->           conversion rejection	  = 0.068 +- 0.002 		 1588.000  / 23516.000  (1588.000 / 23516.000)  ---> 	 = 6.181 +- 0.150
+
+Begin efficiencies for WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 32731.000  / 32731.000  (32731.000 / 32731.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.966 +- 0.001 		 31612.000  / 32731.000  (31612.000 / 32731.000)  ---> 	 = 96.581 +- 0.100
+ -->                  eta selection	  = 1.000 +- 0.000 		 31612.000  / 31612.000  (31612.000 / 31612.000)  ---> 	 = 96.581 +- 0.100
+ -->             eta selection veto	  = 0.955 +- 0.001 		 30201.000  / 31612.000  (30201.000 / 31612.000)  ---> 	 = 92.270 +- 0.148
+ -->           conversion rejection	  = 0.074 +- 0.002 		 2248.000  / 30201.000  (2248.000 / 30201.000)  ---> 	 = 6.868 +- 0.140
+
+Begin efficiencies for WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 37534.000  / 37534.000  (37534.000 / 37534.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.971 +- 0.001 		 36449.000  / 37534.000  (36449.000 / 37534.000)  ---> 	 = 97.109 +- 0.086
+ -->                  eta selection	  = 1.000 +- 0.000 		 36449.000  / 36449.000  (36449.000 / 36449.000)  ---> 	 = 97.109 +- 0.086
+ -->             eta selection veto	  = 0.953 +- 0.001 		 34734.000  / 36449.000  (34734.000 / 36449.000)  ---> 	 = 92.540 +- 0.136
+ -->           conversion rejection	  = 0.076 +- 0.001 		 2645.000  / 34734.000  (2645.000 / 34734.000)  ---> 	 = 7.047 +- 0.132
+
+Begin efficiencies for WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola   5  ********* 
+ -->        VetoElectronDenominator	  = 1.000 +- 0.000 		 110848.000  / 110848.000  (110848.000 / 110848.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.978 +- 0.000 		 108433.000  / 110848.000  (108433.000 / 110848.000)  ---> 	 = 97.821 +- 0.044
+ -->                  eta selection	  = 1.000 +- 0.000 		 108433.000  / 108433.000  (108433.000 / 108433.000)  ---> 	 = 97.821 +- 0.044
+ -->             eta selection veto	  = 0.968 +- 0.001 		 104930.000  / 108433.000  (104930.000 / 108433.000)  ---> 	 = 94.661 +- 0.068
+ -->           conversion rejection	  = 0.010 +- 0.000 		 1040.000  / 104930.000  (1040.000 / 104930.000)  ---> 	 = 0.938 +- 0.029
+
+
+ ===================================================================== 
+ ============= Efficiency category :           muon Id =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsToLL_M-50_13TeV-madgraph-pythia8   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 862618.000  / 862618.000  (862618.000 / 862618.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.983 +- 0.000 		 848209.000  / 862618.000  (848209.000 / 862618.000)  ---> 	 = 98.330 +- 0.014
+ -->                         SIP 3D	  = 0.981 +- 0.000 		 832352.000  / 848209.000  (832352.000 / 848209.000)  ---> 	 = 96.491 +- 0.020
+ -->                     Isolation 	  = 0.921 +- 0.000 		 766884.000  / 832352.000  (766884.000 / 832352.000)  ---> 	 = 88.902 +- 0.034
+ -->                   dz selection	  = 1.000 +- 0.000 		 766884.000  / 766884.000  (766884.000 / 766884.000)  ---> 	 = 88.902 +- 0.034
+ -->                 POG CB WP-T Id	  = 0.982 +- 0.000 		 753345.000  / 766884.000  (753345.000 / 766884.000)  ---> 	 = 87.332 +- 0.036
+
+Begin efficiencies for DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 1540830.000  / 1540830.000  (1540830.000 / 1540830.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.976 +- 0.000 		 1504562.000  / 1540830.000  (1504562.000 / 1540830.000)  ---> 	 = 97.646 +- 0.012
+ -->                         SIP 3D	  = 0.974 +- 0.000 		 1465522.000  / 1504562.000  (1465522.000 / 1504562.000)  ---> 	 = 95.113 +- 0.017
+ -->                     Isolation 	  = 0.914 +- 0.000 		 1338964.000  / 1465522.000  (1338964.000 / 1465522.000)  ---> 	 = 86.899 +- 0.027
+ -->                   dz selection	  = 1.000 +- 0.000 		 1338964.000  / 1338964.000  (1338964.000 / 1338964.000)  ---> 	 = 86.899 +- 0.027
+ -->                 POG CB WP-T Id	  = 0.981 +- 0.000 		 1313055.000  / 1338964.000  (1313055.000 / 1338964.000)  ---> 	 = 85.217 +- 0.029
+
+Begin efficiencies for DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 1896057.000  / 1896057.000  (1896057.000 / 1896057.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.975 +- 0.000 		 1847996.000  / 1896057.000  (1847996.000 / 1896057.000)  ---> 	 = 97.465 +- 0.011
+ -->                         SIP 3D	  = 0.970 +- 0.000 		 1792754.000  / 1847996.000  (1792754.000 / 1847996.000)  ---> 	 = 94.552 +- 0.016
+ -->                     Isolation 	  = 0.915 +- 0.000 		 1639488.000  / 1792754.000  (1639488.000 / 1792754.000)  ---> 	 = 86.468 +- 0.025
+ -->                   dz selection	  = 1.000 +- 0.000 		 1639488.000  / 1639488.000  (1639488.000 / 1639488.000)  ---> 	 = 86.468 +- 0.025
+ -->                 POG CB WP-T Id	  = 0.979 +- 0.000 		 1605685.000  / 1639488.000  (1605685.000 / 1639488.000)  ---> 	 = 84.685 +- 0.026
+
+Begin efficiencies for DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 294333.000  / 294333.000  (294333.000 / 294333.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.975 +- 0.000 		 287098.000  / 294333.000  (287098.000 / 294333.000)  ---> 	 = 97.542 +- 0.029
+ -->                         SIP 3D	  = 0.966 +- 0.000 		 277371.000  / 287098.000  (277371.000 / 287098.000)  ---> 	 = 94.237 +- 0.043
+ -->                     Isolation 	  = 0.914 +- 0.001 		 253539.000  / 277371.000  (253539.000 / 277371.000)  ---> 	 = 86.140 +- 0.064
+ -->                   dz selection	  = 1.000 +- 0.000 		 253539.000  / 253539.000  (253539.000 / 253539.000)  ---> 	 = 86.140 +- 0.064
+ -->                 POG CB WP-T Id	  = 0.978 +- 0.000 		 247857.000  / 253539.000  (247857.000 / 253539.000)  ---> 	 = 84.210 +- 0.067
+
+Begin efficiencies for DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 2052654.000  / 2052654.000  (2052654.000 / 2052654.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.976 +- 0.000 		 2004143.000  / 2052654.000  (2004143.000 / 2052654.000)  ---> 	 = 97.637 +- 0.011
+ -->                         SIP 3D	  = 0.964 +- 0.000 		 1932591.000  / 2004143.000  (1932591.000 / 2004143.000)  ---> 	 = 94.151 +- 0.016
+ -->                     Isolation 	  = 0.909 +- 0.000 		 1756170.000  / 1932591.000  (1756170.000 / 1932591.000)  ---> 	 = 85.556 +- 0.025
+ -->                   dz selection	  = 1.000 +- 0.000 		 1756170.000  / 1756170.000  (1756170.000 / 1756170.000)  ---> 	 = 85.556 +- 0.025
+ -->                 POG CB WP-T Id	  = 0.975 +- 0.000 		 1712744.000  / 1756170.000  (1712744.000 / 1756170.000)  ---> 	 = 83.440 +- 0.026
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 23590.000  / 23590.000  (23590.000 / 23590.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.927 +- 0.002 		 21860.000  / 23590.000  (21860.000 / 23590.000)  ---> 	 = 92.666 +- 0.170
+ -->                         SIP 3D	  = 0.924 +- 0.002 		 20189.000  / 21860.000  (20189.000 / 21860.000)  ---> 	 = 85.583 +- 0.229
+ -->                     Isolation 	  = 0.773 +- 0.003 		 15615.000  / 20189.000  (15615.000 / 20189.000)  ---> 	 = 66.193 +- 0.308
+ -->                   dz selection	  = 1.000 +- 0.000 		 15615.000  / 15615.000  (15615.000 / 15615.000)  ---> 	 = 66.193 +- 0.308
+ -->                 POG CB WP-T Id	  = 0.978 +- 0.001 		 15279.000  / 15615.000  (15279.000 / 15615.000)  ---> 	 = 64.769 +- 0.311
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 21737.000  / 21737.000  (21737.000 / 21737.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.946 +- 0.002 		 20567.000  / 21737.000  (20567.000 / 21737.000)  ---> 	 = 94.617 +- 0.153
+ -->                         SIP 3D	  = 0.918 +- 0.002 		 18880.000  / 20567.000  (18880.000 / 20567.000)  ---> 	 = 86.857 +- 0.229
+ -->                     Isolation 	  = 0.798 +- 0.003 		 15074.000  / 18880.000  (15074.000 / 18880.000)  ---> 	 = 69.347 +- 0.313
+ -->                   dz selection	  = 1.000 +- 0.000 		 15074.000  / 15074.000  (15074.000 / 15074.000)  ---> 	 = 69.347 +- 0.313
+ -->                 POG CB WP-T Id	  = 0.973 +- 0.001 		 14670.000  / 15074.000  (14670.000 / 15074.000)  ---> 	 = 67.489 +- 0.318
+
+Begin efficiencies for T1ttbbWW_mGo1000_mCh725_mChi720   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 4305.000  / 4305.000  (4305.000 / 4305.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.816 +- 0.006 		 3515.000  / 4305.000  (3515.000 / 4305.000)  ---> 	 = 81.649 +- 0.590
+ -->                         SIP 3D	  = 0.859 +- 0.006 		 3020.000  / 3515.000  (3020.000 / 3515.000)  ---> 	 = 70.151 +- 0.697
+ -->                     Isolation 	  = 0.784 +- 0.007 		 2367.000  / 3020.000  (2367.000 / 3020.000)  ---> 	 = 54.983 +- 0.758
+ -->                   dz selection	  = 1.000 +- 0.000 		 2367.000  / 2367.000  (2367.000 / 2367.000)  ---> 	 = 54.983 +- 0.758
+ -->                 POG CB WP-T Id	  = 0.973 +- 0.003 		 2303.000  / 2367.000  (2303.000 / 2367.000)  ---> 	 = 53.496 +- 0.760
+
+Begin efficiencies for T1ttbbWW_mGo1300_mCh300_mChi290   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 5539.000  / 5539.000  (5539.000 / 5539.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.791 +- 0.005 		 4384.000  / 5539.000  (4384.000 / 5539.000)  ---> 	 = 79.148 +- 0.546
+ -->                         SIP 3D	  = 0.914 +- 0.004 		 4008.000  / 4384.000  (4008.000 / 4384.000)  ---> 	 = 72.360 +- 0.601
+ -->                     Isolation 	  = 0.773 +- 0.007 		 3097.000  / 4008.000  (3097.000 / 4008.000)  ---> 	 = 55.913 +- 0.667
+ -->                   dz selection	  = 1.000 +- 0.000 		 3097.000  / 3097.000  (3097.000 / 3097.000)  ---> 	 = 55.913 +- 0.667
+ -->                 POG CB WP-T Id	  = 0.976 +- 0.003 		 3022.000  / 3097.000  (3022.000 / 3097.000)  ---> 	 = 54.559 +- 0.669
+
+Begin efficiencies for T5qqqqWW_mGo1200_mCh1000_mChi800   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 5219.000  / 5219.000  (5219.000 / 5219.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.956 +- 0.003 		 4989.000  / 5219.000  (4989.000 / 5219.000)  ---> 	 = 95.593 +- 0.284
+ -->                         SIP 3D	  = 0.944 +- 0.003 		 4710.000  / 4989.000  (4710.000 / 4989.000)  ---> 	 = 90.247 +- 0.411
+ -->                     Isolation 	  = 0.864 +- 0.005 		 4069.000  / 4710.000  (4069.000 / 4710.000)  ---> 	 = 77.965 +- 0.574
+ -->                   dz selection	  = 1.000 +- 0.000 		 4069.000  / 4069.000  (4069.000 / 4069.000)  ---> 	 = 77.965 +- 0.574
+ -->                 POG CB WP-T Id	  = 0.981 +- 0.002 		 3992.000  / 4069.000  (3992.000 / 4069.000)  ---> 	 = 76.490 +- 0.587
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mCh285_mChi280   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 5130.000  / 5130.000  (5130.000 / 5130.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.725 +- 0.006 		 3721.000  / 5130.000  (3721.000 / 5130.000)  ---> 	 = 72.534 +- 0.623
+ -->                         SIP 3D	  = 0.891 +- 0.005 		 3316.000  / 3721.000  (3316.000 / 3721.000)  ---> 	 = 64.639 +- 0.667
+ -->                     Isolation 	  = 0.781 +- 0.007 		 2591.000  / 3316.000  (2591.000 / 3316.000)  ---> 	 = 50.507 +- 0.698
+ -->                   dz selection	  = 1.000 +- 0.000 		 2591.000  / 2591.000  (2591.000 / 2591.000)  ---> 	 = 50.507 +- 0.698
+ -->                 POG CB WP-T Id	  = 0.976 +- 0.003 		 2528.000  / 2591.000  (2528.000 / 2591.000)  ---> 	 = 49.279 +- 0.698
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mChi280   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 7127.000  / 7127.000  (7127.000 / 7127.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.766 +- 0.005 		 5457.000  / 7127.000  (5457.000 / 7127.000)  ---> 	 = 76.568 +- 0.502
+ -->                         SIP 3D	  = 0.919 +- 0.004 		 5013.000  / 5457.000  (5013.000 / 5457.000)  ---> 	 = 70.338 +- 0.541
+ -->                     Isolation 	  = 0.740 +- 0.006 		 3712.000  / 5013.000  (3712.000 / 5013.000)  ---> 	 = 52.084 +- 0.592
+ -->                   dz selection	  = 1.000 +- 0.000 		 3712.000  / 3712.000  (3712.000 / 3712.000)  ---> 	 = 52.084 +- 0.592
+ -->                 POG CB WP-T Id	  = 0.975 +- 0.003 		 3621.000  / 3712.000  (3621.000 / 3712.000)  ---> 	 = 50.807 +- 0.592
+
+Begin efficiencies for T6ttWW_mSbot600_mCh425_mChi50   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 12579.000  / 12579.000  (12579.000 / 12579.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.947 +- 0.002 		 11913.000  / 12579.000  (11913.000 / 12579.000)  ---> 	 = 94.705 +- 0.200
+ -->                         SIP 3D	  = 0.933 +- 0.002 		 11112.000  / 11913.000  (11112.000 / 11913.000)  ---> 	 = 88.338 +- 0.286
+ -->                     Isolation 	  = 0.839 +- 0.003 		 9323.000  / 11112.000  (9323.000 / 11112.000)  ---> 	 = 74.116 +- 0.391
+ -->                   dz selection	  = 1.000 +- 0.000 		 9323.000  / 9323.000  (9323.000 / 9323.000)  ---> 	 = 74.116 +- 0.391
+ -->                 POG CB WP-T Id	  = 0.974 +- 0.002 		 9076.000  / 9323.000  (9076.000 / 9323.000)  ---> 	 = 72.152 +- 0.400
+
+Begin efficiencies for T6ttWW_mSbot650_mCh150_mChi50   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 24199.000  / 24199.000  (24199.000 / 24199.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.950 +- 0.001 		 22992.000  / 24199.000  (22992.000 / 24199.000)  ---> 	 = 95.012 +- 0.140
+ -->                         SIP 3D	  = 0.933 +- 0.002 		 21444.000  / 22992.000  (21444.000 / 22992.000)  ---> 	 = 88.615 +- 0.204
+ -->                     Isolation 	  = 0.865 +- 0.002 		 18552.000  / 21444.000  (18552.000 / 21444.000)  ---> 	 = 76.664 +- 0.272
+ -->                   dz selection	  = 1.000 +- 0.000 		 18552.000  / 18552.000  (18552.000 / 18552.000)  ---> 	 = 76.664 +- 0.272
+ -->                 POG CB WP-T Id	  = 0.977 +- 0.001 		 18119.000  / 18552.000  (18119.000 / 18552.000)  ---> 	 = 74.875 +- 0.279
+
+Begin efficiencies for TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 1501042.000  / 1501042.000  (1501042.000 / 1501042.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.915 +- 0.000 		 1373610.000  / 1501042.000  (1373610.000 / 1501042.000)  ---> 	 = 91.510 +- 0.023
+ -->                         SIP 3D	  = 0.901 +- 0.000 		 1237418.000  / 1373610.000  (1237418.000 / 1373610.000)  ---> 	 = 82.437 +- 0.031
+ -->                     Isolation 	  = 0.847 +- 0.000 		 1048660.000  / 1237418.000  (1048660.000 / 1237418.000)  ---> 	 = 69.862 +- 0.037
+ -->                   dz selection	  = 1.000 +- 0.000 		 1048660.000  / 1048660.000  (1048660.000 / 1048660.000)  ---> 	 = 69.862 +- 0.037
+ -->                 POG CB WP-T Id	  = 0.979 +- 0.000 		 1026798.000  / 1048660.000  (1026798.000 / 1048660.000)  ---> 	 = 68.406 +- 0.038
+
+Begin efficiencies for TTWJets_Tune4C_13TeV-madgraph-tauola   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 30924.000  / 30924.000  (30924.000 / 30924.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.940 +- 0.001 		 29059.000  / 30924.000  (29059.000 / 30924.000)  ---> 	 = 93.969 +- 0.135
+ -->                         SIP 3D	  = 0.923 +- 0.002 		 26811.000  / 29059.000  (26811.000 / 29059.000)  ---> 	 = 86.700 +- 0.193
+ -->                     Isolation 	  = 0.852 +- 0.002 		 22842.000  / 26811.000  (22842.000 / 26811.000)  ---> 	 = 73.865 +- 0.250
+ -->                   dz selection	  = 1.000 +- 0.000 		 22842.000  / 22842.000  (22842.000 / 22842.000)  ---> 	 = 73.865 +- 0.250
+ -->                 POG CB WP-T Id	  = 0.979 +- 0.001 		 22364.000  / 22842.000  (22364.000 / 22842.000)  ---> 	 = 72.319 +- 0.254
+
+Begin efficiencies for TTZJets_Tune4C_13TeV-madgraph-tauola   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 31032.000  / 31032.000  (31032.000 / 31032.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.953 +- 0.001 		 29583.000  / 31032.000  (29583.000 / 31032.000)  ---> 	 = 95.331 +- 0.120
+ -->                         SIP 3D	  = 0.936 +- 0.001 		 27679.000  / 29583.000  (27679.000 / 29583.000)  ---> 	 = 89.195 +- 0.176
+ -->                     Isolation 	  = 0.853 +- 0.002 		 23614.000  / 27679.000  (23614.000 / 27679.000)  ---> 	 = 76.096 +- 0.242
+ -->                   dz selection	  = 1.000 +- 0.000 		 23614.000  / 23614.000  (23614.000 / 23614.000)  ---> 	 = 76.096 +- 0.242
+ -->                 POG CB WP-T Id	  = 0.979 +- 0.001 		 23122.000  / 23614.000  (23122.000 / 23614.000)  ---> 	 = 74.510 +- 0.247
+
+Begin efficiencies for WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 14935.000  / 14935.000  (14935.000 / 14935.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.731 +- 0.004 		 10916.000  / 14935.000  (10916.000 / 14935.000)  ---> 	 = 73.090 +- 0.363
+ -->                         SIP 3D	  = 0.897 +- 0.003 		 9791.000  / 10916.000  (9791.000 / 10916.000)  ---> 	 = 65.557 +- 0.389
+ -->                     Isolation 	  = 0.805 +- 0.004 		 7877.000  / 9791.000  (7877.000 / 9791.000)  ---> 	 = 52.742 +- 0.409
+ -->                   dz selection	  = 1.000 +- 0.000 		 7877.000  / 7877.000  (7877.000 / 7877.000)  ---> 	 = 52.742 +- 0.409
+ -->                 POG CB WP-T Id	  = 0.979 +- 0.002 		 7711.000  / 7877.000  (7711.000 / 7877.000)  ---> 	 = 51.630 +- 0.409
+
+Begin efficiencies for WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 19056.000  / 19056.000  (19056.000 / 19056.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.766 +- 0.003 		 14589.000  / 19056.000  (14589.000 / 19056.000)  ---> 	 = 76.559 +- 0.307
+ -->                         SIP 3D	  = 0.881 +- 0.003 		 12855.000  / 14589.000  (12855.000 / 14589.000)  ---> 	 = 67.459 +- 0.339
+ -->                     Isolation 	  = 0.810 +- 0.003 		 10408.000  / 12855.000  (10408.000 / 12855.000)  ---> 	 = 54.618 +- 0.361
+ -->                   dz selection	  = 1.000 +- 0.000 		 10408.000  / 10408.000  (10408.000 / 10408.000)  ---> 	 = 54.618 +- 0.361
+ -->                 POG CB WP-T Id	  = 0.977 +- 0.001 		 10167.000  / 10408.000  (10167.000 / 10408.000)  ---> 	 = 53.353 +- 0.361
+
+Begin efficiencies for WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 22119.000  / 22119.000  (22119.000 / 22119.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.787 +- 0.003 		 17415.000  / 22119.000  (17415.000 / 22119.000)  ---> 	 = 78.733 +- 0.275
+ -->                         SIP 3D	  = 0.873 +- 0.003 		 15210.000  / 17415.000  (15210.000 / 17415.000)  ---> 	 = 68.764 +- 0.312
+ -->                     Isolation 	  = 0.821 +- 0.003 		 12495.000  / 15210.000  (12495.000 / 15210.000)  ---> 	 = 56.490 +- 0.333
+ -->                   dz selection	  = 1.000 +- 0.000 		 12495.000  / 12495.000  (12495.000 / 12495.000)  ---> 	 = 56.490 +- 0.333
+ -->                 POG CB WP-T Id	  = 0.976 +- 0.001 		 12190.000  / 12495.000  (12190.000 / 12495.000)  ---> 	 = 55.111 +- 0.334
+
+Begin efficiencies for WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 24399.000  / 24399.000  (24399.000 / 24399.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.803 +- 0.003 		 19590.000  / 24399.000  (19590.000 / 24399.000)  ---> 	 = 80.290 +- 0.255
+ -->                         SIP 3D	  = 0.871 +- 0.002 		 17063.000  / 19590.000  (17063.000 / 19590.000)  ---> 	 = 69.933 +- 0.294
+ -->                     Isolation 	  = 0.820 +- 0.003 		 13998.000  / 17063.000  (13998.000 / 17063.000)  ---> 	 = 57.371 +- 0.317
+ -->                   dz selection	  = 1.000 +- 0.000 		 13998.000  / 13998.000  (13998.000 / 13998.000)  ---> 	 = 57.371 +- 0.317
+ -->                 POG CB WP-T Id	  = 0.973 +- 0.001 		 13626.000  / 13998.000  (13626.000 / 13998.000)  ---> 	 = 55.847 +- 0.318
+
+Begin efficiencies for WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola   6  ********* 
+ -->                MuonDenominator	  = 1.000 +- 0.000 		 146649.000  / 146649.000  (146649.000 / 146649.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.930 +- 0.001 		 136405.000  / 146649.000  (136405.000 / 146649.000)  ---> 	 = 93.015 +- 0.067
+ -->                         SIP 3D	  = 0.964 +- 0.001 		 131554.000  / 136405.000  (131554.000 / 136405.000)  ---> 	 = 89.707 +- 0.079
+ -->                     Isolation 	  = 0.909 +- 0.001 		 119553.000  / 131554.000  (119553.000 / 131554.000)  ---> 	 = 81.523 +- 0.101
+ -->                   dz selection	  = 1.000 +- 0.000 		 119553.000  / 119553.000  (119553.000 / 119553.000)  ---> 	 = 81.523 +- 0.101
+ -->                 POG CB WP-T Id	  = 0.981 +- 0.000 		 117282.000  / 119553.000  (117282.000 / 119553.000)  ---> 	 = 79.975 +- 0.105
+
+
+ ===================================================================== 
+ ============= Efficiency category :           veto Mu =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsToLL_M-50_13TeV-madgraph-pythia8   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 109273.000  / 109273.000  (109273.000 / 109273.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.868 +- 0.001 		 94864.000  / 109273.000  (94864.000 / 109273.000)  --->  = 86.814 +- 0.102
+ -->                  eta selection	  = 1.000 +- 0.000 		 94864.000  / 94864.000  (94864.000 / 94864.000)  ---> 	 = 86.814 +- 0.102
+
+Begin efficiencies for DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 227775.000  / 227775.000  (227775.000 / 227775.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.841 +- 0.001 		 191507.000  / 227775.000  (191507.000 / 227775.000)  ---> 	 = 84.077 +- 0.077
+ -->                  eta selection	  = 1.000 +- 0.000 		 191507.000  / 191507.000  (191507.000 / 191507.000)  ---> 	 = 84.077 +- 0.077
+
+Begin efficiencies for DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 290372.000  / 290372.000  (290372.000 / 290372.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.834 +- 0.001 		 242311.000  / 290372.000  (242311.000 / 290372.000)  ---> 	 = 83.448 +- 0.069
+ -->                  eta selection	  = 1.000 +- 0.000 		 242311.000  / 242311.000  (242311.000 / 242311.000)  ---> 	 = 83.448 +- 0.069
+
+Begin efficiencies for DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 46476.000  / 46476.000  (46476.000 / 46476.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.844 +- 0.002 		 39241.000  / 46476.000  (39241.000 / 46476.000)  ---> 	 = 84.433 +- 0.168
+ -->                  eta selection	  = 1.000 +- 0.000 		 39241.000  / 39241.000  (39241.000 / 39241.000)  ---> 	 = 84.433 +- 0.168
+
+Begin efficiencies for DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 339910.000  / 339910.000  (339910.000 / 339910.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.857 +- 0.001 		 291399.000  / 339910.000  (291399.000 / 339910.000)  ---> 	 = 85.728 +- 0.060
+ -->                  eta selection	  = 1.000 +- 0.000 		 291399.000  / 291399.000  (291399.000 / 291399.000)  ---> 	 = 85.728 +- 0.060
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 8311.000  / 8311.000  (8311.000 / 8311.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.792 +- 0.004 		 6581.000  / 8311.000  (6581.000 / 8311.000)  ---> 	 = 79.184 +- 0.445
+ -->                  eta selection	  = 1.000 +- 0.000 		 6581.000  / 6581.000  (6581.000 / 6581.000)  ---> 	 = 79.184 +- 0.445
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 7067.000  / 7067.000  (7067.000 / 7067.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.834 +- 0.004 		 5897.000  / 7067.000  (5897.000 / 7067.000)  ---> 	 = 83.444 +- 0.442
+ -->                  eta selection	  = 1.000 +- 0.000 		 5897.000  / 5897.000  (5897.000 / 5897.000)  ---> 	 = 83.444 +- 0.442
+
+Begin efficiencies for T1ttbbWW_mGo1000_mCh725_mChi720   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 2002.000  / 2002.000  (2002.000 / 2002.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.605 +- 0.011 		 1212.000  / 2002.000  (1212.000 / 2002.000)  ---> 	 = 60.539 +- 1.092
+ -->                  eta selection	  = 1.000 +- 0.000 		 1212.000  / 1212.000  (1212.000 / 1212.000)  ---> 	 = 60.539 +- 1.092
+
+Begin efficiencies for T1ttbbWW_mGo1300_mCh300_mChi290   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 2517.000  / 2517.000  (2517.000 / 2517.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.541 +- 0.010 		 1362.000  / 2517.000  (1362.000 / 2517.000)  ---> 	 = 54.112 +- 0.993
+ -->                  eta selection	  = 1.000 +- 0.000 		 1362.000  / 1362.000  (1362.000 / 1362.000)  ---> 	 = 54.112 +- 0.993
+
+Begin efficiencies for T5qqqqWW_mGo1200_mCh1000_mChi800   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 1227.000  / 1227.000  (1227.000 / 1227.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.813 +- 0.011 		 997.000  / 1227.000  (997.000 / 1227.000)  ---> 	 = 81.255 +- 1.114
+ -->                  eta selection	  = 1.000 +- 0.000 		 997.000  / 997.000  (997.000 / 997.000)  ---> 	 = 81.255 +- 1.114
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mCh285_mChi280   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 2602.000  / 2602.000  (2602.000 / 2602.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.458 +- 0.010 		 1193.000  / 2602.000  (1193.000 / 2602.000)  ---> 	 = 45.849 +- 0.977
+ -->                  eta selection	  = 1.000 +- 0.000 		 1193.000  / 1193.000  (1193.000 / 1193.000)  ---> 	 = 45.849 +- 0.977
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mChi280   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 3506.000  / 3506.000  (3506.000 / 3506.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.524 +- 0.008 		 1836.000  / 3506.000  (1836.000 / 3506.000)  ---> 	 = 52.367 +- 0.843
+ -->                  eta selection	  = 1.000 +- 0.000 		 1836.000  / 1836.000  (1836.000 / 1836.000)  ---> 	 = 52.367 +- 0.843
+
+Begin efficiencies for T6ttWW_mSbot600_mCh425_mChi50   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 3503.000  / 3503.000  (3503.000 / 3503.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.810 +- 0.007 		 2837.000  / 3503.000  (2837.000 / 3503.000)  ---> 	 = 80.988 +- 0.663
+ -->                  eta selection	  = 1.000 +- 0.000 		 2837.000  / 2837.000  (2837.000 / 2837.000)  ---> 	 = 80.988 +- 0.663
+
+Begin efficiencies for T6ttWW_mSbot650_mCh150_mChi50   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 6080.000  / 6080.000  (6080.000 / 6080.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.801 +- 0.005 		 4873.000  / 6080.000  (4873.000 / 6080.000)  ---> 	 = 80.148 +- 0.512
+ -->                  eta selection	  = 1.000 +- 0.000 		 4873.000  / 4873.000  (4873.000 / 4873.000)  ---> 	 = 80.148 +- 0.512
+
+Begin efficiencies for TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 474244.000  / 474244.000  (474244.000 / 474244.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.731 +- 0.001 		 346812.000  / 474244.000  (346812.000 / 474244.000)  ---> 	 = 73.129 +- 0.064
+ -->                  eta selection	  = 1.000 +- 0.000 		 346812.000  / 346812.000  (346812.000 / 346812.000)  ---> 	 = 73.129 +- 0.064
+
+Begin efficiencies for TTWJets_Tune4C_13TeV-madgraph-tauola   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 8560.000  / 8560.000  (8560.000 / 8560.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.782 +- 0.004 		 6695.000  / 8560.000  (6695.000 / 8560.000)  ---> 	 = 78.213 +- 0.446
+ -->                  eta selection	  = 1.000 +- 0.000 		 6695.000  / 6695.000  (6695.000 / 6695.000)  ---> 	 = 78.213 +- 0.446
+
+Begin efficiencies for TTZJets_Tune4C_13TeV-madgraph-tauola   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 7910.000  / 7910.000  (7910.000 / 7910.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.817 +- 0.004 		 6461.000  / 7910.000  (6461.000 / 7910.000)  ---> 	 = 81.681 +- 0.435
+ -->                  eta selection	  = 1.000 +- 0.000 		 6461.000  / 6461.000  (6461.000 / 6461.000)  ---> 	 = 81.681 +- 0.435
+
+Begin efficiencies for WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 7224.000  / 7224.000  (7224.000 / 7224.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.444 +- 0.006 		 3205.000  / 7224.000  (3205.000 / 7224.000)  ---> 	 = 44.366 +- 0.585
+ -->                  eta selection	  = 1.000 +- 0.000 		 3205.000  / 3205.000  (3205.000 / 3205.000)  ---> 	 = 44.366 +- 0.585
+
+Begin efficiencies for WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 8889.000  / 8889.000  (8889.000 / 8889.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.497 +- 0.005 		 4422.000  / 8889.000  (4422.000 / 8889.000)  ---> 	 = 49.747 +- 0.530
+ -->                  eta selection	  = 1.000 +- 0.000 		 4422.000  / 4422.000  (4422.000 / 4422.000)  ---> 	 = 49.747 +- 0.530
+
+Begin efficiencies for WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 9929.000  / 9929.000  (9929.000 / 9929.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.526 +- 0.005 		 5225.000  / 9929.000  (5225.000 / 9929.000)  ---> 	 = 52.624 +- 0.501
+ -->                  eta selection	  = 1.000 +- 0.000 		 5225.000  / 5225.000  (5225.000 / 5225.000)  ---> 	 = 52.624 +- 0.501
+
+Begin efficiencies for WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 10773.000  / 10773.000  (10773.000 / 10773.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.554 +- 0.005 		 5964.000  / 10773.000  (5964.000 / 10773.000)  ---> 	 = 55.361 +- 0.479
+ -->                  eta selection	  = 1.000 +- 0.000 		 5964.000  / 5964.000  (5964.000 / 5964.000)  ---> 	 = 55.361 +- 0.479
+
+Begin efficiencies for WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola   3  ********* 
+ -->            VetoMuonDenominator	  = 1.000 +- 0.000 		 29367.000  / 29367.000  (29367.000 / 29367.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.651 +- 0.003 		 19123.000  / 29367.000  (19123.000 / 29367.000)  ---> 	 = 65.117 +- 0.278
+ -->                  eta selection	  = 1.000 +- 0.000 		 19123.000  / 19123.000  (19123.000 / 19123.000)  ---> 	 = 65.117 +- 0.278
+
+
+ ===================================================================== 
+ ============= Efficiency category :            jet Id =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsToLL_M-50_13TeV-madgraph-pythia8   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 296173.000  / 296173.000  (296173.000 / 296173.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.483 +- 0.001 		 143082.000  / 296173.000  (143082.000 / 296173.000)  ---> 	 = 48.310 +- 0.092
+ -->                  eta selection	  = 1.000 +- 0.000 		 143082.000  / 143082.000  (143082.000 / 143082.000)  ---> 	 = 48.310 +- 0.092
+ -->                   dR selection	  = 1.000 +- 0.000 		 163635.000  / 143082.000  (163635.000 / 143082.000)  ---> 	 = 55.250 +- 0.091
+
+Begin efficiencies for DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 2205440.000  / 2205440.000  (2205440.000 / 2205440.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.674 +- 0.000 		 1486604.000  / 2205440.000  (1486604.000 / 2205440.000)  ---> 	 = 67.406 +- 0.032
+ -->                  eta selection	  = 1.000 +- 0.000 		 1486604.000  / 1486604.000  (1486604.000 / 1486604.000)  ---> 	 = 67.406 +- 0.032
+ -->                   dR selection	  = 1.000 +- 0.000 		 1703564.000  / 1486604.000  (1703564.000 / 1486604.000)  ---> 	 = 77.244 +- 0.028
+
+Begin efficiencies for DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 4027026.000  / 4027026.000  (4027026.000 / 4027026.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.769 +- 0.000 		 3097332.000  / 4027026.000  (3097332.000 / 4027026.000)  ---> 	 = 76.914 +- 0.021
+ -->                  eta selection	  = 1.000 +- 0.000 		 3097332.000  / 3097332.000  (3097332.000 / 3097332.000)  ---> 	 = 76.914 +- 0.021
+ -->                   dR selection	  = 1.000 +- 0.000 		 3535452.000  / 3097332.000  (3535452.000 / 3097332.000)  ---> 	 = 87.793 +- 0.016
+
+Begin efficiencies for DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 821271.000  / 821271.000  (821271.000 / 821271.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.818 +- 0.000 		 672097.000  / 821271.000  (672097.000 / 821271.000)  ---> 	 = 81.836 +- 0.043
+ -->                  eta selection	  = 1.000 +- 0.000 		 672097.000  / 672097.000  (672097.000 / 672097.000)  ---> 	 = 81.836 +- 0.043
+ -->                   dR selection	  = 1.000 +- 0.000 		 764206.000  / 672097.000  (764206.000 / 672097.000)  ---> 	 = 93.052 +- 0.028
+
+Begin efficiencies for DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 6745458.000  / 6745458.000  (6745458.000 / 6745458.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.839 +- 0.000 		 5658247.000  / 6745458.000  (5658247.000 / 6745458.000)  ---> 	 = 83.882 +- 0.014
+ -->                  eta selection	  = 1.000 +- 0.000 		 5658247.000  / 5658247.000  (5658247.000 / 5658247.000)  ---> 	 = 83.882 +- 0.014
+ -->                   dR selection	  = 1.000 +- 0.000 		 6419390.000  / 5658247.000  (6419390.000 / 5658247.000)  ---> 	 = 95.166 +- 0.008
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 136694.000  / 136694.000  (136694.000 / 136694.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.758 +- 0.001 		 103624.000  / 136694.000  (103624.000 / 136694.000)  ---> 	 = 75.807 +- 0.116
+ -->                  eta selection	  = 1.000 +- 0.000 		 103624.000  / 103624.000  (103624.000 / 103624.000)  ---> 	 = 75.807 +- 0.116
+ -->                   dR selection	  = 1.000 +- 0.000 		 116058.000  / 103624.000  (116058.000 / 103624.000)  ---> 	 = 84.904 +- 0.097
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 137310.000  / 137310.000  (137310.000 / 137310.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.846 +- 0.001 		 116208.000  / 137310.000  (116208.000 / 137310.000)  ---> 	 = 84.632 +- 0.097
+ -->                  eta selection	  = 1.000 +- 0.000 		 116208.000  / 116208.000  (116208.000 / 116208.000)  ---> 	 = 84.632 +- 0.097
+ -->                   dR selection	  = 1.000 +- 0.000 		 130092.000  / 116208.000  (130092.000 / 116208.000)  ---> 	 = 94.743 +- 0.060
+
+Begin efficiencies for T1ttbbWW_mGo1000_mCh725_mChi720   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 17614.000  / 17614.000  (17614.000 / 17614.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.750 +- 0.003 		 13211.000  / 17614.000  (13211.000 / 17614.000)  ---> 	 = 75.003 +- 0.326
+ -->                  eta selection	  = 1.000 +- 0.000 		 13211.000  / 13211.000  (13211.000 / 13211.000)  ---> 	 = 75.003 +- 0.326
+ -->                   dR selection	  = 0.975 +- 0.001 		 12886.000  / 13211.000  (12886.000 / 13211.000)  ---> 	 = 73.158 +- 0.334
+
+Begin efficiencies for T1ttbbWW_mGo1300_mCh300_mChi290   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 29594.000  / 29594.000  (29594.000 / 29594.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.838 +- 0.002 		 24793.000  / 29594.000  (24793.000 / 29594.000)  ---> 	 = 83.777 +- 0.214
+ -->                  eta selection	  = 1.000 +- 0.000 		 24793.000  / 24793.000  (24793.000 / 24793.000)  ---> 	 = 83.777 +- 0.214
+ -->                   dR selection	  = 0.970 +- 0.001 		 24058.000  / 24793.000  (24058.000 / 24793.000)  ---> 	 = 81.294 +- 0.227
+
+Begin efficiencies for T5qqqqWW_mGo1200_mCh1000_mChi800   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 25443.000  / 25443.000  (25443.000 / 25443.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.792 +- 0.003 		 20146.000  / 25443.000  (20146.000 / 25443.000)  ---> 	 = 79.181 +- 0.255
+ -->                  eta selection	  = 1.000 +- 0.000 		 20146.000  / 20146.000  (20146.000 / 20146.000)  ---> 	 = 79.181 +- 0.255
+ -->                   dR selection	  = 0.990 +- 0.001 		 19943.000  / 20146.000  (19943.000 / 20146.000)  ---> 	 = 78.383 +- 0.258
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mCh285_mChi280   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 20712.000  / 20712.000  (20712.000 / 20712.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.774 +- 0.003 		 16029.000  / 20712.000  (16029.000 / 20712.000)  ---> 	 = 77.390 +- 0.291
+ -->                  eta selection	  = 1.000 +- 0.000 		 16029.000  / 16029.000  (16029.000 / 16029.000)  ---> 	 = 77.390 +- 0.291
+ -->                   dR selection	  = 0.889 +- 0.002 		 14242.000  / 16029.000  (14242.000 / 16029.000)  ---> 	 = 68.762 +- 0.322
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mChi280   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 28582.000  / 28582.000  (28582.000 / 28582.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.778 +- 0.002 		 22238.000  / 28582.000  (22238.000 / 28582.000)  ---> 	 = 77.804 +- 0.246
+ -->                  eta selection	  = 1.000 +- 0.000 		 22238.000  / 22238.000  (22238.000 / 22238.000)  ---> 	 = 77.804 +- 0.246
+ -->                   dR selection	  = 0.946 +- 0.002 		 21033.000  / 22238.000  (21033.000 / 22238.000)  ---> 	 = 73.588 +- 0.261
+
+Begin efficiencies for T6ttWW_mSbot600_mCh425_mChi50   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 57722.000  / 57722.000  (57722.000 / 57722.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.767 +- 0.002 		 44281.000  / 57722.000  (44281.000 / 57722.000)  ---> 	 = 76.714 +- 0.176
+ -->                  eta selection	  = 1.000 +- 0.000 		 44281.000  / 44281.000  (44281.000 / 44281.000)  ---> 	 = 76.714 +- 0.176
+ -->                   dR selection	  = 1.000 +- 0.000 		 49688.000  / 44281.000  (49688.000 / 44281.000)  ---> 	 = 86.082 +- 0.144
+
+Begin efficiencies for T6ttWW_mSbot650_mCh150_mChi50   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 121301.000  / 121301.000  (121301.000 / 121301.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.818 +- 0.001 		 99267.000  / 121301.000  (99267.000 / 121301.000)  --->  = 81.835 +- 0.111
+ -->                  eta selection	  = 1.000 +- 0.000 		 99267.000  / 99267.000  (99267.000 / 99267.000)  ---> 	 = 81.835 +- 0.111
+ -->                   dR selection	  = 1.000 +- 0.000 		 109483.000  / 99267.000  (109483.000 / 99267.000)  --->  = 90.257 +- 0.085
+
+Begin efficiencies for TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 3738313.000  / 3738313.000  (3738313.000 / 3738313.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.733 +- 0.000 		 2739670.000  / 3738313.000  (2739670.000 / 3738313.000)  ---> 	 = 73.286 +- 0.023
+ -->                  eta selection	  = 1.000 +- 0.000 		 2739670.000  / 2739670.000  (2739670.000 / 2739670.000)  ---> 	 = 73.286 +- 0.023
+ -->                   dR selection	  = 1.000 +- 0.000 		 2826761.000  / 2739670.000  (2826761.000 / 2739670.000)  ---> 	 = 75.616 +- 0.022
+
+Begin efficiencies for TTWJets_Tune4C_13TeV-madgraph-tauola   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 118073.000  / 118073.000  (118073.000 / 118073.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.772 +- 0.001 		 91099.000  / 118073.000  (91099.000 / 118073.000)  --->  = 77.155 +- 0.122
+ -->                  eta selection	  = 1.000 +- 0.000 		 91099.000  / 91099.000  (91099.000 / 91099.000)  ---> 	 = 77.155 +- 0.122
+ -->                   dR selection	  = 1.000 +- 0.000 		 97278.000  / 91099.000  (97278.000 / 91099.000)  ---> 	 = 82.388 +- 0.111
+
+Begin efficiencies for TTZJets_Tune4C_13TeV-madgraph-tauola   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 125836.000  / 125836.000  (125836.000 / 125836.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.766 +- 0.001 		 96383.000  / 125836.000  (96383.000 / 125836.000)  --->  = 76.594 +- 0.119
+ -->                  eta selection	  = 1.000 +- 0.000 		 96383.000  / 96383.000  (96383.000 / 96383.000)  ---> 	 = 76.594 +- 0.119
+ -->                   dR selection	  = 1.000 +- 0.000 		 112683.000  / 96383.000  (112683.000 / 96383.000)  --->  = 89.548 +- 0.086
+
+Begin efficiencies for WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 21149.000  / 21149.000  (21149.000 / 21149.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.590 +- 0.003 		 12485.000  / 21149.000  (12485.000 / 21149.000)  ---> 	 = 59.034 +- 0.338
+ -->                  eta selection	  = 1.000 +- 0.000 		 12485.000  / 12485.000  (12485.000 / 12485.000)  ---> 	 = 59.034 +- 0.338
+ -->                   dR selection	  = 0.736 +- 0.004 		 9193.000  / 12485.000  (9193.000 / 12485.000)  ---> 	 = 43.468 +- 0.341
+
+Begin efficiencies for WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 46095.000  / 46095.000  (46095.000 / 46095.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.719 +- 0.002 		 33165.000  / 46095.000  (33165.000 / 46095.000)  ---> 	 = 71.949 +- 0.209
+ -->                  eta selection	  = 1.000 +- 0.000 		 33165.000  / 33165.000  (33165.000 / 33165.000)  ---> 	 = 71.949 +- 0.209
+ -->                   dR selection	  = 0.743 +- 0.002 		 24635.000  / 33165.000  (24635.000 / 33165.000)  ---> 	 = 53.444 +- 0.232
+
+Begin efficiencies for WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 76580.000  / 76580.000  (76580.000 / 76580.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.785 +- 0.001 		 60104.000  / 76580.000  (60104.000 / 76580.000)  ---> 	 = 78.485 +- 0.148
+ -->                  eta selection	  = 1.000 +- 0.000 		 60104.000  / 60104.000  (60104.000 / 60104.000)  ---> 	 = 78.485 +- 0.148
+ -->                   dR selection	  = 0.739 +- 0.002 		 44399.000  / 60104.000  (44399.000 / 60104.000)  ---> 	 = 57.977 +- 0.178
+
+Begin efficiencies for WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 105019.000  / 105019.000  (105019.000 / 105019.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.816 +- 0.001 		 85645.000  / 105019.000  (85645.000 / 105019.000)  --->  = 81.552 +- 0.120
+ -->                  eta selection	  = 1.000 +- 0.000 		 85645.000  / 85645.000  (85645.000 / 85645.000)  ---> 	 = 81.552 +- 0.120
+ -->                   dR selection	  = 0.744 +- 0.001 		 63748.000  / 85645.000  (63748.000 / 85645.000)  ---> 	 = 60.701 +- 0.151
+
+Begin efficiencies for WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola   4  ********* 
+ -->                 JetDenominator	  = 1.000 +- 0.000 		 114129.000  / 114129.000  (114129.000 / 114129.000)  ---> 	 = 100.000 +- 0.000
+ -->                   pt selection	  = 0.664 +- 0.001 		 75797.000  / 114129.000  (75797.000 / 114129.000)  --->  = 66.413 +- 0.140
+ -->                  eta selection	  = 1.000 +- 0.000 		 75797.000  / 75797.000  (75797.000 / 75797.000)  ---> 	 = 66.413 +- 0.140
+ -->                   dR selection	  = 1.000 +- 0.000 		 94199.000  / 75797.000  (94199.000 / 75797.000)  ---> 	 = 82.537 +- 0.112
+
+
+ ===================================================================== 
+ ============= Efficiency category :          b-jet Id =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsToLL_M-50_13TeV-madgraph-pythia8   0  ********* 
+
+Begin efficiencies for DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for T1ttbbWW_mGo1000_mCh725_mChi720   0  ********* 
+
+Begin efficiencies for T1ttbbWW_mGo1300_mCh300_mChi290   0  ********* 
+
+Begin efficiencies for T5qqqqWW_mGo1200_mCh1000_mChi800   0  ********* 
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mCh285_mChi280   0  ********* 
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mChi280   0  ********* 
+
+Begin efficiencies for T6ttWW_mSbot600_mCh425_mChi50   0  ********* 
+
+Begin efficiencies for T6ttWW_mSbot650_mCh150_mChi50   0  ********* 
+
+Begin efficiencies for TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for TTWJets_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for TTZJets_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+
+ ===================================================================== 
+ ============= Efficiency category :        vetoLepSel =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsToLL_M-50_13TeV-madgraph-pythia8   0  ********* 
+
+Begin efficiencies for DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for T1ttbbWW_mGo1000_mCh725_mChi720   0  ********* 
+
+Begin efficiencies for T1ttbbWW_mGo1300_mCh300_mChi290   0  ********* 
+
+Begin efficiencies for T5qqqqWW_mGo1200_mCh1000_mChi800   0  ********* 
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mCh285_mChi280   0  ********* 
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mChi280   0  ********* 
+
+Begin efficiencies for T6ttWW_mSbot600_mCh425_mChi50   0  ********* 
+
+Begin efficiencies for T6ttWW_mSbot650_mCh150_mChi50   0  ********* 
+
+Begin efficiencies for TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for TTWJets_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for TTZJets_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+Begin efficiencies for WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola   0  ********* 
+
+
+ ===================================================================== 
+ ============= Efficiency category :            global =============== 
+ ===================================================================== 
+
+Begin efficiencies for DYJetsToLL_M-50_13TeV-madgraph-pythia8   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 737829.000  / 737829.000  (737829.000 / 737829.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.448 +- 0.001 		 330689.000  / 737829.000  (330689.000 / 737829.000)  ---> 	 = 44.819 +- 0.058
+
+Begin efficiencies for DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 1333278.000  / 1333278.000  (1333278.000 / 1333278.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.421 +- 0.000 		 560723.000  / 1333278.000  (560723.000 / 1333278.000)  ---> 	 = 42.056 +- 0.043
+
+Begin efficiencies for DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 1651620.000  / 1651620.000  (1651620.000 / 1651620.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.412 +- 0.000 		 681148.000  / 1651620.000  (681148.000 / 1651620.000)  ---> 	 = 41.241 +- 0.038
+
+Begin efficiencies for DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 258300.000  / 258300.000  (258300.000 / 258300.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.405 +- 0.001 		 104555.000  / 258300.000  (104555.000 / 258300.000)  ---> 	 = 40.478 +- 0.097
+
+Begin efficiencies for DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 1808178.000  / 1808178.000  (1808178.000 / 1808178.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.397 +- 0.000 		 717666.000  / 1808178.000  (717666.000 / 1808178.000)  ---> 	 = 39.690 +- 0.036
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 19513.000  / 19513.000  (19513.000 / 19513.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.161 +- 0.003 		 3151.000  / 19513.000  (3151.000 / 19513.000)  ---> 	 = 16.148 +- 0.263
+
+Begin efficiencies for SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 18479.000  / 18479.000  (18479.000 / 18479.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.168 +- 0.003 		 3103.000  / 18479.000  (3103.000 / 18479.000)  ---> 	 = 16.792 +- 0.275
+
+Begin efficiencies for T1ttbbWW_mGo1000_mCh725_mChi720   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 3556.000  / 3556.000  (3556.000 / 3556.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.107 +- 0.005 		 381.000  / 3556.000  (381.000 / 3556.000)  ---> 	 = 10.714 +- 0.519
+
+Begin efficiencies for T1ttbbWW_mGo1300_mCh300_mChi290   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 4522.000  / 4522.000  (4522.000 / 4522.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.109 +- 0.005 		 492.000  / 4522.000  (492.000 / 4522.000)  ---> 	 = 10.880 +- 0.463
+
+Begin efficiencies for T5qqqqWW_mGo1200_mCh1000_mChi800   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 5101.000  / 5101.000  (5101.000 / 5101.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.162 +- 0.005 		 825.000  / 5101.000  (825.000 / 5101.000)  ---> 	 = 16.173 +- 0.516
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mCh285_mChi280   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 4121.000  / 4121.000  (4121.000 / 4121.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.091 +- 0.004 		 376.000  / 4121.000  (376.000 / 4121.000)  ---> 	 = 9.124 +- 0.449
+
+Begin efficiencies for T5ttttDeg_mGo1000_mStop300_mChi280   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 5696.000  / 5696.000  (5696.000 / 5696.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.104 +- 0.004 		 593.000  / 5696.000  (593.000 / 5696.000)  ---> 	 = 10.411 +- 0.405
+
+Begin efficiencies for T6ttWW_mSbot600_mCh425_mChi50   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 10578.000  / 10578.000  (10578.000 / 10578.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.194 +- 0.004 		 2056.000  / 10578.000  (2056.000 / 10578.000)  ---> 	 = 19.437 +- 0.385
+
+Begin efficiencies for T6ttWW_mSbot650_mCh150_mChi50   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 20814.000  / 20814.000  (20814.000 / 20814.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.196 +- 0.003 		 4087.000  / 20814.000  (4087.000 / 20814.000)  ---> 	 = 19.636 +- 0.275
+
+Begin efficiencies for TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 1340988.000  / 1340988.000  (1340988.000 / 1340988.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.150 +- 0.000 		 200946.000  / 1340988.000  (200946.000 / 1340988.000)  ---> 	 = 14.985 +- 0.031
+
+Begin efficiencies for TTWJets_Tune4C_13TeV-madgraph-tauola   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 27379.000  / 27379.000  (27379.000 / 27379.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.176 +- 0.002 		 4823.000  / 27379.000  (4823.000 / 27379.000)  ---> 	 = 17.616 +- 0.230
+
+Begin efficiencies for TTZJets_Tune4C_13TeV-madgraph-tauola   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 25440.000  / 25440.000  (25440.000 / 25440.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.277 +- 0.003 		 7041.000  / 25440.000  (7041.000 / 25440.000)  ---> 	 = 27.677 +- 0.281
+
+Begin efficiencies for WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 16649.000  / 16649.000  (16649.000 / 16649.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.012 +- 0.001 		 202.000  / 16649.000  (202.000 / 16649.000)  ---> 	 = 1.213 +- 0.085
+
+Begin efficiencies for WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 22403.000  / 22403.000  (22403.000 / 22403.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.010 +- 0.001 		 226.000  / 22403.000  (226.000 / 22403.000)  ---> 	 = 1.009 +- 0.067
+
+Begin efficiencies for WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 27481.000  / 27481.000  (27481.000 / 27481.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.010 +- 0.001 		 272.000  / 27481.000  (272.000 / 27481.000)  ---> 	 = 0.990 +- 0.060
+
+Begin efficiencies for WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 31002.000  / 31002.000  (31002.000 / 31002.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.011 +- 0.001 		 330.000  / 31002.000  (330.000 / 31002.000)  ---> 	 = 1.064 +- 0.058
+
+Begin efficiencies for WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola   2  ********* 
+ -->                    denominator	  = 1.000 +- 0.000 		 109302.000  / 109302.000  (109302.000 / 109302.000)  ---> 	 = 100.000 +- 0.000
+ --> lepton multiplicity and flavor	  = 0.351 +- 0.001 		 38316.000  / 109302.000  (38316.000 / 109302.000)  --->  = 35.055 +- 0.144
+
+
+
+>> CLOSING MPAF

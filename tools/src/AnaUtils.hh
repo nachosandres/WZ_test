@@ -20,6 +20,7 @@
 #include "tools/src/StatUtils.hh"
 //#include "tools/utils/SystUtils.hh"
 #include "tools/src/Format.cc"
+#include "tools/src/Debug.cc"
 
 using namespace std;
 

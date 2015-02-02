@@ -6,24 +6,27 @@
 using namespace std;
 
 // instanciate static counter
-#include "analysis/utils/Counter.cc"
+//#include "analysis/utils/Counter.cc"
 
 #include "analysis/utils/Constants.hh"
 #include "analysis/utils/KineUtils.hh"
 
-size_t Candidate::_curUid=0;
-map<size_t,const Candidate*> Candidate::_baseCand;
+//size_t Candidate::_curUid=0;
+//map<size_t,const Candidate*> Candidate::_baseCand;
 
 void
 Candidate::reset()
 {
-  _curUid=0;
-  _baseCand.clear();
+  //_curUid=0;
+  //_baseCand.clear();
 }
 
 Candidate::Candidate()
 {
   init();
+}
+
+Candidate::~Candidate() {
 }
 
 Candidate::Candidate( const TVector3& mom,
@@ -151,7 +154,7 @@ Candidate::Candidate( const CandList& listOfDau )
 
 Candidate::Candidate( const Candidate& o )
   : 
-  _uid(    o._uid  ),
+  //  _uid(    o._uid  ),
   _type(   o._type ),
   _name(   o._name ),
   _q(      o._q    ),
@@ -166,7 +169,7 @@ Candidate::Candidate( const Candidate& o )
   _status = kUnlocked;
 
   // make sure the original is in the bank of base candidates
-  if( _baseCand.count(_uid)==0 ) _baseCand[_uid]=&o;
+  // if( _baseCand.count(_uid)==0 ) _baseCand[_uid]=&o;
 
   for( size_t idau=0; idau<o.nDaughters(); idau++ )
     {
@@ -174,9 +177,6 @@ Candidate::Candidate( const Candidate& o )
     } 
 }
 
-Candidate::~Candidate()
-{
-}
 
 Candidate* 
 Candidate::create()
@@ -353,7 +353,7 @@ Candidate::init()
 {
   _name = "";
   _status = kUnlocked;
-  _uid  = ++_curUid;
+  //_uid  = ++_curUid;
   _type = kFull;
   _q    = 0.;
   _m    = 0.;
@@ -371,8 +371,8 @@ void
 Candidate::lock()
 {
   _status=kLocked;   
-  assert( _baseCand.count(_uid)==0 );
-  _baseCand[_uid]=this;
+  // assert( _baseCand.count(_uid)==0 );
+  //_baseCand[_uid]=this;
 }
 
 float          
@@ -576,7 +576,7 @@ Candidate::print( ostream& o ) const
       o << "d: "<< nDaughters();
       for( size_t ii=0; ii<nDaughters(); ii++ ) 
 	{
-	o << " - " << daughter(ii)->uid();
+	  //	o << " - " << daughter(ii)->uid();
 	o << endl;
 	}
       o << endl;
@@ -588,8 +588,15 @@ Candidate::print( ostream& o ) const
 bool  
 Candidate::operator==( const Candidate& o ) const
 {
-  return _uid == o._uid;
+  //return _uid == o._uid;
 }
+
+bool  
+Candidate::operator<( const Candidate& o ) const
+{
+  return pt() < o.pt();
+}
+
 
 size_t
 Candidate::nDaughters() const
@@ -608,7 +615,7 @@ Candidate::theBase() const
 {
   //  if( isComposite() ) return this;
   //  if( isLocked()    ) return this;
-   const Candidate* cand = _baseCand[_uid];
+  const Candidate* cand = 0;//_baseCand[_uid];
    if( cand==0 ) cand = this;
    return cand;
 } 
@@ -617,7 +624,7 @@ Candidate::theBase()
 {
   //  if( isComposite() ) return this;
   //  if( isLocked()    ) return this;
-  Candidate* cand =  const_cast<Candidate*>(_baseCand[_uid]);
+  Candidate* cand =  0;//onst_cast<Candidate*>(_baseCand[_uid]);
   if( cand==0 ) cand = this;
   return cand;
 } 
@@ -657,19 +664,20 @@ Candidate::addDaughter( Candidate* dau )
 void
 Candidate::basePrint( ostream& o )
 {
-  for( map<size_t,const Candidate*>::const_iterator it=_baseCand.begin();
-       it!=_baseCand.end(); ++it )
-    {
-      it->second->print(o);
-    }
+  //  for( map<size_t,const Candidate*>::const_iterator it=_baseCand.begin();
+  //    it!=_baseCand.end(); ++it )
+  // {
+  //   it->second->print(o);
+  // }
 }
 
 const Candidate* 
 Candidate::base( size_t uid )
 {
-  map<size_t,const Candidate*>::const_iterator it = _baseCand.find(uid);
-  if( it==_baseCand.end() ) return 0;
-  return it->second; 
+  return 0;
+  //  map<size_t,const Candidate*>::const_iterator it = _baseCand.find(uid);
+  //if( it==_baseCand.end() ) return 0;
+  //return it->second; 
 }
 
 

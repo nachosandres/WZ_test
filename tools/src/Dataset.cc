@@ -97,6 +97,7 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
   if(isTreeType())
     if(_chain==NULL)
       _chain = new TChain(objName.c_str());
+
   //======
 	
   //is Data driven?
@@ -112,7 +113,7 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
 	
   //is from Control Sample?
   _isFromCS=0;
-  if(sname.find("CS")!=(size_t)-1 ) {
+  if(sname.find("CS")!=(size_t)-1 && sname.find("CSA14")==(size_t)-1) {
     _isFromCS=1;
     if(sname.find("CSS")!=(size_t)-1)
       _isFromCS=2;
@@ -148,6 +149,7 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
   Sample s(sname, nEvent, nProcEvt, xSect, kFact, eqLumi);
   _samples.push_back(s);
   _weights.push_back( s.getLumW() );
+
 	
   //tree analysis 
   if(isTreeType()) {

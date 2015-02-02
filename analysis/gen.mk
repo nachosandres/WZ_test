@@ -86,47 +86,6 @@ FILES :=
 DICTFILES :=
 
 # including the module.mk file
--include $(patsubst %, %/module.mk,general)
-
-# appending the values found in FILES to the variable SRC
-SRC += $(patsubst %,general/%,$(FILES))
-
-# appending the values found in DICTFILES to DICTH_modulename
-DICTH_general := $(foreach i, $(patsubst %,general/%,$(DICTFILES)), $(wildcard $(i).h) $(wildcard $(i).hh))
-# if dict header files exist, append to variable SRC
-ifneq ($(DICTH_general),)
-SRC += general/$(PKGNAME)_dict_general
-endif
-
-PROG += $(patsubst %,$(BINDIR)/%,$(PROGRAMS))
-
-# appending the values found in FILES to the variable SRC
-PROGSRC += $(patsubst %,general/%,$(PROGRAMS))
-
-# VPATH += :general
-
-# make sure the output directories are there
-__dummy := $(shell mkdir -p $(DEPDIR)/general $(OBJDIR)/general)
-
-# a couple of rules to copy executable files correctly
-$(BINDIR)/%: general/%
-	cp $^ $@
-
-#$(BINDIR)/%: general/%.bin
-#	cp $^ $@
-
-$(BINDIR)/%: general/bin/%
-	cp $^ $@
-
-$(BINDIR)/%: ${OBJDIR}/general/%.bin
-	cp $^ $@
-
-
-# module.mk appends to FILES and DICTFILES
-FILES :=
-DICTFILES :=
-
-# including the module.mk file
 -include $(patsubst %, %/module.mk,src)
 
 # appending the values found in FILES to the variable SRC

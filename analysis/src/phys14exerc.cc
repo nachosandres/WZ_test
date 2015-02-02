@@ -137,10 +137,10 @@ void phys14exerc::initialize(){
 
   //extra input variables
   _lepflav = getCfgVarS("LEPFLAV");
-  _mva     = getCfgVarS("LEPID"  );
-  _btag    = getCfgVarS("BTAG"   );
+  //_mva     = getCfgVarS("LEPID"  );
+  //_btag    = getCfgVarS("BTAG"   );
   _PT      = getCfgVarS("PT"     );
-  _BR      = getCfgVarS("BR"     );
+  //_BR      = getCfgVarS("BR"     );
   _SR      = getCfgVarS("SR"     );
   
 }
@@ -164,19 +164,16 @@ void phys14exerc::modifyWeight() {
 //____________________________________________________________________________
 void phys14exerc::run(){
 
-
-  _leps.clear();
+  _leps    .clear();
   _vetoleps.clear();
-
-  _els.clear();
-  _mus.clear();
-  _jets.clear();
-  _bJets.clear();
-  _elIdx.clear();
-  _muIdx.clear();
-  _vEls.clear();
-  _vMus.clear();
-  
+  _els     .clear();
+  _mus     .clear();
+  _jets    .clear();
+  _bJets   .clear();
+  _elIdx   .clear();
+  _muIdx   .clear();
+  _vEls    .clear();
+  _vMus    .clear();
 
   counter("denominator");
 	
@@ -184,47 +181,48 @@ void phys14exerc::run(){
   collectKinematicObjects();
 	
   // basic event selection (triggers, 2 ss leptons, veto)
+  //if(!skimSelection()) return;
   if(!baseSelection()) return;
 
   //skim right after the basic selection
-  fillSkimTree();
-  return;
+  //fillSkimTree();
+  //return;
 	
-  //splitting the samples into categories
-  if( _sampleName.find("DYJets")!=(size_t)-1 || _sampleName.find("TTJets")!=(size_t)-1 ) {
-    //_sampleName.find("WJets")!=(size_t)-1 ) {
-    
-    //ugly
-    int lep1Id=0;
-    int lep2Id=0;
-    if(_nEls==2) {
-      lep1Id = genMatchCateg( _els[0] );
-      lep2Id = genMatchCateg( _els[1] );
-    }
-    if(_nEls==1) {
-      lep1Id = genMatchCateg( _els[0] );
-      lep2Id = genMatchCateg( _mus[0] );
-    }
-    if(_nEls==0) {
-      lep1Id = genMatchCateg( _mus[0] );
-      lep2Id = genMatchCateg( _mus[1] );
-    }
+  ////splitting the samples into categories
+  //if( _sampleName.find("DYJets")!=(size_t)-1 || _sampleName.find("TTJets")!=(size_t)-1 ) {
+  //  //_sampleName.find("WJets")!=(size_t)-1 ) {
+  //  
+  //  //ugly
+  //  int lep1Id=0;
+  //  int lep2Id=0;
+  //  if(_nEls==2) {
+  //    lep1Id = genMatchCateg( _els[0] );
+  //    lep2Id = genMatchCateg( _els[1] );
+  //  }
+  //  if(_nEls==1) {
+  //    lep1Id = genMatchCateg( _els[0] );
+  //    lep2Id = genMatchCateg( _mus[0] );
+  //  }
+  //  if(_nEls==0) {
+  //    lep1Id = genMatchCateg( _mus[0] );
+  //    lep2Id = genMatchCateg( _mus[1] );
+  //  }
 
 
-    if(_sampleName.find("misId")!=(size_t)-1) {
-      if( ! ( (lep1Id == kMisChargePdgId && lep2Id >= kMisChargePdgId) || 
-	      (lep2Id == kMisChargePdgId && lep1Id >= kMisChargePdgId) ) ) return;
-    }
-    if(_sampleName.find("fake")!=(size_t)-1) {
-      if( lep1Id > kMisMatchPdgId &&
-	  lep2Id > kMisMatchPdgId ) return;
-    }
-    if(_sampleName.find("prompt")!=(size_t)-1) {
-      if( lep1Id != kGenMatched ||
-	  lep2Id != kGenMatched ) return;
-    }
-  }
-  counter("genCateg selection");
+  //  if(_sampleName.find("misId")!=(size_t)-1) {
+  //    if( ! ( (lep1Id == kMisChargePdgId && lep2Id >= kMisChargePdgId) || 
+  //        (lep2Id == kMisChargePdgId && lep1Id >= kMisChargePdgId) ) ) return;
+  //  }
+  //  if(_sampleName.find("fake")!=(size_t)-1) {
+  //    if( lep1Id > kMisMatchPdgId &&
+  //    lep2Id > kMisMatchPdgId ) return;
+  //  }
+  //  if(_sampleName.find("prompt")!=(size_t)-1) {
+  //    if( lep1Id != kGenMatched ||
+  //    lep2Id != kGenMatched ) return;
+  //  }
+  //}
+  //counter("genCateg selection");
   
 	
   // sr event selection
@@ -412,7 +410,7 @@ void phys14exerc::collectKinematicObjects(){
   _nVEls = _vEls.size();
   _nVMus = _vMus.size();
   
-  for(int i = 0; i < _vc->getI("nJet"); ++i){
+  for(int i = 0; i < _vc->getI("nJet25"); ++i){
 	//CH: replaced by tree variables 
     //if(bJetSelection(i) ) {
     //  _bJets.push_back( Candidate::create(_vc->getD("Jet_pt", i),
@@ -447,7 +445,7 @@ bool phys14exerc::goodJetSelection(int jetIdx){
   
   counter("JetDenominator", kJetId);
 
-  if(!makeCut<float>(_vc->getD("Jet_pt", jetIdx)       , 40.0, ">", "pt selection" , 0, kJetId) ) return false;
+  if(!makeCut<float>(_vc->getD("Jet_pt", jetIdx)       , 25.0, ">", "pt selection" , 0, kJetId) ) return false;
   if(!makeCut<float>(fabs(_vc->getD("Jet_eta", jetIdx)),  2.4, "<", "eta selection", 0, kJetId) ) return false;
 
   // SF: here we require dR(j,every loose lepton) > 0.4
@@ -488,7 +486,7 @@ bool phys14exerc::electronSelection(int elIdx){
   if(!makeCut<int>( _vc->getI("LepGood_eleCutId2012_full5x5", elIdx), 3     , ">=" , "POG CB WP-M Id "   , 0    , kElId)) return false;
   if(!makeCut<int>( _vc->getI("LepGood_tightCharge", elIdx)         , 1     , ">"  , "charge selection"  , 0    , kElId)) return false;
   
-  bool conv= (_vc->getI("LepGood_convVeto", elIdx)>0 && _vc->getI("LepGood_lostHits", elIdx)==0);
+  bool conv= (_vc->getI("LepGood_convVeto", elIdx) > 0 && _vc->getI("LepGood_lostHits", elIdx)==0);
   if(!makeCut( conv, "conversion rejection", "=", kElId)) return false;
   
   return true;
@@ -530,12 +528,8 @@ bool phys14exerc::vetoElectronSelection(int elIdx){
   if(!makeCut<float>( _vc->getD("LepGood_pt", elIdx) , 10.0   , ">"  , "pt selection"    , 0    , kElVeto)) return false; 
   if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), 2.4   , "<"  , "eta selection"   , 0    , kElVeto)) return false;
   if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), 1.4442, "[!]", "eta selection veto" , 1.566, kElVeto)) return false;
- 
-  //if(!makeCut<float>( _vc->getD("LepGood_relIso03", elIdx)           , 0.5 , "<" , "Isolation"         , 0, kElVeto)) return false;
-  //if(!makeCut<float>( std::abs(_vc->getD("LepGood_dz", elIdx))       , 0.1 , "<" , "dz selection"      , 0, kElVeto)) return false;
-  //if(!makeCut<float>( std::abs(_vc->getD("LepGood_dxy", elIdx))      , 0.05, "<" , "dxy selection"     , 0, kElVeto)) return false;
-  //if(!makeCut<int>( _vc->getI("LepGood_tightId", elIdx)              , 0   , ">=", "POG CB WP-V Id 5x5", 0, kElVeto)) return false;
-  bool conv = (_vc->getI("LepGood_convVeto", elIdx)>0 || _vc->getI("LepGood_lostHits", elIdx)>1);
+
+  bool conv = (_vc->getI("LepGood_convVeto", elIdx) > 0 && _vc->getI("LepGood_lostHits", elIdx)==0);
   if(!makeCut( conv, "conversion rejection", "=", kElVeto)) return false;
 
   
@@ -640,7 +634,7 @@ void phys14exerc::setSignalRegion() {
     return: none
   */
 
-  _bvar = "nBJetMedium40";
+  _bvar = "nBJetMedium25";
   
   if(_SR == "SR00") {
     setCut("HTSR"     ,   80, ">" );
@@ -771,6 +765,19 @@ bool phys14exerc::baseSelection(){
 
 
 //____________________________________________________________________________
+bool phys14exerc::skimSelection(){
+
+
+  // lepton multiplicity
+  if(!makeCut<int>( _nEls + _nMus, 2 , ">=", "lepton multiplicity and flavor" ) ) return false; 
+  if(!makeCut<float>( _HT        , 80, ">" , "SR HT selection"                ) ) return false;
+  if(!makeCut<int>( _nJets       , 2 , ">=", "SR jet multiplicity"            ) ) return false;
+
+  return true;
+
+}
+
+//____________________________________________________________________________
 bool phys14exerc::srSelection(){
 
   if(!makeCut<float>( _HT, _valCutHTSR    , _cTypeHTSR , "SR HT selection"       , _upValCutHTSR      ) ) return false;
@@ -872,10 +879,7 @@ bool phys14exerc::vetoEventSelection(std::string electron_label, std::string muo
     // any flavor -> gamma star veto
     if(makeCut(mll < 12.0, "gamma star veto selection", "=", kVetoLepSel) ) return true;
 
-    // search for OS pair with low-pt lepton
-    if(_second->charge() == _vetoleps[i] -> charge()) continue;
-
-    float mll = Candidate::create(_vetoleps[i], _second) -> mass(); 
+    mll = Candidate::create(_vetoleps[i], _second) -> mass(); 
  
     // same flavor -> Z veto 
     if(_au->simpleCut( fabs(_vetoleps[i] -> pdgId()), fabs(_second -> pdgId()), "=") ) {   

@@ -1,0 +1,3 @@
+#!/bin/bash
+eval 'python ${MPAF}/scripts/sea/pimos.py'
+eval '${MPAF}/analysis/bin/analysis -c %s' $1

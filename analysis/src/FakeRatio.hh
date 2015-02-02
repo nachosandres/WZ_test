@@ -10,20 +10,20 @@
 ******************************************************************************
 *****************************************************************************/
 
-#ifndef phys14exerc_HH
-#define phys14exerc_HH
+#ifndef FakeRatio_HH
+#define FakeRatio_HH
 
 #include "analysis/core/MPAF.hh"
 
-class phys14exerc: public MPAF {
+class FakeRatio: public MPAF {
 
 public:
 
 
   // Member Functions
 
-  phys14exerc(std::string);
-  virtual ~phys14exerc();
+  FakeRatio(std::string);
+  virtual ~FakeRatio();
 
 
 private:
@@ -38,26 +38,28 @@ private:
 
   void modifySkimming();
 
-  bool bJetSelection(int);
   void collectKinematicObjects();
-  bool electronSelection(int);
   bool goodJetSelection(int);
-  bool muonSelection(int);
+  bool leptonCutId(int lepIdx, int cat, float iso, float dxy, string cbid, int id);
+  bool leptonMvaId(int lepIdx, int cat, float iso, float dxy, bool tch = false);
+  bool looseElectronSelection(int);
+  bool looseMuonSelection(int);
+  bool tightElectronSelection(int);
+  bool tightMuonSelection(int);
   bool vetoElectronSelection(int);
   bool vetoMuonSelection(int);
 
   void setCut(std::string, float, std::string, float = 0); 
-  void setSignalRegion();
+  void setMeasurementRegion();
 
-  bool baseSelection();
+  bool mrSelection();
   bool skimSelection();
-  bool srSelection();
-  bool ssEventSelection();
-  bool vetoEventSelection(std::string, std::string, std::string = "");
 
+  bool bJetMatching(int);
   void fillEventPlots(std::string);
   void fillLeptonPlots(std::string);
   void fillJetPlots(std::string);
+  void fillFakeRatioMaps(std::string);
 
   int genMatchCateg(const Candidate*);
 
@@ -67,56 +69,50 @@ private:
 private: 
 
   //counter categories, 0 is ALWAYS global (even if not specified later
-  enum {kGlobal=0, kElId, kElVeto, kMuId, kMuVeto, kJetId, kBJetId, kVetoLepSel};
+  enum {kGlobal=0, kTElId, kLElId, kVElId, kTMuId, kLMuId, kVMuId, kJetId};
 
   enum {kNoGenMatch=0, kMisMatchPdgId,
 	kMisChargePdgId, kGenMatched};
 
-  float _valCutHTSR;
-  float _valCutHTCondSR;
-  float _valCutMETHighSR;
-  float _valCutMETLowSR;
-  float _valCutNJetsSR;
-  float _valCutNBJetsSR;
+  float _valCutNBJetsMR;
+  std::string _cTypeNBJetsMR;
+  float _upValCutNBJetsMR;
 
-  std::string _cTypeHTSR;
-  std::string _cTypeHTCondSR;
-  std::string _cTypeMETHighSR;
-  std::string _cTypeMETLowSR;
-  std::string _cTypeNJetsSR;
-  std::string _cTypeNBJetsSR;
-
-  float _upValCutHTSR;
-  float _upValCutHTCondSR;
-  float _upValCutMETHighSR;
-  float _upValCutMETLowSR;
-  float _upValCutNJetsSR;
-  float _upValCutNBJetsSR;
-	
-  std::vector<int> _elIdx;
-  std::vector<int> _muIdx;
-
-  int _nEls;
+  int _nTLeps;
+  int _nLLeps;
+  int _nVLeps;
+  int _nTEls;
+  int _nLEls;
   int _nVEls;
-  int _nMus;
+  int _nTMus;
+  int _nLMus;
   int _nVMus;
   int _nJets;
-  int _nBJets;
 
-  CandList _leps;
-  CandList _vetoleps;
-  CandList _els;
+  CandList _tEls;
+  CandList _lEls;
   CandList _vEls;
-  CandList _mus;
+  CandList _tMus;
+  CandList _lMus;
   CandList _vMus;
+  CandList _tLeps;
+  CandList _lLeps;
+  CandList _vLeps;
   CandList _jets;
-  CandList _bJets;
-  Candidate* _met;
-  Candidate * _first;
-  Candidate * _second;
-  
-  float _HT;
 
+  vector<int> _lElIdx;
+  vector<int> _tElIdx;
+  vector<int> _vElIdx;
+  vector<int> _lLepIdx;
+  vector<int> _tLepIdx;
+  vector<int> _vLepIdx;
+  vector<int> _lMuIdx;
+  vector<int> _tMuIdx;
+  vector<int> _vMuIdx;
+
+
+  Candidate * _met; 
+  float _HT;
 
   bool _mvaId;
   string _bvar;
@@ -125,9 +121,7 @@ private:
   string _mva;
   string _btag;
   string _PT;
-  string _BR;
-  string _SR;
-  
+  string _MR; 
 
 };
 

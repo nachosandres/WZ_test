@@ -1976,8 +1976,12 @@ Display::drawCumulativeHistos(const hObs* theObs ) {
 
 string Display::fillUpBlank(string line, unsigned int length){
 
+
+  if(length<=line.size()) return line;
+
   string fullline = line;
   unsigned int sides = (length - line.size())%2 == 0 ? (length - line.size())/2 : (length - line.size() - 1)/2;
+
   for(unsigned int i = 0; i < sides; ++i)
     fullline = " " + fullline + " ";
 
@@ -2006,38 +2010,104 @@ string Display::strReplace(string str, string find, string replace){
 }
 
 
+int 
+Display::findElement(vector<pair<string, unsigned int> > groups, string groupname){
+
+  for(unsigned int idx = 0; idx < groups.size(); ++idx){
+    if(groups[idx].first == groupname)
+      return idx;
+  } 
+  return -1;
+}
+
+string
+Display::findGroupName(string dsname) {
+
+  if     (dsname.find("DYJets")                 != string::npos) return "Z+Jets";
+  else if(dsname.find("TTJets")                 != string::npos) return "t#bar{t}";
+  else if(dsname.find("TTWJets")                != string::npos) return "rare";
+  else if(dsname.find("TTZJets")                != string::npos) return "rare";
+  else if(dsname.find("WJets")                  != string::npos) return "W+Jets";
+  else if(dsname.find("WZJets")                 != string::npos) return "rare";
+  else if(dsname.find("SMS-T1tttt_2J_mGl-1500") != string::npos) return "T1tttt (1.5/0.1 TeV)";
+  else if(dsname.find("SMS-T1tttt_2J_mGl-1200") != string::npos) return "T1tttt (1.2/0.8 TeV)";
+  else if(dsname.find("T1ttbbWW_mGo1300")       != string::npos) return "T1ttbbWW (1.3/0.3 TeV)";
+  else if(dsname.find("T1ttbbWW_mGo1000")       != string::npos) return "T1ttbbWW (1.0/0.7 TeV)";
+  else if(dsname.find("T5ttttDeg") != string::npos && dsname.find("mCh285") == string::npos) return "T5tttt deg. (1.0/0.3  TeV, 4-body decay)";
+  else if(dsname.find("T5ttttDeg") != string::npos && dsname.find("mCh285") != string::npos) return "T5tttt deg. (1.0/0.3  TeV, Chi +/-)";
+  else if(dsname.find("T6ttWW_mSbot650")        != string::npos) return "T6ttWW (650/150/50 GeV)";
+  else if(dsname.find("T6ttWW_mSbot600")        != string::npos) return "T6ttWW (600/425/50 GeV)";
+  else if(dsname.find("T5qqqqWW_mGo1200")       != string::npos) return "T5qqqqWW (1.2/0.8 TeV)";
+
+  return "none";
+}
+
+string
+Display::findDummySyst(string groupname) {
+
+  if     (groupname == "Z+Jets"  ) return "1.50";
+  else if(groupname == "t#bar{t}") return "1.50";
+  else if(groupname == "W+Jets"  ) return "1.50";
+  else if(groupname == "rare"    ) return "1.20";
+  else                             return "1.10";
+
+}
+
+string
+Display::writeRow(string text, unsigned int idx, unsigned int size){
+
+  if(idx >= size) return "";
+
+  string row = "";
+
+  for(unsigned int i = 0; i < size; ++i){
+    if(i == idx) row += text;
+    else row += "-";
+    row += " ";
+  }
+
+  return row;
+}
+
+
 void
 Display::makeDataCard(vector<pair<string,vector<vector<float> > > > vals,
             vector<string> dsnames, string dirname) {
 
   // first dimension of vals is not needed - only one category
-
+  
+  string bin1     = "1";
   string obs      = "";
   string bins     = "";
   string procname = "";
   string procid   = ""; 
   string rate     = "";
+  string syst     = "";
 
-  size_t idat=_mcOnly?-1:(vals[0].second.size()-1); 
+  // writing data to cache 
+  if(vals.size() > 0) {
+    for(size_t id=0;id<vals[0].second.size();id++) {
 
-  for(size_t id=0;id<vals[0].second.size();id++) {
-
-    // CH: ugly
-    stringstream ss, ws;
-	ss << id + 1;
-	ws << vals[0].second[id][0];
-	string is = ss.str();
-	string vs = ws.str();
-
-    bins     += fillUpBlank("1", dsnames[id].size());
-	procname += dsnames[id];
-    procid   += fillUpBlank(is , dsnames[id].size());
-    rate     += fillUpBlank(vs , dsnames[id].size());
+      char is[10], vs[10];
+      sprintf(is, "%d", (int) id+1);
+      sprintf(vs, "%-.2f", vals[0].second[id][0]);
+  
+      bins     += fillUpBlank(bin1, dsnames[id].size()) + " ";
+      procname += dsnames[id] + " ";
+      procid   += fillUpBlank(is  , dsnames[id].size()) + " ";
+      rate     += fillUpBlank(vs  , dsnames[id].size()) + " ";
+  
+      if(id>0) 
+        syst   += dsnames[id] + "_dummy lnN " + writeRow(findDummySyst(dsnames[id]), id-1, dsnames.size()-1) + "\n";
+    }
   }
 
+
+  string tfile = (string) getenv("MPAF") + "/display/templates/datacard.txt";
   ifstream templ;
-  templ.open("../templates/datacard.txt");
+  templ.open(tfile.c_str());
   string text, line;
+
   while(templ){
     getline(templ, line);
 
@@ -2045,15 +2115,21 @@ Display::makeDataCard(vector<pair<string,vector<vector<float> > > > vals,
     line = strReplace(line, "PROCESSNAMES", procname); 
     line = strReplace(line, "PROCESSIDS"  , procid  ); 
     line = strReplace(line, "RATES"       , rate    ); 
+    line = strReplace(line, "SYSTEMATICS" , syst    );
 
-    text += line;
+    text += line + "\n";
   }
   templ.close();
 
-  //ofstream card;
-  //card.open("../../workdir/yields/" + dirname + ".txt");
-  //card << text;
-  //card.close(); 
+  tfile = (string) getenv("MPAF") + "/workdir/datacards/" + dirname + ".txt";
+  if ( access( tfile.c_str(), F_OK ) != -1 )
+    remove(tfile.c_str());
+
+  ofstream card;
+  card.open(tfile.c_str());
+  card << text;
+  card.close(); 
+
 
 }
 

@@ -2,6 +2,7 @@
 FILES := AnaUtils
 FILES += DataBaseManager
 FILES += Dataset
+FILES += Debug
 FILES += HistoManager
 FILES += HistoUtils
 FILES += Sample
