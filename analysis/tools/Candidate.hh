@@ -1,8 +1,8 @@
 #ifndef Candidate_hh
 #define Candidate_hh
 
-//#include "analysis/utils/ObjectStore.hh"
-//#include "analysis/utils/Counter.hh"
+#include "analysis/utils/ObjectStore.hh"
+#include "analysis/utils/Counter.hh"
 
 #include <vector>
 
@@ -110,7 +110,7 @@ public:
   float                 dR( const Candidate* cand ) const; 
 
   // state
-  //  size_t  uid()       const { return _uid; }
+  size_t  uid()       const { return _uid; }
   Status  status()    const { return _status; }
   Type    type()      const { return _type;   }
   bool isTransverse() const { return type()==kTransverse; }
