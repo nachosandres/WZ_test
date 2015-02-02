@@ -45,6 +45,23 @@ MPAFDisplay::reset() {
 }
 
 
+void
+MPAFDisplay::makeDataCard(string dirname, string categ, string cname){
+
+  bool mcat=false;
+  if(cname!="") mcat=true;
+  
+  vector< pair<string, vector<vector<float> > > > numbers = _au->retrieveNumbers(categ, mcat, cname);
+ 
+  vector<string> dsNames = anConf.getDSNames();
+  dsNames.insert(dsNames.begin(), "MC");
+
+  dp.makeDataCard( numbers, dsNames, dirname );
+
+}
+
+
+
 void 
 MPAFDisplay::drawStatistics(string categ, string cname){
 

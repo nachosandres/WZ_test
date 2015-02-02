@@ -22,7 +22,6 @@ Parser::parseLine(string line) {
   ip.type=Parser::kNone;
   if(tks.size()==0 || tks[0].substr(0,1)=="#" ) return ip;
 
-
   int type=Parser::kNone;
   if(tks[0]=="dir")
     type=Parser::kDir;
@@ -59,8 +58,8 @@ Parser::parseLine(string line) {
   if(type==Parser::kDS) {
     for(size_t i=0;i<opts.size();i++) {
       if(opts[i].substr(0,4)=="pfx:") {
-	id += opts[i].substr(4, opts[i].size()-4 );
-	val+= opts[i].substr(4, opts[i].size()-4 );
+        id += opts[i].substr(4, opts[i].size()-4 );
+        val+= opts[i].substr(4, opts[i].size()-4 );
       }
     }
   }

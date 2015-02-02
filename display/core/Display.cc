@@ -1973,6 +1973,91 @@ Display::drawCumulativeHistos(const hObs* theObs ) {
 
 }
 
+
+string Display::fillUpBlank(string line, unsigned int length){
+
+  string fullline = line;
+  unsigned int sides = (length - line.size())%2 == 0 ? (length - line.size())/2 : (length - line.size() - 1)/2;
+  for(unsigned int i = 0; i < sides; ++i)
+    fullline = " " + fullline + " ";
+
+  if((length - line.size())%2 != 0)
+    fullline += " ";
+
+  return fullline;
+
+}
+
+
+string Display::strReplace(string str, string find, string replace){
+
+  size_t idx = 0;
+  while (true) {
+
+    idx = str.find(find, idx);
+    if (idx == string::npos) break;
+
+    str.replace(idx, find.size(), replace);
+
+    idx += find.size();
+  }
+
+  return str;
+}
+
+
+void
+Display::makeDataCard(vector<pair<string,vector<vector<float> > > > vals,
+            vector<string> dsnames, string dirname) {
+
+  // first dimension of vals is not needed - only one category
+
+  string obs      = "";
+  string bins     = "";
+  string procname = "";
+  string procid   = ""; 
+  string rate     = "";
+
+  size_t idat=_mcOnly?-1:(vals[0].second.size()-1); 
+
+  for(size_t id=0;id<vals[0].second.size();id++) {
+
+    // CH: ugly
+    stringstream ss, ws;
+	ss << id + 1;
+	ws << vals[0].second[id][0];
+	string is = ss.str();
+	string vs = ws.str();
+
+    bins     += fillUpBlank("1", dsnames[id].size());
+	procname += dsnames[id];
+    procid   += fillUpBlank(is , dsnames[id].size());
+    rate     += fillUpBlank(vs , dsnames[id].size());
+  }
+
+  ifstream templ;
+  templ.open("../templates/datacard.txt");
+  string text, line;
+  while(templ){
+    getline(templ, line);
+
+    line = strReplace(line, "BINS"        , bins    ); 
+    line = strReplace(line, "PROCESSNAMES", procname); 
+    line = strReplace(line, "PROCESSIDS"  , procid  ); 
+    line = strReplace(line, "RATES"       , rate    ); 
+
+    text += line;
+  }
+  templ.close();
+
+  //ofstream card;
+  //card.open("../../workdir/yields/" + dirname + ".txt");
+  //card << text;
+  //card.close(); 
+
+}
+
+
 void
 Display::drawStatistics(vector<pair<string,vector<vector<float> > > > vals, 
 			vector<string> dsnames) {
@@ -2047,23 +2132,22 @@ Display::prepareStatistics( vector<pair<string,vector<vector<float> > > > vals,
        	mcUncert->SetPointError( ic, 0.25,0.25, vals[ic].second[id][2], vals[ic].second[id][3] );
       }
       else if(id==idat) { //data
-	hData->SetBinContent( ic+1, vals[ic].second[id][0] );
+        hData->SetBinContent( ic+1, vals[ic].second[id][0] );
       }
       else {
-	if( !_sSignal && dsnames[id].find("sig") == (size_t)-1){
-	  float sum = vals[ic].second[id][0];
-	  float sum2 = pow(vals[ic].second[id][1],2);
-	  for(size_t ii = 1; ii < id; ++ii) {//0 is MC
-	    if( !_sSignal && dsnames[ii].find("sig")!=(size_t)-1) continue;
-	    sum += vals[ic].second[ii][0];
-	    sum2 += pow(vals[ic].second[ii][1],2);
-	  }
-	  hMC[nDs-id-1]->SetBinContent( ic+1, sum);
-	}
-	else{
-	  hMC[nDs-id-1] -> SetBinContent( ic+1, vals[ic].second[id][0]);// * weight);
-	}
-
+        if( !_sSignal && dsnames[id].find("sig") == (size_t)-1){
+          float sum = vals[ic].second[id][0];
+          float sum2 = pow(vals[ic].second[id][1],2);
+          for(size_t ii = 1; ii < id; ++ii) {//0 is MC
+            if( !_sSignal && dsnames[ii].find("sig")!=(size_t)-1) continue;
+            sum += vals[ic].second[ii][0];
+            sum2 += pow(vals[ic].second[ii][1],2);
+          }
+          hMC[nDs-id-1]->SetBinContent( ic+1, sum);
+        }
+        else{
+          hMC[nDs-id-1] -> SetBinContent( ic+1, vals[ic].second[id][0]);// * weight);
+        }
       }
 
     }//ds
@@ -2093,7 +2177,7 @@ Display::prepareStatistics( vector<pair<string,vector<vector<float> > > > vals,
     if( (!_sSignal && nh.find("sig")!=(size_t)-1) ) {
       float yM = HistoUtils::getHistoYhighWithError(hMC[ih],0,xmax);
       if(yM>ymax)
-	ymax = yM;//*(_logYScale?15:1.5);
+        ymax = yM;//*(_logYScale?15:1.5);
     }
   }
 

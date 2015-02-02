@@ -739,12 +739,12 @@ AnaUtils::retrieveNumbers(string categ, bool mcat, string cname) {
       cat= getCategId(catname);
       int ic = -1;
       for(size_t i=0;i<_effNames[cat].size();i++) {
-	if(itc->second[i]==cname) {ic=i; break;}
+        if(itc->second[i]==cname) {ic=i; break;}
       } 
       
       if(ic==-1) {
-	cout<<"Error, no such selection name : ["<<cname<<"], please check name"<<endl;
-	return onums;
+        cout<<"Error, no such selection name : ["<<cname<<"], please check name"<<endl;
+        return onums;
       }
       
       cNames.insert(cNames.begin(), _effNames[cat][ic] );
@@ -782,16 +782,16 @@ AnaUtils::retrieveNumbers(string categ, bool mcat, string cname) {
       int ids = idxs[id];
       
       { //simulation detail
-	_itEIMap=_effMap[ ids ][ icat ].find( cN );
-	if(_itEIMap==_effMap[ ids ][ icat ].end() ) {
-	  p.second[ids][0] = 0.; //no data for this point
-	}
-	else {
-	  p.second[ids][0] = _itEIMap->second.sumw;
-	  p.second[ids][1] = sqrt(_itEIMap->second.sumw2);
-	  p.second[ids][2] = 0.;
-	  p.second[ids][3] = 0.;
-	}
+        _itEIMap=_effMap[ ids ][ icat ].find( cN );
+        if(_itEIMap==_effMap[ ids ][ icat ].end() ) {
+          p.second[ids][0] = 0.; //no data for this point
+        }
+        else {
+          p.second[ids][0] = _itEIMap->second.sumw;
+          p.second[ids][1] = sqrt(_itEIMap->second.sumw2);
+          p.second[ids][2] = 0.;
+          p.second[ids][3] = 0.;
+        }
       }
      
     }//datasets

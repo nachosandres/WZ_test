@@ -165,17 +165,14 @@ void SUSYSSDL::run(){
   _bJets.clear();
   _elIdx.clear();
   _muIdx.clear();
+  _vEls.clear();
+  _vMus.clear();
   
 
   counter("denominator");
 	
   // prepare event selection
   collectKinematicObjects();
-
-  // CH: event selection for synchronization
-  if(!someSelection()) return;
-
-  return;
 	
   // basic event selection (triggers, 2 ss leptons, veto)
   if(!baseSelection()) return;
@@ -368,10 +365,10 @@ bool SUSYSSDL::bJetSelection(int jetIdx){
     return: true (if the jet is a b-jet), false (else)
   */
 	
-  //counter("BJetDenominator", kBJetId);
+  counter("BJetDenominator", kBJetId);
 
-  //if(!makeCut(goodJetSelection(jetIdx), "jet Id", "=", kBJetId) ) return false;
-  //if(!makeCut<float>(_vc->getF("Jet_btagCSV", jetIdx), 0.679, ">=", "csv btag selection", 0, kBJetId) ) return false;
+  if(!makeCut(goodJetSelection(jetIdx), "jet Id", "=", kBJetId) ) return false;
+  if(!makeCut<float>(_vc->getF("Jet_btagCSV", jetIdx), 0.679, ">=", "csv btag selection", 0, kBJetId) ) return false;
 
   return true;
 
@@ -441,11 +438,12 @@ void SUSYSSDL::collectKinematicObjects(){
   _nVMus = _vMus.size();
 	
   for(int i = 0; i < _vc->getI("nJet"); ++i){
-    if(bJetSelection(i) ) {
-      _bJets.push_back( Candidate::create(_vc->getF("Jet_pt", i),
-					  _vc->getF("Jet_eta", i),
-					  _vc->getF("Jet_phi", i) ) );
-    }
+	//CH: replaced by tree variables 
+    //if(bJetSelection(i) ) {
+    //  _bJets.push_back( Candidate::create(_vc->getF("Jet_pt", i),
+	//				  _vc->getF("Jet_eta", i),
+	//				  _vc->getF("Jet_phi", i) ) );
+    //}
 
     if(goodJetSelection(i)) {
       _jets.push_back( Candidate::create(_vc->getF("Jet_pt", i),
@@ -455,7 +453,7 @@ void SUSYSSDL::collectKinematicObjects(){
     }
   }
 
-  _nBJets = _bJets.size();
+  //_nBJets = _bJets.size();
   _nJets  = _jets.size();
 
   _HT  = HT();
@@ -509,27 +507,24 @@ bool SUSYSSDL::electronSelection(int elIdx){
 
   float pt_cut = 10.;
   if(_PT == "highpt") pt_cut = 20.;
-  // CH: we use 5GeV for ECO synching
-  pt_cut = 5.;
 
   if(!makeCut<float>( _vc->getF("LepGood_pt", elIdx) , pt_cut, ">"  , "pt selection"    , 0    , kElId)) return false;
   if(!makeCut<float>( std::abs(_vc->getF("LepGood_eta", elIdx)), 2.4   , "<"  , "eta selection"   , 0    , kElId)) return false;
-  //if(!makeCut<float>( std::abs(_vc->getF("LepGood_eta", elIdx)), 1.4442, "[!]", "eta selection veto"   , 1.566, kElId)) return false;
+  if(!makeCut<float>( std::abs(_vc->getF("LepGood_eta", elIdx)), 1.4442, "[!]", "eta selection veto"   , 1.566, kElId)) return false;
 
-  // CH: leave this commented for ECO synching
-  //if(_mvaId) {
-  //  if(!makeCut<float>( _vc->getF("LepGood_mvaSusy", elIdx) , 0.93, ">", "MVA POG Tight Id", 0, kElId)) return false;
-  //}
-  //else {
-  //  if(!makeCut<int>( _vc->getI("LepGood_eleCutIdCSA14_50ns_v1", elIdx) , 3     , ">=" , "POG CB WP-M Id " , 0    , kElId)) return false;
-  //  if(!makeCut<float>( _vc->getF("LepGood_relIso03", elIdx) , 0.1   , "<"  , "Isolation "      , 0    , kElId)) return false;
-  //  if(!makeCut<float>( std::abs(_vc->getF("LepGood_dz", elIdx)), 0.1   , "<"  , "dz selection"    , 0    , kElId)) return false;
-  //  if(!makeCut<float>( std::abs(_vc->getF("LepGood_dxy", elIdx)), 0.01  , "<"  , "dxy selection"   , 0    , kElId)) return false;
-  //}
-  //  
-  //if(!makeCut<int>( _vc->getI("LepGood_tightCharge", elIdx) , 1     , ">"  , "charge selection", 0    , kElId)) return false;
-  //bool conv= (_vc->getI("LepGood_convVeto", elIdx)>0 && _vc->getI("LepGood_lostHits", elIdx)==0);
-  //if(!makeCut( conv, "conversion rejection", "=", kElId)) return false;
+  if(_mvaId) {
+    if(!makeCut<float>( _vc->getF("LepGood_mvaSusy", elIdx) , 0.93, ">", "MVA POG Tight Id", 0, kElId)) return false;
+  }
+  else {
+    if(!makeCut<int>( _vc->getI("LepGood_eleCutIdCSA14_50ns_v1", elIdx) , 3     , ">=" , "POG CB WP-M Id " , 0    , kElId)) return false;
+    if(!makeCut<float>( _vc->getF("LepGood_relIso03", elIdx) , 0.1   , "<"  , "Isolation "      , 0    , kElId)) return false;
+    if(!makeCut<float>( std::abs(_vc->getF("LepGood_dz", elIdx)), 0.1   , "<"  , "dz selection"    , 0    , kElId)) return false;
+    if(!makeCut<float>( std::abs(_vc->getF("LepGood_dxy", elIdx)), 0.01  , "<"  , "dxy selection"   , 0    , kElId)) return false;
+  }
+    
+  if(!makeCut<int>( _vc->getI("LepGood_tightCharge", elIdx) , 1     , ">"  , "charge selection", 0    , kElId)) return false;
+  bool conv= (_vc->getI("LepGood_convVeto", elIdx)>0 || _vc->getI("LepGood_lostHits", elIdx)>0);
+  if(!makeCut( conv, "conversion rejection", "=", kElId)) return false;
   
   
   return true;
@@ -548,23 +543,21 @@ bool SUSYSSDL::muonSelection(int muIdx){
 	
   float pt_cut = 10.;
   if(_PT == "highpt") pt_cut = 20.;
-  // CH: we use 5GeV for ECO synching
-  pt_cut = 5.;
 
   if(!makeCut<float>( _vc->getF("LepGood_pt", muIdx), pt_cut, ">", "pt selection"    , 0, kMuId)) return false;
   if(!makeCut<float>( std::abs( _vc->getF("LepGood_eta", muIdx)), 2.4, "<", "eta selection", 0, kMuId)) return false;
 
-  //if(_mvaId) {
-  //  if(!makeCut<float>( _vc->getF("LepGood_mvaSusy", muIdx) , 0.93  , ">", "MVA POG Tight Id", 0, kMuId)) return false;
-  //  if(!makeCut<int>( _vc->getI("LepGood_tightCharge", muIdx) , 1     , ">", "charge selection", 0, kMuId)) return false;
-  //}
-  //else {
-  //  if(!makeCut<int>( _vc->getI("LepGood_tightId", muIdx) , 1     , "=", "POG Tight Id "   , 0, kMuId)) return false;
-  //  if(!makeCut<float>( _vc->getF("LepGood_relIso03", muIdx) , 0.1   , "<", "Isolation "      , 0, kMuId)) return false;
-  //    
-  //  if(!makeCut<float>(std::abs(_vc->getF("LepGood_dz", muIdx)), 0.1   , "<", "dz selection"    , 0, kMuId)) return false;
-  //  if(!makeCut<float>(std::abs(_vc->getF("LepGood_dxy", muIdx)), 0.005 , "<", "dxy selection"   , 0, kMuId)) return false;  
-  //}
+  if(_mvaId) {
+    if(!makeCut<float>( _vc->getF("LepGood_mvaSusy", muIdx) , 0.93  , ">", "MVA POG Tight Id", 0, kMuId)) return false;
+    if(!makeCut<int>( _vc->getI("LepGood_tightCharge", muIdx) , 1     , ">", "charge selection", 0, kMuId)) return false;
+  }
+  else {
+    if(!makeCut<int>( _vc->getI("LepGood_tightId", muIdx) , 1     , "=", "POG Tight Id "   , 0, kMuId)) return false;
+    if(!makeCut<float>( _vc->getF("LepGood_relIso03", muIdx) , 0.1   , "<", "Isolation "      , 0, kMuId)) return false;
+      
+    if(!makeCut<float>(std::abs(_vc->getF("LepGood_dz", muIdx)), 0.1   , "<", "dz selection"    , 0, kMuId)) return false;
+    if(!makeCut<float>(std::abs(_vc->getF("LepGood_dxy", muIdx)), 0.005 , "<", "dxy selection"   , 0, kMuId)) return false;  
+  }
 
 
   return true;
@@ -1175,11 +1168,9 @@ bool SUSYSSDL::baseSelection(){
 
   bool is_3l_event = vetoEventSelection("Electron", "Muon");
   bool is_ss_event = ssEventSelection  ();
-  //bool is_lowpt_event = lowptEventSelection("Electron", "Muon");
 
   if(!makeCut( is_ss_event , "same-sign selection", "=") ) return false;
   if(!makeCut( !is_3l_event, "veto on 3 leptons"  , "=") ) return false;
-  //if(_PT == "lowpt" && !makeCut( is_lowpt_event, "lowpt 20-10 leptons", "=") ) return false;
 	
   //ugly
   Candidate* Z=nullptr;
@@ -1220,133 +1211,6 @@ bool SUSYSSDL::brSelection(){
   return true;
 
 } 
-
-
-// //____________________________________________________________________________
-// bool SUSYSSDL::lowptEventSelection(std::string electron_label, std::string muon_label, std::string kr){
-//   /*
-//     checks, in the case of lowpt analysis, that the leptons are 20-10 in terms of pt
-//     parameters: electron_label, muon_label (the labels of the selected electron and muon objects), kr
-//     return: true (if the leptons are 20-10), false (else)
-//   */
-
-//   if(_PT != "lowpt") return false;
-//   if(_NumKinObj[electron_label] + _NumKinObj[muon_label] != 2) return false;
-
-//   float pts[2] = {0.0, 0.0};
-//   int idx = 0;
-
-//   for(int ie = 0; ie < _NumKinObj[electron_label]; ++ie){
-//     pts[ie] = _vc->getF("LepGood_pt", _KinObj[electron_label][ie]);
-//     ++idx;
-//   }
-
-//   for(int im = 0; im < _NumKinObj[muon_label]; ++im)
-//     pts[idx + im] = _vc->getF("LepGood_pt", _KinObj[muon_label][im]);
-
-//   std::sort(pts, pts + sizeof(pts)/sizeof(pts[0]));
-
-//   // we did the > 10 selection already in the object selection
-//   // due to sort, the last element is the high-pt lepton in the pair
-//   if(pts[1] > 20) return true; 
-
-//   return false;
-
-// }
-
-
-//____________________________________________________________________________
-bool SUSYSSDL::someSelection(){
-	/*
-    event selection only for synchronization
-    */
-  
-
-  // number of leptons
-  if(!makeCut<int>( _nEls + _nMus, 2, ">=", "lepton multiplicity" ) ) return false; 
-
-
-  // retrieving the lepton quantities
-  CandList leps;
-  vector<int> indices;
-  for(int ie = 0; ie < _nEls; ++ie) {
-    leps   .push_back(_els[ie]);
-    indices.push_back(_elIdx[ie]);
-  }
-  for(int im = 0; im < _nMus; ++im) {
-    leps   .push_back(_mus[im]);
-    indices.push_back(_muIdx[im]);
-  }
-
-  float pt_cache = 0;
-  int   lep_idx1  = 0;
-  for(int il = 0; il < leps.size(); ++il){
-    if(leps[il]->pt() > pt_cache){
-      lep_idx1 = il;
-      pt_cache = leps[il]->pt();
-    }
-  }
-
-  Candidate * first = leps[lep_idx1]; // the highest pt lepton
-  int tree_idx1 = indices[lep_idx1];
- 
-  pt_cache = 0;
-  int lep_idx2 = 0;
-  for(int il = 0; il < leps.size(); ++il){
-    if(leps[il]->pt() > pt_cache && il != lep_idx1){
-      lep_idx2 = il;
-      pt_cache = leps[il]->pt();
-    }
-  }
-
-  Candidate * second = leps[lep_idx2]; // the second highest pt lepton
-  int tree_idx2 = indices[lep_idx2];
-
-  // same sign
-  int pdg = 11;
-  if(_lepflav == "mm") pdg = 13;
-  if(!makeCut(fabs(first->pdgId()) == pdg && fabs(first->pdgId()) == fabs(second->pdgId()) &&  first->charge() == second->charge(), true, "=", "lepton flavor and charge" ) ) return false; 
-
-  // fiducial volume
-  if(pdg == 11){
-    if(!makeCut( (fabs(first->eta()) < 1.4442 || fabs(first->eta()) > 1.566) && (fabs(second->eta()) < 1.4442 || (fabs(second->eta())>1.566 )), true, "=", "fiducial volume")) return false;
-  }
-  else{
-    if(!makeCut(true, true, "=", "fiducial volume") ) return false;
-  }
-
-  // pt
-  if(!makeCut(first->pt() > 20 && second->pt()>20, true, "=", "lepton pt 20-20") ) return false;
-
-  // mva
-  if(!makeCut(_vc->getF("LepGood_mvaTTH", tree_idx1)>0.7 && _vc->getF("LepGood_mvaTTH", tree_idx2)>0.7, true, "=", "lepton mva") ) return false;
-
-  // charge flip
-  bool first_ch, second_ch;
-  if(first->pdgId() == 11)
-    first_ch = ((_vc->getI("LepGood_tightCharge", tree_idx1)>1) && (_vc->getI("LepGood_convVeto", tree_idx1)>0) && (_vc->getI("LepGood_lostHits", tree_idx1)==0));
-  else
-    first_ch = _vc->getI("LepGood_tightCharge", tree_idx1)>1;
-
-  if(second->pdgId() == 11)
-    second_ch = ((_vc->getI("LepGood_tightCharge", tree_idx2)>1) && (_vc->getI("LepGood_convVeto", tree_idx2)>0) && (_vc->getI("LepGood_lostHits", tree_idx2)==0));
-  else
-    second_ch = _vc->getI("LepGood_tightCharge", tree_idx2)>1;
-
-  if(!makeCut(first_ch && second_ch, true, "=", "lepton charge flip") ) return false;   
-
-  // number of b jets
-  if(!makeCut<int>(_vc->getI("nBJetLoose25"), 2, ">=", "B-jet multiplicity") ) return false;
-
-  // number of jets
-  if(!makeCut<int>(_vc->getI("nJet25")      , 4, ">=", "Jet multiplicity"  ) ) return false;
-
-  //printf("%d:%3.3f:%3.3f:%d:%d\t", first->pdgId(), first->eta(), first->pt(), _vc->getI("LepGood_mcMatchId", tree_idx1), _vc->getI("LepGood_mcMatchAny", tree_idx1));
-  //printf("%d:%d:%d:%3.3f:%3.3f:%3.3f:%3.3f:%d:%d\n", _vc->getI("run"), _vc->getI("lumi"), _vc->getI("evt"), first->pt(), _vc->getF("LepGood_mvaTTH", tree_idx1), second->pt(), _vc->getF("LepGood_mvaTTH", tree_idx2), _vc->getI("nBJetLoose25"), _vc->getI("nJet25"));
-
-  return true;
-
-}
 
 
 //____________________________________________________________________________

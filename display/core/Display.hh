@@ -11,6 +11,7 @@
 #include <set>
 #include <math.h>
 #include <sstream>
+#include <string>
 
 #include "TCanvas.h"
 #include "TH1F.h"
@@ -220,7 +221,12 @@ public:
 
   void saveHistos(string hname, const hObs* theObs);
   void saveHistosSpecLQ(string hname);
-  
+ 
+  string fillUpBlank(string line, unsigned int length);
+  string strReplace(string str, string find, string replace);
+  void makeDataCard(vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames, string dirname);
+
+ 
   void prepareStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames);
   void drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames);
   void drawDetailSystematics(bool cumul);

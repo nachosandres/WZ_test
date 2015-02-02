@@ -286,11 +286,12 @@ void MPAF::loadConfigurationFile(std::string cfg){
     vector<string> opts= it->second.opts;
     if(opts.size()!=0) {
       for(size_t i=0;i<opts.size();i++) {
-	if(opts[i].substr(0,4)=="dir:")
-	  dirName=opts[i].substr(4, opts[i].size()-4 );
+        if(opts[i].substr(0,4)=="dir:")
+          dirName=opts[i].substr(4, opts[i].size()-4 );
       }
     }
     _datasets.push_back(new Dataset(dsName));
+	cout << it->second.val << ":"<< _inputPath << ":" << dirName << ":" << tName << endl; 
     _datasets.back()->addSample(it->second.val, _inputPath, dirName, tName, "", 1.0, 1.0, 1.0, 1.0);
     _au->addDataset( dsName );
   }
