@@ -104,7 +104,7 @@ AnaConfig::findDS(int channel) {
     cout<<" Warning, no dataset for the channel "<<channel<<endl;
     return "";
   }
-  
+ 
   return _itNDS->second;
 }
 
@@ -156,14 +156,13 @@ void AnaConfig::configureLumi(map<string,float> LumisXS, map<string,float> Kfac,
 }
 
 void 
-AnaConfig::configureNames(string dir, string treeName, string fileList, string hName) {
+AnaConfig::configureNames(string dir, string treeName, string fileList, string hName, bool multiple) {
   _dir = dir;
   _treeName = treeName;
-
   vector<string> filenames = listFiles((string)(getenv("MPAF")) + "/workdir/stats/" + dir + "/", fileList + ".dat");
   _fileList = filenames;
-
   _hname = hName;
+  _mode = multiple;
 }
 
 
@@ -241,9 +240,10 @@ AnaConfig::addSample( string str, string sname, int col) {
  
     return;
   }
-  
+ 
+ 
   //histogram analysis
-  if(!_skiptree) {
+  if(!_skiptree){// && !_mode) {
 
     //find xSect/kFact/eqLumi
     float xSect=1.,kFact=1.,eqLumi=1.;
@@ -282,6 +282,7 @@ AnaConfig::addSample( string str, string sname, int col) {
 	_dsnames.push_back(sname);
   }
   else {
+    //if(!_mode) _datasets[ sname ]->addSample(str, "", "", "", "", 0, 0, 0, 0);
     _datasets[ sname ]->addSample(str, "", "", "", "", 0, 0, 0, 0);
     _samplenames.push_back(str);
     _dsnames.push_back(sname);

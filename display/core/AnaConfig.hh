@@ -25,6 +25,7 @@ private:
   string _treeName;
   vector<string> _fileList;
   string _hname;
+  bool _mode;
 
   vector<string> _samplenames;
   vector<string> _dsnames;
@@ -67,7 +68,7 @@ public:
 		     map<string,float> Kfac,
 		     float l,bool useXS=true );
   void configureData(bool runfilter, int runnum,bool MCOnly);
-  void configureNames(string dir, string objName, string objList, string hName);
+  void configureNames(string dir, string objName, string objList, string hName, bool multiple = false);
 
   string getDir() {return _dir;};
   vector<string> getObjList() {return _fileList;};

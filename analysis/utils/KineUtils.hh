@@ -22,6 +22,8 @@ public:
   //  calculate phi1-phi2 keeping value between 0 and pi
   static float dR( float eta1, float eta2, float ph11, float phi2 );
 
+  static float dR2( float eta1, float eta2, float phi1, float phi2 );
+
   //  calculate theta from eta
   static float theta( float eta_ );
 

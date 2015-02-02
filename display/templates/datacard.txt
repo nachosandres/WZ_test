@@ -17,14 +17,4 @@ process         PROCESSNAMES
 process         PROCESSIDS
 rate            RATES
 ------------
-lumi     lnN
-bg1      lnN 1.05 - - - - -
-bg2      lnN - 1.3 - - - - 
-
-lumi    lnN    1.11    -   1.11    -    lumi affects both signal and gg->WW (mc-driven). lnN = lognormal
-
-
-xs_ggH  lnN    1.16    -     -     -    gg->H cross section + signal efficiency + other minor ones.
-WW_norm gmN 4    -   0.16    -     -    WW estimate of 0.64 comes from sidebands: 4 events in sideband times 0.16 (=> ~50% statistical uncertainty)
-xs_ggWW lnN      -     -   1.50    -    50% uncertainty on gg->WW cross section
-bg_others lnN    -     -     -   1.30   30% uncertainty on the rest of the backgrounds
+SYSTEMATICS

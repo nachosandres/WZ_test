@@ -10,20 +10,20 @@
 ******************************************************************************
 *****************************************************************************/
 
-#ifndef phys14exerc_HH
-#define phys14exerc_HH
+#ifndef csa14exerc_HH
+#define csa14exerc_HH
 
 #include "analysis/core/MPAF.hh"
 
-class phys14exerc: public MPAF {
+class csa14exerc: public MPAF {
 
 public:
 
 
   // Member Functions
 
-  phys14exerc(std::string);
-  virtual ~phys14exerc();
+  csa14exerc(std::string);
+  virtual ~csa14exerc();
 
 
 private:
@@ -46,11 +46,13 @@ private:
   bool vetoElectronSelection(int);
   bool vetoMuonSelection(int);
 
+  void setBaselineRegion();
   void setCut(std::string, float, std::string, float = 0); 
   void setSignalRegion();
 
   bool baseSelection();
-  bool skimSelection();
+  bool brSelection();
+  bool lowptEventSelection(std::string, std::string, std::string = "");
   bool srSelection();
   bool ssEventSelection();
   bool vetoEventSelection(std::string, std::string, std::string = "");
@@ -73,25 +75,43 @@ private:
 	kMisChargePdgId, kGenMatched};
 
   float _valCutHTSR;
-  float _valCutHTCondSR;
-  float _valCutMETHighSR;
-  float _valCutMETLowSR;
+  float _valCutMETSR;
   float _valCutNJetsSR;
   float _valCutNBJetsSR;
+  float _valCutCHSR;
+  float _valCutHTBR;
+  float _valCutHTCondBR;
+  float _valCutMETLowBR;
+  float _valCutMETHighBR;
+  float _valCutNJetsBR;
+  float _valCutNBJetsBR;
+  float _valCutCHBR;
 
   std::string _cTypeHTSR;
-  std::string _cTypeHTCondSR;
-  std::string _cTypeMETHighSR;
-  std::string _cTypeMETLowSR;
+  std::string _cTypeMETSR;
   std::string _cTypeNJetsSR;
   std::string _cTypeNBJetsSR;
+  std::string _cTypeCHSR;
+  std::string _cTypeHTBR;
+  std::string _cTypeHTCondBR;
+  std::string _cTypeMETLowBR;
+  std::string _cTypeMETHighBR;
+  std::string _cTypeNJetsBR;
+  std::string _cTypeNBJetsBR;
+  std::string _cTypeCHBR;
 
   float _upValCutHTSR;
-  float _upValCutHTCondSR;
-  float _upValCutMETHighSR;
-  float _upValCutMETLowSR;
+  float _upValCutMETSR;
   float _upValCutNJetsSR;
   float _upValCutNBJetsSR;
+  float _upValCutCHSR;
+  float _upValCutHTBR;
+  float _upValCutHTCondBR;
+  float _upValCutMETLowBR;
+  float _upValCutMETHighBR;
+  float _upValCutNJetsBR;
+  float _upValCutNBJetsBR;
+  float _upValCutCHBR;
 	
   std::vector<int> _elIdx;
   std::vector<int> _muIdx;
@@ -103,8 +123,6 @@ private:
   int _nJets;
   int _nBJets;
 
-  CandList _leps;
-  CandList _vetoleps;
   CandList _els;
   CandList _vEls;
   CandList _mus;
@@ -112,8 +130,6 @@ private:
   CandList _jets;
   CandList _bJets;
   Candidate* _met;
-  Candidate * _first;
-  Candidate * _second;
   
   float _HT;
 

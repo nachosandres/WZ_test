@@ -16,6 +16,7 @@
 #include "tools/src/AnaUtils.hh"
 #include "tools/src/Dataset.hh"
 #include "tools/src/DataBaseManager.hh"
+#include "tools/src/Debug.cc"
 #include "tools/src/HistoManager.hh"
 
 
@@ -72,6 +73,7 @@ public:
 
   void refresh();
 
+  void prepareDisplay();
   
   void doPlot();
 

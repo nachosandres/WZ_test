@@ -573,7 +573,14 @@ void synchRA5::setSignalRegion() {
     return: none
   */
 
-  _bvar = "nBJetMedium40";
+  if(_btag=="" || _btag=="std" || _btag=="40")
+    _bvar = "nBJetMedium40";
+  else if(_btag=="25" || _btag=="soft25")
+    _bvar = "nBJetMedium25";
+  else if(_btag=="15" || _btag=="IVF")
+    _bvar = "nSoftBJetMedium25";
+  else
+    _bvar = "nBJetMedium40";
 
   if(_SR == "SR00") {
     setCut("HTSR"     ,   80, ">" );

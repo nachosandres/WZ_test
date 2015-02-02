@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string>
 #include <map>
 #include <set>
@@ -34,6 +35,7 @@
 #include "TMarker.h"
 #include "TPolyLine.h"
 
+#include "tools/src/Debug.cc"
 #include "tools/src/Format.cc"
 #include "tools/src/StatUtils.hh"
 #include "display/core/Renorm.hh"
@@ -224,6 +226,10 @@ public:
  
   string fillUpBlank(string line, unsigned int length);
   string strReplace(string str, string find, string replace);
+  int findElement(vector<pair<string, unsigned int> > groups, string groupname);
+  string findGroupName(string dsname);
+  string findDummySyst(string groupname);
+  string writeRow(string text, unsigned int idx, unsigned int size);
   void makeDataCard(vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames, string dirname);
 
  

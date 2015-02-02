@@ -50,14 +50,13 @@ MPAFDisplay::makeDataCard(string dirname, string categ, string cname){
 
   bool mcat=false;
   if(cname!="") mcat=true;
-  
+
   vector< pair<string, vector<vector<float> > > > numbers = _au->retrieveNumbers(categ, mcat, cname);
- 
+
   vector<string> dsNames = anConf.getDSNames();
   dsNames.insert(dsNames.begin(), "MC");
 
   dp.makeDataCard( numbers, dsNames, dirname );
-
 }
 
 
@@ -106,6 +105,9 @@ MPAFDisplay::setNumbers() {
     if(statFiles.size()>1 && i==0)
       ctag = statFiles[0].substr(bl,bh-bl);
 
+    if(ctag.size()>4 && ctag.substr(ctag.size()-4) == ".dat")
+      ctag.erase(ctag.size()-4,4);
+
     readStatFile( statFiles[i], ctag, icat);
   }
 
@@ -113,9 +115,13 @@ MPAFDisplay::setNumbers() {
 
 void
 MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
-  
+ 
+  DUMP(filename);
+  DUMP(ctag);
+ 
   if(filename=="") return;
-
+  _au->init();
+  
   string ndb = filename;
   ifstream fDb( ndb.c_str(), ios::in );
 
@@ -132,70 +138,72 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
     int gen;
     int ids;
   
-    while(getline(fDb, line)) 
-      {
+    while(getline(fDb, line)) {
 	
-	istringstream iss(line);
-	vector<string> tks;
-	copy(istream_iterator<string>(iss),
-	     istream_iterator<string>(),
-	     back_inserter<vector<string> >(tks));
+      istringstream iss(line);
+      vector<string> tks;
+      copy(istream_iterator<string>(iss),
+           istream_iterator<string>(),
+           back_inserter<vector<string> >(tks));
 
-	if(tks.size()==0) continue; 
-
-	if(tks[0]=="categ") {
-	  categ="";
-	  for(size_t i=1;i<tks.size();i++) //prevent from spaces in categ names
-	    categ +=tks[i];
-
-	  categ+=ctag;
-
-	  if(categ!="global") {
-	    _au->addCategory(icat, categ);
-	  } 
-	  else {
-	    if(ctag=="") icat=0; //comes in last so do not mess the reading
-	  }
-	}
-	else if(tks[0]=="endcateg") { //fill the maps
-	  icat++;
-	}
-	else if(tks[0]=="selection") continue;
-	else {
-
-	  size_t n=tks.size()-4;
-	  cname="";
-	  for(size_t i=0;i<n;i++)
-	    cname += tks[i]+" ";
-	    
-	  sname = tks[n];
-
-	  Dataset* ds=anConf.findDS( sname );
-	  ids=-1;
-
-	  if(ds==nullptr) continue;
-	  for(size_t id=0;id<_dsnames.size();id++ ) {
-	    if(_dsnames[id]==ds->getName() ) {
-	      ids = id+1;//because MC is 0
-	      break;
-	    }
-	  }
-
-	  float w = ds->getWeight(sname)*anConf.getLumi();
-
-	  yield  = atof( tks[n+1].c_str() ) *w ;
-	  gen = atoi( tks[n+2].substr(1,tks[3].size()-1).c_str() );
-	  eyield = atof( tks[n+3].c_str() ) *w;
-
-	  pair<string,string> p(ds->getName(), cname+sname);
-	  if(fVal.find(p)==fVal.end() ) {
-	    fVal[p]=true;
-	    _au->setEffFromStat(ids,cname,icat,yield,eyield,gen);
-	  }
-
-	}
-	
+ 
+      if(tks.size()==0 || line == "") continue; 
+      
+      if(tks[0]=="categ") {
+        categ="";
+        for(size_t i=1;i<tks.size();i++) //prevent from spaces in categ names
+          categ +=tks[i];
+     
+        categ+=ctag;
+      
+        if(categ!="global") {
+          _au->addCategory(icat, categ);
+        } 
+        else {
+          if(ctag=="") icat=0; //comes in last so do not mess the reading
+        }
       }
+      else if(tks[0]=="endcateg") { //fill the maps
+        icat++;
+      }
+      else if(tks[0]=="selection") continue;
+ 
+      else {
+ 
+        size_t n=tks.size()-4;
+        cname="";
+        for(size_t i=0;i<n;i++)
+          cname += tks[i]+" ";
+          
+        sname = tks[n];
+ 
+        Dataset* ds=anConf.findDS( sname );
+        ids=-1;
+
+        if(ds==nullptr) continue;
+
+        for(size_t id=0;id<_dsnames.size();id++ ) {
+          if(_dsnames[id]==ds->getName() ) {
+            ids = id+1;//because MC is 0
+            break;
+          }
+        }
+      
+        float w = ds->getWeight(sname)*anConf.getLumi();
+      
+        yield  = atof( tks[n+1].c_str() ) *w ;
+        gen = atoi( tks[n+2].substr(1,tks[3].size()-1).c_str() );
+        eyield = atof( tks[n+3].c_str() ) *w;
+
+        pair<string,string> p(ds->getName(), cname+sname);
+        if(fVal.find(p)==fVal.end() ) {
+          fVal[p]=true;
+          _au->setEffFromStat(ids,cname,icat,yield,eyield,gen);
+        }
+      
+      }
+	
+    }
     fDb.close();
   }
   else {
@@ -206,17 +214,25 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
 }
 
 
+void
+MPAFDisplay::prepareDisplay(){
+
+  configure();
+  dp.setLumi( anConf.getLumi() );
+  setNumbers();
+
+}
+
 
 void
 MPAFDisplay::doPlot() {
 
-  configure();
-
+  //configure();
 
   setHistograms();
-  dp.setLumi( anConf.getLumi() );
 
-  setNumbers();
+  //dp.setLumi( anConf.getLumi() );
+  //setNumbers();
 
   //See if a fit is needed for the normalization
   //ugly....
