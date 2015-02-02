@@ -166,6 +166,11 @@ void MPAF::analyze(){
 		
     //cleaning memory
     _datasets[i]->freeMemory();
+    //destroy old Candidate pointers ======
+    Candidate::reset();
+    ObjectStore::clear();
+    //===========================
+
   }
 
 
@@ -290,6 +295,8 @@ void MPAF::loadConfigurationFile(std::string cfg){
     _datasets.back()->addSample(it->second.val, _inputPath, dirName, tName, "", 1.0, 1.0, 1.0, 1.0);
     _au->addDataset( dsName );
   }
+
+  _au->init();
 
 }
 

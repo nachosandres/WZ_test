@@ -17,13 +17,21 @@ using namespace std;
 void
 Candidate::reset()
 {
-  //_curUid=0;
-  //_baseCand.clear();
+  _curUid=0;
+  for(map<size_t,const Candidate*>::iterator it=_baseCand.begin();
+      it!=_baseCand.end(); ++it) {
+    delete it->second;
+  }
+  _baseCand.clear();
 }
 
 Candidate::Candidate()
 {
   init();
+  lock();
+}
+
+Candidate::~Candidate() {
 }
 
 Candidate::~Candidate() {
@@ -38,6 +46,7 @@ Candidate::Candidate( const TVector3& mom,
   _q = charge;
   _m = mass;  
   _vtx = vtx;
+  lock();
 }
 
 
@@ -52,6 +61,7 @@ Candidate::Candidate(float pt, float eta, float phi,
   _q = charge;
   _m = mass;  
   _vtx = vtx;
+  lock();
 }
 
 
@@ -73,6 +83,7 @@ Candidate::Candidate( const TVector2& tmom,
   _phi  = tmom.Phi();
   _eta  = 0.;
   _vtx  = vtx;
+  lock();
 }
 
 Candidate::Candidate( float pt, float phi,
@@ -83,6 +94,7 @@ Candidate::Candidate( float pt, float phi,
   _phi  = phi;
   _eta  = 0.;
   _vtx  = vtx;
+  lock();
 }
 
 Candidate::Candidate( Vertex* vtx )  
@@ -95,6 +107,7 @@ Candidate::Candidate( Vertex* vtx )
     {
       addDaughter( _vtx->outgoingCand( ii ) );
     }
+  lock();
 }
 
 //Candidate::Candidate( const vector< const Candidate* >& listOfDau )
@@ -150,6 +163,7 @@ Candidate::Candidate( const CandList& listOfDau )
   if( m2_<0 ) m2_=0;
   _m = sqrt(m2_);
   if( sameVtx ) setVertex( vtx_ );
+  lock();
 }
 
 Candidate::Candidate( const Candidate& o )
@@ -175,6 +189,7 @@ Candidate::Candidate( const Candidate& o )
     {
       addDaughter( o.daughter(idau)->clone() );
     } 
+  lock();
 }
 
 
@@ -198,6 +213,7 @@ Candidate::create( float pt, float eta, float phi,
 		   float charge,
 		   float mass,  
 		   Vertex* vtx ) { 
+
   return new Candidate( pt, eta, phi, pdgId, charge, mass, vtx ); 
 } 
 
@@ -560,7 +576,7 @@ Candidate::print( ostream& o ) const
   o << "\n";
   o << "Candidate -- ";
   o << name();
-  //  o << "\tuid=" << uid() << "\tptr=" << this << endl;
+  o << "\tuid=" << uid() << "\tptr=" << this << endl;
   o << "-- (Px=" << px() << ", Py=" << py() << ", Pz=" << pz() << "; E=" << E() <<  ") q=" << charge() << " M=" << mass() << " Gev/c2 ";    
   o << endl;
   // print daughter links
@@ -576,8 +592,8 @@ Candidate::print( ostream& o ) const
       o << "d: "<< nDaughters();
       for( size_t ii=0; ii<nDaughters(); ii++ ) 
 	{
-	  //	o << " - " << daughter(ii)->uid();
-	o << endl;
+	  o << " - " << daughter(ii)->uid();
+	  o << endl;
 	}
       o << endl;
     }						
@@ -615,7 +631,7 @@ Candidate::theBase() const
 {
   //  if( isComposite() ) return this;
   //  if( isLocked()    ) return this;
-  const Candidate* cand = 0;//_baseCand[_uid];
+  const Candidate* cand = _baseCand[_uid];
    if( cand==0 ) cand = this;
    return cand;
 } 
@@ -624,7 +640,7 @@ Candidate::theBase()
 {
   //  if( isComposite() ) return this;
   //  if( isLocked()    ) return this;
-  Candidate* cand =  0;//onst_cast<Candidate*>(_baseCand[_uid]);
+  Candidate* cand = const_cast<Candidate*>(_baseCand[_uid]);
   if( cand==0 ) cand = this;
   return cand;
 } 
@@ -664,20 +680,20 @@ Candidate::addDaughter( Candidate* dau )
 void
 Candidate::basePrint( ostream& o )
 {
-  //  for( map<size_t,const Candidate*>::const_iterator it=_baseCand.begin();
-  //    it!=_baseCand.end(); ++it )
-  // {
-  //   it->second->print(o);
-  // }
+  for( map<size_t,const Candidate*>::const_iterator it=_baseCand.begin();
+       it!=_baseCand.end(); ++it )
+   {
+     it->second->print(o);
+   }
 }
 
 const Candidate* 
 Candidate::base( size_t uid )
 {
   return 0;
-  //  map<size_t,const Candidate*>::const_iterator it = _baseCand.find(uid);
-  //if( it==_baseCand.end() ) return 0;
-  //return it->second; 
+  map<size_t,const Candidate*>::const_iterator it = _baseCand.find(uid);
+  if( it==_baseCand.end() ) return 0;
+  return it->second; 
 }
 
 

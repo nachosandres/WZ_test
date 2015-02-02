@@ -67,12 +67,20 @@ KineUtils::y( float E, float pz )
 float
 KineUtils::dR( float eta1, float eta2, float phi1, float phi2 )
 {
+  return sqrt( dR2(eta1, eta2, phi1, phi2) );
+}
+
+
+float
+KineUtils::dR2( float eta1, float eta2, float phi1, float phi2 )
+{
   float dEta_ = eta2-eta1;
   float dPhi_ = dPhi( phi1, phi2 );
-  float dR_ = sqrt( dEta_*dEta_ + dPhi_*dPhi_ );
+  float dR2_ =  dEta_*dEta_ + dPhi_*dPhi_ ;
 
-  return dR_;
+  return dR2_;
 }
+
 
 float
 KineUtils::et( float e_, float eta_ )

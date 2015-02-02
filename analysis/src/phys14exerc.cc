@@ -869,7 +869,8 @@ bool phys14exerc::vetoEventSelection(std::string electron_label, std::string muo
     // search for OS pair with high-pt lepton
     if (_first->charge() == _vetoleps[i] -> charge()) continue;
 
-    float mll = Candidate::create(_vetoleps[i], _first) -> mass();
+    float mll = 0;
+    mll = Candidate::create(_vetoleps[i], _first) -> mass();
 
     // same flavor -> Z veto
     if(_au->simpleCut( fabs(_vetoleps[i] -> pdgId()), fabs(_first -> pdgId()), "=") ) {

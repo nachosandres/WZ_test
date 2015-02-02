@@ -19,6 +19,8 @@ AnaUtils::AnaUtils() {
   
   _uncSrc="";
 
+  _useAccForEff=false;
+
 }
 
 AnaUtils::~AnaUtils() {
@@ -172,8 +174,8 @@ void AnaUtils::addDataset(string dsName) {
 }
 
 void
-AnaUtils::addCategory(int iCateg, string eCateg) {
-  
+AnaUtils::init() {
+
   //first, check if the global instance exists
   // and if not, create it 
   if( _catNames.find( _kGlobal )==_catNames.end()) {
@@ -186,6 +188,25 @@ AnaUtils::addCategory(int iCateg, string eCateg) {
       _effMap[ ids ].push_back( tmp );
     }
   }
+
+}
+
+
+void
+AnaUtils::addCategory(int iCateg, string eCateg) {
+  
+  // //first, check if the global instance exists
+  // // and if not, create it 
+  // if( _catNames.find( _kGlobal )==_catNames.end()) {
+  //   _catNames[ _kGlobal ] = "global";
+  //   vector<string> vtmp;
+  //   _effNames[ _kGlobal ] = vtmp; 
+
+  //   for(size_t ids=0;ids<_dsNames.size();ids++) {
+  //     eIMap tmp;
+  //     _effMap[ ids ].push_back( tmp );
+  //   }
+  // }
 
   
   //and now the category
