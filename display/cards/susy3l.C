@@ -24,10 +24,10 @@
     //observables **********************
     //string obs[6]={"","","","","",""};
     //md.dp.setObservables("Zmass");
-    md.dp.setObservables("BR_NJets");
-    md.dp.setObservables("BR_NBJets");
+    //md.dp.setObservables("BR_NJets");
+    //md.dp.setObservables("BR_NBJets");
     md.dp.setObservables("BR_HT");
-    md.dp.setObservables("BR_MET");
+    //md.dp.setObservables("BR_MET");
     //md.dp.setObservables("SR_NJets");
     //md.dp.setObservables("SR_NBJets");
     //md.dp.setObservables("SR_HT");
@@ -36,14 +36,14 @@
 
     //Binning & title ************************* Binning & titre
     string yTitle="number of events";
-    int binning=1;
+    int binning=100;
     int addBinBkg=1; //BinB = binning*AddBin
     double rangeY[2]={0,0};
-    double rangeX[2]={60.,120.};
+    double rangeX[2]={60.,600.};
     int xDiv[3]={8,6,0};
     int yDiv[3]={6,6,0}; //Nlabel /  sous-Div /ssdiv
     bool logYScale=false;
-    bool overFlowBin=false;
+    bool overFlowBin=true;
     bool underFlowBin=false;
     bool showDMCRatio=true;
     bool showGrid=false;
@@ -80,45 +80,49 @@
     bool useXS=false;
 
     map<string,float> LumisXS;
+
+    //cross sections   
     
-    LumisXS[ "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skim"] =      5107581 / (1817.0   * 1.23);
-    LumisXS[ "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skim"] =      4914555 / ( 471.6   * 1.23); 
-    LumisXS[ "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skim"] =      4607172 / (  55.61  * 1.23);
-    LumisXS[ "WJetsToLNu_HT600toInf_PU_S14_POSTLS170_skim"] =      4634717 / (  18.81  * 1.23);
+    //Drell-Yan
+    LumisXS[ "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                       ] = 2829164 / 6024;
+    LumisXS[ "DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola"     ] = 4054159 / ( 194.3   * 1.27);
+    LumisXS[ "DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola"     ] = 4666496 / (  52.24  * 1.27);
+    LumisXS[ "DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola"     ] = 4931372 / (   6.546 * 1.27);
+    LumisXS[ "DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola"     ] = 4493574 / (   2.179 * 1.27);
 
-    // LumisXS[ "DYJetsM50_HT100to200_PU_S14_POSTLS170_skim"] =      4063169 / ( 194.3   * 1.27);
-    // LumisXS[ "DYJetsM50_HT200to400_PU_S14_POSTLS170_skim"] =      9195874 / (  52.24  * 1.27);
-    // LumisXS[ "DYJetsM50_HT400to600_PU_S14_POSTLS170_skim"] =      4925656 / (   6.546 * 1.27);
-    // LumisXS[ "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skim"] =      4515183 / (   2.179 * 1.27);
-    // LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skim"] =      24958802 / 809.1;
+    //Higgs->ZZ
+    LumisXS[ "GluGluToHToZZTo4L_M-125_13TeV-powheg-pythia6"                 ] =      0  / (1   * 1);
+    
+    //signal
+    LumisXS[ "SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola" ] =  100322 / (0.0856418 * 20.);
+    LumisXS[ "SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola" ] =  105679 / (0.0141903 * 20.);
+    LumisXS[ "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"                    ] =   52499 / (0.3254    * 20.);
+    LumisXS[ "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280"                    ] =       0 / (1   * 1);
+    
+    LumisXS[ "TbarToLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"   ] =  250000 / (1   * 1);
+    LumisXS[ "TbarToLeptons_t-channel_Tune4C_CSA14_13TeV-aMCatNLO-tauola"   ] = 1999800 / (1   * 1);
+    LumisXS[ "Tbar_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"          ] =  971800 / (1   * 1);
+    LumisXS[ "TtbarH_M-125_13TeV_amcatnlo-pythia8-tauola"                   ] =  199700 / (1   * 1);
+    LumisXS[ "TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola"      ] =25446993 / 809.1;
+    LumisXS[ "TtoLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ] =  500000 / (1   * 1);
+    LumisXS[ "TtoLeptons_t-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ] = 3991000 / (1   * 1);
+    LumisXS[ "T_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"             ] =  986100 / (1   * 1);
+   
+    //TTV 
+    LumisXS[ "TTWJets_Tune4C_13TeV-madgraph-tauola"                         ] = 246521 / 0.6647;
+    LumisXS[ "TTZJets_Tune4C_13TeV-madgraph-tauola"                         ] = 249275 / 0.8565;
+      
+    //LumisXS[ "WJetsToLNu_13TeV-madgraph-pythia8-tauola"                    ] = 10017462 / (20508.9); 
+    LumisXS[ "WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola"          ] = 5262265  / (1817.0   * 1.23);
+    LumisXS[ "WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola"          ] = 4936077  / ( 471.6   * 1.23);
+    LumisXS[ "WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola"          ] = 4640594  / (  55.61  * 1.23);
+    LumisXS[ "WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola"          ] = 237484   / (  18.81  * 1.23);
 
-    LumisXS[ "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimfake"] =      4063169 / ( 194.3   * 1.27);
-    LumisXS[ "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimfake"] =      9195874 / (  52.24  * 1.27);
-    LumisXS[ "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimfake"] =      4925656 / (   6.546 * 1.27);
-    LumisXS[ "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimfake"] =      4515183 / (   2.179 * 1.27);
-    LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimfake"] =      24958802 / 809.1;
+    //Diboson
+    LumisXS[ "WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola"                    ] =   237484 / 2.29;
+    LumisXS[ "ZZTo4L_Tune4C_13TeV-powheg-pythia8"                           ] =  1958600 / (1   * 1);
+    
 
-
-    LumisXS[ "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimmisId"] =      4063169 / ( 194.3   * 1.27);
-    LumisXS[ "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimmisId"] =      9195874 / (  52.24  * 1.27);
-    LumisXS[ "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimmisId"] =      4925656 / (   6.546 * 1.27);
-    LumisXS[ "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimmisId"] =      4515183 / (   2.179 * 1.27);
-    LumisXS[ "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimmisId"] =      24958802 / 809.1;
-
-
-    LumisXS[ "TTHnlo_S14_skim"] =      213300 / 0.5085;
-    LumisXS[ "TTWJets_S14_skim"] =      249415 / 0.6647;
-    LumisXS[ "TTZJets_S14_skim"] =      249275 / 0.8565;
-    LumisXS[ "WZJetsTo3LNu_S14_skim"] =      231127 / 2.29;
-
-    LumisXS[ "SMS_T1tttt_2J_mGl1200_mLSP800_PU_S14_POSTLS170_skim"] =      100322 / (0.0856418 *20) ;
-    LumisXS[ "SMS_T1tttt_2J_mGl1500_mLSP100_PU_S14_POSTLS170_skim"] =      105679 / (0.0141903 *20) ;
-    LumisXS[ "T1tttt_2J_mGo1300_mStop300_mCh285_mChi280_pythia8_S14_skim"] =      35288 / (0.0460525 *20);
-    LumisXS[ "T1tttt_2J_mGo1300_mStop300_mChi280_pythia8_S14_skim"] =      16360 / (0.0460525 *20);
-    LumisXS[ "T1tttt_2J_mGo800_mStop300_mCh285_mChi280_pythia8_S14_skim"] =      30344 / (1.4891* 5);
-    LumisXS[ "T1tttt_2J_mGo800_mStop300_mChi280_pythia8_S14_skim"] =      23343 / (1.4891* 5);
-    LumisXS[ "T5Full_1200_1000_800_skim"] =       121497 / (0.0856418 *20);
-    LumisXS[ "T5Full_1500_800_100_skim"] =       127139 / (0.0141903 *20) ;
 
     //via XSect
   
@@ -129,98 +133,70 @@
     //===============================================================
     // SDYJetsM50_HT600toInf_PU_S14_POSTLS170_skimamples **************************  samples
     //if( md.isInitStatus() ) {
-        //  md.anConf.addSample( "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skim",             "t#bar{t}",    kBlue+1 );
-//  md.anConf.addSample( "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skim",             "W+jets",    kAzure-2 );
-//  md.anConf.addSample( "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skim",             "W+jets",    kAzure-2 );
-//  md.anConf.addSample( "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skim",             "W+jets",    kAzure-2 );
-//  md.anConf.addSample( "WJetsToLNu_HT600toInf_PU_S14_POSTLS170_skim",             "W+jets",    kAzure-2 );
-//  md.anConf.addSample( "DYJetsM50_HT100to200_PU_S14_POSTLS170_skim",             "Z+jets",    kAzure+6 );
-//  md.anConf.addSample( "DYJetsM50_HT200to400_PU_S14_POSTLS170_skim",             "Z+jets",    kAzure+6 );
-//  md.anConf.addSample( "DYJetsM50_HT400to600_PU_S14_POSTLS170_skim",             "Z+jets",    kAzure+6 );
-//  md.anConf.addSample( "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skim",             "Z+jets",    kAzure+6 );
+    
+    md.anConf.addSample( "WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola"                    ,  "WZ+ZZ"              , kGreen    );
+    md.anConf.addSample( "ZZTo4L_Tune4C_13TeV-powheg-pythia8"                           ,  "WZ+ZZ"              , kGreen    );
+
+    md.anConf.addSample( "TTZJets_Tune4C_13TeV-madgraph-tauola"                         ,  "t#bar{t}Z"                , kBlue     );
+
+    md.anConf.addSample( "TTWJets_Tune4C_13TeV-madgraph-tauola"                         ,  "t#bar{t}W"                , kYellow   );
+    
+    //md.anConf.addSample( "GluGluToHToZZTo4L_M-125_13TeV-powheg-pythia6"                 ,  "rare SM"            , kCyan     );
+    
+    //Drell-Yan
+    md.anConf.addSample( "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                       ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola"     ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola"     ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola"     ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola"     ,  "non-prompt e/#mu"    , kRed      );
+    
+    //t production
+    //md.anConf.addSample( "TbarToLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"   ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "TbarToLeptons_t-channel_Tune4C_CSA14_13TeV-aMCatNLO-tauola"   ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "Tbar_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"          ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "TtbarH_M-125_13TeV_amcatnlo-pythia8-tauola"                   ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola"      ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "TtoLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "TtoLeptons_t-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "T_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"             ,  "non-prompt e/#mu"    , kRed      );
+    
+    //W+Jets
+    md.anConf.addSample( "WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola"          ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola"          ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola"          ,  "non-prompt e/#mu"    , kRed      );
+    
+    //signal
+    //md.anConf.addSample( "SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola" ,  ""                   , kCyan     );
+    //md.anConf.addSample( "SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola" ,  ""                   , kCyan     );
+    //md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"                    ,  ""                   , kCyan     );
+    //md.anConf.addSample( "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280"                    ,  ""                   , kCyan     );
+
+    // }
+    //===============================================================
+
+    //*********************************************************************²
+    //Execution macro ******************************************************
  
-  // md.anConf.addSample( "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skim",             "t#bar{t}",    kBlue+1 );
-  // md.anConf.addSample( "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skim",             "W+jets fake",    kAzure-2 );
-  // md.anConf.addSample( "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skim",             "W+jets fake",    kAzure-2 );
-  // md.anConf.addSample( "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skim",             "W+jets fake",    kAzure-2 );
-  // md.anConf.addSample( "WJetsToLNu_HT600toInf_PU_S14_POSTLS170_skim",             "W+jets fake",    kAzure-2 );
-  // md.anConf.addSample( "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimfake",             "Z+jets fake",    kAzure+6 );
-  // md.anConf.addSample( "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimfake",             "Z+jets fake",    kAzure+6 );
-  // md.anConf.addSample( "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimfake",             "Z+jets fake",    kAzure+6 );
-  // md.anConf.addSample( "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimfake",             "Z+jets fake",    kAzure+6 );
-
-  //md.anConf.addSample( "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimfake",             "fake",    kBlue+1 );
-  // md.anConf.addSample( "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skim",             "fake",    kAzure-2 );
-
-  // md.anConf.addSample( "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skim",             "fake",    kAzure-2 );
-  // md.anConf.addSample( "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skim",             "fake",    kAzure-2 );
-  // md.anConf.addSample( "WJetsToLNu_HT600toInf_PU_S14_POSTLS170_skim",             "fake",    kAzure-2 );
-  // md.anConf.addSample( "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimfake",             "fake",    kAzure+6 );
-  // md.anConf.addSample( "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimfake",             "fake",    kAzure+6 );
-  // md.anConf.addSample( "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimfake",             "fake",    kAzure+6 );
-  // md.anConf.addSample( "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimfake",             "fake",    kAzure+6 );
-
-  //md.anConf.addSample( "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimmisId",             "t#bar{t} misId",    kRed+1 );
-  // md.anConf.addSample( "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimmisId",             "Z+jets misId",    kRed-6 );
-  // md.anConf.addSample( "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimmisId",             "Z+jets misId",    kRed-6 );
-  // md.anConf.addSample( "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimmisId",             "Z+jets misId",    kRed-6 );
-  // md.anConf.addSample( "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimmisId",             "Z+jets misId",    kRed-6 );
-
-  // //md.anConf.addSample( "TTJets_MSDecaysCKM_central_PU_S14_POSTLS170_skimprompt",      "t#bar{t}/EWK prompt", kOrange+7 );
-  // //md.anConf.addSample( "WJetsToLNu_HT100to200_PU_S14_POSTLS170_skimprompt",           "t#bar{t}/EWK prompt", kOrange+7 );
-  // //md.anConf.addSample( "WJetsToLNu_HT200to400_PU_S14_POSTLS170_skimprompt",           "t#bar{t}/EWK prompt", kOrange+7 );
-  // //md.anConf.addSample( "WJetsToLNu_HT400to600_PU_S14_POSTLS170_skimprompt",           "t#bar{t}/EWK prompt", kOrange+7 );
-  // //md.anConf.addSample( "WJetsToLNu_HT600toInf_PU_S14_POSTLS170_skimprompt",           "t#bar{t}/EWK prompt", kOrange+7 );
-  // //md.anConf.addSample( "DYJetsM50_HT100to200_PU_S14_POSTLS170_skimprompt",            "t#bar{t}/EWK prompt", kOrange+7 );
-  // //md.anConf.addSample( "DYJetsM50_HT200to400_PU_S14_POSTLS170_skimprompt",            "t#bar{t}/EWK prompt", kOrange+7 );
-  // //md.anConf.addSample( "DYJetsM50_HT400to600_PU_S14_POSTLS170_skimprompt",            "t#bar{t}/EWK prompt", kOrange+7 );
-  // //md.anConf.addSample( "DYJetsM50_HT600toInf_PU_S14_POSTLS170_skimprompt",            "t#bar{t}/EWK prompt", kOrange+7 );
-
-
-  // md.anConf.addSample( "WZJetsTo3LNu_S14_skim"                                ,  "Rare"             , kOrange-2 );
-  // md.anConf.addSample( "TTHnlo_S14_skim"                                      ,  "Rare"             , kOrange-2 );
-  // md.anConf.addSample( "TTWJets_S14_skim"                                     ,  "Rare"             , kOrange-2 );
-  md.anConf.addSample( "TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola"                                             ,  "non-prompt e/mu"             , kRed );
-  md.anConf.addSample( "ZZTo4L_Tune4C_13TeV-powheg-pythia8"                                             ,  "WZ+ZZ"             , kGreen );
-  md.anConf.addSample( "WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola"                                             ,  "WZ+ZZ"             , kGreen );
-  md.anConf.addSample( "TTZJets_Tune4C_13TeV-madgraph-tauola"                                             ,  "ttZ"             , kBlue );
-  md.anConf.addSample( "TTWJets_Tune4C_13TeV-madgraph-tauola"                                             ,  "ttW"             , kYellow );
-  md.anConf.addSample( "GluGluToHToZZTo4L_M-125_13TeV-powheg-pythia6"                                             ,  "rare SM"             , kCyan );
+    //Configuration ================
+    //if( md.isInitStatus() ) {
   
-  //md.anConf.addSample( "SMS_T1tttt_2J_mGl1200_mLSP800_PU_S14_POSTLS170_skim"                     ,  "T1tttt(HL)*20 sig", kViolet-3  );
-  // md.anConf.addSample( "SMS_T1tttt_2J_mGl1500_mLSP100_PU_S14_POSTLS170_skim"                     ,  "T1tttt(HM)*20 sig", kGreen+2  );
-  // // //md.anConf.addSample( "T1tttt_2J_mGo1300_mStop300_mChi280_pythia8_S14_skim" , "T1tttt(HM) sig",  kViolet-3  );
-  //md.anConf.addSample( "T1tttt_2J_mGo800_mStop300_mCh285_mChi280_pythia8_S14_skim", "T1tttt(8/3/2.85)*5 comp sig", kRed+1 );
-  // // //md.anConf.addSample( "T5Full_1500_800_100_skim"                             ,  "T5WW(HL)*20 sig"  , kRed+1  );
-  //md.anConf.addSample( "T5Full_1200_1000_800_skim"                            ,  "T5WW(HM)*20 sig"  , kOrange+6  );
+    //md.anConf.configureLumi( LumisXS, KFactors, lumi, useXS );
    
+    // }
 
-  // }
-  //===============================================================
-
-  //*********************************************************************²
-  //Execution macro ******************************************************
- 
-  //Configuration ================
-  //if( md.isInitStatus() ) {
-  
-  //md.anConf.configureLumi( LumisXS, KFactors, lumi, useXS );
-   
-  // }
-
-  //plotting ================
-  md.dp.setLumiAndEnergy( lumi, energy );
-  md.dp.setNormalization( Norm );
-  md.dp.configureDisplay(yTitle, rangeY, rangeX, logYScale, xDiv,
+    //plotting ================
+    md.dp.setLumiAndEnergy( lumi, energy );
+    md.dp.setNormalization( Norm );
+    md.dp.configureDisplay(yTitle, rangeY, rangeX, logYScale, xDiv,
 			 yDiv, binning, addBinBkg, overFlowBin,
 			 underFlowBin, showDMCRatio, showGrid, 
 			 stacking, addSystematics, mcStatSyst,
 			 markerSize, lineWidth,summedSignal, 
 			 mcOnly,cmsPrel, uncDet);
-
-  md.doPlot();
-  //md.doStatisticsPlot();
-  md.savePlot("SUSY3L_test");
-  // md.dp.addText(xt,yt,st,addText);
+    md.prepareDisplay();
+    md.doPlot();
+    //md.doStatisticsPlot();
+    //md.savePlot("SUSY3L_test");
+    // md.dp.addText(xt,yt,st,addText);
 
 }
