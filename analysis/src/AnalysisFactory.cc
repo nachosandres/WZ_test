@@ -10,6 +10,7 @@ using namespace std;
 #include "analysis/src/synchRA5.hh"
 #include "analysis/src/phys14exerc.hh"
 #include "analysis/src/SUSY3L.hh"
+#include "analysis/src/SUSY3L_RA7sync.hh"
 #include "analysis/src/FakeRatio.hh"
 
 MPAF*
@@ -34,6 +35,9 @@ AnalysisFactory::get(const string& analysis, const string& cfg) {
   }
   if(analysis=="SUSY3L") {
     return new SUSY3L(cfg);
+  }
+  if(analysis=="SUSY3L_RA7sync") {
+    return new SUSY3L_RA7sync(cfg);
   }
   if(analysis=="FakeRatio") {
     return new FakeRatio(cfg);

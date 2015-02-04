@@ -6,4 +6,5 @@ FILES += synchECO
 FILES += synchRA5
 FILES += phys14exerc
 FILES += SUSY3L
+FILES += SUSY3L_RA7sync
 FILES += FakeRatio
