@@ -65,6 +65,7 @@ void SUSY3L_RA7sync::initialize(){
     _vc->registerVar("LepGood_relIso03"                 , "AD");    //relative isolation of the lepton, cone dimensions?
     _vc->registerVar("LepGood_dz"                       , "AD");    //difference to reconstructed primary vertex in z direction
     _vc->registerVar("LepGood_dxy"                      , "AD");    //difference to reconstructed primary vertex in xy plane
+    _vc->registerVar("LepGood_sip3d"                    , "AD");    //similar observable as dxy, also vertex cut
     _vc->registerVar("LepGood_tightCharge"              , "AI");    //indicates reliability of charge measurement, values 0,1,2
     _vc->registerVar("LepGood_eleCutIdCSA14_50ns_v1"    , "AI");    //indicates reliability of electron identification [-1;4]
     _vc->registerVar("LepGood_convVeto"                 , "AI");    //0 (veto) or 1 (no veto), calculated from partner track
@@ -340,24 +341,26 @@ bool SUSY3L_RA7sync::electronSelection(int elIdx){
     float eta_veto_low = 1.442;
     float eta_veto_high = 1.566;
     float isolation_cut = 0.15;
-    float vertex_dz_cut = 0.1;
-    float vertex_dxy_cut = 0.01;
+    float vertex_dz_cut = 0.1; //in cm
+    float vertex_dxy_cut = 0.01; //in cm
+    float sip3d_cut = 4;
     float deltaR = 0.1;
     
     //apply the cuts
     //makeCut(variable to cut on, cut value, direction of acception, name, 2nd cut value, counter)
     if(!makeCut<float>( _vc->getD("LepGood_pt", elIdx) , pt_cut, ">"  , "pt selection"    , 0    , kElId)) return false;
-    //if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), eta_cut  , "<"  , "eta selection"   , 0    , kElId)) return false;
-    //if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), eta_veto_low, "[!]", "eta selection veto"   , eta_veto_high, kElId)) return false;
+    if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), eta_cut  , "<"  , "eta selection"   , 0    , kElId)) return false;
+    if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), eta_veto_low, "[!]", "eta selection veto"   , eta_veto_high, kElId)) return false;
 
-    //if(!makeCut<int>( _vc->getI("LepGood_eleCutIdCSA14_50ns_v1", elIdx) , 3     , ">=" , "POG CB WP-M Id " , 0    , kElId)) return false;
+    if(!makeCut<int>( _vc->getI("LepGood_eleCutIdCSA14_50ns_v1", elIdx) , 3     , ">=" , "POG CB WP-M Id " , 0    , kElId)) return false;
     if(!makeCut<float>( _vc->getD("LepGood_relIso03", elIdx) , isolation_cut   , "<"  , "isolation "      , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->getD("LepGood_dz", elIdx)), vertex_dz_cut   , "<"  , "dz selection"    , 0    , kElId)) return false;
-    //if(!makeCut<float>( std::abs(_vc->getD("LepGood_dxy", elIdx)), vertex_dxy_cut  , "<"  , "dxy selection"   , 0    , kElId)) return false;
-    //if(!makeCut<int>( _vc->getI("LepGood_tightCharge", elIdx) , 1     , ">"  , "charge selection", 0    , kElId)) return false;
+    if(!makeCut<float>( std::abs(_vc->getD("LepGood_dxy", elIdx)), vertex_dxy_cut  , "<"  , "dxy selection"   , 0    , kElId)) return false;
+    if(!makeCut<float>( std::abs(_vc->getD("LepGood_sip3d", elIdx)), sip3d_cut  , ">"  , "sip3d selection"   , 0    , kElId)) return false;
+    if(!makeCut<int>( _vc->getI("LepGood_tightCharge", elIdx) , 1     , ">"  , "charge selection", 0    , kElId)) return false;
     //boolian variable if electron comes from gamme conversion or not (true if not from conversion)
     bool conv = (_vc->getI("LepGood_convVeto", elIdx)>0 && _vc->getI("LepGood_lostHits", elIdx)==0);
-    if(!makeCut( conv, "conversion rejection", "=", kElId)) return false;
+    if(!makeCut( conv, "conversion rejection", "=", kElId)) return false;   
     //reject electrons which are within a cone of delta R around a muon candidate (potentially final state radiation, bremsstrahlung)
     for(int im=0; im<_nMus; ++im){
         float dr = KineUtils::dR( _mus[im]->eta(), _vc->getD("LepGood_eta", elIdx), _mus[im]->phi(), _vc->getD("LepGood_phi", elIdx));
@@ -383,17 +386,18 @@ bool SUSY3L_RA7sync::muonSelection(int muIdx){
     float pt_cut = 10.;
     float eta_cut = 2.4;
     float isolation_cut = 0.15;
-    float vertex_dz_cut = 0.001;
+    float vertex_dz_cut = 0.1;
     float vertex_dxy_cut = 0.005;
+    float sip3d_cut = 4;
     
     //apply the cuts
     if(!makeCut<float>( _vc->getD("LepGood_pt", muIdx), pt_cut, ">", "pt selection"    , 0, kMuId)) return false;
-    //if(!makeCut<float>( std::abs( _vc->getD("LepGood_eta", muIdx)), eta_cut, "<", "eta selection", 0, kMuId)) return false;
-    //if(!makeCut<int>( _vc->getI("LepGood_tightId", muIdx) , 1     , "=", "POG Tight Id "   , 0, kMuId)) return false;
+    if(!makeCut<float>( std::abs( _vc->getD("LepGood_eta", muIdx)), eta_cut, "<", "eta selection", 0, kMuId)) return false;
+    if(!makeCut<int>( _vc->getI("LepGood_tightId", muIdx) , 1     , "=", "POG Tight Id "   , 0, kMuId)) return false;
     if(!makeCut<float>( _vc->getD("LepGood_relIso03", muIdx) , isolation_cut   , "<", "isolation "      , 0, kMuId)) return false;
     if(!makeCut<float>(std::abs(_vc->getD("LepGood_dz", muIdx)), vertex_dz_cut   , "<", "dz selection"    , 0, kMuId)) return false;
-    //if(!makeCut<float>(std::abs(_vc->getD("LepGood_dxy", muIdx)), vertex_dxy_cut , "<", "dxy selection"   , 0, kMuId)) return false;
- 
+    if(!makeCut<float>(std::abs(_vc->getD("LepGood_dxy", muIdx)), vertex_dxy_cut , "<", "dxy selection"   , 0, kMuId)) return false;
+    if(!makeCut<float>( std::abs(_vc->getD("LepGood_sip3d", muIdx)), sip3d_cut  , ">"  , "sip3d selection"   , 0    , kElId)) return false;
  
     return true;
 }
@@ -465,9 +469,7 @@ bool SUSY3L_RA7sync::bJetSelection(int jetIdx){
     //b-jet needs to fulfill criteria for jets
     if(!makeCut(goodJetSelection(jetIdx), "jet Id", "=", kBJetId) ) return false;
     //cut on b-tagger parameter
-    //TODO: which criteria for b-tagging? Which cut value?
-    //if(!makeCut<float>(_vc->getD("Jet_btagCSV", jetIdx), 0.679, ">=", "csv btag selection", 0, kBJetId) ) return false;
-    if(!makeCut<float>(_vc->getD("Jet_btagCSV", jetIdx), 0.814, ">=", "csv btag selection", 0, kBJetId) ) return false;
+    if(!makeCut<float>(_vc->getD("Jet_btagCSV", jetIdx), 0.814, ">", "csv btag selection", 0, kBJetId) ) return false;
 
     return true;
 
@@ -491,9 +493,9 @@ bool SUSY3L_RA7sync::goodJetSelection(int jetIdx){
     float deltaR = 0.3;
 
     if(!makeCut<float>(_vc->getD("Jet_pt", jetIdx)       , pt_cut, ">", "pt selection" , 0, kJetId) ) return false;
-    //if(!makeCut<float>(fabs(_vc->getD("Jet_eta", jetIdx)),  eta_cut, "<", "eta selection", 0, kJetId) ) return false;
+    if(!makeCut<float>(fabs(_vc->getD("Jet_eta", jetIdx)),  eta_cut, "<", "eta selection", 0, kJetId) ) return false;
 
-    //exclude jets which are within a cone of deltaR < 0.4 around lepton candidate
+    //exclude jets which are within a cone of deltaR around lepton candidate
     //loop over all electron candidates
     for(int ie=0; ie<_nEls; ++ie){
         //calculate delta R, input eta1, eta2, phi1, phi2

@@ -24,9 +24,9 @@
     //observables **********************
     //string obs[6]={"","","","","",""};
     //md.dp.setObservables("Zmass");
-    //md.dp.setObservables("BR_NJets");
+    md.dp.setObservables("BR_NJets");
     //md.dp.setObservables("BR_NBJets");
-    md.dp.setObservables("BR_HT");
+    //md.dp.setObservables("BR_HT");
     //md.dp.setObservables("BR_MET");
     //md.dp.setObservables("SR_NJets");
     //md.dp.setObservables("SR_NBJets");
@@ -36,10 +36,10 @@
 
     //Binning & title ************************* Binning & titre
     string yTitle="number of events";
-    int binning=100;
+    int binning=1;
     int addBinBkg=1; //BinB = binning*AddBin
     double rangeY[2]={0,0};
-    double rangeX[2]={60.,600.};
+    double rangeX[2]={2,10};
     int xDiv[3]={8,6,0};
     int yDiv[3]={6,6,0}; //Nlabel /  sous-Div /ssdiv
     bool logYScale=false;
@@ -91,7 +91,7 @@
     LumisXS[ "DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola"     ] = 4493574 / (   2.179 * 1.27);
 
     //Higgs->ZZ
-    LumisXS[ "GluGluToHToZZTo4L_M-125_13TeV-powheg-pythia6"                 ] =      0  / (1   * 1);
+    LumisXS[ "GluGluToHToZZTo4L_M-125_13TeV-powheg-pythia6"                 ] =  204684 / 0.01212192 ;   // cross-section: 43.92*2.76E-04
     
     //signal
     LumisXS[ "SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola" ] =  100322 / (0.0856418 * 20.);
@@ -99,14 +99,14 @@
     LumisXS[ "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"                    ] =   52499 / (0.3254    * 20.);
     LumisXS[ "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280"                    ] =       0 / (1   * 1);
     
-    LumisXS[ "TbarToLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"   ] =  250000 / (1   * 1);
-    LumisXS[ "TbarToLeptons_t-channel_Tune4C_CSA14_13TeV-aMCatNLO-tauola"   ] = 1999800 / (1   * 1);
-    LumisXS[ "Tbar_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"          ] =  971800 / (1   * 1);
+    LumisXS[ "TbarToLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"   ] =  250000 / 1.34784 ;     // 4.16*0.108*3
+    LumisXS[ "TbarToLeptons_t-channel_Tune4C_CSA14_13TeV-aMCatNLO-tauola"   ] = 1999800 / 26.23428 ;    // 80.97*0.108*3
+    LumisXS[ "Tbar_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"          ] =  971800 / 35.6 ;        // 35.6
     LumisXS[ "TtbarH_M-125_13TeV_amcatnlo-pythia8-tauola"                   ] =  199700 / (1   * 1);
     LumisXS[ "TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola"      ] =25446993 / 809.1;
-    LumisXS[ "TtoLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ] =  500000 / (1   * 1);
-    LumisXS[ "TtoLeptons_t-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ] = 3991000 / (1   * 1);
-    LumisXS[ "T_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"             ] =  986100 / (1   * 1);
+    LumisXS[ "TtoLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ] =  500000 / 2.3328 ;      // 7.20*0.108*3
+    LumisXS[ "TtoLeptons_t-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ] = 3991000 / 44.0802 ;     // 136.05*0.108*3
+    LumisXS[ "T_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"             ] =  986100 / 35.6 ;        // 35.6
    
     //TTV 
     LumisXS[ "TTWJets_Tune4C_13TeV-madgraph-tauola"                         ] = 246521 / 0.6647;
@@ -120,7 +120,7 @@
 
     //Diboson
     LumisXS[ "WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola"                    ] =   237484 / 2.29;
-    LumisXS[ "ZZTo4L_Tune4C_13TeV-powheg-pythia8"                           ] =  1958600 / (1   * 1);
+    LumisXS[ "ZZTo4L_Tune4C_13TeV-powheg-pythia8"                           ] =  1958600 / 0.3231;  // cross-section 31.8*(3*0.0336)*(3*0.0336)
     
 
 
@@ -141,7 +141,7 @@
 
     md.anConf.addSample( "TTWJets_Tune4C_13TeV-madgraph-tauola"                         ,  "t#bar{t}W"                , kYellow   );
     
-    //md.anConf.addSample( "GluGluToHToZZTo4L_M-125_13TeV-powheg-pythia6"                 ,  "rare SM"            , kCyan     );
+    md.anConf.addSample( "GluGluToHToZZTo4L_M-125_13TeV-powheg-pythia6"                 ,  "rare SM"            , kCyan     );
     
     //Drell-Yan
     md.anConf.addSample( "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                       ,  "non-prompt e/#mu"    , kRed      );
@@ -151,13 +151,13 @@
     //md.anConf.addSample( "DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola"     ,  "non-prompt e/#mu"    , kRed      );
     
     //t production
-    //md.anConf.addSample( "TbarToLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"   ,  "non-prompt e/#mu"    , kRed      );
-    //md.anConf.addSample( "TbarToLeptons_t-channel_Tune4C_CSA14_13TeV-aMCatNLO-tauola"   ,  "non-prompt e/#mu"    , kRed      );
+//    md.anConf.addSample( "TbarToLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"   ,  "non-prompt e/#mu"    , kRed      );
+//    md.anConf.addSample( "TbarToLeptons_t-channel_Tune4C_CSA14_13TeV-aMCatNLO-tauola"   ,  "non-prompt e/#mu"    , kRed      );
     //md.anConf.addSample( "Tbar_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"          ,  "non-prompt e/#mu"    , kRed      );
     //md.anConf.addSample( "TtbarH_M-125_13TeV_amcatnlo-pythia8-tauola"                   ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola"      ,  "non-prompt e/#mu"    , kRed      );
-    //md.anConf.addSample( "TtoLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ,  "non-prompt e/#mu"    , kRed      );
-    //md.anConf.addSample( "TtoLeptons_t-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ,  "non-prompt e/#mu"    , kRed      );
+//    md.anConf.addSample( "TtoLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ,  "non-prompt e/#mu"    , kRed      );
+//    md.anConf.addSample( "TtoLeptons_t-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ,  "non-prompt e/#mu"    , kRed      );
     //md.anConf.addSample( "T_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"             ,  "non-prompt e/#mu"    , kRed      );
     
     //W+Jets
@@ -196,7 +196,7 @@
     md.prepareDisplay();
     md.doPlot();
     //md.doStatisticsPlot();
-    //md.savePlot("SUSY3L_test");
+    md.savePlot("SUSY3L");
     // md.dp.addText(xt,yt,st,addText);
 
 }
