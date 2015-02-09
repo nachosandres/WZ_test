@@ -36,6 +36,7 @@ private:
     void collectKinematicObjects();
     bool electronSelection(int);
     bool muonSelection(int);
+    bool tauSelection(int);
     bool vetoElectronSelection(int);
     bool vetoMuonSelection(int);
     bool bJetSelection(int);
@@ -56,7 +57,9 @@ private:
 
 
     float HT();
+    float M_T(float, float, float, float);
 
+    string _selectTaus;
     string _pairmass;
     string _BR;
     string _SR;
@@ -64,11 +67,12 @@ private:
 private:
 
     //counter categories, 0 is ALWAYS global (even if not specified later)
-    enum {kGlobal=0, kElId, kElVeto, kMuId, kMuVeto, kJetId, kBJetId, conZEvents};
+    enum {kGlobal=0, kElId, kElVeto, kMuId, kMuVeto, kTauId, kJetId, kBJetId, conZEvents};
 
     //cut variables
     float _valCutLepMultiplicityBR;
     float _pt_cut_hard_leg;
+    float _M_T_3rdLep_MET_cut;
     float _valCutNJetsBR;
     float _valCutNBJetsBR;
     float _ZMassWindow;
@@ -100,15 +104,17 @@ private:
     float _upValCutHTSR;
     float _upValCutMETSR;
 
-    //vectors for electron and muon candidates
+    //vectors for electron, muon, and tau candidates
     std::vector<int> _elIdx;
     std::vector<int> _muIdx;
+    std::vector<int> _tauIdx;
 
     //length of candiate vectors
     int _nEls;
     int _nVEls;
     int _nMus;
     int _nVMus;
+    int _nTaus;
     int _nJets;
     int _nBJets;
 
@@ -117,6 +123,7 @@ private:
     CandList _vEls;
     CandList _mus;
     CandList _vMus;
+    CandList _taus;
     CandList _jets;
     CandList _bJets;
     Candidate* _met;
