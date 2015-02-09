@@ -76,17 +76,21 @@
 
   map<string,float> LumisXS;
 
+
+  //WJetsToLNu inclusive not processed in Phys14 yet
   //LumisXS[ "WJetsToLNu_13TeV-madgraph-pythia8-tauola_skim"                    ] = 10017462 / (20508.9); 
   LumisXS[ "WJetsToLNu_HT100to200_skim"         ] = 5262265  / (1817.0   * 1.23);
   LumisXS[ "WJetsToLNu_HT200to400_skim"         ] = 4936077  / ( 471.6   * 1.23); 
   LumisXS[ "WJetsToLNu_HT400to600_skim"         ] = 4640594  / (  55.61  * 1.23);
-  LumisXS[ "WJetsToLNu_HT600toInf_skim"         ] = 237484   / (  18.81  * 1.23);
+  LumisXS[ "WJetsToLNu_HT600toInf_skim"         ] = 4581841   / (  18.81  * 1.23);
+
  
-  //LumisXS[ "DYJetsToLL_M50_skim"                      ] = 2829164  / 6024;
+  LumisXS[ "DYJetsToLL_M50_skim"                      ] = 2829164.  / 6024;
   LumisXS[ "DYJetsToLL_M50_HT100to200_skim"    ] = 4054159  / ( 194.3   * 1.27);
   LumisXS[ "DYJetsToLL_M50_HT200to400_skim"    ] = 4666496  / (  52.24  * 1.27);
   LumisXS[ "DYJetsToLL_M50_HT400to600_skim"    ] = 4931372  / (   6.546 * 1.27);
   LumisXS[ "DYJetsToLL_M50_HT600toInf_skim"    ] = 4493574  / (   2.179 * 1.27);
+
 
   LumisXS[ "TTJets_skim"     ] = 25446993 / 809.1;
 
@@ -94,15 +98,42 @@
   LumisXS[ "TTZJets_skim"                        ] = 249275 / 0.8565;
   LumisXS[ "WZJetsTo3LNu_skim"                   ] = 237484 / 2.29;
 
-  LumisXS[ "SMS_T1tttt_2J_mGl1200_mLSP800_skim"] = 100322 / (0.0856418 * 20.);
-  //LumisXS[ "SMS_T1tttt_2J_mGl1500_mLSP100_skim"] = 105679 / (0.0141903 * 20.);
-  //LumisXS[ "T1ttbbWW_mGo1300_mCh300_mChi290_skim"                             ] = 43975  / (0.0460525 * 20.);
-  LumisXS[ "T1ttbbWW_mGo1000_mCh725_mChi720_skim"                             ] = 52212  / (0.325388  * 20.);
-  LumisXS[ "T5ttttDeg_mGo1000_mStop300_mChi280_skim"                          ] = 52102  / (0.325388  * 20.);
-  //LumisXS[ "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280_skim"                   ] = 52499  / (0.3254    * 20.);
-  //LumisXS[ "T6ttWW_mSbot650_mCh150_mChi50_skim"                               ] = 105124 / (0.107045  * 20.);
-  LumisXS[ "T6ttWW_mSbot600_mCh425_mChi50_skim"                               ] = 52954  / (0.174599  * 20.);
-  LumisXS[ "T5qqqqWW_mGo1200_mCh1000_mChi800_dilep_skim"                            ] = 112720 / (0.0856418 * 20.);
+  LumisXS[ "TBarToLeptons_sch_skim" ]	= 250000 / 0.44928;
+  LumisXS[ "TBarToLeptons_tch_skim" ]	= 1999800 / 8.74476;
+  LumisXS[ "TBar_tWch_skim" ]	= 971800 / 35.6;
+  LumisXS[ "TTH_skim" ]	= 199700 / 0.5085;
+  LumisXS[ "TToLeptons_sch_skim" ]	= 500000 / 0.7776;
+  LumisXS[ "TToLeptons_tch_skim" ]	= 3991000 / 14.6934;
+  LumisXS[ "T_tWch_skim" ]	= 986100 / 35.6;
+  LumisXS[ "ZZTo4L_skim" ]	= 1958600 / 0.0360292;
+  LumisXS[ "GGHZZ4L_skim" ]	= 204684 / 0.0121219;
+
+
+  LumisXS[ "SMS_T1tttt_2J_mGl1200_mLSP800_skim"] = 100322 / (0.0856418 * 20);
+  LumisXS[ "SMS_T1tttt_2J_mGl1500_mLSP100_skim"] = 105679 / (0.0141903 * 20);
+  LumisXS[ "T1ttbbWW_mGo1300_mCh300_mChi290_skim"                             ] = 43975  / (0.0460525 * 20);
+  LumisXS[ "T1ttbbWW_mGo1000_mCh725_mChi720_skim"                             ] = 52212  / (0.325388  * 20);
+  LumisXS[ "T5ttttDeg_mGo1000_mStop300_mChi280_skim"                          ] = 52102  / (0.325388  * 20);
+  LumisXS[ "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280_skim"                   ] = 52499  / (0.325388    * 20);
+  LumisXS[ "T6ttWW_mSbot650_mCh150_mChi50_skim"                               ] = 105124 / (0.107045  * 20);
+  LumisXS[ "T6ttWW_mSbot600_mCh425_mChi50_skim"                               ] = 52954  / (0.174599  * 20);
+  LumisXS[ "T5qqqqWW_mGo1200_mCh1000_mChi800_skim"                            ] = 112720 / (0.0856418 * 20);
+  LumisXS[ "T5qqqqWW_mGo1200_mCh1000_mChi800_dilep_skim"                            ] = 54319 / (0.0089903 * 20);
+
+  LumisXS[ "T1ttbbWW_mGo1000_mCh725_mChi715_skim" ]	= 51318 / (0.325388 * 20);
+  LumisXS[ "T1ttbbWW_mGo1300_mCh300_mChi295_skim" ]	= 44242 / (0.0460525 * 20);
+  LumisXS[ "T1tttt_mGo1300_mChi100_skim" ]	= 39960 / (0.0460525 * 20);
+  LumisXS[ "T5qqqqWWDeg_mGo1000_mCh310_mChi300_dilep_skim" ]	= 52169 / (0.0360819 * 20);
+  LumisXS[ "T5qqqqWWDeg_mGo1000_mCh315_mChi300_dilep_skim" ]	= 51955 / (0.2291257 * 20);
+  LumisXS[ "T5qqqqWWDeg_mGo1000_mCh325_mChi300_dilep_skim" ]	= 51924 / (0.0341579 * 20);
+  LumisXS[ "T5qqqqWWDeg_mGo800_mCh305_mChi300_dilep_skim" ]	= 73114 / (0.174171 * 20);
+  LumisXS[ "T5qqqqWW_mGo1000_mCh800_mChi700_dilep_skim" ]	= 52555 / (0.0341579 * 20);
+  LumisXS[ "T5qqqqWW_mGo1400_mCh315_mChi300_skim" ]	= 37070 / (0.0252977 * 20);
+  LumisXS[ "T5qqqqWW_mGo1500_mCh800_mChi100_skim" ]	= 120160 / (0.0141903 * 20);
+  LumisXS[ "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280_dil_skim" ]	= 75914 / (0.325388 * 20);
+  LumisXS[ "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280_dil_skim" ]	= 70347 / (0.0460525 * 20);
+  LumisXS[ "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280_skim" ]	= 43818 / (0.0460525 * 20);
+  LumisXS[ "T5ttttDeg_mGo1300_mStop300_mChi280_skim" ]	= 44011 / (0.0460525 * 20);
 
 
   //via XSect
@@ -117,7 +148,6 @@
 
 
 
-  //md.anConf.addSample( "WJetsToLNu_13TeV-madgraph-pythia8-tauola_skim"                    , "W+Jets", kAzure-2); 
   md.anConf.addSample( "WJetsToLNu_HT100to200_skim"         , "W+Jets", kAzure-2); 
   md.anConf.addSample( "WJetsToLNu_HT200to400_skim"         , "W+Jets", kAzure-2);  
   md.anConf.addSample( "WJetsToLNu_HT400to600_skim"         , "W+Jets", kAzure-2); 
@@ -131,9 +161,18 @@
 
   md.anConf.addSample( "TTJets_skim"     , "t#bar{t}", kBlue+1); 
 
+  md.anConf.addSample("TToLeptons_sch_skim"     , "Single top", kBlue+3);
+  md.anConf.addSample("TToLeptons_tch_skim"     , "Single top", kBlue+3);
+  md.anConf.addSample("T_tWch_skim"     , "Single top", kBlue+3);
+  md.anConf.addSample("TBarToLeptons_sch_skim"     , "Single top", kBlue+3);
+  md.anConf.addSample("TBarToLeptons_tch_skim"     , "Single top", kBlue+3);
+  md.anConf.addSample("TBar_tWch_skim"     , "Single top", kBlue+3);
+
   md.anConf.addSample( "TTWJets_skim"                        , "rare", kOrange-2); 
   md.anConf.addSample( "TTZJets_skim"                        , "rare", kOrange-2); 
   md.anConf.addSample( "WZJetsTo3LNu_skim"                   , "rare", kOrange-2); 
+  md.anConf.addSample( "ZZTo4L_skim"                   , "rare", kOrange-2); 
+  md.anConf.addSample( "TTH_skim"                   , "rare", kOrange-2); 
 
   md.anConf.addSample( "SMS_T1tttt_2J_mGl1200_mLSP800_skim", "T1tttt (1.2/0.8) sig * 20", kViolet-3);
   //md.anConf.addSample( "SMS_T1tttt_2J_mGl1500_mLSP100_skim", "T1tttt (1.5/0.1) sig * 20", kViolet-3);
