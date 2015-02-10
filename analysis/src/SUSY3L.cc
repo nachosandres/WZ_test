@@ -181,6 +181,7 @@ void SUSY3L::defineOutput(){
 
     //additional observables
     _hm->addVariable("Zmass"        ,  150,   0.0,  150.0, "Z candidate mass [GeV]"         );
+    _hm->addVariable("deltaR_elmu"  ,  500,   0.0,  10.0, "delta R between el and mu"         );
 }
 
 
@@ -382,7 +383,7 @@ bool SUSY3L::electronSelection(int elIdx){
     float eta_veto_high = 1.566;
     float isolation_cut = 0.15;
     float vertex_dz_cut = 0.1;      //in cm
-    float vertex_dxy_cut = 0.01;    //in cm
+    float vertex_dxy_cut = 0.05;    //in cm
     float sip3d_cut = 4;
     float deltaR = 0.1;
     
@@ -396,13 +397,16 @@ bool SUSY3L::electronSelection(int elIdx){
     if(!makeCut<float>( std::abs(_vc->getD("LepGood_dz", elIdx)), vertex_dz_cut   , "<"  , "dz selection"    , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->getD("LepGood_dxy", elIdx)), vertex_dxy_cut  , "<"  , "dxy selection"   , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->getD("LepGood_sip3d", elIdx)), sip3d_cut  , "<"  , "sip3d selection"   , 0    , kElId)) return false;
-    if(!makeCut<int>( _vc->getI("LepGood_tightCharge", elIdx) , 1     , ">"  , "charge selection", 0    , kElId)) return false;
+    //removed after RA7 sync exercise
+    //if(!makeCut<int>( _vc->getI("LepGood_tightCharge", elIdx) , 1     , ">"  , "charge selection", 0    , kElId)) return false;
     //boolian variable if electron comes from gamme conversion or not (true if not from conversion)
     bool conv = (_vc->getI("LepGood_convVeto", elIdx)>0 && _vc->getI("LepGood_lostHits", elIdx)==0);
     if(!makeCut( conv, "conversion rejection", "=", kElId)) return false;
     //reject electrons which are within a cone of delta R around a muon candidate (potentially final state radiation, bremsstrahlung)
     for(int im=0; im<_nMus; ++im){
         float dr = KineUtils::dR( _mus[im]->eta(), _vc->getD("LepGood_eta", elIdx), _mus[im]->phi(), _vc->getD("LepGood_phi", elIdx));
+        _deltaR = dr;
+        fill("deltaR_elmu" , _deltaR        , _weight);
         if(!makeCut<float>(dr, deltaR, ">", "dR selection (mu)", 0, kElId) ) return false;
     }
 
@@ -426,7 +430,7 @@ bool SUSY3L::muonSelection(int muIdx){
     float eta_cut = 2.4;
     float isolation_cut = 0.15;
     float vertex_dz_cut = 0.1;
-    float vertex_dxy_cut = 0.005;
+    float vertex_dxy_cut = 0.05;
     float sip3d_cut = 4;
     
     //apply the cuts
@@ -540,10 +544,12 @@ bool SUSY3L::bJetSelection(int jetIdx){
     
     counter("BJetDenominator", kBJetId);
 
+    float btagCSV_cut = 0.814;
+
     //b-jet needs to fulfill criteria for jets
     if(!makeCut(goodJetSelection(jetIdx), "jet Id", "=", kBJetId) ) return false;
     //cut on b-tagger parameter
-    if(!makeCut<float>(_vc->getD("Jet_btagCSV", jetIdx), 0.814, ">=", "csv btag selection", 0, kBJetId) ) return false;
+    if(!makeCut<float>(_vc->getD("Jet_btagCSV", jetIdx), btagCSV_cut, ">", "csv btag selection", 0, kBJetId) ) return false;
 
     return true;
 
@@ -924,6 +930,7 @@ bool SUSY3L::baseSelection(){
     //select events with certain lepton multiplicity of all flavor combinations
     if(!makeCut<int>( _nEls + _nMus + _nTaus, _valCutLepMultiplicityBR, _cTypeLepMultiplicityBR, "lepton multiplicity", _upValCutLepMultiplicityBR ) ) return false;
 
+
     //require at least 1 of the leptons to have higher pT than original cut
 //    bool has_hard_leg = hardLegSelection();
 //    if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
@@ -946,17 +953,17 @@ bool SUSY3L::baseSelection(){
 
     //select on or off-Z events according to specification in config file
     //bool is_reconstructed_Z = !ZEventSelection();
-//    bool is_reconstructed_Z = ZEventSelectionLoop();
-    
-//    if(is_reconstructed_Z){
-//        fill("Zmass" , _Z->mass()        , _weight);
-//    }
-//    if(_pairmass == "off"){
-//        if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
-//    }
-//    else if(_pairmass == "on"){
-//        if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
-//    }
+    bool is_reconstructed_Z = ZEventSelectionLoop();
+
+    if(is_reconstructed_Z){
+        fill("Zmass" , _Z->mass()        , _weight);
+    }
+    if(_pairmass == "off"){
+        if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
+    }
+    else if(_pairmass == "on"){
+        if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
+    }
 
     return true;
 }
@@ -1128,7 +1135,7 @@ bool SUSY3L::ZEventSelectionLoop(){
     bool Zevent = false;
     float pt_3rdLeg = 0;
     float phi_3rdLeg = 0;
-    float mt;
+    float mt = 0;
 
     //loop over all possible combination of two electrons
     for(int ie1=0; ie1 < _nEls; ie1++) {

@@ -130,6 +130,7 @@ private:
     Candidate* _Z;
 
     float _HT;
+    float _deltaR;
     
 };
 

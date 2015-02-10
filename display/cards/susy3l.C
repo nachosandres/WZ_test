@@ -24,7 +24,8 @@
     //observables **********************
     //string obs[6]={"","","","","",""};
     //md.dp.setObservables("Zmass");
-    md.dp.setObservables("BR_NJets");
+    md.dp.setObservables("deltaR_elmu");
+    //md.dp.setObservables("BR_NJets");
     //md.dp.setObservables("BR_NBJets");
     //md.dp.setObservables("BR_HT");
     //md.dp.setObservables("BR_MET");
@@ -39,7 +40,7 @@
     int binning=1;
     int addBinBkg=1; //BinB = binning*AddBin
     double rangeY[2]={0,0};
-    double rangeX[2]={2,10};
+    double rangeX[2]={0,5};
     int xDiv[3]={8,6,0};
     int yDiv[3]={6,6,0}; //Nlabel /  sous-Div /ssdiv
     bool logYScale=false;
@@ -135,16 +136,16 @@
     //if( md.isInitStatus() ) {
     
     md.anConf.addSample( "WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola"                    ,  "WZ+ZZ"              , kGreen    );
-    md.anConf.addSample( "ZZTo4L_Tune4C_13TeV-powheg-pythia8"                           ,  "WZ+ZZ"              , kGreen    );
+ //   md.anConf.addSample( "ZZTo4L_Tune4C_13TeV-powheg-pythia8"                           ,  "WZ+ZZ"              , kGreen    );
 
-    md.anConf.addSample( "TTZJets_Tune4C_13TeV-madgraph-tauola"                         ,  "t#bar{t}Z"                , kBlue     );
+ //   md.anConf.addSample( "TTZJets_Tune4C_13TeV-madgraph-tauola"                         ,  "t#bar{t}Z"                , kBlue     );
 
-    md.anConf.addSample( "TTWJets_Tune4C_13TeV-madgraph-tauola"                         ,  "t#bar{t}W"                , kYellow   );
+ //   md.anConf.addSample( "TTWJets_Tune4C_13TeV-madgraph-tauola"                         ,  "t#bar{t}W"                , kYellow   );
     
-    md.anConf.addSample( "GluGluToHToZZTo4L_M-125_13TeV-powheg-pythia6"                 ,  "rare SM"            , kCyan     );
+ //   md.anConf.addSample( "GluGluToHToZZTo4L_M-125_13TeV-powheg-pythia6"                 ,  "rare SM"            , kCyan     );
     
     //Drell-Yan
-    md.anConf.addSample( "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                       ,  "non-prompt e/#mu"    , kRed      );
+ //   md.anConf.addSample( "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                       ,  "non-prompt e/#mu"    , kRed      );
     //md.anConf.addSample( "DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola"     ,  "non-prompt e/#mu"    , kRed      );
     //md.anConf.addSample( "DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola"     ,  "non-prompt e/#mu"    , kRed      );
     //md.anConf.addSample( "DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola"     ,  "non-prompt e/#mu"    , kRed      );
@@ -155,15 +156,15 @@
 //    md.anConf.addSample( "TbarToLeptons_t-channel_Tune4C_CSA14_13TeV-aMCatNLO-tauola"   ,  "non-prompt e/#mu"    , kRed      );
     //md.anConf.addSample( "Tbar_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"          ,  "non-prompt e/#mu"    , kRed      );
     //md.anConf.addSample( "TtbarH_M-125_13TeV_amcatnlo-pythia8-tauola"                   ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola"      ,  "non-prompt e/#mu"    , kRed      );
+ //   md.anConf.addSample( "TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola"      ,  "non-prompt e/#mu"    , kRed      );
 //    md.anConf.addSample( "TtoLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ,  "non-prompt e/#mu"    , kRed      );
 //    md.anConf.addSample( "TtoLeptons_t-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ,  "non-prompt e/#mu"    , kRed      );
     //md.anConf.addSample( "T_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"             ,  "non-prompt e/#mu"    , kRed      );
     
     //W+Jets
-    md.anConf.addSample( "WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola"          ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola"          ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola"          ,  "non-prompt e/#mu"    , kRed      );
+ //   md.anConf.addSample( "WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola"          ,  "non-prompt e/#mu"    , kRed      );
+ //   md.anConf.addSample( "WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola"          ,  "non-prompt e/#mu"    , kRed      );
+ //   md.anConf.addSample( "WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola"          ,  "non-prompt e/#mu"    , kRed      );
     
     //signal
     //md.anConf.addSample( "SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola" ,  ""                   , kCyan     );
