@@ -138,11 +138,24 @@ void phys14exerc::initialize(){
   //extra input variables
   _lepflav = getCfgVarS("LEPFLAV");
   //_mva     = getCfgVarS("LEPID"  );
-  //_btag    = getCfgVarS("BTAG"   );
+  _btag    = getCfgVarS("BTAG"   );
   _PT      = getCfgVarS("PT"     );
   //_BR      = getCfgVarS("BR"     );
   _SR      = getCfgVarS("SR"     );
   
+  //add some protection against non-supported values
+  if (_PT != "hh" && _PT != "hl" && _PT != "ll") {
+    std::cout << "Unkown value for _PT=" << _PT
+              << " valid values are <<hh>>, <<<hl>>, and <<ll>>" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+
+  if (_btag != "40" && _btag != "25") {
+    std::cout << "Unkown value for _btag=" << _btag
+              << " valid values are <<40>>, and <<25>>" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+
 }
 
 
@@ -444,8 +457,11 @@ bool phys14exerc::goodJetSelection(int jetIdx){
   */
   
   counter("JetDenominator", kJetId);
+  
+  double jetCut = 25;
+  if (_btag == "40") jetCut = 40;
 
-  if(!makeCut<float>(_vc->getD("Jet_pt", jetIdx)       , 25.0, ">", "pt selection" , 0, kJetId) ) return false;
+  if(!makeCut<float>(_vc->getD("Jet_pt", jetIdx)       , jetCut, ">", "pt selection" , 0, kJetId) ) return false;
   if(!makeCut<float>(fabs(_vc->getD("Jet_eta", jetIdx)),  2.4, "<", "eta selection", 0, kJetId) ) return false;
 
   // SF: here we require dR(j,every loose lepton) > 0.4
@@ -635,6 +651,7 @@ void phys14exerc::setSignalRegion() {
   */
 
   _bvar = "nBJetMedium25";
+  if (_btag == "40") _bvar = "nBJetMedium40";
   
   if(_SR == "SR00") {
     setCut("HTSR"     ,   80, ">" );
