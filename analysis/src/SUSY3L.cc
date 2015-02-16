@@ -141,7 +141,7 @@ void SUSY3L::run(){
     //TODO: print to file
     int lumi = _vc->getI("lumi");
     int evt = _vc->getI("evt");
-    cout << "1" << "  " << lumi << "  " << evt << "  " << _nEls << "  " << _nMus << "  " << _nTaus << "  " << _nJets << "  " << _nBJets << endl;
+    //cout << "1" << "  " << lumi << "  " << evt << "  " << _nMus << "  " << _nEls << "  " << _nTaus << "  " << _nJets << "  " << _nBJets << endl;
 
     // initialization of signal region cuts, categorization of events passing the baseline 
     // selection into different signal regions, and filling of plots
@@ -935,24 +935,24 @@ bool SUSY3L::baseSelection(){
 //    bool has_hard_leg = hardLegSelection();
 //    if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
 
-    //require minimum number of jets
+  //require minimum number of jets
 //    if(!makeCut<int>( _nJets, _valCutNJetsBR, _cTypeNJetsBR, "jet multiplicity", _upValCutNJetsBR) ) return false;
 
-    //require minimum number of b-tagged jets
+  //require minimum number of b-tagged jets
 //    if(!makeCut<int>( _nBJets, _valCutNBJetsBR, _cTypeNBJetsBR, "b-jet multiplicity", _upValCutNBJetsBR) ) return false;
 
-    //require minimum hadronic activity (sum of jet pT's)
+  //require minimum hadronic activity (sum of jet pT's)
 //    if(!makeCut<float>( _HT, _valCutHTBR, _cTypeHTBR, "hadronic activity", _upValCutHTBR) ) return false;
 
-    //require minimum missing transvers energy (actually missing momentum)
+  //require minimum missing transvers energy (actually missing momentum)
 //    if(!makeCut<float>( _met->pt(), _valCutMETBR, _cTypeMETBR, "missing transverse energy", _upValCutMETBR) ) return false;
 
-    //reject event if ossf lepton pair with low invariant mass is found
+  //reject event if ossf lepton pair with low invariant mass is found
 //    bool has_low_mll = lowMllPair();
 //    if(!makeCut( !has_low_mll , "low mll rejection", "=") ) return false;
 
-    //select on or off-Z events according to specification in config file
-    //bool is_reconstructed_Z = !ZEventSelection();
+  //select on or off-Z events according to specification in config file
+  //bool is_reconstructed_Z = !ZEventSelection();
     bool is_reconstructed_Z = ZEventSelectionLoop();
 
     if(is_reconstructed_Z){
