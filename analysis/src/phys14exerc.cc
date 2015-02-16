@@ -95,7 +95,7 @@ void phys14exerc::initialize(){
   _vc->registerVar("LepGood_eleCutIdCSA14_50ns_v1", "AI");
   _vc->registerVar("LepGood_eleCutIdCSA14_50ns_v1", "AI");
   _vc->registerVar("LepGood_eleCutId2012_full5x5" , "AI");
-  _vc->registerVar("LepGood_mvaTTH"               , "AD");
+  //_vc->registerVar("LepGood_mvaSusyPHYS14"        , "AF");
   _vc->registerVar("LepGood_mvaSusy"              , "AD");
   _vc->registerVar("LepGood_mcMatchId"            , "AI");
   _vc->registerVar("LepGood_mcMatchAny"           , "AI");
@@ -113,12 +113,19 @@ void phys14exerc::initialize(){
   _vc->registerVar("Jet_phi"                      , "AD");
   _vc->registerVar("Jet_mass"                     , "AD");
   _vc->registerVar("Jet_btagCSV"                  , "AD");
-  
+
+  _vc->registerVar("htJet40j"                     , "D" );
+  _vc->registerVar("minMllAFAS"                   , "D" );
+  _vc->registerVar("minMllAFOS"                   , "D" );
+  _vc->registerVar("mZ1"                          , "D" );
+  _vc->registerVar("nLepGood10"                   , "I" );
+
+ 
   //generator informations
-  _vc->registerVar("ngenLep"                      , "I" );
-  _vc->registerVar("genLep_eta"                   , "AD");
-  _vc->registerVar("genLep_phi"                   , "AD");
-  _vc->registerVar("genLep_pdgId"                 , "AI");
+  _vc->registerVar("nGenPart"                     , "I" );
+  _vc->registerVar("GenPart_eta"                  , "AD");
+  _vc->registerVar("GenPart_phi"                  , "AD");
+  _vc->registerVar("GenPart_pdgId"                , "AI");
   
   //bjets
   _vc->registerVar("nBJetLoose25"                 , "I" );
@@ -177,42 +184,47 @@ void phys14exerc::run(){
 
   counter("denominator");
 
-  if(_vc->getI("run") != 1 || _vc->getI("lumi") != 228310 || _vc->getI("evt") != 22663102) return;
-  cout << "looping on event " << _vc->getI("run") << ":" << _vc->getI("lumi") << ":" << _vc->getI("evt") << endl;
 	
   // prepare event selection
   collectKinematicObjects();
 
-  cout << "still here 1 " << endl;	
+  //bool is_ss_event = ssEventSelection();
+  //if(!is_ss_event) return;
+  //bool is_3l_event = vetoEventSelection("Electron", "Muon");
+
+  //fillTestPlots();
 
   // basic event selection (triggers, 2 ss leptons, veto)
   //if(!skimSelection()) return;
+  //if(!cernSelection()) return;
   if(!baseSelection()) return;
-  cout << "still here 2 " << endl;	
 
+  //return;
   //skim right after the basic selection
   //fillSkimTree();
   //return;
 	
-  ////splitting the samples into categories
+  //splitting the samples into categories
   //if( _sampleName.find("DYJets")!=(size_t)-1 || _sampleName.find("TTJets")!=(size_t)-1 ) {
   //  //_sampleName.find("WJets")!=(size_t)-1 ) {
   //  
   //  //ugly
   //  int lep1Id=0;
   //  int lep2Id=0;
-  //  if(_nEls==2) {
-  //    lep1Id = genMatchCateg( _els[0] );
-  //    lep2Id = genMatchCateg( _els[1] );
-  //  }
-  //  if(_nEls==1) {
-  //    lep1Id = genMatchCateg( _els[0] );
-  //    lep2Id = genMatchCateg( _mus[0] );
-  //  }
-  //  if(_nEls==0) {
-  //    lep1Id = genMatchCateg( _mus[0] );
-  //    lep2Id = genMatchCateg( _mus[1] );
-  //  }
+  //  lep1Id = genMatchCateg( _first );
+  //  lep2Id = genMatchCateg( _second) ;
+  //  //if(_nEls==2) {
+  //  //  lep1Id = genMatchCateg( _els[0] );
+  //  //  lep2Id = genMatchCateg( _els[1] );
+  //  //}
+  //  //if(_nEls==1) {
+  //  //  lep1Id = genMatchCateg( _els[0] );
+  //  //  lep2Id = genMatchCateg( _mus[0] );
+  //  //}
+  //  //if(_nEls==0) {
+  //  //  lep1Id = genMatchCateg( _mus[0] );
+  //  //  lep2Id = genMatchCateg( _mus[1] );
+  //  //}
 
 
   //  if(_sampleName.find("misId")!=(size_t)-1) {
@@ -233,7 +245,6 @@ void phys14exerc::run(){
 	
   // sr event selection
   if(!srSelection()) return;
-  cout << "still here 3 " << endl;	
 	
   // calling the modules
   fillEventPlots("SR");
@@ -266,6 +277,20 @@ void phys14exerc::defineOutput(){
 
   // Signal Region
 
+  _hm->addVariable("test_HT"        , 1000,   0.0, 1000.0, "H_T [GeV]"            ); 
+  _hm->addVariable("test_MLL"       , 1000,   0.0, 1000.0, "m_{ll} [GeV]"         ); 
+  _hm->addVariable("test_vetoMll"   , 1000,   0.0, 1000.0, "m_{ll} [GeV]"         ); 
+  _hm->addVariable("test_NBJets"    ,   20,   0.0,   20.0, "b-jet multiplicity"   );
+  _hm->addVariable("test_NJets"     ,   20,   0.0,   20.0, "jet multiplicity"     );
+  _hm->addVariable("test_NLeps"     ,   20,   0.0,   20.0, "lepton multiplicity"  );
+  _hm->addVariable("test_nLepGood10"  ,   20,   0.0,   20.0, "lepton multiplicity"  );
+  _hm->addVariable("test_mZ1"       , 1000,   0.0, 1000.0, "m_{ll} [GeV]"         ); 
+  _hm->addVariable("test_minMllAFOS", 1000,   0.0, 1000.0, "m_{ll} [GeV]"         ); 
+  _hm->addVariable("test_minMllAFAS", 1000,   0.0, 1000.0, "m_{ll} [GeV]"         ); 
+  _hm->addVariable("test_nJet40"   ,   20,   0.0,   20.0, "jet multiplicity"   );
+  _hm->addVariable("test_nBJetMedium25",   20,   0.0,   20.0, "b-jet multiplicity"     );
+
+
   _hm->addVariable("SR_LepCharge" ,   20, -10.0,   10.0, "lepton charge"        );
   _hm->addVariable("SR_HT"        , 1000,   0.0, 1000.0, "H_T [GeV]"            ); 
   _hm->addVariable("SR_MET"       , 1000,   0.0, 1000.0, "#slash{E}_T [GeV]"    );
@@ -276,6 +301,16 @@ void phys14exerc::defineOutput(){
   _hm->addVariable("SR_NLeps"     ,   20,   0.0,   20.0, "lepton multiplicity"  );
   _hm->addVariable("SR_NMuons"    ,   20,   0.0,   20.0, "muon multiplicity"    );
   _hm->addVariable("SR_NVrtx"     ,   40,   0.0,   40.0, "vertex multiplicity"  );
+  _hm->addVariable("SRHTBin_LepCharge" ,   20, -10.0,   10.0, "lepton charge"        );
+  _hm->addVariable("SRHTBin_HT"        , 1000,   0.0, 1000.0, "H_T [GeV]"            ); 
+  _hm->addVariable("SRHTBin_MET"       , 1000,   0.0, 1000.0, "#slash{E}_T [GeV]"    );
+  _hm->addVariable("SRHTBin_MLL"       , 1000,   0.0, 1000.0, "m_{ll} [GeV]"         ); 
+  _hm->addVariable("SRHTBin_NBJets"    ,   20,   0.0,   20.0, "b-jet multiplicity"   );
+  _hm->addVariable("SRHTBin_NElectrons",   20,   0.0,   20.0, "electron multiplicity");
+  _hm->addVariable("SRHTBin_NJets"     ,   20,   0.0,   20.0, "jet multiplicity"     );
+  _hm->addVariable("SRHTBin_NLeps"     ,   20,   0.0,   20.0, "lepton multiplicity"  );
+  _hm->addVariable("SRHTBin_NMuons"    ,   20,   0.0,   20.0, "muon multiplicity"    );
+  _hm->addVariable("SRHTBin_NVrtx"     ,   40,   0.0,   40.0, "vertex multiplicity"  );
   _hm->addVariable("SR_ElDXY"     ,   50,   0.0,    0.5, "#||{dxy}(e) [cm]"     );
   _hm->addVariable("SR_ElEta"     ,  240,   0.0,    2.4, "#||{#eta(e)}"         );
   _hm->addVariable("SR_ElIso"     ,   50,   0.0,    1.0, "PF Iso (e)"           );
@@ -452,7 +487,7 @@ bool phys14exerc::goodJetSelection(int jetIdx){
   
   counter("JetDenominator", kJetId);
 
-  if(!makeCut<float>(_vc->getD("Jet_pt", jetIdx)       , 25.0, ">", "pt selection" , 0, kJetId) ) return false;
+  if(!makeCut<float>(_vc->getD("Jet_pt", jetIdx)       , 40.0, ">", "pt selection" , 0, kJetId) ) return false;
   if(!makeCut<float>(fabs(_vc->getD("Jet_eta", jetIdx)),  2.4, "<", "eta selection", 0, kJetId) ) return false;
 
   // SF: here we require dR(j,every loose lepton) > 0.4
@@ -532,12 +567,13 @@ bool phys14exerc::vetoElectronSelection(int elIdx){
 
   counter("VetoElectronDenominator", kElVeto);
 
-  if(!makeCut<float>( _vc->getD("LepGood_pt", elIdx) , 10.0   , ">"  , "pt selection"    , 0    , kElVeto)) return false; 
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), 2.4   , "<"  , "eta selection"   , 0    , kElVeto)) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), 1.4442, "[!]", "eta selection veto" , 1.566, kElVeto)) return false;
+  
+  //if(!makeCut<float>( _vc->getD("LepGood_pt", elIdx) , 10.0   , ">"  , "pt selection"    , 0    , kElVeto)) return false; 
+  //if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), 2.4   , "<"  , "eta selection"   , 0    , kElVeto)) return false;
+  //if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), 1.4442, "[!]", "eta selection veto" , 1.566, kElVeto)) return false;
 
-  bool conv = (_vc->getI("LepGood_convVeto", elIdx) > 0 && _vc->getI("LepGood_lostHits", elIdx)==0);
-  if(!makeCut( conv, "conversion rejection", "=", kElVeto)) return false;
+  //bool conv = (_vc->getI("LepGood_convVeto", elIdx) > 0 && _vc->getI("LepGood_lostHits", elIdx)==0);
+  //if(!makeCut( conv, "conversion rejection", "=", kElVeto)) return false;
 
   
   return true;
@@ -555,8 +591,8 @@ bool phys14exerc::vetoMuonSelection(int muIdx){
 
   counter("VetoMuonDenominator", kMuVeto);
 
-  if(!makeCut<float>(  _vc->getD("LepGood_pt"     , muIdx), 10.0, ">", "pt selection", 0, kMuVeto ) ) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", muIdx)), 2.4   , "<"  , "eta selection"   , 0    , kMuVeto)) return false;
+  //if(!makeCut<float>(  _vc->getD("LepGood_pt"     , muIdx), 10.0, ">", "pt selection", 0, kMuVeto ) ) return false;
+  //if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", muIdx)), 2.4   , "<"  , "eta selection"   , 0    , kMuVeto)) return false;
  
   //if(!makeCut<int>(   _vc->getI("LepGood_pfMuonId", muIdx)     , 1   , "=", "POG Loose Id" , 0, kMuVeto) ) return false;
   //if(!makeCut<float>( _vc->getD("LepGood_relIso03", muIdx)     , 0.2 , "<", "Isolation "   , 0, kMuVeto)) return false;
@@ -596,6 +632,12 @@ void phys14exerc::setCut(std::string var, float valCut, std::string cType, float
     _valCutHTSR   = valCut;
     _cTypeHTSR    = cType;
     _upValCutHTSR = upValCut;
+  }
+
+  else if(var == "METSR") {
+    _valCutMETSR   = valCut;
+    _cTypeMETSR    = cType;
+    _upValCutMETSR = upValCut;
   }
 
   else if(var == "HTCondSR") {
@@ -645,15 +687,17 @@ void phys14exerc::setSignalRegion() {
   
   if(_SR == "SR00") {
     setCut("HTSR"     ,   80, ">" );
+    setCut("METSR"    , -100, ">" );
     setCut("HTCondSR" ,  500, "<" );
     setCut("METHighSR",   30, ">" );
     setCut("METLowSR" , -100, ">" );
     setCut("NJetsSR"  ,    2, ">=");
-    setCut("NBJetsSR" ,    0, ">=");
+    setCut("NBJetsSR" ,    0, "=");
   }
   
   else if(_SR == "SR10") {
     setCut("HTSR"     ,   80, ">" );
+    setCut("METSR"    , -100, ">" );
     setCut("HTCondSR" ,  500, "<" );
     setCut("METHighSR",   30, ">" );
     setCut("METLowSR" , -100, ">" );
@@ -663,6 +707,7 @@ void phys14exerc::setSignalRegion() {
   
   else if(_SR == "SR20") {
     setCut("HTSR"     ,   80, ">" );
+    setCut("METSR"    , -100, ">" );
     setCut("HTCondSR" ,  500, "<" );
     setCut("METHighSR",   30, ">" );
     setCut("METLowSR" , -100, ">" );
@@ -671,6 +716,7 @@ void phys14exerc::setSignalRegion() {
   }
   else if(_SR == "SR30") {
     setCut("HTSR"     ,   80, ">" );
+    setCut("METSR"    , -100, ">" );
     setCut("HTCondSR" ,  500, "<" );
     setCut("METHighSR",   30, ">" );
     setCut("METLowSR" , -100, ">" );
@@ -678,6 +724,229 @@ void phys14exerc::setSignalRegion() {
     setCut("NBJetsSR" ,    3, ">=");
   }
 
+  // CH: SUS-13-013 cuts
+  else if(_SR == "SR01") {
+    setCut("HTSR"     ,  200, "[]", 400);
+    setCut("METSR"    ,   50, "[]", 120);
+    setCut("NJetsSR"  ,    2, "[]",   3);
+    setCut("NBJetsSR" ,    0, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR02") {
+    setCut("HTSR"     ,  400, ">" );
+    setCut("METSR"    ,   50, "[]", 120);
+    setCut("NJetsSR"  ,    2, "[]",   3);
+    setCut("NBJetsSR" ,    0, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR03") {
+    setCut("HTSR"     ,  200, "[]", 400 );
+    setCut("METSR"    ,   50, "[]", 120);
+    setCut("NJetsSR"  ,    4, ">=");
+    setCut("NBJetsSR" ,    0, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR04") {
+    setCut("HTSR"     ,  400, ">" );
+    setCut("METSR"    ,   50, "[]", 120);
+    setCut("NJetsSR"  ,    4, ">=");
+    setCut("NBJetsSR" ,    0, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR05") {
+    setCut("HTSR"     ,  200, "[]", 400);
+    setCut("METSR"    ,  120, ">" );
+    setCut("NJetsSR"  ,    2, "[]",   3);
+    setCut("NBJetsSR" ,    0, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR06") {
+    setCut("HTSR"     ,  400, ">" );
+    setCut("METSR"    ,  120, ">" );
+    setCut("NJetsSR"  ,    2, "[]",   3);
+    setCut("NBJetsSR" ,    0, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR07") {
+    setCut("HTSR"     ,  200, "[]", 400 );
+    setCut("METSR"    ,  120, ">" );
+    setCut("NJetsSR"  ,    4, ">=");
+    setCut("NBJetsSR" ,    0, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR08") {
+    setCut("HTSR"     ,  400, ">" );
+    setCut("METSR"    ,  120, ">" );
+    setCut("NJetsSR"  ,    4, ">=");
+    setCut("NBJetsSR" ,    0, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+ 
+
+  else if(_SR == "SR11") {
+    setCut("HTSR"     ,  200, "[]", 400);
+    setCut("METSR"    ,   50, "[]", 120);
+    setCut("NJetsSR"  ,    2, "[]",   3);
+    setCut("NBJetsSR" ,    1, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR12") {
+    setCut("HTSR"     ,  400, ">" );
+    setCut("METSR"    ,   50, "[]", 120);
+    setCut("NJetsSR"  ,    2, "[]",   3);
+    setCut("NBJetsSR" ,    1, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR13") {
+    setCut("HTSR"     ,  200, "[]", 400 );
+    setCut("METSR"    ,   50, "[]", 120);
+    setCut("NJetsSR"  ,    4, ">=");
+    setCut("NBJetsSR" ,    1, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR14") {
+    setCut("HTSR"     ,  400, ">" );
+    setCut("METSR"    ,   50, "[]", 120);
+    setCut("NJetsSR"  ,    4, ">=");
+    setCut("NBJetsSR" ,    1, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR15") {
+    setCut("HTSR"     ,  200, "[]", 400);
+    setCut("METSR"    ,  120, ">" );
+    setCut("NJetsSR"  ,    2, "[]",   3);
+    setCut("NBJetsSR" ,    1, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR16") {
+    setCut("HTSR"     ,  400, ">" );
+    setCut("METSR"    ,  120, ">" );
+    setCut("NJetsSR"  ,    2, "[]",   3);
+    setCut("NBJetsSR" ,    1, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR17") {
+    setCut("HTSR"     ,  200, "[]", 400 );
+    setCut("METSR"    ,  120, ">" );
+    setCut("NJetsSR"  ,    4, ">=");
+    setCut("NBJetsSR" ,    1, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR18") {
+    setCut("HTSR"     ,  400, ">" );
+    setCut("METSR"    ,  120, ">" );
+    setCut("NJetsSR"  ,    4, ">=");
+    setCut("NBJetsSR" ,    1, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+ 
+
+  else if(_SR == "SR21") {
+    setCut("HTSR"     ,  200, "[]", 400);
+    setCut("METSR"    ,   50, "[]", 120);
+    setCut("NJetsSR"  ,    2, "[]",   3);
+    setCut("NBJetsSR" ,    2, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR22") {
+    setCut("HTSR"     ,  400, ">" );
+    setCut("METSR"    ,   50, "[]", 120);
+    setCut("NJetsSR"  ,    2, "[]",   3);
+    setCut("NBJetsSR" ,    2, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR23") {
+    setCut("HTSR"     ,  200, "[]", 400 );
+    setCut("METSR"    ,   50, "[]", 120);
+    setCut("NJetsSR"  ,    4, ">=");
+    setCut("NBJetsSR" ,    2, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR24") {
+    setCut("HTSR"     ,  400, ">" );
+    setCut("METSR"    ,   50, "[]", 120);
+    setCut("NJetsSR"  ,    4, ">=");
+    setCut("NBJetsSR" ,    2, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR25") {
+    setCut("HTSR"     ,  200, "[]", 400);
+    setCut("METSR"    ,  120, ">" );
+    setCut("NJetsSR"  ,    2, "[]",   3);
+    setCut("NBJetsSR" ,    2, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR26") {
+    setCut("HTSR"     ,  400, ">" );
+    setCut("METSR"    ,  120, ">" );
+    setCut("NJetsSR"  ,    2, "[]",   3);
+    setCut("NBJetsSR" ,    2, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR27") {
+    setCut("HTSR"     ,  200, "[]", 400 );
+    setCut("METSR"    ,  120, ">" );
+    setCut("NJetsSR"  ,    4, ">=");
+    setCut("NBJetsSR" ,    2, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+  else if(_SR == "SR28") {
+    setCut("HTSR"     ,  400, ">" );
+    setCut("METSR"    ,  120, ">" );
+    setCut("NJetsSR"  ,    4, ">=");
+    setCut("NBJetsSR" ,    2, "=" );
+    setCut("HTCondSR" ,    0, "<" );
+    setCut("METHighSR", -100, ">" );
+    setCut("METLowSR" , -100, ">" );
+  }
+
+ 
 
 
 }
@@ -691,6 +960,46 @@ void phys14exerc::setSignalRegion() {
 ** EVENT SELECTIONS                                                         **
 ******************************************************************************
 *****************************************************************************/
+
+
+bool phys14exerc::cernSelection(){
+
+
+
+  if(!makeCut( _vc->getI("nLepGood10") >= 2, "new lepton multiplicity initial") ) return false;
+  if(!makeCut( _vc->getD("minMllAFAS") > 8, "new mll", "=") ) return false;
+  if(!makeCut( _vc->getD("minMllAFOS")<=0 || _vc->getD("minMllAFOS")>12, "new veto part 2", "=") ) return false;
+  if(!makeCut( _vc->getD("mZ1")<76 || _vc->getD("mZ1")>106, "new veto on 3 leptons"  , "=") ) return false;
+  if(!makeCut<int>( _vc->getI("nLepGood10"), 2, "=", "new lepton multiplicity") ) return false;
+
+  if(!makeCut( std::abs(_vc->getI("LepGood_pdgId", 0)) > 0 && 
+               std::abs(_vc->getI("LepGood_pdgId", 1)) > 0, "new sanity", "=")) return false;
+  if(!makeCut( _vc->getI("LepGood_charge",0)*_vc->getI("LepGood_charge",1) > 0, "new same-sign", "=") ) return false;
+
+  if(!makeCut( _vc->getD("LepGood_pt", 0) > 25 && 
+               _vc->getD("LepGood_pt", 1) > 25, "new pt hh", "=") ) return false;
+  if(!makeCut( std::max(_vc->getD("LepGood_relIso03",0),
+                        _vc->getD("LepGood_relIso03",1)) < 0.1, "new iso", "=")) return false;
+if(!makeCut( _vc ->getI("LepGood_tightId",0) > (std::abs(_vc->getI("LepGood_pdgId",0)) == 11) && 
+              _vc->getI("LepGood_tightId",1) > (std::abs(_vc->getI("LepGood_pdgId",1)) == 11) , "Id") ) return false;
+//  if(!makeCut( _vc->getI("LepGood_tightId", 0) > (std::abs(_vc->getI("LepGood_pdgId",0)) == 11) && 
+//               _vc->getI("LepGood_tightId", 1) > (std::abs(_vc->getI("LepGood_pdgId",1)) == 11), "new tight id", "=") ) return false; 
+  if(!makeCut( std::max(_vc->getD("LepGood_sip3d",0),
+                        _vc->getD("LepGood_sip3d",1)) < 4, "new sip", "=")) return false;
+
+  if(!makeCut((std::abs(_vc->getI("LepGood_pdgId",0)) == 13 || 
+    (_vc->getI("LepGood_convVeto",0) && _vc->getI("LepGood_lostHits",0) == 0 && _vc->getI("LepGood_tightCharge",0) > 1)) && 
+              (std::abs(_vc->getI("LepGood_pdgId",1)) == 13 || 
+    (_vc->getI("LepGood_convVeto",1) && _vc->getI("LepGood_lostHits",1) == 0 && _vc->getI("LepGood_tightCharge",1) > 1)), 
+    "new conversion rejection", "=") ) return false;
+
+  if(!makeCut<float>( _vc->getD("htJet40j"), 80, ">", "SR HT selection"              ) ) return false;
+  if(!makeCut(_met->pt() > 30 || _vc->getD("htJet40j") > 500, "SR HT-MET condition", "="  ) ) return false;
+  if(!makeCut<int>(   _vc->getI("nJet40"), 2, ">=", "SR jet-multiplicity"            ) ) return false;
+  if(!makeCut<int>(   _vc->getI("nBJetMedium25"), 0, "=", "SR b-jet-multiplicity"   ) ) return false;
+
+  return true;
+}
 
 
 //____________________________________________________________________________
@@ -712,64 +1021,12 @@ bool phys14exerc::baseSelection(){
   // lepton multiplicity
   if(!makeCut<int>( _nEls + _nMus, 2, ">=", "lepton multiplicity and flavor" ) ) return false; 
 
-  cout << "still here 2.1" << endl;
+  // veto on third lepton using all selected leptons
+  if(!makeCut( mllVetoSelection(), "mll vetos", "=") ) return false;
 
+  // selecting best same-sign pair 
   bool is_ss_event = ssEventSelection();
   if(!makeCut( is_ss_event , "same-sign selection", "=") ) return false;
-  cout << "still here 2.2" << endl;
-
-  // retrieving high-pt and low-pt leptons
-  //SF: float pt_cache = 0; 
-  //SF: int   lep_idx1  = 0; 
-  //SF: for(int il = 0; il < _leps.size(); ++il){ 
-  //SF:   if(_leps[il]->pt() > pt_cache){ 
-  //SF:     lep_idx1 = il; 
-  //SF:     pt_cache = _leps[il]->pt(); 
-  //SF:   } 
-  //SF: } 
-  //SF: 
-  //SF: pt_cache = 0; 
-  //SF: int lep_idx2 = 0; 
-  //SF: for(int il = 0; il < _leps.size(); ++il){ 
-  //SF:   if(_leps[il]->pt() > pt_cache && il != lep_idx1){ 
-  //SF:     lep_idx2 = il; 
-  //SF:     pt_cache = _leps[il]->pt(); 
-  //SF:   } 
-  //SF: } 
-  //SF: 
-  //SF: _first  = _leps[lep_idx1]; // the highest pt lepton 
-  //SF: _second = _leps[lep_idx2]; // the second highest pt lepton 
-
-
-  //SF: // any other (also tight) lepton is pushed into the veto
-  //SF: for(unsigned int il = 0; il < _leps.size(); ++il){
-  //SF:   if(il != lep_idx1 && il != lep_idx2) 
-  //SF:     _vetoleps.push_back(_leps[il]);
-  //SF: }
-  //SF: 
-  //SF: // same-sign
-  //SF: if(!makeCut<int>( _first -> charge() == _second -> charge(), true, "=", "same-sign leptons" ) ) return false; 
-
-  //SF: // multiplicity and flavor
-  //SF: if(_lepflav=="mm" && !makeCut( fabs(_first->pdgId()) == 13 && fabs(_second->pdgId()) == 13, true, "=", "lepton multiplicity and flavor" ) ) return false; 
-  //SF: if(_lepflav=="em" && !makeCut( (fabs(_first->pdgId()) == 11 && fabs(_second->pdgId()) == 13) || (fabs(_first->pdgId()) == 13 && fabs(_second->pdgId()) == 11), true, "=", "lepton multiplicity and flavor" ) ) return false; 
-  //SF: if(_lepflav=="ee" && !makeCut( fabs(_first->pdgId()) == 11 && fabs(_second->pdgId()) == 11, true, "=", "lepton multiplicity and flavor" ) ) return false;
-
-  //SF: // pt
-  //SF: if     (_PT == "hh" && !makeCut(_first->pt() > 25. && _second->pt() > 25., true, "=", "lepton pt") ) return false;
-  //SF: else if(_PT == "hl" && !makeCut(_first->pt() > 25. && _second->pt() < 25., true, "=", "lepton pt") ) return false;
-  //SF: else if(_PT == "ll" && !makeCut(_first->pt() < 25. && _second->pt() < 25., true, "=", "lepton pt") ) return false;
-
-  // veto on third lepton
-  bool is_3l_event = vetoEventSelection("Electron", "Muon");
-  if(!makeCut( !is_3l_event, "veto on 3 leptons"  , "=") ) return false;
-  cout << "still here 2.3" << endl;
-	
-  // mll
-  Candidate* Z = nullptr;
-  Z = Candidate::create( _first, _second);
-  if(!makeCut<float>( Z->mass() , 8.0, ">", "MLL selection") ) return false;
-  cout << "still here 2.4" << endl;
 
   return true;
 
@@ -782,8 +1039,8 @@ bool phys14exerc::skimSelection(){
 
   // lepton multiplicity
   if(!makeCut<int>( _nEls + _nMus, 2 , ">=", "lepton multiplicity and flavor" ) ) return false; 
-  if(!makeCut<float>( _HT        , 80, ">" , "SR HT selection"                ) ) return false;
-  if(!makeCut<int>( _nJets       , 2 , ">=", "SR jet multiplicity"            ) ) return false;
+  //if(!makeCut<float>( _HT        , 80, ">" , "SR HT selection"                ) ) return false;
+  //if(!makeCut<int>( _nJets       , 2 , ">=", "SR jet multiplicity"            ) ) return false;
 
   return true;
 
@@ -792,17 +1049,20 @@ bool phys14exerc::skimSelection(){
 //____________________________________________________________________________
 bool phys14exerc::srSelection(){
 
-  if(!makeCut<float>( _HT, _valCutHTSR    , _cTypeHTSR , "SR HT selection"       , _upValCutHTSR      ) ) return false;
+
+  if(!makeCut<float>( _HT       , _valCutHTSR    , _cTypeHTSR , "SR HT selection"       , _upValCutHTSR      ) ) return false;
+  
+  if(!makeCut<float>( _met->pt(), _valCutMETSR   , _cTypeMETSR , "SR MET selection"       , _upValCutMETSR      ) ) return false;
   if(_au->simpleCut( _HT, _valCutHTCondSR, _cTypeHTCondSR) ) {
-    if(!makeCut<float>( _met->pt(), _valCutMETHighSR, _cTypeMETHighSR, "SR MET selection", _upValCutMETHighSR ) ) return false;
+    fillEventPlots("SRHTBin");
+    if(!makeCut<float>( _met->pt(), _valCutMETHighSR, _cTypeMETHighSR, "SR MET (HT<500) selection", _upValCutMETHighSR ) ) return false;
   }
   else {
-    if(!makeCut<float>( _met->pt(), _valCutMETLowSR , _cTypeMETLowSR , "SR MET selection" , _upValCutMETLowSR ) ) return false;
+    if(!makeCut<float>( _met->pt(), _valCutMETLowSR , _cTypeMETLowSR , "SR MET (HT>500) selection" , _upValCutMETLowSR ) ) return false;
   }
 
   if(!makeCut<int>( _nJets         , _valCutNJetsSR , _cTypeNJetsSR , "SR jet multiplicity"  , _upValCutNJetsSR ) ) return false;
   if(!makeCut<int>(_vc->getI(_bvar), _valCutNBJetsSR, _cTypeNBJetsSR, "SR b-jet multiplicity", _upValCutNBJetsSR) ) return false;
- 
 
   return true;
 
@@ -865,7 +1125,55 @@ bool phys14exerc::ssEventSelection(){
 
 
 //____________________________________________________________________________
-bool phys14exerc::vetoEventSelection(std::string electron_label, std::string muon_label, std::string kr){
+bool phys14exerc::mllVetoSelection(){
+  /*
+	does the three mll vetos for all selected leptons
+  */
+
+  for(unsigned int i = 0; i < _leps.size(); ++i){
+    for(unsigned int j = i+1; j < _leps.size(); ++j)
+      if(mllVeto(_leps[i], _leps[j])) return false;
+    for(unsigned int j = 0; j < _vetoleps.size(); ++j)
+      if(mllVeto(_leps[i], _vetoleps[j])) return false;
+  }
+
+  return true;
+
+}
+
+
+//____________________________________________________________________________
+bool phys14exerc::mllVeto(Candidate * cand, Candidate * veto){
+  /*
+	return true if the invariant mass of the two particles is not good and
+	the event needs to be rejected
+  */
+
+  float mll = 0;
+  mll = Candidate::create(cand, veto) -> mass();
+
+  // any sign -> low-mass veto
+  if(!makeCut<float>( mll , 8.0, ">", "MLL selection", kVetoLepSel) ) return true;
+
+  // opposite sign
+  if(_au -> simpleCut(cand->charge(), veto->charge(), "=") ) return false;
+
+  // any flavor -> gamma star veto
+  if(!makeCut<float>( mll, 12.0, ">", "gamma star veto selection", kVetoLepSel) ) return true;
+  
+  // same flavor -> Z veto
+  if(_au -> simpleCut( std::abs(cand -> pdgId()), std::abs(veto -> pdgId()), "=") ) {
+    if(!makeCut(mll < 76.0 || mll > 106.0, "Z veto selection", "=", kVetoLepSel) ) return true;
+  }
+
+  return false;
+
+}
+
+
+
+//____________________________________________________________________________
+bool phys14exerc::vetoEventSelection(){
   /*
     performs an essential part of the event selection in the 3l case, i.e.
     events are rejected if there are 3 leptons where two leptons form an
@@ -875,7 +1183,7 @@ bool phys14exerc::vetoEventSelection(std::string electron_label, std::string muo
   */
 
   counter("denominator", kVetoLepSel);
-	
+
   for(unsigned int i = 0; i < _vetoleps.size(); ++i){
 
     // search for OS pair with high-pt lepton
@@ -883,6 +1191,7 @@ bool phys14exerc::vetoEventSelection(std::string electron_label, std::string muo
 
     float mll = 0;
     mll = Candidate::create(_vetoleps[i], _first) -> mass();
+    //fill("test_vetoMll"        , mll                  , _weight);
 
     // same flavor -> Z veto
     if(_au->simpleCut( fabs(_vetoleps[i] -> pdgId()), fabs(_first -> pdgId()), "=") ) {
@@ -893,6 +1202,7 @@ bool phys14exerc::vetoEventSelection(std::string electron_label, std::string muo
     if(makeCut(mll < 12.0, "gamma star veto selection", "=", kVetoLepSel) ) return true;
 
     mll = Candidate::create(_vetoleps[i], _second) -> mass(); 
+    //fill("test_vetoMll"        , mll                  , _weight);
  
     // same flavor -> Z veto 
     if(_au->simpleCut( fabs(_vetoleps[i] -> pdgId()), fabs(_second -> pdgId()), "=") ) {   
@@ -920,6 +1230,26 @@ bool phys14exerc::vetoEventSelection(std::string electron_label, std::string muo
 ******************************************************************************
 *****************************************************************************/
 
+
+void phys14exerc::fillTestPlots(){
+
+  fill("test_HT"        , _HT                  , _weight);
+  Candidate* Z = nullptr;
+  Z = Candidate::create( _first, _second);
+  fill("test_MLL"       , Z->mass()          , _weight);
+  fill("test_NJets"     , _nJets              , _weight);
+  fill("test_NBJets"    , _vc->getI(_bvar)    , _weight);
+  fill("test_NLeps"     , _nEls+_nMus         , _weight);
+  fill("test_nLepGood10", _vc->getI("nLepGood10"), _weight);
+  fill("test_mZ1"       , _vc->getD("mZ1"), _weight);
+  fill("test_minMllAFOS", _vc->getD("minMllAFOS"), _weight);
+  fill("test_minMllAFAS", _vc->getD("minMllAFAS"), _weight);
+  fill("test_nJet40"   , _vc->getI("nJet40"), _weight);
+  fill("test_nBJetMedium25", _vc->getI("nBJetMedium25"), _weight);
+
+}
+
+
 //____________________________________________________________________________
 void phys14exerc::fillEventPlots(std::string kr){
   /*
@@ -932,9 +1262,9 @@ void phys14exerc::fillEventPlots(std::string kr){
   fill(kr + "_HT"        , _HT                  , _weight);
   fill(kr + "_MET"       , _met->pt() , _weight);
   
-  Candidate* Z = nullptr;
-  Z = Candidate::create( _first, _second);
-  fill(kr + "_MLL"       , Z->mass()          , _weight);
+  //Candidate* Z = nullptr;
+  //Z = Candidate::create( _first, _second);
+  //fill(kr + "_MLL"       , Z->mass()          , _weight);
   //fill(kr + "_NBJets"    , _NumKinObj["BJet"]                               , _weight);
   fill(kr + "_NBJets"    , _vc->getI(_bvar)    , _weight);
   fill(kr + "_NElectrons", _nEls               , _weight);
@@ -994,18 +1324,18 @@ void phys14exerc::fillJetPlots(std::string kr){
 int phys14exerc::genMatchCateg(const Candidate* cand) {
 
   //loop over the number of generated leptons
-  int nGenL = _vc->getI("ngenLep");
+  int nGenL = _vc->getI("nGenPart");
 
   for(int ig = 0; ig < nGenL; ++ig) {
 	
-    if(Tools::dR(cand->eta(), _vc->getD("genLep_eta", ig),
-		 cand->phi(), _vc->getD("genLep_phi", ig) ) < 0.05 ) { //to be tuned
+    if(Tools::dR(cand->eta(), _vc->getD("GenPart_eta", ig),
+		 cand->phi(), _vc->getD("GenPart_phi", ig) ) < 0.05 ) { //to be tuned
 		  
-      // cout<<"matched lepton "<<cand.pdgId<<"  with "<<_vc->getI("genLep_pdgId",ig)<<" !!! "<<cand.pt<<"  "<<cand.eta<<"   "<<cand.phi<<"   "<<Tools::dR(cand.eta, _vc->getD("genLep_eta", ig),
-      // cand.phi, _vc->getD("genLep_phi", ig) )<<endl;
+      // cout<<"matched lepton "<<cand.pdgId<<"  with "<<_vc->getI("GenPart_pdgId",ig)<<" !!! "<<cand.pt<<"  "<<cand.eta<<"   "<<cand.phi<<"   "<<Tools::dR(cand.eta, _vc->getD("GenPart_eta", ig),
+      // cand.phi, _vc->getD("GenPart_phi", ig) )<<endl;
 		
-      if( (abs(cand->pdgId()) != abs(_vc->getI("genLep_pdgId", ig)) ) && abs(_vc->getI("genLep_pdgId", ig)) != 13 ) return kMisMatchPdgId; //taus are exception to the rule
-      else if(cand->pdgId()*_vc->getI("genLep_pdgId",ig) < 0 ) return kMisChargePdgId; //+*- = -...
+      if( (abs(cand->pdgId()) != abs(_vc->getI("GenPart_pdgId", ig)) ) && abs(_vc->getI("GenPart_pdgId", ig)) != 13 ) return kMisMatchPdgId; //taus are exception to the rule
+      else if(cand->pdgId()*_vc->getI("GenPart_pdgId",ig) < 0 ) return kMisChargePdgId; //+*- = -...
       else return kGenMatched;
 			
       break;

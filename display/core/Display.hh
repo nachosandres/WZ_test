@@ -46,9 +46,11 @@ class Display {
 
 private:
 
+
   TCanvas* _c;
   TLegend* _leg;
   vector<vector<TPad*> > _pads;
+
 
   TCanvas* _cSyst;
   TPad* _padleft;

@@ -608,7 +608,7 @@ AnaUtils::printTables(string categ) {
   bool header=true;
   //start from one to skip the simulation in a first time
   for(size_t ic=0;ic<_effNames[ icat ].size();ic++) { //cuts
-    
+
     _itEIMap = _effMap[ _kMC ][ icat ].find( _effNames[ icat ][ ic ] );
     if(_itEIMap == _effMap[ _kMC ][ icat ].end() ) break; //out of the loop if no MC
 
@@ -626,7 +626,7 @@ AnaUtils::printTables(string categ) {
       header=false;
     }
 
-    cout<<_effNames[ icat ][ ic ]<<"    ";
+    cout<<_effNames[ icat ][ ic ]<<" ";
 
     //start from one to skip the simulation summary
     for(size_t id=0;id<dsNames.size();id++) { //datasets _itEMap
@@ -634,21 +634,22 @@ AnaUtils::printTables(string categ) {
       
       cout<<" & ";
       { //simulation detail
-  	_itEIMap=_effMap[ ids ][ icat ].find( _effNames[ icat ][ ic ] );
-  	if(_itEIMap==_effMap[ ids ][ icat ].end()) 
-  	  cout<<" - ";
-  	else {
-  	  if(_itEIMap->second.sumw>0.000001 ) {
-  	    cout<<_itEIMap->second.sumw;
-  	    cout<<" $\\pm$ "<<sqrt(_itEIMap->second.sumw2);
-  	  }
-  	  else
-  	    cout<<" - "; 
-  	}
+        _itEIMap=_effMap[ ids ][ icat ].find( _effNames[ icat ][ ic ] );
 
-  	if(dsNames[id]=="data" || dsNames[id]=="Data" ||
-  	   (!hasData && (dsNames[id]=="MC" || (size_t)ids==dsNames.size() ) ) )
-  	  cout<<" \\\\ "<<endl;
+        if(_itEIMap==_effMap[ ids ][ icat ].end()) 
+          cout<<" - ";
+        else {
+          if(_itEIMap->second.sumw>0.000001 ) {
+            cout<<_itEIMap->second.sumw;
+            cout<<" $\\pm$ "<<sqrt(_itEIMap->second.sumw2);
+          }
+          else
+            cout<<" - "; 
+        }
+        
+        if(dsNames[id]=="data" || dsNames[id]=="Data" ||
+           (!hasData && (dsNames[id]=="MC" || (size_t)ids==dsNames.size() ) ) )
+          cout<<" \\\\ "<<endl;
       }
       
     }//datasets

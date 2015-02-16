@@ -291,11 +291,11 @@ void MPAF::loadConfigurationFile(std::string cfg){
       for(size_t i=0;i<opts.size();i++) {
         if(opts[i].substr(0,4)=="dir:") {
           dirName=opts[i].substr(4, opts[i].size()-4 );
-	}
-	if(opts[i].substr(0,7)=="absdir:") {
+        }
+        if(opts[i].substr(0,7)=="absdir:") {
           dirName=opts[i].substr(7, opts[i].size()-7 );
-	  absdir=true;
-	}
+          absdir=true;
+        }
       }
     }
     _datasets.push_back(new Dataset(dsName));

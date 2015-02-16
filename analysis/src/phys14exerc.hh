@@ -49,12 +49,16 @@ private:
   void setCut(std::string, float, std::string, float = 0); 
   void setSignalRegion();
 
+  bool cernSelection();
   bool baseSelection();
+  bool mllVetoSelection();
+  bool mllVeto(Candidate * cand, Candidate * veto);
   bool skimSelection();
   bool srSelection();
   bool ssEventSelection();
-  bool vetoEventSelection(std::string, std::string, std::string = "");
+  bool vetoEventSelection();
 
+  void fillTestPlots();
   void fillEventPlots(std::string);
   void fillLeptonPlots(std::string);
   void fillJetPlots(std::string);
@@ -73,6 +77,7 @@ private:
 	kMisChargePdgId, kGenMatched};
 
   float _valCutHTSR;
+  float _valCutMETSR;
   float _valCutHTCondSR;
   float _valCutMETHighSR;
   float _valCutMETLowSR;
@@ -80,6 +85,7 @@ private:
   float _valCutNBJetsSR;
 
   std::string _cTypeHTSR;
+  std::string _cTypeMETSR;
   std::string _cTypeHTCondSR;
   std::string _cTypeMETHighSR;
   std::string _cTypeMETLowSR;
@@ -87,6 +93,7 @@ private:
   std::string _cTypeNBJetsSR;
 
   float _upValCutHTSR;
+  float _upValCutMETSR;
   float _upValCutHTCondSR;
   float _upValCutMETHighSR;
   float _upValCutMETLowSR;
@@ -111,7 +118,7 @@ private:
   CandList _vMus;
   CandList _jets;
   CandList _bJets;
-  Candidate* _met;
+  Candidate * _met;
   Candidate * _first;
   Candidate * _second;
   

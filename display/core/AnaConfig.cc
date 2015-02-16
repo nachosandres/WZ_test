@@ -187,7 +187,7 @@ AnaConfig::addSample( string str, string sname, int col) {
     //sname+="DD";
   }
 
-  if( str.find("CS")!=(size_t)-1 ){
+  if( str.find("CS")!=(size_t)-1 && str.find("CSA14")==(size_t)-1){
     //parse the line
     size_t p0=str.find(" ");
     size_t p1=str.find(" ",p0+1);
@@ -231,7 +231,7 @@ AnaConfig::addSample( string str, string sname, int col) {
 
   if(sname=="data" || sname=="Data" || 
      str.find("DD")!=(size_t)-1 ||
-     str.find("CS")!=(size_t)-1 ) {
+     (str.find("CS")!=(size_t)-1 && str.find("CSA14")==(size_t)-1)) {
     
     _datasets[ sname ]->addSample(str, _path, _dir, _treeName,
 				  _hname,0., 1., 1., 1.);

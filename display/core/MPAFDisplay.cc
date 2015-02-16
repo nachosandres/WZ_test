@@ -116,8 +116,6 @@ MPAFDisplay::setNumbers() {
 void
 MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
  
-  DUMP(filename);
-  DUMP(ctag);
  
   if(filename=="") return;
   _au->init();
@@ -188,10 +186,11 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
             break;
           }
         }
-      
+     
         float w = ds->getWeight(sname)*anConf.getLumi();
-      
+   
         yield  = atof( tks[n+1].c_str() ) *w ;
+		//cout << "adding " << atof( tks[n+1].c_str() ) << " for " << ds->getName() <<","<<cname<<","<<icat<< endl;   
         gen = atoi( tks[n+2].substr(1,tks[3].size()-1).c_str() );
         eyield = atof( tks[n+3].c_str() ) *w;
 

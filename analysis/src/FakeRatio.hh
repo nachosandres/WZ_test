@@ -52,6 +52,7 @@ private:
   void setCut(std::string, float, std::string, float = 0); 
   void setMeasurementRegion();
 
+  bool genMRSelection();
   bool mrSelection();
   bool skimSelection();
 
@@ -61,7 +62,10 @@ private:
   void fillJetPlots(std::string);
   void fillFakeRatioMaps(std::string);
 
-  int genMatchCateg(const Candidate*);
+  int genParticleOrigin(int mid, int gmid);
+  int genMatchIsFake(const Candidate*);
+  int genMatchCateg(const Candidate*, string matchhist);
+  void fillMatchHist(string matchhist, int pdgid);
 
   float HT();
   int eventCharge();
@@ -78,35 +82,44 @@ private:
   std::string _cTypeNBJetsMR;
   float _upValCutNBJetsMR;
 
-  int _nTLeps;
-  int _nLLeps;
-  int _nVLeps;
-  int _nTEls;
   int _nLEls;
+  int _nLNTEls;
+  int _nTEls;
   int _nVEls;
-  int _nTMus;
+  int _nLLeps;
+  int _nLNTLeps;
+  int _nTLeps;
+  int _nVLeps;
   int _nLMus;
+  int _nLNTMus;
+  int _nTMus;
   int _nVMus;
   int _nJets;
 
-  CandList _tEls;
   CandList _lEls;
+  CandList _lntEls;
+  CandList _tEls;
   CandList _vEls;
-  CandList _tMus;
   CandList _lMus;
+  CandList _lntMus;
+  CandList _tMus;
   CandList _vMus;
-  CandList _tLeps;
   CandList _lLeps;
+  CandList _lntLeps;
+  CandList _tLeps;
   CandList _vLeps;
   CandList _jets;
 
   vector<int> _lElIdx;
+  vector<int> _lntElIdx;
   vector<int> _tElIdx;
   vector<int> _vElIdx;
   vector<int> _lLepIdx;
+  vector<int> _lntLepIdx;
   vector<int> _tLepIdx;
   vector<int> _vLepIdx;
   vector<int> _lMuIdx;
+  vector<int> _lntMuIdx;
   vector<int> _tMuIdx;
   vector<int> _vMuIdx;
 

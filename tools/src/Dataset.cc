@@ -68,7 +68,7 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
     return: none
   */
 
-  string sname;
+  string sname, stname;
 	
   // decode sfullname to get _isData and sname 
   if(sfullname.find(":") != (size_t) -1){
@@ -78,12 +78,28 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
       _isData = false;
 
     size_t p = sfullname.find(":");
-    sname = sfullname.substr(p + 1, sfullname.size() - p - 1);
+    stname = sfullname.substr(p + 1, sfullname.size() - p - 1);
   }
   else {
-    sname =  sfullname;
+    stname =  sfullname;
   }
 
+//sname = stname;
+  if(stname.find("fake") != (size_t) -1) {
+    size_t p = stname.find("fake");
+    sname = stname.substr(0, p);
+  }
+  else if(stname.find("misId") != (size_t) -1) {
+    size_t p = stname.find("misId");
+    sname = stname.substr(0, p);
+  }
+  else if(stname.find("prompt") != (size_t) -1) {
+    size_t p = stname.find("prompt");
+    sname = stname.substr(0, p);
+  }
+  else {
+    sname = stname;
+  }
 
   
   //protection against double loading in the same dataset
@@ -113,6 +129,7 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
 	
   //is from Control Sample?
   _isFromCS=0;
+
   if(sname.find("CS")!=(size_t)-1 && sname.find("CSA14")==(size_t)-1) {
     _isFromCS=1;
     if(sname.find("CSS")!=(size_t)-1)
@@ -145,7 +162,7 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
   //Looking for the tree if not data-driven
   int nEvent = 0; //MM: not really needed anymore, kept for now
   int nProcEvt = 0; //getNProcEvents(path, dir, objName, sname);
-	
+
   Sample s(sname, nEvent, nProcEvt, xSect, kFact, eqLumi);
   _samples.push_back(s);
   _weights.push_back( s.getLumW() );
