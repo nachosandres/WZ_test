@@ -152,13 +152,13 @@
     //md.anConf.addSample( "DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola"     ,  "non-prompt e/#mu"    , kRed      );
     
     //t production
-    md.anConf.addSample( "TbarToLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"   ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "TbarToLeptons_t-channel_Tune4C_CSA14_13TeV-aMCatNLO-tauola"   ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "TbarToLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"   ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "TbarToLeptons_t-channel_Tune4C_CSA14_13TeV-aMCatNLO-tauola"   ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "Tbar_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"          ,  "non-prompt e/#mu"    , kRed      );
     //md.anConf.addSample( "TtbarH_M-125_13TeV_amcatnlo-pythia8-tauola"                   ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola"      ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "TtoLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "TtoLeptons_t-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "TtoLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "TtoLeptons_t-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "T_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"             ,  "non-prompt e/#mu"    , kRed      );
     
     //W+Jets
@@ -167,11 +167,11 @@
     md.anConf.addSample( "WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola"          ,  "non-prompt e/#mu"    , kRed      );
     
     //signal
-    //md.anConf.addSample( "SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola" ,  ""                   , kCyan     );
-    //md.anConf.addSample( "SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola" ,  ""                   , kCyan     );
-    //md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"                    ,  ""                   , kCyan     );
-    //md.anConf.addSample( "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280"                    ,  ""                   , kCyan     );
-
+    //md.anConf.addSample( "SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola" ,  "T1tttt (800) #cdot 20 sig" , kViolet-3 );
+    //md.anConf.addSample( "SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola" ,  "T1tttt (100) #cdot 20 sig" , kViolet+3  );
+    //md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"                    ,  "T5tttt (1000) #cdot 20 sig" , kOrange-3 );
+    //md.anConf.addSample( "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280"                    ,  "T5tttt (1300) #cdot 20 sig" , kOrange+6 );
+ 
     // }
     //===============================================================
 
