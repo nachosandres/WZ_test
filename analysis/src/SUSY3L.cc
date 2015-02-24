@@ -235,7 +235,7 @@ void SUSY3L::collectKinematicObjects(){
         return: none
     */
 
-    // loop over all nLepGood leptons in this event
+    // loop over all nLepGood muons in this event
     for(int i = 0; i < _vc->getI("nLepGood"); ++i){
         // check which of the nLepGood leptons are muons, identifier 13
         if(std::abs(_vc->getI("LepGood_pdgId",i)) == 13){
@@ -262,9 +262,16 @@ void SUSY3L::collectKinematicObjects(){
             }
             */
         }
-        
+    }
+
+    //number of muons in the event
+    _nMus = _mus.size();
+    //_nVMus = _vMus.size();
+    
+    // loop over all nLepGood electrons in this event
+    for(int i = 0; i < _vc->getI("nLepGood"); ++i){
         // check which of the nLepGood leptons are electrons, identifier 11
-        else if(std::abs(_vc->getI("LepGood_pdgId",i)) == 11){
+        if(std::abs(_vc->getI("LepGood_pdgId",i)) == 11){
             //differentiate electrons for electron selecton and veto electron selection
             if(electronSelection(i)) {
                 //if electron passes electron selection, create electron candidate 
@@ -292,9 +299,16 @@ void SUSY3L::collectKinematicObjects(){
             }
             */
         }
+    }
+  
+    //number of electrons in the event
+    _nEls = _els.size();
+    //_nVEls = _vEls.size();
 
-        //select taus if enabled in analysis configs
-        if(_selectTaus=="true"){
+    //select taus if enabled in analysis configs
+    if(_selectTaus=="true"){
+        // loop over all nLepGood taus in this event
+        for(int i = 0; i < _vc->getI("nLepGood"); ++i){
             // check which of the nLepGood leptons are taus, identifier TODO: tau identifier
             if(std::abs(_vc->getI("LepGood_pdgId",i)) == 0 ){ //TODO: tau identifier
                 //differentiate taus for tau selecton and veto tau selection
@@ -323,45 +337,36 @@ void SUSY3L::collectKinematicObjects(){
         }
     }
 
-    //length of the vectors gives the number of candidates for each objet group in the event
-    _nEls = _els.size();
-    _nMus = _mus.size();
+    //number of taus in the event
     _nTaus = _taus.size();
-    //_nVEls = _vEls.size();
-    //_nVMus = _vMus.size();
 
     // loop over all jets of the event
     for(int i = 0; i < _vc->getI("nJet"); ++i){
+       //if jet passes good jet selection, create a jet candidate and fetch kinematics  
+        if(goodJetSelection(i)) {
+            _jets.push_back( Candidate::create(_vc->getD("Jet_pt", i),
+                                               _vc->getD("Jet_eta", i),
+                                               _vc->getD("Jet_phi", i)));
+        }
         //if jet passes bjet selection, create a b-jet candidate and fetch kinematics  
         if(bJetSelection(i) ) {
             _bJets.push_back( Candidate::create(_vc->getD("Jet_pt", i),
                                                 _vc->getD("Jet_eta", i),
                                                 _vc->getD("Jet_phi", i)));
         }
-        //if jet passes good jet selection, create a jet candidate and fetch kinematics  
-        if(goodJetSelection(i)) {
-            _jets.push_back( Candidate::create(_vc->getD("Jet_pt", i),
-                                               _vc->getD("Jet_eta", i),
-                                               _vc->getD("Jet_phi", i)));
-        }
     }
 
-    //length of the vectors gives the number of candidates for each objet group in the event
+    //number of (b-)jets in the event
     _nBJets = _bJets.size();
     _nJets = _jets.size();
    
     //compute sum of jet pT's 
     _HT = HT();
+
     //create met candidate for every event
     _met = Candidate::create(_vc->getD("met_pt"), _vc->getD("met_phi") );
 
-
 }
-
-
-
-
-
 
 
 //____________________________________________________________________________
@@ -582,28 +587,26 @@ bool SUSY3L::goodJetSelection(int jetIdx){
 
     //exclude jets which are within a cone of deltaR around lepton candidate
     //loop over all electron candidates
-    bool elMatch = false;
+    bool lepMatch = false;
     for(int ie=0; ie<_nEls; ++ie){
         //calculate delta R, input eta1, eta2, phi1, phi2
         float dr = KineUtils::dR( _els[ie]->eta(), _vc->getD("Jet_eta", jetIdx), _els[ie]->phi(), _vc->getD("Jet_phi", jetIdx));
         if(dr < deltaR){
-            elMatch = true; 
+            lepMatch = true; 
             break;
         }
     }
-    if(!makeCut(!elMatch,  "selection (el)", "=", kJetId) ) return false;
     
     //loop over all muon candidates
-    bool muMatch = false;
     for(int im=0; im<_nMus; ++im){
         //calculate delta R, input eta1, eta2, phi1, phi2
         float dr = KineUtils::dR( _mus[im]->eta(), _vc->getD("Jet_eta", jetIdx), _mus[im]->phi(), _vc->getD("Jet_phi", jetIdx));
         if(dr < deltaR) {
-            muMatch = true; 
+            lepMatch = true; 
             break;
         }
     }
-    if(!makeCut(!muMatch,  "selection (mu)", "=", kJetId) ) return false;
+    if(!makeCut(!lepMatch,  "lepton cleaning", "=", kJetId) ) return false;
     
     return true;
 }
