@@ -390,7 +390,6 @@ bool SUSY3L::electronSelection(int elIdx){
     float vertex_dxy_cut = 0.05;    //in cm
     float sip3d_cut = 4;
     float deltaR = 0.1;
-    float barrel_eta = 1.479;
    
     //apply the cuts
     //makeCut(variable to cut on, cut value, direction of acception, name, 2nd cut value, counter)
