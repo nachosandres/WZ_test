@@ -45,7 +45,14 @@ public:
 		   float v6=-1000000,float v7=-1000000, float v8=-1000000, 
 		   float v9=-1000000, float v10=-1000000);
 
+  //only one 
+  float getDBValue(std::string key, std::string v1);
+  float getDBErrL(std::string key, std::string v1);
+  float getDBErrH(std::string key, std::string v1);
+
   std::vector<std::vector<float> > getDB(std::string key);
+
+  bool exists(std::string key);
 
 private:
   
@@ -57,6 +64,9 @@ private:
   std::map<std::string, THnSparseF*> _mDBs;
   std::map<std::string, THnSparseF*> _mDBEHs;
   std::map<std::string, THnSparseF*> _mDBELs;
+
+  std::map<std::string, int> _mStrIdx;
+  std::map<std::string, int>::const_iterator _mSIt;
 
 };
 
