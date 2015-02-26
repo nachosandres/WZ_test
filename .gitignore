@@ -11,5 +11,4 @@ display/lib
 tools/lib
 workdir
 *dictgen.mk
-*genmak.sh
 *gen.mk
