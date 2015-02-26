@@ -134,11 +134,12 @@ void MPAF::analyze(){
     
     cout<<" Starting processing dataset : "<<_sampleName<<"  (running on "<<nEvts<<" events)"<<endl;
 
+	mucounter = 1;
     boost::progress_display show_progress( nEvts );
     for(_ie = _nSkip; _ie < nEvts; ++_ie) {
       ++show_progress;
       stw.Start();
-   
+      //if(mucounter == 100) break;
       //MM : preparation for uncertainty variation over one variable
       // keeping line for future development
       // _vc->applySystVar( _vc->_su->getSystInfos(_unc, _uDir) );

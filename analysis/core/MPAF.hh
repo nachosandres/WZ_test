@@ -116,6 +116,7 @@ protected:
   bool makeCut(bool decision, string cName, string type = "=", int eCateg = AUtils::kGlobal);
   void counter(string cName, int eCateg = AUtils::kGlobal);
 
+  int mucounter;
 
   // virtual functions for the classes
   virtual void defineOutput();

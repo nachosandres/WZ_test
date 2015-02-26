@@ -84,22 +84,23 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
     stname =  sfullname;
   }
 
-//sname = stname;
-  if(stname.find("fake") != (size_t) -1) {
-    size_t p = stname.find("fake");
-    sname = stname.substr(0, p);
-  }
-  else if(stname.find("misId") != (size_t) -1) {
-    size_t p = stname.find("misId");
-    sname = stname.substr(0, p);
-  }
-  else if(stname.find("prompt") != (size_t) -1) {
-    size_t p = stname.find("prompt");
-    sname = stname.substr(0, p);
-  }
-  else {
-    sname = stname;
-  }
+  sname = stname;
+  //CH: this is a temporary fix on treatment of datasets with "fake" in the name
+  //if(stname.find("fake") != (size_t) -1) {
+  //  size_t p = stname.find("fake");
+  //  sname = stname.substr(0, p);
+  //}
+  //else if(stname.find("misId") != (size_t) -1) {
+  //  size_t p = stname.find("misId");
+  //  sname = stname.substr(0, p);
+  //}
+  //else if(stname.find("prompt") != (size_t) -1) {
+  //  size_t p = stname.find("prompt");
+  //  sname = stname.substr(0, p);
+  //}
+  //else {
+  //  sname = stname;
+  //}
 
   
   //protection against double loading in the same dataset

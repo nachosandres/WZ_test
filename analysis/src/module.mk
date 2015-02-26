@@ -4,5 +4,5 @@ FILES += csa14exerc
 FILES += SSDLBoosted
 FILES += synchECO
 FILES += synchRA5
-FILES += phys14exerc
+FILES += phys14limits
 FILES += FakeRatio

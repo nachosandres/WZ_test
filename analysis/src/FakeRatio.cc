@@ -64,30 +64,30 @@ void FakeRatio::initialize(){
   _vc->registerVar("run"                          , "I" );
   _vc->registerVar("lumi"                         , "I" );
   _vc->registerVar("evt"                          , "I" );
-  _vc->registerVar("HLT_SingleMu"                 , "D" );
-  _vc->registerVar("HLT_MuEG"                     , "D" );
-  _vc->registerVar("HLT_TripleEl"                 , "D" );
-  _vc->registerVar("HLT_DoubleEl"                 , "D" );
-  _vc->registerVar("HLT_DoubleMu"                 , "D" );
+  _vc->registerVar("HLT_SingleMu"                 , "F" );
+  _vc->registerVar("HLT_MuEG"                     , "F" );
+  _vc->registerVar("HLT_TripleEl"                 , "F" );
+  _vc->registerVar("HLT_DoubleEl"                 , "F" );
+  _vc->registerVar("HLT_DoubleMu"                 , "F" );
   _vc->registerVar("nVert"                        , "I" );
   _vc->registerVar("nTrueInt"                     , "I" );
   _vc->registerVar("nTrueInt"                     , "I" );
   _vc->registerVar("nBJetPt40Medium"              , "I" );
-  _vc->registerVar("puWeight"                     , "D" );
-  _vc->registerVar("genWeight"                    , "D" );
+  _vc->registerVar("puWeight"                     , "F" );
+  _vc->registerVar("genWeight"                    , "F" );
   _vc->registerVar("nLepGood"                     , "I" );
-  _vc->registerVar("LepGood_pt"                   , "AD");
-  _vc->registerVar("LepGood_eta"                  , "AD");
-  _vc->registerVar("LepGood_phi"                  , "AD");
+  _vc->registerVar("LepGood_pt"                   , "AF");
+  _vc->registerVar("LepGood_eta"                  , "AF");
+  _vc->registerVar("LepGood_phi"                  , "AF");
   _vc->registerVar("LepGood_charge"               , "AI");
   _vc->registerVar("LepGood_tightCharge"          , "AI");
   _vc->registerVar("LepGood_mediumMuonId"         , "AI");
   _vc->registerVar("LepGood_pdgId"                , "AI");
-  _vc->registerVar("LepGood_relIso03"             , "AD");
-  _vc->registerVar("LepGood_relIso04"             , "AD");
-  _vc->registerVar("LepGood_dxy"                  , "AD");
-  _vc->registerVar("LepGood_dz"                   , "AD");
-  _vc->registerVar("LepGood_sip3d"                , "AD");
+  _vc->registerVar("LepGood_relIso03"             , "AF");
+  _vc->registerVar("LepGood_relIso04"             , "AF");
+  _vc->registerVar("LepGood_dxy"                  , "AF");
+  _vc->registerVar("LepGood_dz"                   , "AF");
+  _vc->registerVar("LepGood_sip3d"                , "AF");
   _vc->registerVar("LepGood_pfMuonId"             , "AI");
   _vc->registerVar("LepGood_tightId"              , "AI");
   _vc->registerVar("LepGood_looseIdSusy"          , "AI");
@@ -97,33 +97,47 @@ void FakeRatio::initialize(){
   _vc->registerVar("LepGood_eleCutIdCSA14_50ns_v1", "AI");
   _vc->registerVar("LepGood_eleCutId2012_full5x5" , "AI");
   _vc->registerVar("LepGood_mvaSusyPHYS14"        , "AF");
-  _vc->registerVar("LepGood_mvaSusy"              , "AD");
+  _vc->registerVar("LepGood_mvaSusy"              , "AF");
   _vc->registerVar("LepGood_mcMatchId"            , "AI");
   _vc->registerVar("LepGood_mcMatchAny"           , "AI");
-  _vc->registerVar("met_pt"                       , "D" );
-  _vc->registerVar("met_eta"                      , "D" );
-  _vc->registerVar("met_phi"                      , "D" );
-  _vc->registerVar("met_mass"                     , "D" );
+  _vc->registerVar("met_pt"                       , "F" );
+  _vc->registerVar("met_eta"                      , "F" );
+  _vc->registerVar("met_phi"                      , "F" );
+  _vc->registerVar("met_mass"                     , "F" );
   _vc->registerVar("nJet25"                       , "I" );
   _vc->registerVar("nJet40"                       , "I" );
   _vc->registerVar("nJet"                         , "I" );
   _vc->registerVar("Jet_id"                       , "AI");
-  _vc->registerVar("Jet_pt"                       , "AD");
-  _vc->registerVar("Jet_rawPt"                    , "AD");
-  _vc->registerVar("Jet_eta"                      , "AD");
-  _vc->registerVar("Jet_phi"                      , "AD");
-  _vc->registerVar("Jet_mass"                     , "AD");
-  _vc->registerVar("Jet_btagCSV"                  , "AD");
+  _vc->registerVar("Jet_pt"                       , "AF");
+  _vc->registerVar("Jet_rawPt"                    , "AF");
+  _vc->registerVar("Jet_eta"                      , "AF");
+  _vc->registerVar("Jet_phi"                      , "AF");
+  _vc->registerVar("Jet_mass"                     , "AF");
+  _vc->registerVar("Jet_btagCSV"                  , "AF");
+  _vc->registerVar("nDiscJet"                     , "I" );
+  _vc->registerVar("DiscJet_id"                   , "AI");
+  _vc->registerVar("DiscJet_pt"                   , "AF");
+  _vc->registerVar("DiscJet_rawPt"                , "AF");
+  _vc->registerVar("DiscJet_eta"                  , "AF");
+  _vc->registerVar("DiscJet_phi"                  , "AF");
+  _vc->registerVar("DiscJet_mass"                 , "AF");
+  _vc->registerVar("DiscJet_btagCSV"              , "AF");
   
   //generator informations
   _vc->registerVar("nGenPart"                     , "I" );
-  _vc->registerVar("GenPart_pt"                   , "AD");
-  _vc->registerVar("GenPart_eta"                  , "AD");
-  _vc->registerVar("GenPart_phi"                  , "AD");
+  _vc->registerVar("GenPart_pt"                   , "AF");
+  _vc->registerVar("GenPart_eta"                  , "AF");
+  _vc->registerVar("GenPart_phi"                  , "AF");
   _vc->registerVar("GenPart_pdgId"                , "AI");
   _vc->registerVar("GenPart_motherId"             , "AI");
   _vc->registerVar("GenPart_grandmotherId"        , "AI");
-  
+
+  _vc->registerVar("nGenBHad"                     , "I" );
+  _vc->registerVar("GenBHad_pt"                   , "AF"); 
+  _vc->registerVar("GenBHad_eta"                  , "AF"); 
+  _vc->registerVar("GenBHad_phi"                  , "AF"); 
+  _vc->registerVar("GenBHad_pdgId"                , "AI"); 
+ 
   //bjets
   _vc->registerVar("nBJetLoose25"                 , "I" );
   _vc->registerVar("nBJetMedium40"                , "I" );
@@ -158,7 +172,7 @@ void FakeRatio::modifyWeight() {
 	
   //_weight = (i->second)->Getweight();
   // if(_PUReweighting) 
-  //   _weight *= _vc->getD("puWeight");
+  //   _weight *= _vc->getF("puWeight");
 
 }
 
@@ -204,8 +218,8 @@ void FakeRatio::run(){
 	
   // measurement region selection
   //if(!skimSelection()) return;
-  if(!genMRSelection()) return;
-  //if(!mrSelection()) return;
+  //if(!genMRSelection()) return;
+  if(!mrSelection()) return;
 
   //skim right after the basic selection
   //fillSkimTree();
@@ -397,9 +411,9 @@ void FakeRatio::collectKinematicObjects(){
     // electrons
     if(std::abs(_vc->getI("LepGood_pdgId", i)) == 11){		  
       if(looseElectronSelection(i)) {
-        _lEls.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					  _vc->getD("LepGood_eta", i),
-					  _vc->getD("LepGood_phi", i),
+        _lEls.push_back( Candidate::create(_vc->getF("LepGood_pt", i),
+					  _vc->getF("LepGood_eta", i),
+					  _vc->getF("LepGood_phi", i),
 					  _vc->getI("LepGood_pdgId", i),
 					  _vc->getI("LepGood_charge", i),
 					  0.0005) );
@@ -409,9 +423,9 @@ void FakeRatio::collectKinematicObjects(){
         loose = true;
       }
       if(tightElectronSelection(i)) {
-        _tEls.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					  _vc->getD("LepGood_eta", i),
-					  _vc->getD("LepGood_phi", i),
+        _tEls.push_back( Candidate::create(_vc->getF("LepGood_pt", i),
+					  _vc->getF("LepGood_eta", i),
+					  _vc->getF("LepGood_phi", i),
 					  _vc->getI("LepGood_pdgId", i),
 					  _vc->getI("LepGood_charge", i),
 					  0.0005) );
@@ -421,9 +435,9 @@ void FakeRatio::collectKinematicObjects(){
         tight = true;
       }
       if(loose && !tight) {
-        _lntEls.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					  _vc->getD("LepGood_eta", i),
-					  _vc->getD("LepGood_phi", i),
+        _lntEls.push_back( Candidate::create(_vc->getF("LepGood_pt", i),
+					  _vc->getF("LepGood_eta", i),
+					  _vc->getF("LepGood_phi", i),
 					  _vc->getI("LepGood_pdgId", i),
 					  _vc->getI("LepGood_charge", i),
 					  0.0005) );
@@ -433,9 +447,9 @@ void FakeRatio::collectKinematicObjects(){
       }
       if(!loose && !tight) {
         if(vetoElectronSelection(i))  {
-          _vEls.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					     _vc->getD("LepGood_eta", i),
-					     _vc->getD("LepGood_phi", i),
+          _vEls.push_back( Candidate::create(_vc->getF("LepGood_pt", i),
+					     _vc->getF("LepGood_eta", i),
+					     _vc->getF("LepGood_phi", i),
 					     _vc->getI("LepGood_pdgId", i),
 					     _vc->getI("LepGood_charge", i),
 					     0.0005) );
@@ -447,9 +461,9 @@ void FakeRatio::collectKinematicObjects(){
     // muons
     else if(std::abs(_vc->getI("LepGood_pdgId", i)) == 13){
       if(looseMuonSelection(i)) {
-        _lMus.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					  _vc->getD("LepGood_eta", i),
-					  _vc->getD("LepGood_phi", i),
+        _lMus.push_back( Candidate::create(_vc->getF("LepGood_pt", i),
+					  _vc->getF("LepGood_eta", i),
+					  _vc->getF("LepGood_phi", i),
 					  _vc->getI("LepGood_pdgId", i),
 					  _vc->getI("LepGood_charge", i),
 					  0.105) );
@@ -459,9 +473,9 @@ void FakeRatio::collectKinematicObjects(){
         loose = true;
       }
       if(tightMuonSelection(i)) {
-        _tMus.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					  _vc->getD("LepGood_eta", i),
-					  _vc->getD("LepGood_phi", i),
+        _tMus.push_back( Candidate::create(_vc->getF("LepGood_pt", i),
+					  _vc->getF("LepGood_eta", i),
+					  _vc->getF("LepGood_phi", i),
 					  _vc->getI("LepGood_pdgId", i),
 					  _vc->getI("LepGood_charge", i),
 					  0.105) );
@@ -471,9 +485,9 @@ void FakeRatio::collectKinematicObjects(){
         tight = true;
       }
       if(loose && !tight) {
-        _lntMus.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					  _vc->getD("LepGood_eta", i),
-					  _vc->getD("LepGood_phi", i),
+        _lntMus.push_back( Candidate::create(_vc->getF("LepGood_pt", i),
+					  _vc->getF("LepGood_eta", i),
+					  _vc->getF("LepGood_phi", i),
 					  _vc->getI("LepGood_pdgId", i),
 					  _vc->getI("LepGood_charge", i),
 					  0.105) );
@@ -483,9 +497,9 @@ void FakeRatio::collectKinematicObjects(){
       }
       if(!loose && !tight) {
         if(vetoMuonSelection(i))  {
-          _vMus.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					     _vc->getD("LepGood_eta", i),
-					     _vc->getD("LepGood_phi", i),
+          _vMus.push_back( Candidate::create(_vc->getF("LepGood_pt", i),
+					     _vc->getF("LepGood_eta", i),
+					     _vc->getF("LepGood_phi", i),
 					     _vc->getI("LepGood_pdgId", i),
 					     _vc->getI("LepGood_charge", i),
 					     0.105) );
@@ -510,16 +524,16 @@ void FakeRatio::collectKinematicObjects(){
   
   for(int i = 0; i < _vc->getI("nJet"); ++i){
     if(goodJetSelection(i)) {
-      _jets.push_back( Candidate::create(_vc->getD("Jet_pt", i),
-					                     _vc->getD("Jet_eta", i),
-					                     _vc->getD("Jet_phi", i) ) );
+      _jets.push_back( Candidate::create(_vc->getF("Jet_pt", i),
+					                     _vc->getF("Jet_eta", i),
+					                     _vc->getF("Jet_phi", i) ) );
       
     }
   }
 
   _nJets  = _jets.size();
   _HT  = HT();
-  _met = Candidate::create(_vc->getD("met_pt"), _vc->getD("met_phi") );
+  _met = Candidate::create(_vc->getF("met_pt"), _vc->getF("met_phi") );
 
 }
 
@@ -534,30 +548,30 @@ bool FakeRatio::goodJetSelection(int jetIdx){
   
   counter("JetDenominator", kJetId);
 
-  if(!makeCut<float>(_vc->getD("Jet_pt", jetIdx)       , 40.0, ">", "pt selection" , 0, kJetId) ) return false;
-  if(!makeCut<float>(fabs(_vc->getD("Jet_eta", jetIdx)),  2.4, "<", "eta selection", 0, kJetId) ) return false;
+  if(!makeCut<float>(_vc->getF("Jet_pt", jetIdx)       , 40.0, ">", "pt selection" , 0, kJetId) ) return false;
+  if(!makeCut<float>(fabs(_vc->getF("Jet_eta", jetIdx)),  2.4, "<", "eta selection", 0, kJetId) ) return false;
 
   // CH: the requirement that dR(jet, every loose leption) > 1.0 in combination with
   // requirering EXACTLY one loose lepton in the measurement region, makes jet-lepton
   // cleaning obsolete
   
   for(unsigned int il=0; il<_lLeps.size(); ++il){
-    float dr = KineUtils::dR(_lLeps[il]->eta(), _vc->getD("Jet_eta", jetIdx),
-			                 _lLeps[il]->phi(), _vc->getD("Jet_phi", jetIdx));
+    float dr = KineUtils::dR(_lLeps[il]->eta(), _vc->getF("Jet_eta", jetIdx),
+			                 _lLeps[il]->phi(), _vc->getF("Jet_phi", jetIdx));
     if(!makeCut<float>(dr, 1.0, ">", "dR selection", 0, kJetId) ) return false;
   }
 
   // CH: this is jet-lepton cleaning: removing the closest jet to the loose lepton if dR < 0.4
   float dr_cache = 999999.;
   for(unsigned int il=0; il<_lLeps.size(); ++il){
-    float dr = KineUtils::dR(_lLeps[il]->eta(), _vc->getD("Jet_eta", jetIdx),
-			                 _lLeps[il]->phi(), _vc->getD("Jet_phi", jetIdx));
+    float dr = KineUtils::dR(_lLeps[il]->eta(), _vc->getF("Jet_eta", jetIdx),
+			                 _lLeps[il]->phi(), _vc->getF("Jet_phi", jetIdx));
     if(dr < dr_cache)
       dr_cache = dr;
   }
   for(unsigned int il=0; il<_vLeps.size(); ++il){
-    float dr = KineUtils::dR(_vLeps[il]->eta(), _vc->getD("Jet_eta", jetIdx),
-			                 _vLeps[il]->phi(), _vc->getD("Jet_phi", jetIdx));
+    float dr = KineUtils::dR(_vLeps[il]->eta(), _vc->getF("Jet_eta", jetIdx),
+			                 _vLeps[il]->phi(), _vc->getF("Jet_phi", jetIdx));
     if(dr < dr_cache)
       dr_cache = dr;
   }
@@ -571,14 +585,18 @@ bool FakeRatio::goodJetSelection(int jetIdx){
 //____________________________________________________________________________
 bool FakeRatio::leptonMvaId(int lepIdx, int cat, float iso, float dxy, bool tch){
 
-  if(!makeCut<float>( _vc->getF("LepGood_mvaSusyPHYS14", lepIdx)      , 0.53, ">" , "MVA POG WP"      , 0, cat)) return false;
+  //if(!makeCut<float>( _vc->getF("LepGood_mvaSusyPHYS14", lepIdx)      , 0.53, ">" , "MVA POG WP"      , 0, cat)) return false;
+  bool mvawp = false;
+  if((_vc->getF("LepGood_pt", lepIdx) > 25 && _vc->getF("LepGood_mvaSusy", lepIdx) > 0) || _vc->getF("LepGood_mvaSusy", lepIdx) > 0.53) mvawp = true;
+
+  if(!makeCut( mvawp, "MVA WP", "=", cat)) return false;
   if(tch){
     if(!makeCut<int>( _vc->getI("LepGood_tightCharge"  , lepIdx)      , 1   , ">" , "charge selection", 0, cat)) return false;
     if(!makeCut<int>( _vc->getI("LepGood_mediumMuonId" , lepIdx)      , 1   , "=" , "medium muon ID"  , 0, cat)) return false;
   }
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03"     , lepIdx)      , iso , "<" , "isolation "      , 0, cat)) return false;
-  if(!makeCut<float>(std::abs(_vc->getD("LepGood_dxy"  , lepIdx))     , dxy , "<" , "dxy selection"   , 0, cat)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_sip3d"        , lepIdx)      , 4   , "<" , "SIP 3D"          , 0, cat)) return false;
+  if(!makeCut<float>( _vc->getF("LepGood_relIso03"     , lepIdx)      , iso , "<" , "isolation "      , 0, cat)) return false;
+  if(!makeCut<float>(std::abs(_vc->getF("LepGood_dxy"  , lepIdx))     , dxy , "<" , "dxy selection"   , 0, cat)) return false;
+  if(!makeCut<float>( _vc->getF("LepGood_sip3d"        , lepIdx)      , 4   , "<" , "SIP 3D"          , 0, cat)) return false;
 
   return true;
 
@@ -589,10 +607,10 @@ bool FakeRatio::leptonMvaId(int lepIdx, int cat, float iso, float dxy, bool tch)
 bool FakeRatio::leptonCutId(int lepIdx, int cat, float iso, float dxy, string cbid, int id){
 
   if(!makeCut<int>(       _vc->getI(cbid              , lepIdx) , id , ">=", "cut-based WP" , 0, cat)) return false;
-  if(!makeCut<float>(     _vc->getD("LepGood_relIso03", lepIdx) , iso, "<" , "isolation "   , 0, cat)) return false;
-  if(!makeCut<float>(fabs(_vc->getD("LepGood_dxy"     , lepIdx)), dxy, "<" , "dxy selection", 0, cat)) return false;
-  if(!makeCut<float>(fabs(_vc->getD("LepGood_dz"      , lepIdx)), 0.1, "<" , "dz selection" , 0, cat)) return false;
-  if(!makeCut<float>(     _vc->getD("LepGood_sip3d"   , lepIdx) , 4  , "<" , "SIP 3D"       , 0, cat)) return false;
+  if(!makeCut<float>(     _vc->getF("LepGood_relIso03", lepIdx) , iso, "<" , "isolation "   , 0, cat)) return false;
+  if(!makeCut<float>(fabs(_vc->getF("LepGood_dxy"     , lepIdx)), dxy, "<" , "dxy selection", 0, cat)) return false;
+  if(!makeCut<float>(fabs(_vc->getF("LepGood_dz"      , lepIdx)), 0.1, "<" , "dz selection" , 0, cat)) return false;
+  if(!makeCut<float>(     _vc->getF("LepGood_sip3d"   , lepIdx) , 4  , "<" , "SIP 3D"       , 0, cat)) return false;
 
   return true;
 } 
@@ -613,14 +631,14 @@ bool FakeRatio::looseElectronSelection(int elIdx){
   //CH: denominator is cut-based denominator for all IDs
   //CH: actually, we only take the tight ID (muons) / medium ID (electrons) on top of the LepGood preselection
   
-  if(!makeCut<float>( _vc->getD("LepGood_pt"      , elIdx)            , 10.   , ">"  , "pt selection"      , 0    , kLElId)) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx))       , 2.4   , "<"  , "eta selection"     , 0    , kLElId)) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx))       , 1.4442, "[!]", "eta selection veto", 1.566, kLElId)) return false;
+  if(!makeCut<float>( _vc->getF("LepGood_pt"      , elIdx)            , 10.   , ">"  , "pt selection"      , 0    , kLElId)) return false;
+  if(!makeCut<float>( std::abs(_vc->getF("LepGood_eta", elIdx))       , 2.4   , "<"  , "eta selection"     , 0    , kLElId)) return false;
+  if(!makeCut<float>( std::abs(_vc->getF("LepGood_eta", elIdx))       , 1.4442, "[!]", "eta selection veto", 1.566, kLElId)) return false;
 
   //CH: using iso<0.5, dxy<0.05 as they are in the tree 
   //CH: denominator is cut-based denominator for all IDs
   //bool mvaid = leptonMvaId(elIdx, kLElId, 999.0, 999.0);
-  bool cutid = leptonCutId(elIdx, kLElId, 999.0, 999.0, "LepGood_eleCutId2012_full5x5", 3);
+  bool cutid = leptonCutId(elIdx, kLElId, 0.5, 0.05, "LepGood_eleCutId2012_full5x5", 3);
   bool lepid = false;
 
   //if     (_mva == "mva"      ) lepid = mvaid;
@@ -637,6 +655,13 @@ bool FakeRatio::looseElectronSelection(int elIdx){
   
   bool conv= (_vc->getI("LepGood_convVeto", elIdx) > 0 && _vc->getI("LepGood_lostHits", elIdx)==0);
   if(!makeCut( conv, "conversion rejection", "=", kLElId)) return false;
+
+  // electron cleaning 
+  for(unsigned int il=elIdx+1; il<_vc->getI("nLepGood"); ++il){
+    float dr = KineUtils::dR(_vc->getF("LepGood_eta", il), _vc->getF("LepGood_eta", elIdx),
+			                 _vc->getF("LepGood_phi", il), _vc->getF("LepGood_phi", elIdx));
+    if(std::abs(_vc->getI("LepGood_pdgId")) == 13 && !makeCut<float>(dr, 0.2, ">", "electron cleaning selection", 0, kLElId) ) return false;
+  }
   
   return true;
 
@@ -656,12 +681,12 @@ bool FakeRatio::looseMuonSelection(int muIdx){
   //CH: denominator is cut-based denominator for all IDs
   //CH: actually, we only take the tight ID (muons) / medium ID (electrons) on top of the LepGood preselection
 
-  if(!makeCut<float>( _vc->getD("LepGood_pt"         , muIdx)    , 10. , ">" , "pt selection"    , 0, kLMuId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_eta"        , muIdx)    , 2.4 , "<" , "eta selection"   , 0, kLMuId)) return false;
+  if(!makeCut<float>( _vc->getF("LepGood_pt"         , muIdx)    , 10. , ">" , "pt selection"    , 0, kLMuId)) return false;
+  if(!makeCut<float>( _vc->getF("LepGood_eta"        , muIdx)    , 2.4 , "<" , "eta selection"   , 0, kLMuId)) return false;
 
   //CH: using iso<0.5, dxy<0.05 as they are in the tree 
   //bool mvaid = leptonMvaId(muIdx, kLMuId, 999.0, 999.0);
-  bool cutid = leptonCutId(muIdx, kLMuId, 999.0, 999.0, "LepGood_tightId", 1);
+  bool cutid = leptonCutId(muIdx, kLMuId, 0.5, 0.05, "LepGood_tightId", 1);
   bool lepid = false;
 
   //if     (_mva == "mva"      ) lepid = mvaid;
@@ -674,7 +699,8 @@ bool FakeRatio::looseMuonSelection(int muIdx){
   lepid = cutid;
  
   if(!makeCut( lepid, "lepton id", "=", kLMuId)) return false;
-  
+
+ 
   return true;
 
 }
@@ -691,9 +717,9 @@ bool FakeRatio::tightElectronSelection(int elIdx){
 
   counter("TightElectronDenominator", kTElId);
  
-  if(!makeCut<float>( _vc->getD("LepGood_pt"      , elIdx)            , 10.   , ">"  , "pt selection"      , 0    , kTElId)) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx))       , 2.4   , "<"  , "eta selection"     , 0    , kTElId)) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx))       , 1.4442, "[!]", "eta selection veto", 1.566, kTElId)) return false;
+  if(!makeCut<float>( _vc->getF("LepGood_pt"      , elIdx)            , 10.   , ">"  , "pt selection"      , 0    , kTElId)) return false;
+  if(!makeCut<float>( std::abs(_vc->getF("LepGood_eta", elIdx))       , 2.4   , "<"  , "eta selection"     , 0    , kTElId)) return false;
+  if(!makeCut<float>( std::abs(_vc->getF("LepGood_eta", elIdx))       , 1.4442, "[!]", "eta selection veto", 1.566, kTElId)) return false;
 
   bool mvaid = leptonMvaId(elIdx, kTElId, 0.1, 0.01, false);
   bool cutid = leptonCutId(elIdx, kTElId, 0.1, 0.01, "LepGood_eleCutId2012_full5x5", 3);
@@ -712,6 +738,13 @@ bool FakeRatio::tightElectronSelection(int elIdx){
 
   bool conv= (_vc->getI("LepGood_convVeto", elIdx) > 0 && _vc->getI("LepGood_lostHits", elIdx)==0);
   if(!makeCut( conv, "conversion rejection", "=", kTElId)) return false; 
+
+  // electron cleaning 
+  for(unsigned int il=elIdx+1; il<_vc->getI("nLepGood"); ++il){
+    float dr = KineUtils::dR(_vc->getF("LepGood_eta", il), _vc->getF("LepGood_eta", elIdx),
+			                 _vc->getF("LepGood_phi", il), _vc->getF("LepGood_phi", elIdx));
+    if(std::abs(_vc->getI("LepGood_pdgId")) == 13 && !makeCut<float>(dr, 0.2, ">", "electron cleaning selection", 0, kTElId) ) return false;
+  }
   
   return true;
 
@@ -728,8 +761,8 @@ bool FakeRatio::tightMuonSelection(int muIdx){
 
   counter("TightMuonDenominator", kTMuId);
   
-  if(!makeCut<float>( _vc->getD("LepGood_pt"      , muIdx)      , 10. , ">" , "pt selection"  , 0, kTMuId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_eta"     , muIdx)      , 2.4 , "<" , "eta selection" , 0, kTMuId)) return false;
+  if(!makeCut<float>( _vc->getF("LepGood_pt"      , muIdx)      , 10. , ">" , "pt selection"  , 0, kTMuId)) return false;
+  if(!makeCut<float>( _vc->getF("LepGood_eta"     , muIdx)      , 2.4 , "<" , "eta selection" , 0, kTMuId)) return false;
 
   bool mvaid = leptonMvaId(muIdx, kTMuId, 0.1, 0.01, true);
   bool cutid = leptonCutId(muIdx, kTMuId, 0.1, 0.01, "LepGood_tightId", 1);
@@ -759,7 +792,14 @@ bool FakeRatio::vetoElectronSelection(int elIdx){
 
   counter("VetoElectronDenominator", kVElId);
 
-  if(!makeCut<float>( _vc->getD("LepGood_pt", elIdx), 10.0, "<", "pt selection", 0, kVElId)) return false; 
+  if(!makeCut<float>( _vc->getF("LepGood_pt", elIdx), 10.0, "<", "pt selection", 0, kVElId)) return false; 
+
+  // electron cleaning 
+  for(unsigned int il=elIdx+1; il<_vc->getI("nLepGood"); ++il){
+    float dr = KineUtils::dR(_vc->getF("LepGood_eta", il), _vc->getF("LepGood_eta", elIdx),
+			                 _vc->getF("LepGood_phi", il), _vc->getF("LepGood_phi", elIdx));
+    if(std::abs(_vc->getI("LepGood_pdgId")) == 13 && !makeCut<float>(dr, 0.2, ">", "electron cleaning selection", 0, kTElId) ) return false;
+  }
   
   return true;
 
@@ -776,7 +816,7 @@ bool FakeRatio::vetoMuonSelection(int muIdx){
 
   counter("VetoMuonDenominator", kVMuId);
  
-  if(!makeCut<float>( _vc->getD("LepGood_pt", muIdx), 10.0, "<", "pt selection", 0, kVMuId)) return false; 
+  if(!makeCut<float>( _vc->getF("LepGood_pt", muIdx), 10.0, "<", "pt selection", 0, kVMuId)) return false; 
   
   return true;
 
@@ -865,9 +905,15 @@ void FakeRatio::setMeasurementRegion() {
 bool FakeRatio::genMRSelection(){
 
 
+//cout << "-------- new event (" << _vc->getI("run") << ":" << _vc->getI("lumi") << ":" << _vc->getI("evt") << ") -------" << endl;
+
   // gen matching: if defined, only use the fake lepton, and remove all others from the collection
   if( _sampleName.find("fake") != (size_t) -1){
   //if( _sampleName.find("DYJets")!=(size_t)-1 || _sampleName.find("TTJets")!=(size_t)-1  || _sampleName.find("WJets")!=(size_t)-1 ) {
+
+//for(int i = 0; i < _lLeps.size(); ++i){
+//  cout << "printing reco lepton " << _lLepIdx[i] << ":" << _lLeps[i]->pdgId() << ":" << _lLeps[i]->pt() << ":" << _lLeps[i]->eta() << ":" << _lLeps[i]->phi() << endl;
+//}
 
     CandList n_lLeps   = _lLeps;
     CandList n_lntLeps = _lntLeps;
@@ -911,74 +957,94 @@ bool FakeRatio::genMRSelection(){
     _lntMuIdx.clear();
     _tMuIdx  .clear();
 
+
+
 	for(int i = 0; i < n_lEls.size(); ++i){
-      int lep_id = 0; 
-      lep_id = genMatchCateg( n_lEls[i], "MR_LElMPdg");
-      if(lep_id == kMisMatchPdgId){
+      int lep_id = 0;
+      if(_vc->getI("LepGood_mcMatchId", n_lElIdx[i]) == 0){ 
+      //lep_id = genMatchCateg( n_lEls[i], "MR_LElMPdg");
+      //if(lep_id == kMisMatchPdgId){
         _lEls  .push_back(n_lEls[i]  );
         _lElIdx.push_back(n_lElIdx[i]);
       }
     }
 	for(int i = 0; i < n_lntEls.size(); ++i){
       int lep_id = 0; 
-      lep_id = genMatchCateg( n_lntEls[i], "MR_LNTElMPdg");
-      if(lep_id == kMisMatchPdgId){
+      if(_vc->getI("LepGood_mcMatchId", n_lntElIdx[i]) == 0){ 
+      //lep_id = genMatchCateg( n_lntEls[i], "MR_LNTElMPdg");
+      //if(lep_id == kMisMatchPdgId){
         _lntEls  .push_back(n_lntEls[i]  );
         _lntElIdx.push_back(n_lntElIdx[i]);
       }
     }
 	for(int i = 0; i < n_tEls.size(); ++i){
       int lep_id = 0; 
-      lep_id = genMatchCateg( n_tEls[i], "MR_TElMPdg" );
-      if(lep_id == kMisMatchPdgId){
+      if(_vc->getI("LepGood_mcMatchId", n_tElIdx[i]) == 0){ 
+      //lep_id = genMatchCateg( n_tEls[i], "MR_TElMPdg" );
+      //if(lep_id == kMisMatchPdgId){
         _tEls  .push_back(n_tEls[i]  );
         _tElIdx.push_back(n_tElIdx[i]);
       }
     }
 	for(int i = 0; i < n_lLeps.size(); ++i){
       int lep_id = 0; 
-      lep_id = genMatchCateg( n_lLeps[i], "MR_LLepMPdg");
-      if(lep_id == kMisMatchPdgId){
+      if(_vc->getI("LepGood_mcMatchId", n_lLepIdx[i]) == 0){ 
+      //lep_id = genMatchCateg( n_lLeps[i], "MR_LLepMPdg");
+      //if(lep_id == kMisMatchPdgId){
         _lLeps  .push_back(n_lLeps[i]  );
         _lLepIdx.push_back(n_lLepIdx[i]);
       }
     }
+//for(int i = 0; i < _vc->getI("nGenPart"); ++i){
+//  cout << "printing gen lepton " << i << ":" << _vc->getI("GenPart_pdgId", i) << ":" << _vc->getF("GenPart_pt", i) << ":" << _vc->getF("GenPart_eta", i) << ":" << _vc->getF("GenPart_phi", i) << endl;
+//}
+//for(int i = 0; i < _lLeps.size(); ++i){
+//  cout << "printing matched lepton " << _lLepIdx[i] << ":" << _lLeps[i]->pdgId() << ":" << _lLeps[i]->pt() << ":" << _lLeps[i]->eta() << ":" << _lLeps[i]->phi() << endl;
+//}
+//for(int i = 0; i < n_lLeps.size(); ++i){
+//  if(find(_lLepIdx.begin(), _lLepIdx.end(), n_lLepIdx[i]) == _lLepIdx.end())
+//  cout << "printing removed lepton " << n_lLepIdx[i] << ":" << n_lLeps[i]->pdgId() << ":" << n_lLeps[i]->pt() << ":" << n_lLeps[i]->eta() << ":" << n_lLeps[i]->phi() << endl;
+//}
 	for(int i = 0; i < n_lntLeps.size(); ++i){
       int lep_id = 0; 
-      lep_id = genMatchCateg( n_lntLeps[i], "MR_LNTLepMPdg");
-      if(lep_id == kMisMatchPdgId){
+      if(_vc->getI("LepGood_mcMatchId", n_lntLepIdx[i]) == 0){ 
+      //lep_id = genMatchCateg( n_lntLeps[i], "MR_LNTLepMPdg");
+      //if(lep_id == kMisMatchPdgId){
         _lntLeps  .push_back(n_lntLeps[i]  );
         _lntLepIdx.push_back(n_lntLepIdx[i]);
       }
     }
 	for(int i = 0; i < n_tLeps.size(); ++i){
       int lep_id = 0; 
-      lep_id = genMatchCateg( n_tLeps[i], "MR_TLepMPdg" );
-      if(lep_id == kMisMatchPdgId){
+      if(_vc->getI("LepGood_mcMatchId", n_tLepIdx[i]) == 0){ 
+      //lep_id = genMatchCateg( n_tLeps[i], "MR_TLepMPdg" );
+      //if(lep_id == kMisMatchPdgId){
         _tLeps  .push_back(n_tLeps[i]  );
         _tLepIdx.push_back(n_tLepIdx[i]);
       }
     }
 	for(int i = 0; i < n_lMus.size(); ++i){
       int lep_id = 0; 
-      lep_id = genMatchCateg( n_lMus[i], "MR_LMuMPdg");
-      if(lep_id == kMisMatchPdgId){
+      if(_vc->getI("LepGood_mcMatchId", n_lMuIdx[i]) == 0){ 
+      //lep_id = genMatchCateg( n_lMus[i], "MR_LMuMPdg");
+      //if(lep_id == kMisMatchPdgId){
         _lMus  .push_back(n_lMus[i]  );
         _lMuIdx.push_back(n_lMuIdx[i]);
       }
     }
 	for(int i = 0; i < n_lntMus.size(); ++i){
       int lep_id = 0; 
-      lep_id = genMatchCateg( n_lntMus[i], "MR_LNTMuMPdg");
-      if(lep_id == kMisMatchPdgId){
+      if(_vc->getI("LepGood_mcMatchId", n_lntMuIdx[i]) == 0){ 
+      //lep_id = genMatchCateg( n_lntMus[i], "MR_LNTMuMPdg");
+      //if(lep_id == kMisMatchPdgId){
         _lntMus  .push_back(n_lntMus[i]  );
         _lntMuIdx.push_back(n_lntMuIdx[i]);
       }
     }
-	for(int i = 0; i < n_tMus.size(); ++i){
-      int lep_id = 0; 
-      lep_id = genMatchCateg( n_tMus[i], "MR_TMuMPdg" );
-      if(lep_id == kMisMatchPdgId){
+	for(int i = 0; i < n_tMus.size(); ++i){ int lep_id = 0; 
+      if(_vc->getI("LepGood_mcMatchId", _tMuIdx[i]) == 0){ 
+      //lep_id = genMatchCateg( n_tMus[i], "MR_TMuMPdg" );
+      //if(lep_id == kMisMatchPdgId){
         _tMus  .push_back(n_tMus[i]  );
         _tMuIdx.push_back(n_tMuIdx[i]);
       }
@@ -996,7 +1062,6 @@ bool FakeRatio::genMRSelection(){
   }  
   counter("genCateg selection");
 
-
   // lepton multiplicity
   if     (_lepflav=="all" && !makeCut<int>( _nLLeps          , 1   , "=", "lepton multiplicity and flavor" ) ) return false; 
   else if(_lepflav=="e"   && !makeCut( _nLEls==1 && _nLMus==0, true, "=", "lepton multiplicity and flavor" ) ) return false;
@@ -1007,6 +1072,52 @@ bool FakeRatio::genMRSelection(){
 
   // b-jet multiplicity
   if(!makeCut<int>(_vc->getI(_bvar), _valCutNBJetsMR, _cTypeNBJetsMR, "b-jet multiplicity", _upValCutNBJetsMR) ) return false;
+
+
+// counting fakes
+  if(std::abs(_lLeps[0]->pdgId()) == 11) counter("event with one fake electron");
+  if(std::abs(_lLeps[0]->pdgId()) == 13) counter("event with one fake muon");
+bool foundZ = false;
+bool foundtau = false;
+bool foundtaup = false;
+bool foundW = false;
+bool foundWp = false;
+bool foundtaun = false;
+bool foundtaunp = false;
+for(int i = 0; i < _vc->getI("nGenPart"); ++i){
+  if(_vc->getI("GenPart_pdgId", i) == 15) foundtau = true;
+  if(_vc->getI("GenPart_pdgId", i) == -15) foundtaup = true;
+  if(_vc->getI("GenPart_pdgId", i) == 23) foundZ = true;
+  if(_vc->getI("GenPart_pdgId", i) == 24) foundW = true;
+  if(_vc->getI("GenPart_pdgId", i) == -24) foundWp = true;
+  if(_vc->getI("GenPart_pdgId", i) == 16) foundtaun = true;
+  if(_vc->getI("GenPart_pdgId", i) == -16) foundtaunp = true;
+}
+if(foundZ && foundtau && foundtaup){ 
+  if(std::abs(_lLeps[0]->pdgId()) == 11) counter("event with one fake electron and Z->tautau");
+  if(std::abs(_lLeps[0]->pdgId()) == 13) counter("event with one fake muon and Z->tautau");
+}
+
+  // no Z->tautau or W->taunu events
+  if(!makeCut((!foundZ || !foundtau || !foundtaup) && (!foundW || !foundtaup || !foundtaun) && (!foundWp || !foundtau || !foundtaunp), true, "=", "no Z->tautau and W->taunu events") ) return false;
+
+// looking for the source of muons
+//if(std::abs(_lLeps[0]->pdgId()) == 13){
+//cout << "-------- new event (" << _vc->getI("run") << ":" << _vc->getI("lumi") << ":" << _vc->getI("evt") << ") -------" << endl;
+//cout << "reco lepton: " << _lLepIdx[0] << ":" << _lLeps[0]->pdgId() << ":" << _lLeps[0]->pt() << ":" << _lLeps[0]->eta() << ":" << _lLeps[0]->phi() << endl;
+//++mucounter;
+//for(int i = 0; i < _vc->getI("nGenPart"); ++i){
+//  if(std::abs(_vc->getI("GenPart_pdgId", i)) != 15) continue;
+//  float dr = Tools::dR(_lLeps[0]->eta(), _vc->getF("GenPart_eta",i),
+//                       _lLeps[0]->phi(), _vc->getF("GenPart_phi",i));
+//  cout << "looping on GenPart " << i << ":" << _vc->getI("GenPart_pdgId", i) << ":" << _vc->getF("GenPart_pt",i) << ":" << _vc->getF("GenPart_eta",i) << ":" << _vc->getF("GenPart_phi",i) << ":" << dr << endl;
+//}
+//for(int i = 0; i < _vc->getI("nGenBHad"); ++i){
+//  float dr = Tools::dR(_lLeps[0]->eta(), _vc->getF("GenBHad_eta",i),
+//                       _lLeps[0]->phi(), _vc->getF("GenBHad_phi",i));
+//  cout << "looping on GenBHad " << i << ":" << _vc->getI("GenBHad_pdgId", i) << ":" << _vc->getF("GenBHad_pt",i) << ":" << _vc->getF("GenBHad_eta",i) << ":" << _vc->getF("GenBHad_phi",i) << ":" << dr << endl;
+//}
+//}
 
   return true;
 
@@ -1091,16 +1202,19 @@ bool FakeRatio::bJetMatching(int lepIdx){
   float dr_cache = 99999999.;
   float btag_cache = 0.;
 
-  for(int j = 0; j < _vc->getI("nJet"); ++j){
-    float dr = KineUtils::dR(_vc->getD("LepGood_eta", lepIdx), _vc->getD("Jet_eta", j),
-                             _vc->getD("LepGood_phi", lepIdx), _vc->getD("Jet_phi", j));
+  // need to look in the DiscJet collection as those are the
+  // jets that have been cleaned in the JetAnalyzer of CMGTools
+  for(int j = 0; j < _vc->getI("nDiscJet"); ++j){
+    float dr = KineUtils::dR(_vc->getF("LepGood_eta", lepIdx), _vc->getF("DiscJet_eta", j),
+                             _vc->getF("LepGood_phi", lepIdx), _vc->getF("DiscJet_phi", j));
     if(dr < dr_cache){
       dr_cache   = dr;
-      btag_cache = _vc->getD("Jet_btagCSV", j);
+      btag_cache = _vc->getF("DiscJet_btagCSV", j);
     }
   }
 
-  if(btag_cache > 0.679) return true;
+  // combinedInclusiveSecondaryVertexV2BJetTags medium WP
+  if(btag_cache > 0.814) return true;
 
   return false;
 
@@ -1143,57 +1257,57 @@ void FakeRatio::fillFakeRatioMaps(std::string kr){
 
 
   for(int i = 0; i < _lEls.size(); ++i){
-    fill(kr + "_LElMap" , _vc->getD("LepGood_pt", _lElIdx[i] ), fabs(_vc->getD("LepGood_eta", _lElIdx[i] )), _weight);
+    fill(kr + "_LElMap" , _vc->getF("LepGood_pt", _lElIdx[i] ), fabs(_vc->getF("LepGood_eta", _lElIdx[i] )), _weight);
     if(bJetMatching(_lElIdx[i]))
-	  fill(kr + "_LElMapBJM" , _vc->getD("LepGood_pt", _lElIdx[i] ), fabs(_vc->getD("LepGood_eta", _lElIdx[i] )), _weight);
+	  fill(kr + "_LElMapBJM" , _vc->getF("LepGood_pt", _lElIdx[i] ), fabs(_vc->getF("LepGood_eta", _lElIdx[i] )), _weight);
   }
 
   for(int i = 0; i < _lntEls.size(); ++i){
-    fill(kr + "_LNTElMap" , _vc->getD("LepGood_pt", _lntElIdx[i] ), fabs(_vc->getD("LepGood_eta", _lntElIdx[i] )), _weight);
+    fill(kr + "_LNTElMap" , _vc->getF("LepGood_pt", _lntElIdx[i] ), fabs(_vc->getF("LepGood_eta", _lntElIdx[i] )), _weight);
     if(bJetMatching(_lntElIdx[i]))
-      fill(kr + "_LNTElMapBJM" , _vc->getD("LepGood_pt", _lntElIdx[i] ), fabs(_vc->getD("LepGood_eta", _lntElIdx[i] )), _weight);
+      fill(kr + "_LNTElMapBJM" , _vc->getF("LepGood_pt", _lntElIdx[i] ), fabs(_vc->getF("LepGood_eta", _lntElIdx[i] )), _weight);
   }
 
   for(int i = 0; i < _tEls.size(); ++i){
-    fill(kr + "_TElMap" , _vc->getD("LepGood_pt", _tElIdx[i] ), fabs(_vc->getD("LepGood_eta", _tElIdx[i] )), _weight);
+    fill(kr + "_TElMap" , _vc->getF("LepGood_pt", _tElIdx[i] ), fabs(_vc->getF("LepGood_eta", _tElIdx[i] )), _weight);
     if(bJetMatching(_tElIdx[i]))
-      fill(kr + "_TElMapBJM" , _vc->getD("LepGood_pt", _tElIdx[i] ), fabs(_vc->getD("LepGood_eta", _tElIdx[i] )), _weight);
+      fill(kr + "_TElMapBJM" , _vc->getF("LepGood_pt", _tElIdx[i] ), fabs(_vc->getF("LepGood_eta", _tElIdx[i] )), _weight);
   }
 
   for(int i = 0; i < _lLeps.size(); ++i){
-    fill(kr + "_LLepMap", _vc->getD("LepGood_pt", _lLepIdx[i]), fabs(_vc->getD("LepGood_eta", _lLepIdx[i])), _weight);
+    fill(kr + "_LLepMap", _vc->getF("LepGood_pt", _lLepIdx[i]), fabs(_vc->getF("LepGood_eta", _lLepIdx[i])), _weight);
     if(bJetMatching(_lLepIdx[i]))
-      fill(kr + "_LLepMapBJM", _vc->getD("LepGood_pt", _lLepIdx[i]), fabs(_vc->getD("LepGood_eta", _lLepIdx[i])), _weight);
+      fill(kr + "_LLepMapBJM", _vc->getF("LepGood_pt", _lLepIdx[i]), fabs(_vc->getF("LepGood_eta", _lLepIdx[i])), _weight);
   }
 
   for(int i = 0; i < _lntLeps.size(); ++i){
-    fill(kr + "_LNTLepMap", _vc->getD("LepGood_pt", _lntLepIdx[i]), fabs(_vc->getD("LepGood_eta", _lntLepIdx[i])), _weight);
+    fill(kr + "_LNTLepMap", _vc->getF("LepGood_pt", _lntLepIdx[i]), fabs(_vc->getF("LepGood_eta", _lntLepIdx[i])), _weight);
     if(bJetMatching(_lntLepIdx[i]))
-      fill(kr + "_LNTLepMapBJM", _vc->getD("LepGood_pt", _lntLepIdx[i]), fabs(_vc->getD("LepGood_eta", _lntLepIdx[i])), _weight);
+      fill(kr + "_LNTLepMapBJM", _vc->getF("LepGood_pt", _lntLepIdx[i]), fabs(_vc->getF("LepGood_eta", _lntLepIdx[i])), _weight);
   }
 
   for(int i = 0; i < _tLeps.size(); ++i){
-    fill(kr + "_TLepMap", _vc->getD("LepGood_pt", _tLepIdx[i]), fabs(_vc->getD("LepGood_eta", _tLepIdx[i])), _weight);
+    fill(kr + "_TLepMap", _vc->getF("LepGood_pt", _tLepIdx[i]), fabs(_vc->getF("LepGood_eta", _tLepIdx[i])), _weight);
     if(bJetMatching(_tLepIdx[i]))
-      fill(kr + "_TLepMapBJM", _vc->getD("LepGood_pt", _tLepIdx[i]), fabs(_vc->getD("LepGood_eta", _tLepIdx[i])), _weight);
+      fill(kr + "_TLepMapBJM", _vc->getF("LepGood_pt", _tLepIdx[i]), fabs(_vc->getF("LepGood_eta", _tLepIdx[i])), _weight);
   }
 
   for(int i = 0; i < _lMus.size(); ++i){
-    fill(kr + "_LMuMap" , _vc->getD("LepGood_pt", _lMuIdx[i] ), fabs(_vc->getD("LepGood_eta", _lMuIdx[i] )), _weight);
+    fill(kr + "_LMuMap" , _vc->getF("LepGood_pt", _lMuIdx[i] ), fabs(_vc->getF("LepGood_eta", _lMuIdx[i] )), _weight);
     if(bJetMatching(_lMuIdx[i]))
-      fill(kr + "_LMuMapBJM" , _vc->getD("LepGood_pt", _lMuIdx[i] ), fabs(_vc->getD("LepGood_eta", _lMuIdx[i] )), _weight);
+      fill(kr + "_LMuMapBJM" , _vc->getF("LepGood_pt", _lMuIdx[i] ), fabs(_vc->getF("LepGood_eta", _lMuIdx[i] )), _weight);
   }
 
   for(int i = 0; i < _lntMus.size(); ++i){
-    fill(kr + "_LNTMuMap" , _vc->getD("LepGood_pt", _lntMuIdx[i] ), fabs(_vc->getD("LepGood_eta", _lntMuIdx[i] )), _weight);
+    fill(kr + "_LNTMuMap" , _vc->getF("LepGood_pt", _lntMuIdx[i] ), fabs(_vc->getF("LepGood_eta", _lntMuIdx[i] )), _weight);
     if(bJetMatching(_lntMuIdx[i]))
-      fill(kr + "_LNTMuMapBJM" , _vc->getD("LepGood_pt", _lntMuIdx[i] ), fabs(_vc->getD("LepGood_eta", _lntMuIdx[i] )), _weight);
+      fill(kr + "_LNTMuMapBJM" , _vc->getF("LepGood_pt", _lntMuIdx[i] ), fabs(_vc->getF("LepGood_eta", _lntMuIdx[i] )), _weight);
   }
 
   for(int i = 0; i < _tMus.size(); ++i){
-    fill(kr + "_TMuMap" , _vc->getD("LepGood_pt", _tMuIdx[i] ), fabs(_vc->getD("LepGood_eta", _tMuIdx[i] )), _weight);
+    fill(kr + "_TMuMap" , _vc->getF("LepGood_pt", _tMuIdx[i] ), fabs(_vc->getF("LepGood_eta", _tMuIdx[i] )), _weight);
     if(bJetMatching(_tMuIdx[i]))
-      fill(kr + "_TMuMapBJM" , _vc->getD("LepGood_pt", _tMuIdx[i] ), fabs(_vc->getD("LepGood_eta", _tMuIdx[i] )), _weight);
+      fill(kr + "_TMuMapBJM" , _vc->getF("LepGood_pt", _tMuIdx[i] ), fabs(_vc->getF("LepGood_eta", _tMuIdx[i] )), _weight);
   }
 
 }
@@ -1209,74 +1323,74 @@ void FakeRatio::fillLeptonPlots(std::string kr){
 
 
   for(int i = 0; i < _lEls.size(); ++i){
-    fill(kr + "_LElDXY", fabs(_vc->getD("LepGood_dxy"     , _lElIdx[i])), _weight);
-    fill(kr + "_LElEta", fabs(_vc->getD("LepGood_eta"     , _lElIdx[i])), _weight);
-    fill(kr + "_LElIso",      _vc->getD("LepGood_relIso03", _lElIdx[i]) , _weight);
-    fill(kr + "_LElPt" ,      _vc->getD("LepGood_pt"      , _lElIdx[i]) , _weight);
+    fill(kr + "_LElDXY", fabs(_vc->getF("LepGood_dxy"     , _lElIdx[i])), _weight);
+    fill(kr + "_LElEta", fabs(_vc->getF("LepGood_eta"     , _lElIdx[i])), _weight);
+    fill(kr + "_LElIso",      _vc->getF("LepGood_relIso03", _lElIdx[i]) , _weight);
+    fill(kr + "_LElPt" ,      _vc->getF("LepGood_pt"      , _lElIdx[i]) , _weight);
     fill(kr + "_LElMT" , Candidate::create( _lEls[i], _met)->mass()     , _weight);
   }
 
   for(int i = 0; i < _lntEls.size(); ++i){
-    fill(kr + "_LNTElDXY", fabs(_vc->getD("LepGood_dxy"     , _lntElIdx[i])), _weight);
-    fill(kr + "_LNTElEta", fabs(_vc->getD("LepGood_eta"     , _lntElIdx[i])), _weight);
-    fill(kr + "_LNTElIso",      _vc->getD("LepGood_relIso03", _lntElIdx[i]) , _weight);
-    fill(kr + "_LNTElPt" ,      _vc->getD("LepGood_pt"      , _lntElIdx[i]) , _weight);
+    fill(kr + "_LNTElDXY", fabs(_vc->getF("LepGood_dxy"     , _lntElIdx[i])), _weight);
+    fill(kr + "_LNTElEta", fabs(_vc->getF("LepGood_eta"     , _lntElIdx[i])), _weight);
+    fill(kr + "_LNTElIso",      _vc->getF("LepGood_relIso03", _lntElIdx[i]) , _weight);
+    fill(kr + "_LNTElPt" ,      _vc->getF("LepGood_pt"      , _lntElIdx[i]) , _weight);
     //fill(kr + "_LNTElMT" , Candidate::create( _lntEls[i], _met)->mass()     , _weight);
   }
 
   for(int i = 0; i < _tEls.size(); ++i){
-    fill(kr + "_TElDXY", fabs(_vc->getD("LepGood_dxy"     , _tElIdx[i])), _weight);
-    fill(kr + "_TElEta", fabs(_vc->getD("LepGood_eta"     , _tElIdx[i])), _weight);
-    fill(kr + "_TElIso",      _vc->getD("LepGood_relIso03", _tElIdx[i]) , _weight);
-    fill(kr + "_TElPt" ,      _vc->getD("LepGood_pt"      , _tElIdx[i]) , _weight);
+    fill(kr + "_TElDXY", fabs(_vc->getF("LepGood_dxy"     , _tElIdx[i])), _weight);
+    fill(kr + "_TElEta", fabs(_vc->getF("LepGood_eta"     , _tElIdx[i])), _weight);
+    fill(kr + "_TElIso",      _vc->getF("LepGood_relIso03", _tElIdx[i]) , _weight);
+    fill(kr + "_TElPt" ,      _vc->getF("LepGood_pt"      , _tElIdx[i]) , _weight);
     fill(kr + "_TElMT" , Candidate::create( _tEls[i], _met)->mass()     , _weight);
   }
 
   for(int i = 0; i < _lLeps.size(); ++i){
-    fill(kr + "_LLepDXY", fabs(_vc->getD("LepGood_dxy"     , _lLepIdx[i])), _weight);
-    fill(kr + "_LLepEta", fabs(_vc->getD("LepGood_eta"     , _lLepIdx[i])), _weight);
-    fill(kr + "_LLepIso",      _vc->getD("LepGood_relIso03", _lLepIdx[i]) , _weight);
-    fill(kr + "_LLepPt" ,      _vc->getD("LepGood_pt"      , _lLepIdx[i]) , _weight);
+    fill(kr + "_LLepDXY", fabs(_vc->getF("LepGood_dxy"     , _lLepIdx[i])), _weight);
+    fill(kr + "_LLepEta", fabs(_vc->getF("LepGood_eta"     , _lLepIdx[i])), _weight);
+    fill(kr + "_LLepIso",      _vc->getF("LepGood_relIso03", _lLepIdx[i]) , _weight);
+    fill(kr + "_LLepPt" ,      _vc->getF("LepGood_pt"      , _lLepIdx[i]) , _weight);
     fill(kr + "_LLepMT" , Candidate::create( _lLeps[i], _met)->mass()     , _weight);
   }
 
   for(int i = 0; i < _lntLeps.size(); ++i){
-    fill(kr + "_LNTLepDXY", fabs(_vc->getD("LepGood_dxy"     , _lntLepIdx[i])), _weight);
-    fill(kr + "_LNTLepEta", fabs(_vc->getD("LepGood_eta"     , _lntLepIdx[i])), _weight);
-    fill(kr + "_LNTLepIso",      _vc->getD("LepGood_relIso03", _lntLepIdx[i]) , _weight);
-    fill(kr + "_LNTLepPt" ,      _vc->getD("LepGood_pt"      , _lntLepIdx[i]) , _weight);
+    fill(kr + "_LNTLepDXY", fabs(_vc->getF("LepGood_dxy"     , _lntLepIdx[i])), _weight);
+    fill(kr + "_LNTLepEta", fabs(_vc->getF("LepGood_eta"     , _lntLepIdx[i])), _weight);
+    fill(kr + "_LNTLepIso",      _vc->getF("LepGood_relIso03", _lntLepIdx[i]) , _weight);
+    fill(kr + "_LNTLepPt" ,      _vc->getF("LepGood_pt"      , _lntLepIdx[i]) , _weight);
     //fill(kr + "_LNTLepMT" , Candidate::create( _lntLeps[i], _met)->mass()     , _weight);
   }
 
   for(int i = 0; i < _tLeps.size(); ++i){
-    fill(kr + "_TLepDXY", fabs(_vc->getD("LepGood_dxy"     , _tLepIdx[i])), _weight);
-    fill(kr + "_TLepEta", fabs(_vc->getD("LepGood_eta"     , _tLepIdx[i])), _weight);
-    fill(kr + "_TLepIso",      _vc->getD("LepGood_relIso03", _tLepIdx[i]) , _weight);
-    fill(kr + "_TLepPt" ,      _vc->getD("LepGood_pt"      , _tLepIdx[i]) , _weight);
+    fill(kr + "_TLepDXY", fabs(_vc->getF("LepGood_dxy"     , _tLepIdx[i])), _weight);
+    fill(kr + "_TLepEta", fabs(_vc->getF("LepGood_eta"     , _tLepIdx[i])), _weight);
+    fill(kr + "_TLepIso",      _vc->getF("LepGood_relIso03", _tLepIdx[i]) , _weight);
+    fill(kr + "_TLepPt" ,      _vc->getF("LepGood_pt"      , _tLepIdx[i]) , _weight);
     fill(kr + "_TLepMT" , Candidate::create( _tLeps[i], _met)->mass()     , _weight);
   }
 
   for(int i = 0; i < _lMus.size(); ++i){
-    fill(kr + "_LMuDXY", fabs(_vc->getD("LepGood_dxy"     , _lMuIdx[i])), _weight);
-    fill(kr + "_LMuEta", fabs(_vc->getD("LepGood_eta"     , _lMuIdx[i])), _weight);
-    fill(kr + "_LMuIso",      _vc->getD("LepGood_relIso03", _lMuIdx[i]) , _weight);
-    fill(kr + "_LMuPt" ,      _vc->getD("LepGood_pt"      , _lMuIdx[i]) , _weight);
+    fill(kr + "_LMuDXY", fabs(_vc->getF("LepGood_dxy"     , _lMuIdx[i])), _weight);
+    fill(kr + "_LMuEta", fabs(_vc->getF("LepGood_eta"     , _lMuIdx[i])), _weight);
+    fill(kr + "_LMuIso",      _vc->getF("LepGood_relIso03", _lMuIdx[i]) , _weight);
+    fill(kr + "_LMuPt" ,      _vc->getF("LepGood_pt"      , _lMuIdx[i]) , _weight);
     fill(kr + "_LMuMT" , Candidate::create( _lMus[i], _met)->mass()     , _weight);
   }
 
   for(int i = 0; i < _lntMus.size(); ++i){
-    fill(kr + "_LNTMuDXY", fabs(_vc->getD("LepGood_dxy"     , _lntMuIdx[i])), _weight);
-    fill(kr + "_LNTMuEta", fabs(_vc->getD("LepGood_eta"     , _lntMuIdx[i])), _weight);
-    fill(kr + "_LNTMuIso",      _vc->getD("LepGood_relIso03", _lntMuIdx[i]) , _weight);
-    fill(kr + "_LNTMuPt" ,      _vc->getD("LepGood_pt"      , _lntMuIdx[i]) , _weight);
+    fill(kr + "_LNTMuDXY", fabs(_vc->getF("LepGood_dxy"     , _lntMuIdx[i])), _weight);
+    fill(kr + "_LNTMuEta", fabs(_vc->getF("LepGood_eta"     , _lntMuIdx[i])), _weight);
+    fill(kr + "_LNTMuIso",      _vc->getF("LepGood_relIso03", _lntMuIdx[i]) , _weight);
+    fill(kr + "_LNTMuPt" ,      _vc->getF("LepGood_pt"      , _lntMuIdx[i]) , _weight);
     //fill(kr + "_LNTMuMT" , Candidate::create( _lntMus[i], _met)->mass()     , _weight);
   }
 
   for(int i = 0; i < _tMus.size(); ++i){
-    fill(kr + "_TMuDXY", fabs(_vc->getD("LepGood_dxy"     , _tMuIdx[i])), _weight);
-    fill(kr + "_TMuEta", fabs(_vc->getD("LepGood_eta"     , _tMuIdx[i])), _weight);
-    fill(kr + "_TMuIso",      _vc->getD("LepGood_relIso03", _tMuIdx[i]) , _weight);
-    fill(kr + "_TMuPt" ,      _vc->getD("LepGood_pt"      , _tMuIdx[i]) , _weight);
+    fill(kr + "_TMuDXY", fabs(_vc->getF("LepGood_dxy"     , _tMuIdx[i])), _weight);
+    fill(kr + "_TMuEta", fabs(_vc->getF("LepGood_eta"     , _tMuIdx[i])), _weight);
+    fill(kr + "_TMuIso",      _vc->getF("LepGood_relIso03", _tMuIdx[i]) , _weight);
+    fill(kr + "_TMuPt" ,      _vc->getF("LepGood_pt"      , _tMuIdx[i]) , _weight);
     fill(kr + "_TMuMT" , Candidate::create( _tMus[i], _met)->mass()     , _weight);
   }
 
@@ -1352,13 +1466,13 @@ int FakeRatio::genMatchIsFake(const Candidate * cand){
 
   for(int ig = 0; ig < _vc->getI("nGenPart"); ++ig){
 
-    if(Tools::dR(cand->eta(), _vc->getD("GenPart_eta", ig),
-                 cand->phi(), _vc->getD("GenPart_phi", ig) ) < 0.3){
+    if(Tools::dR(cand->eta(), _vc->getF("GenPart_eta", ig),
+                 cand->phi(), _vc->getF("GenPart_phi", ig) ) < 0.3){
 
       unsigned int partPdg = std::abs(_vc->getI("GenPart_pdgId", ig));
 
       //if(partOrigin == 0){
-      //cout << "found a Z for " << partPdg << " (" << _vc->getD("GenPart_phi", ig) << ", " << _vc->getD("GenPart_eta", ig) << ") for reco particle " << cand ->pdgId() << " (" << cand ->phi() << ", " << cand ->eta() << ")" << endl;
+      //cout << "found a Z for " << partPdg << " (" << _vc->getF("GenPart_phi", ig) << ", " << _vc->getF("GenPart_eta", ig) << ") for reco particle " << cand ->pdgId() << " (" << cand ->phi() << ", " << cand ->eta() << ")" << endl;
       //}
       //if(partPdg == 23 || (partOrigin >= 0 && partOrigin <= 5)){
       //cout << "gen pdg: " << partPdg << " and " << isFake << endl;
@@ -1385,13 +1499,13 @@ int FakeRatio::genMatchCateg(const Candidate* cand, string matchhist) {
 
   //for(int ig = 0; ig < nGenL; ++ig) {
   //  
-  //  if(Tools::dR(cand->eta(), _vc->getD("GenPart_eta", ig),
-  //  	         cand->phi(), _vc->getD("GenPart_phi", ig) ) < 0.3 && 
-  //     _vc->getD("GenPart_pt", ig) > 0.5 * cand->pt()) { //to be tuned	
+  //  if(Tools::dR(cand->eta(), _vc->getF("GenPart_eta", ig),
+  //  	         cand->phi(), _vc->getF("GenPart_phi", ig) ) < 0.3 && 
+  //     _vc->getF("GenPart_pt", ig) > 0.5 * cand->pt()) { //to be tuned	
 
   //    //if( (abs(cand->pdgId()) != abs(_vc->getI("GenPart_pdgId", ig)) )){
 
-  //     //cout<<"matched lepton "<<cand->pdgId()<<"  with "<<_vc->getI("GenPart_pdgId",ig)<<" !!! "<<cand->pt()<<"  "<<cand->eta()<<"   "<<cand->phi()<<"   "<<Tools::dR(cand->eta(), _vc->getD("GenPart_eta", ig), cand->phi(), _vc->getD("GenPart_phi", ig) )<<endl;
+  //     //cout<<"matched lepton "<<cand->pdgId()<<"  with "<<_vc->getI("GenPart_pdgId",ig)<<" !!! "<<cand->pt()<<"  "<<cand->eta()<<"   "<<cand->phi()<<"   "<<Tools::dR(cand->eta(), _vc->getF("GenPart_eta", ig), cand->phi(), _vc->getF("GenPart_phi", ig) )<<endl;
   //
   //      if(abs(_vc->getI("GenPart_pdgId", ig)) >= 11 &&
   //         abs(_vc->getI("GenPart_pdgId", ig)) <= 16 ) {
@@ -1428,8 +1542,8 @@ int FakeRatio::genMatchCateg(const Candidate* cand, string matchhist) {
 
   //  for(int ig = 0; ig < _vc->getI("nGenPart"); ++ig){
 
-  //    if(Tools::dR(cand->eta(), _vc->getD("GenPart_eta", ig),
-  //                 cand->phi(), _vc->getD("GenPart_phi", ig) ) < dr_cache){
+  //    if(Tools::dR(cand->eta(), _vc->getF("GenPart_eta", ig),
+  //                 cand->phi(), _vc->getF("GenPart_phi", ig) ) < dr_cache){
   //    
   //    //int partOrigin = genParticleOrigin(_vc->getI("GenPart_motherId", ig), 
   //    //                                   _vc->getI("GenPart_grandmotherId", ig));
@@ -1437,7 +1551,7 @@ int FakeRatio::genMatchCateg(const Candidate* cand, string matchhist) {
   //      pdg_cache  = abs(_vc->getI("GenPart_pdgId", ig));
   //      mid_cache  = abs(_vc->getI("GenPart_motherId", ig));
   //      gmid_cache = abs(_vc->getI("GenPart_grandmotherId", ig));
-  //      dr_cache  = Tools::dR(cand->eta(), _vc->getD("GenPart_eta", ig), cand->phi(), _vc->getD("GenPart_phi", ig) );
+  //      dr_cache  = Tools::dR(cand->eta(), _vc->getF("GenPart_eta", ig), cand->phi(), _vc->getF("GenPart_phi", ig) );
   //    }
   //  }
   //  cout << "pdg: " << pdg_cache << ", mid: " << mid_cache << ", gmid: " << gmid_cache << ", dR: " << dr_cache << endl; 

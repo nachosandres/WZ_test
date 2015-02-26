@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #MRS=( "MR01" )
-#LIDS=( "cut" )
-#DIRS=( "FRskimsCUT" )
+LIDS=( "mva" )
+DIRS=( "FRskimsMVA" )
 MRS=( "MR00" "MR01" "MR02" "MR03" )
-LIDS=( "mva" "mvanotcut" "mvaandcut" "cut" "cutnotmva" "cutandmva" )
-DIRS=( "FRskimsMVA" "FRskimsMVA" "FRskimsMVA" "FRskimsCUT" "FRskimsCUT" "FRskimsCUT" )
+#LIDS=( "mva" "mvanotcut" "mvaandcut" "cut" "cutnotmva" "cutandmva" )
+#DIRS=( "FRskimsMVA" "FRskimsMVA" "FRskimsMVA" "FRskimsCUT" "FRskimsCUT" "FRskimsCUT" )
 
 #rm cfg/tmpFiles/*
 
