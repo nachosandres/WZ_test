@@ -7,6 +7,8 @@ SSDLBoosted::SSDLBoosted(std::string cfg){
   
   startExecution(cfg);
   initialize();
+
+  _dbm->loadDb("XS","Phys14XS.db");
 }
 
 SSDLBoosted::~SSDLBoosted(){
@@ -191,17 +193,30 @@ void SSDLBoosted::initialize(){
   // _vc->registerVar("LepOther_svMCMatchFraction","AD");
   // _vc->registerVar("LepOther_svMva","AD");
 
-  _vc->registerVar("nLepGood","I");
-  _vc->registerVar("LepGood_eleMVAId","AI");
-  _vc->registerVar("LepGood_mvaId","AD");
-  _vc->registerVar("LepGood_mvaIdTrig","AD");
-  _vc->registerVar("LepGood_mvaSusy","AD");
-  _vc->registerVar("LepGood_jetPtRatio","AD");
-  _vc->registerVar("LepGood_jetBTagCSV","AD");
-  _vc->registerVar("LepGood_jetBTagCMVA","AD");
-  _vc->registerVar("LepGood_jetDR","AD");
-  _vc->registerVar("LepGood_charge","AI");
-  _vc->registerVar("LepGood_tightId","AI");
+  // _vc->registerVar("nLepGood","I");
+  // _vc->registerVar("LepGood_eleMVAId","AI");
+  // _vc->registerVar("LepGood_mvaId","AD");
+  // _vc->registerVar("LepGood_mvaIdTrig","AD");
+  // _vc->registerVar("LepGood_mvaSusy","AD");
+  // _vc->registerVar("LepGood_jetPtRatio","AD");
+  // _vc->registerVar("LepGood_jetBTagCSV","AD");
+  // _vc->registerVar("LepGood_jetBTagCMVA","AD");
+  // _vc->registerVar("LepGood_jetDR","AD");
+  // _vc->registerVar("LepGood_charge","AI");
+  // _vc->registerVar("LepGood_tightId","AI");
+
+ _vc->registerVar("nLepGood");
+  _vc->registerVar("LepGood_eleMVAId");
+  _vc->registerVar("LepGood_mvaId");
+  _vc->registerVar("LepGood_mvaIdTrig");
+  _vc->registerVar("LepGood_mvaSusy");
+  _vc->registerVar("LepGood_jetPtRatio");
+  _vc->registerVar("LepGood_jetBTagCSV");
+  _vc->registerVar("LepGood_jetBTagCMVA");
+  _vc->registerVar("LepGood_jetDR");
+  _vc->registerVar("LepGood_charge");
+  _vc->registerVar("LepGood_tightId");
+
   // _vc->registerVar("LepGood_eleCutIdCSA14_25ns_v1","AI");
   // _vc->registerVar("LepGood_eleCutIdCSA14_50ns_v1","AI");
   // _vc->registerVar("LepGood_dxy","AD");
@@ -212,17 +227,17 @@ void SSDLBoosted::initialize(){
   // _vc->registerVar("LepGood_sip3d","AD");
   // _vc->registerVar("LepGood_convVeto","AI");
   // _vc->registerVar("LepGood_lostHits","AI");
-  _vc->registerVar("LepGood_relIso03","AD");
+  _vc->registerVar("LepGood_relIso03");
   // _vc->registerVar("LepGood_relIso04","AD");
   // _vc->registerVar("LepGood_tightCharge","AI");
   // _vc->registerVar("LepGood_mcMatchId","AI");
   // _vc->registerVar("LepGood_mcMatchAny","AI");
   // _vc->registerVar("LepGood_mcMatchTau","AI");
-  _vc->registerVar("LepGood_pdgId","AI");
-  _vc->registerVar("LepGood_pt","AD");
-  _vc->registerVar("LepGood_eta","AD");
-  _vc->registerVar("LepGood_phi","AD");
-  _vc->registerVar("LepGood_mass","AD");
+  _vc->registerVar("LepGood_pdgId");
+  _vc->registerVar("LepGood_pt");
+  _vc->registerVar("LepGood_eta");
+  _vc->registerVar("LepGood_phi");
+  _vc->registerVar("LepGood_mass");
   // _vc->registerVar("LepGood_chargedHadRelIso03","AD");
   // _vc->registerVar("LepGood_chargedHadRelIso04","AD");
   // _vc->registerVar("LepGood_softMuonId","AI");
@@ -427,13 +442,19 @@ void SSDLBoosted::writeOutput(){
 
 void SSDLBoosted::run(){
 
+  // cout<<"100 "<<_dbm->getDBValue("XS","WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola_skim")<<endl;
+  // cout<<"200 "<<_dbm->getDBValue("XS","WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola_skim")<<endl;
+  // cout<<"400 "<<_dbm->getDBValue("XS","WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola_skim")<<endl;
+  // cout<<"600 "<<_dbm->getDBValue("XS","WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola_skim")<<endl;
+  // return;
+
   counter("denominator");
 	
   fillObjLists();
 
 
   if(!makeCut<int>( _leps.size(), 2 ,"=","lep mult") ) return; 
-  if(!makeCut<int>(std::abs(eventCharge()),2, "=", "charge") ) return;
+  //if(!makeCut<int>(std::abs(eventCharge()),2, "=", "charge") ) return;
   
   int idx1=-1, idx2=-1, idx3=-1;
   string leps[2]={"l1","l1"};
