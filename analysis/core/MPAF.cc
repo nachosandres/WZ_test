@@ -62,10 +62,6 @@ void MPAF::initialize(){
     return: none
   */
 
-  // CH: we need to think of a better way to do this
-  // these are the names of the lepton and jet objects as stored in the tree
-  // unfortunately they are different for SSDL and Multilepton trees
-  
   _verbose = new Verbose((VerbosityLevel) 0);
   _verbose->Class("MPAF");
 
