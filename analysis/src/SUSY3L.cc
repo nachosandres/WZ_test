@@ -74,7 +74,7 @@ void SUSY3L::initialize(){
     _vc->registerVar("LepGood_lostHits"                 , "AI");    //number of missing hits in pixel detector
     _vc->registerVar("LepGood_tightId"                  , "AI");    //0 or 1 (loose and tight criteria?)
     _vc->registerVar("LepGood_dEtaScTrkIn"              , "AD");    //delta eta between track and supercluster in Ecal
-    _vc->registerVar("LepGood_dPhiScTrkIn"               , "AD");    //delta phi between track and supercluster in Ecal
+    _vc->registerVar("LepGood_dPhiScTrkIn"              , "AD");    //delta phi between track and supercluster in Ecal
     _vc->registerVar("LepGood_hadronicOverEm"           , "AD");    //
     _vc->registerVar("LepGood_sigmaIEtaIEta"            , "AD");    //
     _vc->registerVar("LepGood_eInvMinusPInv"            , "AD");    //
@@ -383,7 +383,7 @@ bool SUSY3L::electronSelection(int elIdx){
     //define cuts for electrons
     float pt_cut = 10.;
     float eta_cut = 2.4;
-    float eta_veto_low = 1.442;
+    float eta_veto_low = 1.4442;
     float eta_veto_high = 1.566;
     float isolation_cut = 0.15;
     float vertex_dz_cut = 0.1;      //in cm
