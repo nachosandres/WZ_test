@@ -10,20 +10,20 @@
 ******************************************************************************
 *****************************************************************************/
 
-#ifndef phys14exerc_HH
-#define phys14exerc_HH
+#ifndef phys14limits_HH
+#define phys14limits_HH
 
 #include "analysis/core/MPAF.hh"
 
-class phys14exerc: public MPAF {
+class phys14limits: public MPAF {
 
 public:
 
 
   // Member Functions
 
-  phys14exerc(std::string);
-  virtual ~phys14exerc();
+  phys14limits(std::string);
+  virtual ~phys14limits();
 
 
 private:
@@ -43,6 +43,8 @@ private:
   bool electronSelection(int);
   bool goodJetSelection(int);
   bool muonSelection(int);
+  bool tightVetoElectronSelection(int);
+  bool tightVetoMuonSelection(int);
   bool vetoElectronSelection(int);
   bool vetoMuonSelection(int);
 
@@ -52,7 +54,8 @@ private:
   bool cernSelection();
   bool baseSelection();
   bool mllVetoSelection();
-  bool mllVeto(Candidate * cand, Candidate * veto);
+  bool mllLMGVeto(Candidate * cand, Candidate * veto);
+  bool mllZVeto(Candidate * cand, Candidate * veto);
   bool skimSelection();
   bool srSelection();
   bool ssEventSelection();
@@ -70,8 +73,8 @@ private:
 
 private: 
 
-  //counter categories, 0 is ALWAYS global (even if not specified later
-  enum {kGlobal=0, kElId, kElVeto, kMuId, kMuVeto, kJetId, kBJetId, kVetoLepSel};
+  //counter categories, 0 is ALWAYS global (even if not specified later)
+  enum {kGlobal=0, kElId, kTVElId, kVElId, kMuId, kTVMuId, kVMuId, kJetId, kBJetId, kVetoLepSel, kLMGVetoLepSel, kZVetoLepSel};
 
   enum {kNoGenMatch=0, kMisMatchPdgId,
 	kMisChargePdgId, kGenMatched};
@@ -101,20 +104,35 @@ private:
   float _upValCutNBJetsSR;
 	
   std::vector<int> _elIdx;
+  std::vector<int> _tVElIdx;
+  std::vector<int> _vElIdx;
+  std::vector<int> _lepIdx;
+  std::vector<int> _tVLepIdx;
+  std::vector<int> _vLepIdx;
   std::vector<int> _muIdx;
+  std::vector<int> _tVMuIdx;
+  std::vector<int> _vMuIdx;
 
   int _nEls;
+  int _nTVEls;
   int _nVEls;
+  int _nLeps;
+  int _nTVLeps;
+  int _nVLeps;
   int _nMus;
+  int _nTVMus;
   int _nVMus;
   int _nJets;
   int _nBJets;
 
   CandList _leps;
-  CandList _vetoleps;
+  CandList _tVLeps;
+  CandList _vLeps;
   CandList _els;
+  CandList _tVEls;
   CandList _vEls;
   CandList _mus;
+  CandList _tVMus;
   CandList _vMus;
   CandList _jets;
   CandList _bJets;

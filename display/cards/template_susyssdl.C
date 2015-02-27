@@ -11,9 +11,9 @@
 
 
   //general parameters ********************* general parameters
-  string dir="SUSYSSDLws";
-  string fileName="susy_SR01_highpt_cut_40"; //was treeName in LUNE susy_cut_lowpt
-  string fileList="susy_SIGNALREGION_LEPPT_LEPID_JETPT"; //CH: since AnaConfig needs a fileName to open, we need to put the data files into a different variable
+  string dir="phys14exerc";
+  string fileName="phys14exerc_SR00_hh_mm"; //was treeName in LUNE susy_cut_lowpt
+  string fileList="phys14exerc_SR00_hh_mm"; //CH: since AnaConfig needs a fileName to open, we need to put the data files into a different variable
   string hName="";
 
   bool mcOnly = false;
@@ -221,8 +221,8 @@
  			mcOnly,cmsPrel, uncDet);
 
 	md.doPlot();
-	md.doStatisticsPlot();
-  md.savePlot("SUSYSSDL_ws1");
+	//md.doStatisticsPlot();
+    md.savePlot("phys14exerc");
  // md.dp.addText(xt,yt,st,addText);
 
 }

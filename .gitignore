@@ -10,4 +10,5 @@ display/cards/tmpFiles
 display/lib
 tools/lib
 workdir
-sea.py
+*dictgen.mk
+*gen.mk

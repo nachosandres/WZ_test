@@ -12,6 +12,7 @@
 #include <sstream>
 
 #include "tools/src/Dataset.hh"
+#include "tools/src/DataBaseManager.hh"
 
 using namespace std;
 
@@ -25,7 +26,6 @@ private:
   string _treeName;
   vector<string> _fileList;
   string _hname;
-  bool _mode;
 
   vector<string> _samplenames;
   vector<string> _dsnames;
@@ -56,6 +56,7 @@ private:
 
   bool _skiptree;
 
+  DataBaseManager* _dbm;
 
 public:
 
@@ -68,7 +69,9 @@ public:
 		     map<string,float> Kfac,
 		     float l,bool useXS=true );
   void configureData(bool runfilter, int runnum,bool MCOnly);
-  void configureNames(string dir, string objName, string objList, string hName, bool multiple = false);
+  void configureNames(string dir, string objName, string objList, string hName);
+
+  void loadXSDB(string dbname);
 
   string getDir() {return _dir;};
   vector<string> getObjList() {return _fileList;};

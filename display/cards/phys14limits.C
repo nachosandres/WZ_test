@@ -11,10 +11,10 @@
 
 
   //general parameters ********************* general parameters
-  string dir="phys14exerc";
-  string fileName="phys14exerc_SR20"; // not needed for statistics
-  //string fileList="phys14exerc_SR00_hh_mm"; // put command line that gives all files as in a "ls" command
-  string fileList="phys14exerc_SIGNALREGION_PTSCENARIO_FLAVORS"; // put command line that gives all files as in a "ls" command
+  string dir="phys14limits";
+  string fileName="phys14limits_SR20"; // not needed for statistics
+  string fileList="phys14limits_SR00_hh_all"; // put command line that gives all files as in a "ls" command
+  //string fileList="phys14limits_SIGNALREGION_PTSCENARIO_FLAVORS"; // put command line that gives all files as in a "ls" command
   string hName=""; // not needed for statistics
 
   bool mcOnly = false;
@@ -69,7 +69,7 @@
   string Norm="";
   
   //Lumis( or XSections ) pb-1 & KFactors ************************************
-  float lumi=4000; //pb-1 19470
+  float lumi=10000; //pb-1 19470
   float energy=13; //TeV
 
   bool useXS=false;
@@ -108,14 +108,14 @@
   LumisXS[ "WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola_skim"                   ] = 237484 / 2.29;
 
   LumisXS[ "SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola_skim"] = 100322 / (0.0856418 );
-  LumisXS[ "SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola_skim"] = 105679 / (0.0141903 );
-  LumisXS[ "T1ttbbWW_mGo1300_mCh300_mChi290_skim"                             ] = 43975  / (0.0460525 );
+  //LumisXS[ "SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola_skim"] = 105679 / (0.0141903 );
+  //LumisXS[ "T1ttbbWW_mGo1300_mCh300_mChi290_skim"                             ] = 43975  / (0.0460525 );
   LumisXS[ "T1ttbbWW_mGo1000_mCh725_mChi720_skim"                             ] = 52212  / (0.325388  );
   LumisXS[ "T5ttttDeg_mGo1000_mStop300_mChi280_skim"                          ] = 52102  / (0.325388  );
-  LumisXS[ "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280_skim"                   ] = 52499  / (0.3254    );
+  //LumisXS[ "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280_skim"                   ] = 52499  / (0.3254    );
   LumisXS[ "T5qqqqWW_mGo1200_mCh1000_mChi800_skim"                            ] = 112720 / (0.0856418 );
   LumisXS[ "T6ttWW_mSbot600_mCh425_mChi50_skim"                               ] = 52954  / (0.174599  );
-  LumisXS[ "T6ttWW_mSbot650_mCh150_mChi50_skim"                               ] = 105124 / (0.107045  );
+  //LumisXS[ "T6ttWW_mSbot650_mCh150_mChi50_skim"                               ] = 105124 / (0.107045  );
 
 
   //via XSect
@@ -162,14 +162,14 @@
   md.anConf.addSample( "WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola_skim"                   , "rare", kOrange-2); 
 
   md.anConf.addSample( "SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola_skim", "T1tttt (1.2/0.8) sig", kViolet-3);
-  md.anConf.addSample( "SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola_skim", "T1tttt (1.5/0.1) sig", kViolet-3);
-  md.anConf.addSample( "T1ttbbWW_mGo1300_mCh300_mChi290_skim"                             , "T1ttbbWW (1.3/0.3) sig", kBlue); 
+  //md.anConf.addSample( "SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola_skim", "T1tttt (1.5/0.1) sig", kViolet-3);
+  //md.anConf.addSample( "T1ttbbWW_mGo1300_mCh300_mChi290_skim"                             , "T1ttbbWW (1.3/0.3) sig", kBlue); 
   md.anConf.addSample( "T1ttbbWW_mGo1000_mCh725_mChi720_skim"                             , "T1ttbbWW (1.0/0.7) sig ", kBlue); 
   md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mChi280_skim"                          , "T5tttt deg. (1.0/0.3, 4bd) sig", kGreen+2); 
-  md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280_skim"                   , "T5tttt deg. (1.0/0.3, Chi) sig", kGreen+2); 
+  //md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280_skim"                   , "T5tttt deg. (1.0/0.3, Chi) sig", kGreen+2); 
   md.anConf.addSample( "T5qqqqWW_mGo1200_mCh1000_mChi800_skim"                            , "T5qqqqWW (1.2/0.8) sig", kOrange+6); 
   md.anConf.addSample( "T6ttWW_mSbot600_mCh425_mChi50_skim"                               , "T6ttWW (600/425/50) sig", kRed+1); 
-  md.anConf.addSample( "T6ttWW_mSbot650_mCh150_mChi50_skim"                               , "T6ttWW (650/150/50) sig", kRed+1); 
+  //md.anConf.addSample( "T6ttWW_mSbot650_mCh150_mChi50_skim"                               , "T6ttWW (650/150/50) sig", kRed+1); 
   
    
 
@@ -197,10 +197,11 @@
 
   md.prepareDisplay();
   md.doPlot();
-  md.makeDataCard(fileList, "global", "SR b-jet multiplicity");
-  //md.savePlot("phys14exerc");
+  md.getStatistics();
+  //md.makeDataCard(fileList, "global", "SR b-jet multiplicity");
+  //md.savePlot("phys14limits");
   // md.dp.addText(xt,yt,st,addText);
 
-  gROOT->ProcessLine(".q");
+  //gROOT->ProcessLine(".q");
 
 }

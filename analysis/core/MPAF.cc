@@ -62,10 +62,6 @@ void MPAF::initialize(){
     return: none
   */
 
-  // CH: we need to think of a better way to do this
-  // these are the names of the lepton and jet objects as stored in the tree
-  // unfortunately they are different for SSDL and Multilepton trees
-  
   _verbose = new Verbose((VerbosityLevel) 0);
   _verbose->Class("MPAF");
 
@@ -134,11 +130,12 @@ void MPAF::analyze(){
     
     cout<<" Starting processing dataset : "<<_sampleName<<"  (running on "<<nEvts<<" events)"<<endl;
 
+	mucounter = 1;
     boost::progress_display show_progress( nEvts );
     for(_ie = _nSkip; _ie < nEvts; ++_ie) {
       ++show_progress;
       stw.Start();
-   
+      //if(mucounter == 100) break;
       //MM : preparation for uncertainty variation over one variable
       // keeping line for future development
       // _vc->applySystVar( _vc->_su->getSystInfos(_unc, _uDir) );
@@ -291,11 +288,11 @@ void MPAF::loadConfigurationFile(std::string cfg){
       for(size_t i=0;i<opts.size();i++) {
         if(opts[i].substr(0,4)=="dir:") {
           dirName=opts[i].substr(4, opts[i].size()-4 );
-	}
-	if(opts[i].substr(0,7)=="absdir:") {
+        }
+        if(opts[i].substr(0,7)=="absdir:") {
           dirName=opts[i].substr(7, opts[i].size()-7 );
-	  absdir=true;
-	}
+          absdir=true;
+        }
       }
     }
     _datasets.push_back(new Dataset(dsName));

@@ -7,17 +7,17 @@
 USEDIR="/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/temp/"
 SAMPLES=( "WJetsToLNu_13TeV-madgraph-pythia8-tauola" )
 
-rm cfg/tmpFiles/*
+#rm cfg/tmpFiles/*
 
 for sample in ${SAMPLES[@]}; do
 
   ds=$sample
 
-  cp cfg/template_phys14exerc_Skim.cfg cfg/tmpFiles/phys14exercSkim_${ds}.cfg
-  sed -i 's|USEDIR|'$USEDIR'|' cfg/tmpFiles/phys14exercSkim_${ds}.cfg
-  sed -i 's|SAMPLE|'$ds'|' cfg/tmpFiles/phys14exercSkim_${ds}.cfg
+  cp cfg/template_phys14limits_Skim.cfg cfg/tmpFiles/phys14limitsSkim_${ds}.cfg
+  sed -i 's|USEDIR|'$USEDIR'|' cfg/tmpFiles/phys14limitsSkim_${ds}.cfg
+  sed -i 's|SAMPLE|'$ds'|' cfg/tmpFiles/phys14limitsSkim_${ds}.cfg
 
-  #analysis -c $MPAF/cfg/tmpFiles/phys14exercSkim_${ds}.cfg
-  qsub -q all.q -N MPAFjob -o $MPAF/workdir/logs/phys14exerc/phys14exercSkim_${ds}.out -e $MPAF/workdir/logs/phys14exerc/phys14exercSkim_${ds}.err $MPAF/scripts/submit.sh $MPAF/cfg/tmpFiles/phys14exercSkim_${ds}.cfg
+  #analysis -c $MPAF/cfg/tmpFiles/phys14limitsSkim_${ds}.cfg
+  qsub -q all.q -N MPAFjob -o $MPAF/workdir/logs/phys14limits/phys14limitsSkim_${ds}.out -e $MPAF/workdir/logs/phys14limits/phys14limitsSkim_${ds}.err $MPAF/scripts/submit.sh $MPAF/cfg/tmpFiles/phys14limitsSkim_${ds}.cfg
 
 done

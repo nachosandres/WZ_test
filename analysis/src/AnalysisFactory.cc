@@ -11,6 +11,7 @@ using namespace std;
 #include "analysis/src/phys14exerc.hh"
 #include "analysis/src/SUSY3L.hh"
 #include "analysis/src/SUSY3L_sync.hh"
+#include "analysis/src/phys14limits.hh"
 #include "analysis/src/FakeRatio.hh"
 
 MPAF*
@@ -30,8 +31,8 @@ AnalysisFactory::get(const string& analysis, const string& cfg) {
   if(analysis=="synchRA5") {
     return new synchRA5(cfg);
   }
-  if(analysis=="phys14exerc") {
-    return new phys14exerc(cfg);
+  if(analysis=="phys14limits") {
+    return new phys14limits(cfg);
   }
   if(analysis=="SUSY3L") {
     return new SUSY3L(cfg);
@@ -43,4 +44,4 @@ AnalysisFactory::get(const string& analysis, const string& cfg) {
     return new FakeRatio(cfg);
   }
   return 0;
-	}
+}

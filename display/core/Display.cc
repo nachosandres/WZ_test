@@ -7,7 +7,8 @@ ClassImp(Display)
 Display::Display():
 _c(0),_leg(0),_empty(0),_hMC(0),_hData(0),_gData(0)
 {
-  
+ 
+ 
   TGaxis::SetMaxDigits(3);
   TH1::SetDefaultSumw2(true);
   TH1::AddDirectory(kFALSE);
@@ -41,7 +42,6 @@ _c(0),_leg(0),_empty(0),_hMC(0),_hData(0),_gData(0)
 }
 
 Display::~Display() {
-
 
 }
 
@@ -650,21 +650,34 @@ Display::drawDistribution() {
     for(size_t i=0;i<_nhmc;i++) {
       string nh = (string)( _hClones[i]->GetName());
       if( !_sSignal && nh.find("sig")!=(size_t)-1) 
-	sigs.push_back(i);
+        sigs.push_back(i);
       else {
+        
+        if(_is1D) {
+          _hClones[i]->DrawCopy( opt.c_str() );
+        }
+        else {
 
-	if(_is1D) {
-	  _hClones[i]->DrawCopy( opt.c_str() );
-	}
-	else {
-	  if(f) {
-	    _hClones[i]->DrawCopy( "box" ); //"box"
-	    f=false;
-	  }
-	  else {
-	    _hClones[i]->DrawCopy( opt.c_str() );
-	  }
-	}
+_hClones[i]->DrawCopy("text colz");
+cmsPrel();
+
+string superidoo = _hClones[i]->GetName();
+string naminger = "/shome/cheidegg/MPAF/workdir/plots/FakeRatio/png/" + superidoo + ".png";
+_c->SaveAs(naminger.c_str() );
+
+
+
+
+
+          //if(f) {
+          //  _hClones[i]->DrawCopy( "box" ); //"box"
+          //  _hClones[i]->DrawCopy( "box" ); //"box"
+          //  f=false;
+          //}
+          //else {
+          //  _hClones[i]->DrawCopy( opt.c_str() );
+          //}
+        }
       }
     }
   }
@@ -905,14 +918,14 @@ Display::prepareHistograms(const hObs* theobs) {
       if( nh.find("sig")==(size_t)-1 || 
 	  (_sSignal && nh.find("sig")!=(size_t)-1 ) ) {
      
-	for(size_t ij=ih+1;ij<(_noStack?min(ih+1,_nhmc):_nhmc);ij++) {
-	  
-	  string nh2 = (string)( hTmps[ih]->GetName());
-	  if( nh2.find("sig")==(size_t)-1 )
-	    _hClones[ih]->Add( (TH1*)hTmps[ij]->Clone(), _itW->second );
-	  else if( _sSignal )
-	    _hClones[ih]->Add( (TH1*)hTmps[ij]->Clone(), _itW->second );
-	}  
+        for(size_t ij=ih+1;ij<(_noStack?min(ih+1,_nhmc):_nhmc);ij++) {
+          
+          string nh2 = (string)( hTmps[ih]->GetName());
+          if( nh2.find("sig")==(size_t)-1 )
+            _hClones[ih]->Add( (TH1*)hTmps[ij]->Clone(), _itW->second );
+          else if( _sSignal )
+            _hClones[ih]->Add( (TH1*)hTmps[ij]->Clone(), _itW->second );
+        }  
       }  
     
     }
@@ -2200,7 +2213,7 @@ Display::prepareStatistics( vector<pair<string,vector<vector<float> > > > vals,
   for(size_t ic=0;ic<vals.size();ic++) {
 
     for(size_t id=0;id<vals[ic].second.size();id++) {
-     
+
       if(id==0) { //MC total
        	hMCt->SetBinContent( ic+1, vals[ic].second[id][0] );
        	hMCt->SetBinError( ic+1, vals[ic].second[id][1] );
@@ -2961,13 +2974,13 @@ Display::adjustLegend(int iobs, bool skipCoords) {
     for(size_t i=0;i<_nhmc;i++) {
       string nh = (string)( _hClones[i]->GetName());
       if( nh.find("sig")==(size_t)-1) {
-	_leg->AddEntry(_hClones[i],_names[_nhmc-i-1].c_str(),"f");
+        _leg->AddEntry(_hClones[i],_names[_nhmc-i-1].c_str(),"f");
       }
       else {
-	string na = _names[_nhmc-i-1];
-	size_t b = _names[_nhmc-i-1].find("sig");
-	na.erase(b, 3);	
-	sigs[ na ] = i ;
+        string na = _names[_nhmc-i-1];
+        size_t b = _names[_nhmc-i-1].find("sig");
+        na.erase(b, 3);	
+        sigs[ na ] = i ;
       }
     }
   }
