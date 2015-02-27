@@ -252,6 +252,10 @@ void SUSY3L_sync::collectKinematicObjects(){
         return: none
     */
 
+    if(_vc->getI("lumi") == 4780 && _vc->getI("evt") == 77972){
+        cout << "event " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _vc->getI("nLepGood") << endl;
+    }
+    
     // loop over all nLepGood leptons in this event and select muons
     for(int i = 0; i < _vc->getI("nLepGood"); ++i){
         // check which of the nLepGood leptons are muons, identifier 13
@@ -1019,22 +1023,34 @@ bool SUSY3L_sync::baseSelection(){
 
     //print event information before selection
     
-    //if(_vc->getI("lumi") == 4451 && _vc->getI("evt") == 45092){
-    //    cout << "event  " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-    //}
-    /*
-    if(_vc->getI("evt") == eventnr){
-        cout << "event  " << _vc->getI("evt") << "  pt  " << _vc->getF("Jet_pt", 0) << "   eta   " << _vc->getF("Jet_eta", 0) << endl;
+    if(_vc->getI("lumi") == 4640 && _vc->getI("evt") == 63905){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
     }
-    if(_vc->getI("evt") == 43430){
-        cout << "event  " << _vc->getI("evt") << "  pt  " << _vc->getF("Jet_pt", 0) << "   eta   " << _vc->getF("Jet_eta", 0) << endl;
+    if(_vc->getI("lumi") == 4780 && _vc->getI("evt") == 77972){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+    }
+    if(_vc->getI("lumi") == 1402 && _vc->getI("evt") == 140153){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
     }   
-    */
-    
+  if(_vc->getI("lumi") == 2685 && _vc->getI("evt") == 68461){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+    }
+   if(_vc->getI("lumi") == 4993 && _vc->getI("evt") == 99216){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+    }    
+    if(_vc->getI("lumi") == 4173 && _vc->getI("evt") == 17221){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+    }
+     
+    if(_vc->getI("lumi") == 4301 && _vc->getI("evt") == 30051){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+    }
+
     
     //select events with certain lepton multiplicity of all flavor combinations
     if(!makeCut<int>( _nEls + _nMus, _valCutLepMultiplicityBR, _cTypeLepMultiplicityBR, "lepton multiplicity", _upValCutLepMultiplicityBR ) ) return false;
 
+ 
     //require at least 1 of the leptons to have higher pT than original cut
 //    bool has_hard_leg = hardLegSelection();
 //    if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
