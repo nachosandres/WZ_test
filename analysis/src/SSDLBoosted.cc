@@ -8,7 +8,7 @@ SSDLBoosted::SSDLBoosted(std::string cfg){
   startExecution(cfg);
   initialize();
 
-  _dbm->loadDb("XS","Phys14XS.db");
+  //_dbm->loadDb("XS","Phys14XS.db");
 }
 
 SSDLBoosted::~SSDLBoosted(){
@@ -60,9 +60,9 @@ void SSDLBoosted::initialize(){
   // _vc->registerVar("met_genPhi","D");
   // _vc->registerVar("met_genEta","D");
 
-  _vc->registerVar("nFatJet","I");
-  _vc->registerVar("FatJet_id","AI");
-  _vc->registerVar("FatJet_puId","AI");
+  _vc->registerVar("nFatJet");
+  _vc->registerVar("FatJet_id");
+  _vc->registerVar("FatJet_puId");
   _vc->registerVar("FatJet_btagCSV","AD");
   _vc->registerVar("FatJet_btagCMVA","AD");
   _vc->registerVar("FatJet_rawPt","AD");
@@ -449,7 +449,15 @@ void SSDLBoosted::run(){
   // return;
 
   counter("denominator");
-	
+
+  //cout<<_vc->get("nLepGood")<<endl;
+  for(int i=0;i<_vc->getI("nLepGood");i++)
+    float pt=_vc->getF("LepGood_pt",i);
+
+    //cout<<_vc->get("LepGood_pt",i)<<endl;
+  
+  return;
+
   fillObjLists();
 
 

@@ -28,6 +28,9 @@ using namespace std;
 
 //ClassImp(VarClass)
 
+int VarClass::oC_=10000;
+int VarClass::oT_=1000;
+
 //____________________________________________________________________________
 VarClass::VarClass() {
   /*
@@ -35,6 +38,8 @@ VarClass::VarClass() {
     parameters: none
     return: none
   */
+
+  initIds();
 
   _su = new SystUtils();
 
@@ -70,7 +75,7 @@ void VarClass::reset() {
 
 
   for(itAI=varmAI.begin();itAI!=varmAI.end();itAI++) {
-    string i = itAI->first;
+    int i = itAI->first;
     delete [] varmAI[i];
     delete [] varmAUI[i];
     delete [] varmAUL[i];
@@ -112,6 +117,10 @@ void VarClass::reset() {
   uncmD.clear();
   uncmF.clear();
   
+  cnt_.clear();
+  varIds_.clear();
+  initIds();
+
 }
 
 
@@ -227,265 +236,280 @@ VarClass::registerVar(string name, string type) {
 
 //____________________________________________________________________________
 int VarClass::getI(string name, int idx) {
-  /*
-    returns the value of a unsigned int variable
-    parameters: name (variable name), idx (index of the element, if any)
-    return: the value in the tree entry
-  */
+//   /*
+//     returns the value of a unsigned int variable
+//     parameters: name (variable name), idx (index of the element, if any)
+//     return: the value in the tree entry
+//   */
   
-  itI = varmI.find( name );
+//   itI = varmI.find( name );
 
-  if( itI == varmI.end() ) {
+//   if( itI == varmI.end() ) {
 
-    itVI = varmVI.find( name );
-    if( itVI == varmVI.end() ) {
+//     itVI = varmVI.find( name );
+//     if( itVI == varmVI.end() ) {
 		
-      itAI = varmAI.find( name );
-      if( itAI == varmAI.end() )
-	cout << " error, no such variable " << name << endl;
-      else
-	return ((*itAI).second)[idx];
-    }
-    else
-      return (*((*itVI).second))[idx];	
+//       itAI = varmAI.find( name );
+//       if( itAI == varmAI.end() )
+// 	cout << " error, no such variable " << name << endl;
+//       else
+// 	return ((*itAI).second)[idx];
+//     }
+//     else
+//       return (*((*itVI).second))[idx];	
 	
-  }
-  else
-    return (*itI).second;
+//   }
+//   else
+//     return (*itI).second;
 
-  return 0;
-}
+   return 0;
+ }
 
 
 //____________________________________________________________________________
-unsigned int VarClass::getUI(string name, int idx) {
-  /*
-    returns the value of a unsigned int variable
-    parameters: name (variable name), idx (index of the element, if any)
-    return: the value in the tree entry
-  */
+ unsigned int VarClass::getUI(string name, int idx) {
+//   /*
+//     returns the value of a unsigned int variable
+//     parameters: name (variable name), idx (index of the element, if any)
+//     return: the value in the tree entry
+//   */
   
-  itUI = varmUI.find( name );
+//   itUI = varmUI.find( name );
 	
-  if( itUI == varmUI.end() ) {
+//   if( itUI == varmUI.end() ) {
 
-    itVUI = varmVUI.find( name );
-    if( itVUI == varmVUI.end() ) {
+//     itVUI = varmVUI.find( name );
+//     if( itVUI == varmVUI.end() ) {
 		
-      itAUI = varmAUI.find( name );
-      if( itAUI == varmAUI.end() )
-	cout << " error, no such variable " << name << endl;
-      else
-	return ((*itAUI).second)[idx];
-    }
-    else
-      return (*((*itVUI).second))[idx];
+//       itAUI = varmAUI.find( name );
+//       if( itAUI == varmAUI.end() )
+// 	cout << " error, no such variable " << name << endl;
+//       else
+// 	return ((*itAUI).second)[idx];
+//     }
+//     else
+//       return (*((*itVUI).second))[idx];
 	
 	
-  }
-  else
-    return (*itUI).second;
+//   }
+//   else
+//     return (*itUI).second;
 	
-  return 0;
-}
+   return 0;
+ }
 
 
 //____________________________________________________________________________
-unsigned long VarClass::getUL(string name, int idx) {
-  /*
-    returns the value of a unsigned long variable
-    parameters: name (variable name), idx (index of the element, if any)
-    return: the value in the tree entry
-  */
+ unsigned long VarClass::getUL(string name, int idx) {
+//   /*
+//     returns the value of a unsigned long variable
+//     parameters: name (variable name), idx (index of the element, if any)
+//     return: the value in the tree entry
+//   */
   
-  itUL = varmUL.find( name );
+//   itUL = varmUL.find( name );
 
-  if( itUL == varmUL.end() ) {
+//   if( itUL == varmUL.end() ) {
 
-    itVUL = varmVUL.find( name );
-    if( itVUL == varmVUL.end() ) {
+//     itVUL = varmVUL.find( name );
+//     if( itVUL == varmVUL.end() ) {
 		
-      itAUL = varmAUL.find( name );
-      if( itAUL == varmAUL.end() )
-	cout << " error, no such variable " << name << endl;
-      else
-	return ((*itAUL).second)[idx];
-    }
-    else
-      return (*((*itVUL).second))[idx];
+//       itAUL = varmAUL.find( name );
+//       if( itAUL == varmAUL.end() )
+// 	cout << " error, no such variable " << name << endl;
+//       else
+// 	return ((*itAUL).second)[idx];
+//     }
+//     else
+//       return (*((*itVUL).second))[idx];
 		
-  }
-  else
-    return (*itUL).second;
+//   }
+//   else
+//     return (*itUL).second;
 
-  return 0;
-
-}
+   return 0;
+ }
 
 
 //____________________________________________________________________________
-bool VarClass::getB(string name, int idx) {
-  /*
-    returns the value of a boolean variable
-    parameters: name (variable name), idx (index of the element, if any)
-    return: the value in the tree entry
-  */
+ bool VarClass::getB(string name, int idx) {
+//   /*
+//     returns the value of a boolean variable
+//     parameters: name (variable name), idx (index of the element, if any)
+//     return: the value in the tree entry
+//   */
 
-  itB = varmB.find( name );
+//   itB = varmB.find( name );
 
-  if( itB == varmB.end() ) {
+//   if( itB == varmB.end() ) {
 
-    itVB = varmVB.find( name );
-    if( itVB == varmVB.end() ) {
+//     itVB = varmVB.find( name );
+//     if( itVB == varmVB.end() ) {
 		
-      itAB = varmAB.find( name );
-      if( itAB == varmAB.end() )
-	cout << " error, no such variable " << name << endl;
-      else
-	return ((*itAB).second)[idx];
-    }
-    else
-      return (*((*itVB).second))[idx];
+//       itAB = varmAB.find( name );
+//       if( itAB == varmAB.end() )
+// 	cout << " error, no such variable " << name << endl;
+//       else
+// 	return ((*itAB).second)[idx];
+//     }
+//     else
+//       return (*((*itVB).second))[idx];
 
-  }
+//   }
 
-  else
-    return (*itB).second;
+//   else
+//     return (*itB).second;
 
-  return 0;
+   return 0;
 }
 
 
-//____________________________________________________________________________
-double VarClass::getD(string name, int idx) {
-  /*
-    returns the value of a double variable
-    parameters: name (variable name), idx (index of the element, if any)
-    return: the value in the tree entry
-  */
+// //____________________________________________________________________________
+ double VarClass::getD(string name, int idx) {
+//   /*
+//     returns the value of a double variable
+//     parameters: name (variable name), idx (index of the element, if any)
+//     return: the value in the tree entry
+//   */
   
-  itD = varmD.find( name );
+//   itD = varmD.find( name );
 
-  if(itD == varmD.end() ) {
+//   if(itD == varmD.end() ) {
 
-    itVD = varmVD.find( name );
-    if( itVD == varmVD.end() ) {
+//     itVD = varmVD.find( name );
+//     if( itVD == varmVD.end() ) {
 		
-      itAD = varmAD.find( name );
-      if( itAD == varmAD.end() )
-	cout << " error, no such variable " << name << endl;
-      else
-	return ((*itAD).second)[idx];
-    }
-    else
-      return (*((*itVD).second))[idx];
+//       itAD = varmAD.find( name );
+//       if( itAD == varmAD.end() )
+// 	cout << " error, no such variable " << name << endl;
+//       else
+// 	return ((*itAD).second)[idx];
+//     }
+//     else
+//       return (*((*itVD).second))[idx];
 	
 	
-  }
-  else
-    return (*itD).second;
+//   }
+//   else
+//     return (*itD).second;
 
-  return 0;
+   return 0;
+ }
 
-}
 
+// //____________________________________________________________________________
+ float VarClass::getF(string name, int idx) {
+//   /*
+//     returns the value of a float variable
+//     parameters: name (variable name), idx (index of the element, if any)
+//     return: the value in the tree entry
+//   */
 
-//____________________________________________________________________________
-float VarClass::getF(string name, int idx) {
-  /*
-    returns the value of a float variable
-    parameters: name (variable name), idx (index of the element, if any)
-    return: the value in the tree entry
-  */
+//   itF = varmF.find( name );
 
-  itF = varmF.find( name );
+//   if( itF == varmF.end() ) {
 
-  if( itF == varmF.end() ) {
-
-    itAF = varmAF.find( name );
-    if( itAF == varmAF.end() ) {
+//     itAF = varmAF.find( name );
+//     if( itAF == varmAF.end() ) {
 		
-      itVF = varmVF.find( name );
-      if( itVF == varmVF.end() )
-	cout << " error, no such variable " << name << endl;
-      else
-	return (*((*itVF).second))[idx];
-    }
-    else
-      return ((*itAF).second)[idx];
+//       itVF = varmVF.find( name );
+//       if( itVF == varmVF.end() )
+// 	cout << " error, no such variable " << name << endl;
+//       else
+// 	return (*((*itVF).second))[idx];
+//     }
+//     else
+//       return ((*itAF).second)[idx];
 	
 	
-  }
-  else
-    return (*itF).second;
+//   }
+//   else
+//     return (*itF).second;
 
-  return 0;
+   return 0;
+ }
 
-}
 
-
-//____________________________________________________________________________
-string VarClass::getS(string name, int idx) {
+// //____________________________________________________________________________
+ string VarClass::getS(string name, int idx) {
   /*
     returns the value of a string variable
     parameters: name (variable name), idx (index of the element, if any)
     return: the value in the tree entry
   */
 
-  itS = varmS.find( name );
-	
-  if( itS == varmS.end() ) {
+   itVId_ = varIds_.find(name);
+   if(itVId_ == varIds_.end() )
+     cout << " error, no such variable " << name << endl;
+   int id = itVId_->second;
+   int cType = id/oC_;
+   int tType = (id-cType*oC_)/oT_;
+   int key = (id-cType*oC_ - tType/oT_);
 
-    itVS = varmVS.find( name );
-    if( itVS == varmVS.end() ) {
+   if(key!=kString) return "";
+
+
+   switch(cType) {
+   case kScalar: {return varmS[key]; }
+   case kVector: {return (*varmVS[key])[idx];}
+   case kArray: {return varmAS[key][idx];}
+   }
+   return 0;
+
+
+  // itS = varmS.find( name );
+	
+  // if( itS == varmS.end() ) {
+
+  //   itVS = varmVS.find( name );
+  //   if( itVS == varmVS.end() ) {
 		
-      itAS = varmAS.find( name );
-      if( itAS == varmAS.end() )
-	cout << " error, no such variable " << name << endl;
-      else
-	return ((*itAS).second)[idx];
-    }
-    else
-      return (*((*itVS).second))[idx];
+  //     itAS = varmAS.find( name );
+  //     if( itAS == varmAS.end() )
+  // 	cout << " error, no such variable " << name << endl;
+  //     else
+  // 	return ((*itAS).second)[idx];
+  //   }
+  //   else
+  //     return (*((*itVS).second))[idx];
 	
 	
-  }
-  else
-    return (*itS).second;
+  // }
+  // else
+  //   return (*itS).second;
 
-  return "";
+  //  return "";
+ }
 
-}
 
+// //____________________________________________________________________________
+// unsigned int VarClass::getSize(string name) {
+//   /*
+//     returns the size of a variable if it is a vector
+//     parameters: name (the variable)
+//     return: its size
+//   */
 
-//____________________________________________________________________________
-unsigned int VarClass::getSize(string name) {
-  /*
-    returns the size of a variable if it is a vector
-    parameters: name (the variable)
-    return: its size
-  */
+//   itVS  = varmVS .find( name );
+//   itVD  = varmVD .find( name );
+//   itVI  = varmVI .find( name );
+//   itVF  = varmVF .find( name );
+//   itVUI = varmVUI.find( name );
+//   itVUL = varmVUL.find( name );
 
-  itVS  = varmVS .find( name );
-  itVD  = varmVD .find( name );
-  itVI  = varmVI .find( name );
-  itVF  = varmVF .find( name );
-  itVUI = varmVUI.find( name );
-  itVUL = varmVUL.find( name );
-
-  //std::cout << "looking for " << name << " in VF which gives " << (itVF == varmVF.end()) << std::endl;
+//   //std::cout << "looking for " << name << " in VF which gives " << (itVF == varmVF.end()) << std::endl;
  
-  if     ( itVS  != varmVS .end() ) return (*itVS) .second -> size();
-  else if( itVD  != varmVD .end() ) return (*itVD) .second -> size();
-  else if( itVI  != varmVI .end() ) return (*itVI) .second -> size();
-  else if( itVF  != varmVF .end() ) return (*itVF) .second -> size();
-  else if( itVUI != varmVUI.end() ) return (*itVUI).second -> size();
-  else if( itVUL != varmVUL.end() ) return (*itVUL).second -> size();
-  else { 
-    cout << "Error for var " << name << endl;
-    return 0;
-  }
-}
+//   if     ( itVS  != varmVS .end() ) return (*itVS) .second -> size();
+//   else if( itVD  != varmVD .end() ) return (*itVD) .second -> size();
+//   else if( itVI  != varmVI .end() ) return (*itVI) .second -> size();
+//   else if( itVF  != varmVF .end() ) return (*itVF) .second -> size();
+//   else if( itVUI != varmVUI.end() ) return (*itVUI).second -> size();
+//   else if( itVUL != varmVUL.end() ) return (*itVUL).second -> size();
+//   else { 
+//     cout << "Error for var " << name << endl;
+//     return 0;
+//   }
+// }
 
 
 //____________________________________________________________________________
@@ -520,7 +544,7 @@ void VarClass::buildTree(TTree* tree, bool bypass) {
     ((TBranchSTL*)((*branches)[ib])) -> GetExpectedType(cc,t);	
 	
     //determine if it is array
-    TLeaf *leaf = (TLeaf*)leaves->UncheckedAt(ib);
+    leaf = (TLeaf*)leaves->UncheckedAt(ib);
     leafcount =leaf->GetLeafCount();
     
     // vector or container 
@@ -565,104 +589,124 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
     parameters: tree, name, type, t ()
     return: none
   */
-  
+
+  int key=0;
+ 
   // vectors or containers
 
   if(t==-1) {
-
+    
     // VI: vector<int>
     if( type == "vector<int>" ) {
-      if( varmVI.find(name) != varmVI.end() ) {
+      if( varIds_.find(name) != varIds_.end() ) {
 	cout << " Warning, " << name << " already registered" << endl;
 	return;
       }
-      varmVI[ name ] = NULL;
-      tree -> SetBranchAddress( name.c_str() , &(varmVI[ name ]) );
+
+      setIds( name, kVector, kInt, key);
+      varmVI[ key ] = NULL;
+      tree -> SetBranchAddress( name.c_str() , &(varmVI[ key ]) );
     }
 
     // VUI: vector<unsigned int>
     else if( type == "vector<unsigned int>" ) {
-      if( varmVUI.find(name) != varmVUI.end() ) {
+      if( varIds_.find(name) != varIds_.end() ) {
 	cout << " Warning, " << name << " already registered" << endl;
 	return;
       }
-      varmVUI[ name ] = NULL;
-      tree -> SetBranchAddress( name.c_str() , &(varmVUI[ name ]) );
+
+      setIds( name, kVector, kUInt, key);
+      varmVUI[ key ] = NULL;
+      tree -> SetBranchAddress( name.c_str() , &(varmVUI[ key ]) );
     }
 
     // VUI: vector<unsigned long>
     else if( type == "vector<unsigned long>" ) {
-      if( varmVUL.find(name) != varmVUL.end() ) {
+      if( varIds_.find(name) != varIds_.end() ) {
 	cout << " Warning, " << name << " already registered" << endl;
 	return;
       }
-      varmVUL[ name ] = NULL;
-      tree->SetBranchAddress( name.c_str() , &(varmVUL[ name ]) );
+
+      setIds( name, kVector, kULong, key);
+      varmVUL[ key ] = NULL;
+      tree->SetBranchAddress( name.c_str() , &(varmVUL[ key ]) );
     }
 
     // VF: vector<float>
     else if( type == "vector<float>" || type == "Float_t" ) {
-      if( varmVF.find(name) != varmVF.end() ) {
+      if( varIds_.find(name) != varIds_.end() ) {
 	cout << " Warning, " << name << " already registered" << endl;
 	return;
       }
-      varmVF[ name ] = NULL;
-      tree -> SetBranchAddress( name.c_str() , &(varmVF[ name ]) );
+
+      setIds( name, kVector, kFloat, key);
+      varmVF[ key ] = NULL;
+      tree -> SetBranchAddress( name.c_str() , &(varmVF[ key ]) );
     }
 
     // VD: vector<double> 
     else if( type == "vector<double>" ) { 
-      if( varmVD.find(name) != varmVD.end() ) {
+      if( varIds_.find(name) != varIds_.end() ) {
 	cout << " Warning, " << name << " already registered" << endl;
 	return;
       }
-      varmVD[ name ] = NULL;
-      tree->SetBranchAddress( name.c_str() , &(varmVD[ name ]) );
+
+      setIds( name, kVector, kDouble, key);
+      varmVD[ key ] = NULL;
+      tree->SetBranchAddress( name.c_str() , &(varmVD[ key ]) );
     }
 
     // VB: vector<bool>
     else if( type == "vector<bool>" ) {		  
-      if( varmVB.find(name) != varmVB.end() ) {
+      if( varIds_.find(name) != varIds_.end() ) {
 	cout << " Warning, " << name << " already registered" << endl;
 	return;
       }
-      varmVB[ name ] = NULL;
-      tree -> SetBranchAddress( name.c_str() , &(varmVB[ name ]) );
+
+      setIds( name, kVector, kBool, key);
+      varmVB[ key ] = NULL;
+      tree -> SetBranchAddress( name.c_str() , &(varmVB[ key ]) );
     }
 
     // S: string
     else if( type == "string" ) {  
-      if( varmS.find(name) != varmS.end() ) {
+      if( varIds_.find(name) != varIds_.end() ) {
 	cout << " Warning, " << name << " already registered" << endl;
 	return;
       }
-      varmS[ name ] = "";
-      tree -> SetBranchAddress( name.c_str() , &(varmS[ name ]) );  
+
+      setIds( name, kScalar, kString, key);
+      varmS[ key ] = "";
+      tree -> SetBranchAddress( name.c_str() , &(varmS[ key ]) );  
     }
 
     // VS: vector<string>
     else if( type == "vector<string>" ) {		
-      if( varmVS.find(name) != varmVS.end() ) {
+      if( varIds_.find(name) != varIds_.end() ) {
 	cout << " Warning, " << name << " already registered" << endl;
 	return;
       }
-      varmVS[ name ] = NULL;
-      tree -> SetBranchAddress( name.c_str() , &(varmVS[ name ]) );
+
+      setIds( name, kVector, kString, key);
+      varmVS[ key ] = NULL;
+      tree -> SetBranchAddress( name.c_str() , &(varmVS[ key ]) );
     }
 
     // AS: arrayString
     else if( type == "string" && len!=-1) {
-      if( varmAS.find(name) != varmAS.end() ) {
+      if( varIds_.find(name) != varIds_.end() ) {
 	cout << " Warning, " << name << " already registered" << endl;
 	return;
       }
-      varmAS[ name ] = new string[len];
-      tree -> SetBranchAddress( name.c_str() , varmAS[ name ] );
+
+      setIds( name, kArray, kString, key);
+      varmAS[ key ] = new string[len];
+      tree -> SetBranchAddress( name.c_str() , varmAS[ key ] );
     }
 
     // TBits
     else if( type == "TBits" ) {	  
-      if( varmTB.find(name) != varmTB.end() ) {
+      if( varIds_.find(name) != varIds_.end() ) {
 	cout << " Warning, " << name << " already registered" << endl;
 	return;
       }
@@ -674,51 +718,61 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
   // AI: arrayI
   else if(t==3 && len!=-1) {
-    if( varmAI.find(name) != varmAI.end() ) {
+    if( varIds_.find(name) != varIds_.end() ) {
       cout << " Warning, " << name << " already registered" << endl;
       return;
     }
-    varmAI[ name ] = new int[len];
-    tree -> SetBranchAddress( name.c_str() , varmAI[ name ] );
+    
+    setIds( name, kArray, kInt, key);
+    varmAI[ key ] = new int[len];
+    tree -> SetBranchAddress( name.c_str() , varmAI[ key ] );
   }
 		
   // AUI: arrayUI
   else if(t==13 && len!=-1) {
-    if( varmAUI.find(name) != varmAUI.end() ) {
+    if( varIds_.find(name) != varIds_.end() ) {
       cout << " Warning, " << name << " already registered" << endl;
       return;
     }
-    varmAUI[ name ] = new unsigned int[len];
-    tree -> SetBranchAddress( name.c_str() , varmAUI[ name ] );
+
+    setIds( name, kArray, kUInt, key);
+    varmAUI[ key ] = new unsigned int[len];
+    tree -> SetBranchAddress( name.c_str() , varmAUI[ key ] );
   }
   // AF: arrayF
   else if(t==5 && len!=-1) {
-    if( varmAF.find(name) != varmAF.end() ) {
+    if( varIds_.find(name) != varIds_.end() ) {
       cout << " Warning, " << name << " already registered" << endl;
       return;
     }
-    varmAF[ name ] = new float[len];
-    tree -> SetBranchAddress( name.c_str() , varmAF[ name ] );
+
+    setIds( name, kArray, kFloat, key);
+    varmAF[ key ] = new float[len];
+    tree -> SetBranchAddress( name.c_str() , varmAF[ key ] );
   }
 		
   // AD: arrayD
   else if( t==8 && len!=-1 ) {
-    if( varmAD.find(name) != varmAD.end() ) {
+    if( varIds_.find(name) != varIds_.end() ) {
       cout << " Warning, " << name << " already registered" << endl;
       return;
     }
-    varmAD[ name ] = new double[len];
-    tree->SetBranchAddress( name.c_str() , varmAD[ name ] );
+
+    setIds( name, kArray, kDouble, key);
+    varmAD[ key ] = new double[len];
+    tree->SetBranchAddress( name.c_str() , varmAD[ key ] );
   }
 
   // AB: arrayB
   else if(  t==18 && len!=-1 ) {
-    if( varmAB.find(name) != varmAB.end() ) {
+    if( varIds_.find(name) != varIds_.end() ) {
       cout << " Warning, " << name << " already registered" << endl;
       return;
     }
-    varmAB[ name ] = new bool[len];
-    tree -> SetBranchAddress( name.c_str() , varmAB[ name ] );
+
+    setIds( name, kArray, kBool, key);
+    varmAB[ key ] = new bool[len];
+    tree -> SetBranchAddress( name.c_str() , varmAB[ key ] );
   }
 		
 
@@ -726,264 +780,361 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
   // I: int
   else if(t==3) {  
-    if( varmI.find(name) != varmI.end() ) {
+    if( varIds_.find(name) != varIds_.end() ) {
       cout << " Warning, " << name << " already registered" << endl;
       return;
     }
-    varmI[ name ] =0;
-    tree -> SetBranchAddress( name.c_str() , &(varmI[ name ]) );
+    
+    setIds( name, kScalar, kInt, key);
+    varmI[ key ] =0;
+    tree -> SetBranchAddress( name.c_str() , &(varmI[ key ]) );
   }
 
   // UI: unsigned int
   else if( t == 13 ) {
-    if( varmUI.find(name) != varmUI.end() ) {
+    if( varIds_.find(name) != varIds_.end() ) {
       cout << " Warning, " << name << " already registered" << endl;
       return;
     }
-    varmUI[ name ] =0;
-    tree -> SetBranchAddress( name.c_str() , &(varmUI[ name ]) );
+
+    setIds( name, kScalar, kUInt, key);
+    varmUI[ key ] =0;
+    tree -> SetBranchAddress( name.c_str() , &(varmUI[ key ]) );
   }
 
   // UL: unsigned long
   else if( t == 14 ) {  
-    if( varmUL.find(name) != varmUL.end() ) {
+    if( varIds_.find(name) != varIds_.end() ) {
       cout << " Warning, " << name << " already registered" << endl;
       return;
     }
-    varmUL[ name ] =0;
-    tree -> SetBranchAddress( name.c_str() , &(varmUL[ name ]) );
+
+    setIds( name, kScalar, kULong, key);
+    varmUL[ key ] =0;
+    tree -> SetBranchAddress( name.c_str() , &(varmUL[ key ]) );
   }
 
   // F: float
   else if( t == 5 ) {
-    if( varmF.find(name) != varmF.end() ) {
+    if( varIds_.find(name) != varIds_.end() ) {
       cout << " Warning, " << name << " already registered" << endl;
       return;
     }
-    varmF[ name ] =0.;
-    tree -> SetBranchAddress( name.c_str() , &(varmF[ name ]) );
+
+    setIds( name, kScalar, kFloat, key);
+    varmF[ key ] =0.;
+    tree -> SetBranchAddress( name.c_str() , &(varmF[ key ]) );
   }
 
   // B: bool
   else if( t == 18 ) {
-    if( varmB.find(name) != varmB.end() ) {
+    if( varIds_.find(name) != varIds_.end() ) {
       cout << " Warning, " << name << " already registered" << endl;
       return;
     }
-    varmB[ name ] =0;
-    tree -> SetBranchAddress( name.c_str() , &(varmB[ name ]) );
+
+    setIds( name, kScalar, kBool, key);
+    varmB[ key ] =0;
+    tree -> SetBranchAddress( name.c_str() , &(varmB[ key ]) );
   }
 
   // D: double
   else if( t == 8 ) {
-    if( varmD.find(name) != varmD.end() ) {
+    if( varIds_.find(name) != varIds_.end() ) {
       cout << " Warning, " << name << " already registered" << endl;
       return;
     }
-    varmD[ name ] =0.;
-    tree -> SetBranchAddress( name.c_str() , &(varmD[ name ]) );
+
+    setIds( name, kScalar, kDouble,key);
+    varmD[ key ] =0.;
+    tree -> SetBranchAddress( name.c_str() , &(varmD[ key ]) );
   }
 
 }
 
+void 
+VarClass::initIds() {
+
+  for(int ic=1;ic<kNConts;ic++) {
+    for(int it=1;it<kNTypes;it++) {
+      cnt_[ic*oC_+it*oT_]=0;
+    }
+  }
+}
+
+void
+VarClass::setIds(string name, int cont, int type, int& id) {
+  int cat=cont*oC_ + type*oT_;
+  int key=cat + cnt_[cat];
+  id = cnt_[cat];
+  varIds_[ name ]=key;
+  cnt_[cat]++;
+}
+
+float 
+VarClass::findValue(int id, int idx) {
+
+  int cType = (id/oC_);
+  int tType = ((id-cType*oC_)/oT_);
+  int key = (id-cType*oC_ - tType*oT_);
+  
+  switch(cType) {
+  case kScalar: {return findSVal(tType, key ); }
+  case kVector: {return findVVal(tType, key, idx );}
+  case kArray: {return findAVal(tType, key, idx );}
+  }
+  return 0;
+}
+
+float VarClass::findSVal(int tType, int key) {
+
+  switch(tType) {
+  case kInt: {return (float)varmI[key];}
+  case kUInt: {return (float)varmUI[key];}
+  case kULong: {return (float)varmUL[key];}
+  case kDouble: {return (float)varmD[key];}
+  case kFloat: {return (float)varmF[key];}
+    //case kString: {return varmS[key];}
+  case kBool: {return (float)varmB[key];}
+  }
+  return 0;
+}
+
+float VarClass::findVVal(int tType, int key, int idx) {
+
+  switch(tType) {
+  case kInt: {return (float)((*varmVI[key])[idx]);}
+  case kUInt: {return (float)((*varmVUI[key])[idx]);}
+  case kULong: {return (float)((*varmVUL[key])[idx]);}
+  case kDouble: {return (float)((*varmVD[key])[idx]);}
+  case kFloat: {return (float)((*varmVF[key])[idx]);}
+    //case kString: {return (*varmVS[key])[idx];}
+  case kBool: {return (float)((*varmVB[key])[idx]);}
+  }
+  return 0;
+}
+
+float VarClass::findAVal(int tType, int key, int idx) {
+
+  switch(tType) {
+  case kInt: {return (float)(varmAI[key][idx]);}
+  case kUInt: {return (float)(varmAUI[key][idx]);}
+  case kULong: {return (float)(varmAUL[key][idx]);}
+  case kDouble: {return (float)(varmAD[key][idx]);}
+  case kFloat: {return (float)(varmAF[key][idx]);}
+    //case kString: {return varmAS[key][idx];}
+  case kBool: {return (float)(varmAB[key][idx]);}
+  }
+  return 0;
+}
+
+
+float VarClass::get(string name, int idx) {
+  
+  itVId_ = varIds_.find(name);
+  if(itVId_ == varIds_.end() )
+    cout << " error, no such variable " << name << endl;
+
+  return findValue(itVId_->second, idx);
+}
 
 //____________________________________________________________________________
-bool VarClass::tryType(string name, string type) {
-  /*
-    checks, whether a variable has the type one expects
-    parameters: name (the variable), type (the expected type; either "S", "B",
-    "UI", "UL", "I", "D", "F", "VS", "VB", "VUI", "VUL", "VI", "VD",
-    "VF")
-    return: true (if the variable is of the expected type), false (else)
-  */
+// bool VarClass::tryType(string name, string type) {
+//   /*
+//     checks, whether a variable has the type one expects
+//     parameters: name (the variable), type (the expected type; either "S", "B",
+//     "UI", "UL", "I", "D", "F", "VS", "VB", "VUI", "VUL", "VI", "VD",
+//     "VF")
+//     return: true (if the variable is of the expected type), false (else)
+//   */
 
 
-  // Scalars
+//   // Scalars
 
-  // string
-  if(type == "S") {
-    itS = varmS.find( name );
-    if( itS != varmS.end() ) return true;
-  }
+//   // string
+//   if(type == "S") {
+//     itS = varmS.find( name );
+//     if( itS != varmS.end() ) return true;
+//   }
 	
-  // bool
-  else if(type == "B") {
-    itB = varmB.find( name );
-    if( itB != varmB.end() ) return true;
-  }
+//   // bool
+//   else if(type == "B") {
+//     itB = varmB.find( name );
+//     if( itB != varmB.end() ) return true;
+//   }
 
-  // unsigned int
-  else if(type == "UI") {
-    itUI = varmUI.find( name );
-    if( itUI != varmUI.end() ) return true;
-  }
+//   // unsigned int
+//   else if(type == "UI") {
+//     itUI = varmUI.find( name );
+//     if( itUI != varmUI.end() ) return true;
+//   }
 
-  // unsigned long
-  else if(type == "UL") {
-    itUL = varmUL.find( name );
-    if( itUL != varmUL.end() ) return true;
-  }
+//   // unsigned long
+//   else if(type == "UL") {
+//     itUL = varmUL.find( name );
+//     if( itUL != varmUL.end() ) return true;
+//   }
 
-  // int
-  else if(type == "I") {
-    itI = varmI.find( name );
-    if( itI != varmI.end() ) return true;
-  }
+//   // int
+//   else if(type == "I") {
+//     itI = varmI.find( name );
+//     if( itI != varmI.end() ) return true;
+//   }
 
-  // double
-  else if(type == "D") {
-    itD = varmD.find( name );
-    if( itD != varmD.end() ) return true;
-  }
+//   // double
+//   else if(type == "D") {
+//     itD = varmD.find( name );
+//     if( itD != varmD.end() ) return true;
+//   }
 
-  // float
-  else if(type == "F") {
-    itF = varmF.find( name );
-    if( itF != varmF.end() ) return true;
-  }
-
-
-  //Vectors
-
-  // vector<string>
-  else if(type == "VS") {
-    itVS = varmVS.find( name );
-    if( itVS != varmVS.end() ) return true;
-  }
-
-  // vector<bool>
-  else if(type == "VB") {
-    itVB = varmVB.find( name );
-    if( itVB != varmVB.end() ) return true;
-  }
-
-  // vector<unsigned int>
-  else if(type == "VUI") {
-    itVUI = varmVUI.find( name );
-    if( itVUI != varmVUI.end() ) return true;
-  }
-
-  // vector<unsinged long>
-  else if(type == "VUL") {
-    itVUL = varmVUL.find( name );
-    if( itVUL != varmVUL.end() ) return true;
-  }
-
-  // vector<int>
-  else if(type == "VI") {
-    itVI = varmVI.find( name );
-    if( itVI != varmVI.end() ) return true;
-  }
-
-  // vector<double>
-  else if(type == "VD") {
-    itVD = varmVD.find( name );
-    if( itVD != varmVD.end() ) return true;
-  }
-
-  // vector<float>
-  else if(type == "VF") {
-    itVF = varmVF.find( name );
-    if( itVF != varmVF.end() ) return true;
-  }
-
-  // type not found	
-  cout << "Error for var " << name << endl;
-  return 0;
-
-}
+//   // float
+//   else if(type == "F") {
+//     itF = varmF.find( name );
+//     if( itF != varmF.end() ) return true;
+//   }
 
 
-const vector<int>& VarClass::getVI(string name) {
+//   //Vectors
 
-  vector<int> tmp;
-  itVI = varmVI.find( name );
+//   // vector<string>
+//   else if(type == "VS") {
+//     itVS = varmVS.find( name );
+//     if( itVS != varmVS.end() ) return true;
+//   }
 
-  if(itVI != varmVI.end() ) 
-    return (*((*itVI).second));
+//   // vector<bool>
+//   else if(type == "VB") {
+//     itVB = varmVB.find( name );
+//     if( itVB != varmVB.end() ) return true;
+//   }
+
+//   // vector<unsigned int>
+//   else if(type == "VUI") {
+//     itVUI = varmVUI.find( name );
+//     if( itVUI != varmVUI.end() ) return true;
+//   }
+
+//   // vector<unsinged long>
+//   else if(type == "VUL") {
+//     itVUL = varmVUL.find( name );
+//     if( itVUL != varmVUL.end() ) return true;
+//   }
+
+//   // vector<int>
+//   else if(type == "VI") {
+//     itVI = varmVI.find( name );
+//     if( itVI != varmVI.end() ) return true;
+//   }
+
+//   // vector<double>
+//   else if(type == "VD") {
+//     itVD = varmVD.find( name );
+//     if( itVD != varmVD.end() ) return true;
+//   }
+
+//   // vector<float>
+//   else if(type == "VF") {
+//     itVF = varmVF.find( name );
+//     if( itVF != varmVF.end() ) return true;
+//   }
+
+//   // type not found	
+//   cout << "Error for var " << name << endl;
+//   return 0;
+
+// }
+
+
+// const vector<int>& VarClass::getVI(string name) {
+
+//   vector<int> tmp;
+//   itVI = varmVI.find( name );
+
+//   if(itVI != varmVI.end() ) 
+//     return (*((*itVI).second));
       
-  cout << " error, no such variable " << name << endl;
-  return tmp;
+//   cout << " error, no such variable " << name << endl;
+//   return tmp;
 
-}
+// }
 
-const vector<unsigned int>& VarClass::getVUI(string name) {
+// const vector<unsigned int>& VarClass::getVUI(string name) {
 
-  vector<unsigned int> tmp;
-  itVUI = varmVUI.find( name );
+//   vector<unsigned int> tmp;
+//   itVUI = varmVUI.find( name );
   
-  if( itVUI != varmVUI.end() ) 
-    return (*((*itVUI).second));
+//   if( itVUI != varmVUI.end() ) 
+//     return (*((*itVUI).second));
 
-  cout << " error, no such variable " << name << endl;
-  return tmp;
+//   cout << " error, no such variable " << name << endl;
+//   return tmp;
 
-}
+// }
 
-const vector<unsigned long>& VarClass::getVUL(string name) {
+// const vector<unsigned long>& VarClass::getVUL(string name) {
 
-  vector<unsigned long> tmp;
-  itVUL = varmVUL.find( name );
+//   vector<unsigned long> tmp;
+//   itVUL = varmVUL.find( name );
   
-  if( itVUL != varmVUL.end() )
-    return (*((*itVUL).second));
+//   if( itVUL != varmVUL.end() )
+//     return (*((*itVUL).second));
 
-  cout << " error, no such variable " << name << endl;
-  return tmp;
+//   cout << " error, no such variable " << name << endl;
+//   return tmp;
 
-}
+// }
 
-const vector<bool>& VarClass::getVB(string name) {
+// const vector<bool>& VarClass::getVB(string name) {
 
-  vector<bool> tmp;
-  itVB = varmVB.find( name );
+//   vector<bool> tmp;
+//   itVB = varmVB.find( name );
 	  
-  if( itVB != varmVB.end() )
-    return (*((*itVB).second));
+//   if( itVB != varmVB.end() )
+//     return (*((*itVB).second));
 	
-  cout << " error, no such variable " << name << endl;
-  return tmp;
+//   cout << " error, no such variable " << name << endl;
+//   return tmp;
 
-}
+// }
 
-const vector<double>& VarClass::getVD(string name) {
+// const vector<double>& VarClass::getVD(string name) {
 
-  vector<double> tmp;
-  itVD = varmVD.find( name );
+//   vector<double> tmp;
+//   itVD = varmVD.find( name );
 	  
-  if( itVD != varmVD.end() )
-    return (*((*itVD).second));
+//   if( itVD != varmVD.end() )
+//     return (*((*itVD).second));
 
-  cout << " error, no such variable " << name << endl;
-  return tmp;
+//   cout << " error, no such variable " << name << endl;
+//   return tmp;
 
-}
+// }
 
 
-const vector<float>& VarClass::getVF(string name) {
+// const vector<float>& VarClass::getVF(string name) {
 
-  vector<float> tmp;	
-  itVF = varmVF.find( name );
+//   vector<float> tmp;	
+//   itVF = varmVF.find( name );
 	  
-  if( itVF != varmVF.end() )
-    return (*((*itVF).second));
+//   if( itVF != varmVF.end() )
+//     return (*((*itVF).second));
 	
-  cout << " error, no such variable " << name << endl;
-  return tmp;
-}
+//   cout << " error, no such variable " << name << endl;
+//   return tmp;
+// }
 
-const vector<string>& VarClass::getVS(string name) {
+// const vector<string>& VarClass::getVS(string name) {
 
-  vector<string> tmp;
-  itVS = varmVS.find( name );
+//   vector<string> tmp;
+//   itVS = varmVS.find( name );
 	  
-  if( itVS != varmVS.end() )
-    return (*((*itVS).second));
+//   if( itVS != varmVS.end() )
+//     return (*((*itVS).second));
 
-  cout << " error, no such variable " << name << endl;
-  return tmp;
+//   cout << " error, no such variable " << name << endl;
+//   return tmp;
 
-}
+// }
 
 
 /*****************************************************************************
@@ -993,33 +1144,33 @@ const vector<string>& VarClass::getVS(string name) {
 *****************************************************************************/
 
 //____________________________________________________________________________
-vector<float> VarClass::getUnivF(string name) {
-  /*
-    returns the value(s) of a variable as a float, i.e. converts it to a float
-    if it ain't a float
-    parameters: name (the variable)
-    return: the value(s) as float(s)
-  */
+// vector<float> VarClass::getUnivF(string name) {
+//   /*
+//     returns the value(s) of a variable as a float, i.e. converts it to a float
+//     if it ain't a float
+//     parameters: name (the variable)
+//     return: the value(s) as float(s)
+//   */
 
-  vector<float> dummy;
+//   vector<float> dummy;
 
-  //if( tryType(name,"S"  ) ) return convertVal<string>(getS(name));
-  //if( tryType(name,"B"  ) ) return convertVal<bool>(getB(name));
-  if( tryType(name,"UI" ) ) return convertVal<unsigned int>(getUI(name));
-  if( tryType(name,"UL" ) ) return convertVal<unsigned long>(getUL(name));
-  if( tryType(name,"I"  ) ) return convertVal<int>(getI(name));
-  if( tryType(name,"D"  ) ) return convertVal<double>(getD(name));
-  if( tryType(name,"F"  ) ) return convertVal<float>(getF(name));
-  //if( tryType(name,"VS" ) ) return convertVal<string>(getS(name));
-  //if( tryType(name,"VB" ) ) return convertVal<bool>(getB(name));
-  if( tryType(name,"VUI") ) return convertVal<unsigned int>(getUI(name));
-  if( tryType(name,"VUL") ) return convertVal<unsigned long>(getUL(name));
-  if( tryType(name,"VI" ) ) return convertVal<int>(getI(name));
-  if( tryType(name,"VD" ) ) return convertVal<double>(getD(name));
-  if( tryType(name,"VF" ) ) return convertVal<float>(getF(name));
+//   //if( tryType(name,"S"  ) ) return convertVal<string>(getS(name));
+//   //if( tryType(name,"B"  ) ) return convertVal<bool>(getB(name));
+//   if( tryType(name,"UI" ) ) return convertVal<unsigned int>(getUI(name));
+//   if( tryType(name,"UL" ) ) return convertVal<unsigned long>(getUL(name));
+//   if( tryType(name,"I"  ) ) return convertVal<int>(getI(name));
+//   if( tryType(name,"D"  ) ) return convertVal<double>(getD(name));
+//   if( tryType(name,"F"  ) ) return convertVal<float>(getF(name));
+//   //if( tryType(name,"VS" ) ) return convertVal<string>(getS(name));
+//   //if( tryType(name,"VB" ) ) return convertVal<bool>(getB(name));
+//   if( tryType(name,"VUI") ) return convertVal<unsigned int>(getUI(name));
+//   if( tryType(name,"VUL") ) return convertVal<unsigned long>(getUL(name));
+//   if( tryType(name,"VI" ) ) return convertVal<int>(getI(name));
+//   if( tryType(name,"VD" ) ) return convertVal<double>(getD(name));
+//   if( tryType(name,"VF" ) ) return convertVal<float>(getF(name));
 	
-  return dummy;
-}
+//   return dummy;
+// }
 
 
 // //____________________________________________________________________________
@@ -1136,27 +1287,27 @@ vector<float> VarClass::getUnivF(string name) {
 
 
 //____________________________________________________________________________
-string VarClass::getType(string mvar) {
-  /*
-    returns the type as string (abbreviation) of a variable
-    parameters: mvar (the variable)
-    return: the type ("UI", "UL", "I", "D", "F", "VUI", "VUL", "VI", "VD", "VF")
-  */
+// string VarClass::getType(string mvar) {
+//   /*
+//     returns the type as string (abbreviation) of a variable
+//     parameters: mvar (the variable)
+//     return: the type ("UI", "UL", "I", "D", "F", "VUI", "VUL", "VI", "VD", "VF")
+//   */
 
-  if( tryType(mvar,"UI" ) ) return "UI";
-  if( tryType(mvar,"UL" ) ) return "UL";
-  if( tryType(mvar,"I"  ) ) return "I";
-  if( tryType(mvar,"D"  ) ) return "D";
-  if( tryType(mvar,"F"  ) ) return "F";
+//   if( tryType(mvar,"UI" ) ) return "UI";
+//   if( tryType(mvar,"UL" ) ) return "UL";
+//   if( tryType(mvar,"I"  ) ) return "I";
+//   if( tryType(mvar,"D"  ) ) return "D";
+//   if( tryType(mvar,"F"  ) ) return "F";
 	
-  if( tryType(mvar,"VUI") ) return "VUI";
-  if( tryType(mvar,"VUL") ) return "VUL";
-  if( tryType(mvar,"VI" ) ) return "VI";
-  if( tryType(mvar,"VD" ) ) return "VD";
-  if( tryType(mvar,"VF" ) ) return "VF";
+//   if( tryType(mvar,"VUI") ) return "VUI";
+//   if( tryType(mvar,"VUL") ) return "VUL";
+//   if( tryType(mvar,"VI" ) ) return "VI";
+//   if( tryType(mvar,"VD" ) ) return "VD";
+//   if( tryType(mvar,"VF" ) ) return "VF";
 	
-  return "raté";
+//   return "raté";
   
-}
+// }
 
 

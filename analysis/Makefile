@@ -50,7 +50,8 @@ MODULES    := $(subst /module.mk,,$(wildcard */module.mk))
 
 __dummy := $(shell ./genmak.sh $(MODULES))
 
-all: lib prog
+all: lib 
+#prog
 
 # the source files to compile (without suffix)
 SRC        :=
@@ -170,6 +171,8 @@ ${OBJDIR}/%.bin: ${OBJDIR}/%.$(OBJSUFFIX) | $(SOLIB)
 	@echo "Making bin $@"
 	$(CXX) $(CXXFLAGS)  $^ -o $@ $(LIBS) -L$(SOLIBDIR) -l$(PKGNAME)
 #	$(CXX) $(CXXFLAGS) $(LIBS) -L$(SOLIBDIR) -l$(PKGNAME) $^ -o $@
+
+
 
 
 ifneq ($(MAKECMDGOALS),clean)

@@ -34,58 +34,57 @@
 
 using namespace std;
 
+typedef map<int, vector<int>* > mapVI;
+typedef map<int, vector<unsigned int>* > mapVUI;
+typedef map<int, vector<unsigned long>* > mapVUL;
+typedef map<int, vector<double>* > mapVD;
+typedef map<int, vector<float>* > mapVF;
+typedef map<int, vector<string>* > mapVS;
+typedef map<int, vector<bool>* > mapVB;
 
-typedef map<string, vector<int>* > mapVI;
-typedef map<string, vector<unsigned int>* > mapVUI;
-typedef map<string, vector<unsigned long>* > mapVUL;
-typedef map<string, vector<double>* > mapVD;
-typedef map<string, vector<float>* > mapVF;
-typedef map<string, vector<string>* > mapVS;
-typedef map<string, vector<bool>* > mapVB;
+typedef map<int, vector<int>* >::iterator itMapVI;
+typedef map<int, vector<unsigned int>* >::iterator itMapVUI;
+typedef map<int, vector<unsigned long>* >::iterator itMapVUL;
+typedef map<int, vector<double>* >::iterator itMapVD;
+typedef map<int, vector<float>* >::iterator itMapVF;
+typedef map<int, vector<string>* >::iterator itMapVS;
+typedef map<int, vector<bool>* >::iterator itMapVB;
 
-typedef map<string, vector<int>* >::iterator itMapVI;
-typedef map<string, vector<unsigned int>* >::iterator itMapVUI;
-typedef map<string, vector<unsigned long>* >::iterator itMapVUL;
-typedef map<string, vector<double>* >::iterator itMapVD;
-typedef map<string, vector<float>* >::iterator itMapVF;
-typedef map<string, vector<string>* >::iterator itMapVS;
-typedef map<string, vector<bool>* >::iterator itMapVB;
-
-typedef map<string, int* > mapAI; 
-typedef map<string, unsigned int* > mapAUI; 
-typedef map<string, unsigned long* > mapAUL; 
-typedef map<string, double* > mapAD; 
-typedef map<string, float* > mapAF; 
-typedef map<string, string* > mapAS; 
-typedef map<string, bool* > mapAB; 
+typedef map<int, int* > mapAI; 
+typedef map<int, unsigned int* > mapAUI; 
+typedef map<int, unsigned long* > mapAUL; 
+typedef map<int, double* > mapAD; 
+typedef map<int, float* > mapAF; 
+typedef map<int, string* > mapAS; 
+typedef map<int, bool* > mapAB; 
  
-typedef map<string, int* >::iterator itMapAI; 
-typedef map<string, unsigned int* >::iterator itMapAUI; 
-typedef map<string, unsigned long* >::iterator itMapAUL; 
-typedef map<string, double* >::iterator itMapAD; 
-typedef map<string, float* >::iterator itMapAF; 
-typedef map<string, string* >::iterator itMapAS; 
-typedef map<string, bool* >::iterator itMapAB;
+typedef map<int, int* >::iterator itMapAI; 
+typedef map<int, unsigned int* >::iterator itMapAUI; 
+typedef map<int, unsigned long* >::iterator itMapAUL; 
+typedef map<int, double* >::iterator itMapAD; 
+typedef map<int, float* >::iterator itMapAF; 
+typedef map<int, string* >::iterator itMapAS; 
+typedef map<int, bool* >::iterator itMapAB;
 
-typedef map<string, int > mapI;
-typedef map<string, unsigned int > mapUI;
-typedef map<string, unsigned long > mapUL;
-typedef map<string, double > mapD;
-typedef map<string, float > mapF;
-typedef map<string, bool > mapB;
-typedef map<string, string > mapS;
+typedef map<int, int > mapI;
+typedef map<int, unsigned int > mapUI;
+typedef map<int, unsigned long > mapUL;
+typedef map<int, double > mapD;
+typedef map<int, float > mapF;
+typedef map<int, bool > mapB;
+typedef map<int, string > mapS;
 
 typedef map<string, TBits* > mapTB;
 
-typedef map<string, int >::iterator itMapI;
-typedef map<string, unsigned int >::iterator itMapUI;
-typedef map<string, unsigned long >::iterator itMapUL;
-typedef map<string, double >::iterator itMapD;
-typedef map<string, float >::iterator itMapF;
-typedef map<string, bool >::iterator itMapB;
-typedef map<string, string >::iterator itMapS;
+typedef map<int, int >::iterator itMapI;
+typedef map<int, unsigned int >::iterator itMapUI;
+typedef map<int, unsigned long >::iterator itMapUL;
+typedef map<int, double >::iterator itMapD;
+typedef map<int, float >::iterator itMapF;
+typedef map<int, bool >::iterator itMapB;
+typedef map<int, string >::iterator itMapS;
 
-typedef map<string, TBits* >::iterator itMapTB;
+typedef map<int, TBits* >::iterator itMapTB;
 
 
 
@@ -132,108 +131,108 @@ private:
 
  
   //____________________________________________________________________________
-  template<typename T> inline void storeAccess(string mvar, map<string, T>& imap, map<string, T>& cmap) {
-    /*
-      adds a scalar variable mvar to the map cmap taking the values from imap, if it is 
-      not already registered; if it is, it reinitializes the map cmap for new events,
-      otherwise loads the value from cmap into imap
-      parameters: mvar, imap, cmap
-      return: none
-    */
+  // template<typename T> inline void storeAccess(string mvar, map<string, T>& imap, map<string, T>& cmap) {
+  //   /*
+  //     adds a scalar variable mvar to the map cmap taking the values from imap, if it is 
+  //     not already registered; if it is, it reinitializes the map cmap for new events,
+  //     otherwise loads the value from cmap into imap
+  //     parameters: mvar, imap, cmap
+  //     return: none
+  //   */
 	
-    typename map<string, T>::const_iterator it = cmap.find(mvar);
+  //   typename map<string, T>::const_iterator it = cmap.find(mvar);
 	
-    // variable not yet registered in the backup map	
-    if( it == cmap.end() ) { 
-      cmap[ mvar ] = imap[ mvar ];
-      //cout<<" init step : "<<mvar<<"  "<<cmap[ mvar ]<<" / "<<imap[ mvar ]<<"   "<<(&(cmap[ mvar ]))<<endl;
-    }
+  //   // variable not yet registered in the backup map	
+  //   if( it == cmap.end() ) { 
+  //     cmap[ mvar ] = imap[ mvar ];
+  //     //cout<<" init step : "<<mvar<<"  "<<cmap[ mvar ]<<" / "<<imap[ mvar ]<<"   "<<(&(cmap[ mvar ]))<<endl;
+  //   }
 	
-    // variable already registered, reinitialization
-    else { 
-      if(_nextEvent)
-	cmap[ mvar ] = imap[ mvar ];
-      else
-	imap[ mvar ] = cmap[ mvar ];
-      //cout<<" back step : "<<cmap[ mvar ]<<" / "<<imap[ mvar ]<<"   "<<(&(cmap[ mvar ]))<<endl;
-    }
-  };
+  //   // variable already registered, reinitialization
+  //   else { 
+  //     if(_nextEvent)
+  // 	cmap[ mvar ] = imap[ mvar ];
+  //     else
+  // 	imap[ mvar ] = cmap[ mvar ];
+  //     //cout<<" back step : "<<cmap[ mvar ]<<" / "<<imap[ mvar ]<<"   "<<(&(cmap[ mvar ]))<<endl;
+  //   }
+  // };
 
 
   //____________________________________________________________________________
-  template<typename T> inline void storeAccessV(string mvar, map<string, vector<T>* >& imap, map<string, vector<T>* >& cmap) {
-    /*
-      adds a vector variable mvar to a map cmap with values taken from imap if it is 
-      not already registered; if it is, it reinitializes the vector in the map cmap 
-      for new events, otherwise it reinitializes the map imap with values from cmap
-      parameters: mvar (the variable), imap, cmap
-      return: none
-    */
+  // template<typename T> inline void storeAccessV(string mvar, map<string, vector<T>* >& imap, map<string, vector<T>* >& cmap) {
+  //   /*
+  //     adds a vector variable mvar to a map cmap with values taken from imap if it is 
+  //     not already registered; if it is, it reinitializes the vector in the map cmap 
+  //     for new events, otherwise it reinitializes the map imap with values from cmap
+  //     parameters: mvar (the variable), imap, cmap
+  //     return: none
+  //   */
 	
-    typename map<string, vector<T>* >::const_iterator it = cmap.find(mvar);
+  //   typename map<string, vector<T>* >::const_iterator it = cmap.find(mvar);
 	
-    // variable not yet registered in the backup map
-    if( it == cmap.end() ) { 
+  //   // variable not yet registered in the backup map
+  //   if( it == cmap.end() ) { 
 	
-      cmap[ mvar ] = new vector<T>;
-      for(size_t ie = 0; ie < imap[mvar] -> size(); ++ie) {
-	cmap[ mvar ] -> push_back( imap[ mvar ] -> at(ie) );
-	//cout << " init step : " << cmap[ mvar ] -> at(ie) << " / " << imap[ mvar ] -> at(ie) << endl;
-      }
-    }
+  //     cmap[ mvar ] = new vector<T>;
+  //     for(size_t ie = 0; ie < imap[mvar] -> size(); ++ie) {
+  // 	cmap[ mvar ] -> push_back( imap[ mvar ] -> at(ie) );
+  // 	//cout << " init step : " << cmap[ mvar ] -> at(ie) << " / " << imap[ mvar ] -> at(ie) << endl;
+  //     }
+  //   }
 	
-    // variable already registered, reinitialization
-    else { 
+  //   // variable already registered, reinitialization
+  //   else { 
 	
-      // vector reinitialization (for new events)
-      if( _nextEvent ) {
+  //     // vector reinitialization (for new events)
+  //     if( _nextEvent ) {
 	
-	cmap[ mvar ] -> resize( imap[mvar] -> size() );
-	for(size_t ie = 0; ie < imap[mvar] -> size(); ++ie)
-	  cmap[ mvar ] -> at(ie) = imap[ mvar ] -> at(ie);
-      }
+  // 	cmap[ mvar ] -> resize( imap[mvar] -> size() );
+  // 	for(size_t ie = 0; ie < imap[mvar] -> size(); ++ie)
+  // 	  cmap[ mvar ] -> at(ie) = imap[ mvar ] -> at(ie);
+  //     }
 	
-      else {
-	for(size_t ie = 0; ie < imap[mvar] -> size(); ++ie) {
-	  imap[ mvar ] -> at(ie) = cmap[ mvar ] -> at(ie);
-	  //cout << " back step : " << cmap[ mvar ] -> at(ie) << " / " << imap[ mvar ] -> at(ie) << endl;
-	}
-      }
-    }
-  };
+  //     else {
+  // 	for(size_t ie = 0; ie < imap[mvar] -> size(); ++ie) {
+  // 	  imap[ mvar ] -> at(ie) = cmap[ mvar ] -> at(ie);
+  // 	  //cout << " back step : " << cmap[ mvar ] -> at(ie) << " / " << imap[ mvar ] -> at(ie) << endl;
+  // 	}
+  //     }
+  //   }
+  // };
 
 
   //____________________________________________________________________________
-  template<typename T> inline void multiReinit(map<string, T>& imap, map<string, T> cmap) {
-    /*
-      reinitializes a map (imap) of scalars with values from another map (cmap)
-      parameters: imap, cmap
-      return: none
-    */
+  // template<typename T> inline void multiReinit(map<string, T>& imap, map<string, T> cmap) {
+  //   /*
+  //     reinitializes a map (imap) of scalars with values from another map (cmap)
+  //     parameters: imap, cmap
+  //     return: none
+  //   */
 
-    typename map<string, T>::const_iterator it;
+  //   typename map<string, T>::const_iterator it;
 		
-    for(it = cmap.begin(); it != cmap.end(); ++it)
-      imap[ it -> first ] = it -> second;
+  //   for(it = cmap.begin(); it != cmap.end(); ++it)
+  //     imap[ it -> first ] = it -> second;
 		
-  };
+  // };
 
 
-  //____________________________________________________________________________
-  template<typename T> inline void multiReinitV(map<string, vector<T>* >& imap, map<string, vector<T>* > cmap) {
-    /*
-      reinitializes a map (imap) of vectors with values from another map (cmap)
-      parameters: imap, cmap
-      return: none
-    */
+  // //____________________________________________________________________________
+  // template<typename T> inline void multiReinitV(map<string, vector<T>* >& imap, map<string, vector<T>* > cmap) {
+  //   /*
+  //     reinitializes a map (imap) of vectors with values from another map (cmap)
+  //     parameters: imap, cmap
+  //     return: none
+  //   */
 	
-    typename map<string, vector<T>* >::const_iterator it;
+  //   typename map<string, vector<T>* >::const_iterator it;
 	
-    for(it = cmap.begin(); it != cmap.end(); ++it)
-      for(size_t ie = 0; ie < imap[ it -> first ] -> size(); ++ie)
-	imap[ it -> first ] -> at(ie) = it -> second -> at(ie);
+  //   for(it = cmap.begin(); it != cmap.end(); ++it)
+  //     for(size_t ie = 0; ie < imap[ it -> first ] -> size(); ++ie)
+  // 	imap[ it -> first ] -> at(ie) = it -> second -> at(ie);
 	
-  };
+  // };
 
 
 
@@ -251,6 +250,8 @@ public:
   void registerVar(string name);
   void registerVar(string name, string type);
   bool isUsefulVar(string name);
+
+  float get(string name, int idx=0);
 	  
   int getI(string name, int idx=0);
   unsigned int getUI(string name, int idx=0);
@@ -260,18 +261,18 @@ public:
   float getF(string name, int idx=0);
   string getS(string name, int idx=0);
 	
-  const vector<int>& getVI(string name);
-  const vector<unsigned int>& getVUI(string name);
-  const vector<size_t>& getVUL(string name);
-  const vector<bool>& getVB(string name);
-  const vector<double>& getVD(string name);
-  const vector<float>& getVF(string name);
-  const vector<string>& getVS(string name);
+  // const vector<int>& getVI(string name);
+  // const vector<unsigned int>& getVUI(string name);
+  // const vector<size_t>& getVUL(string name);
+  // const vector<bool>& getVB(string name);
+  // const vector<double>& getVD(string name);
+  // const vector<float>& getVF(string name);
+  // const vector<string>& getVS(string name);
 	
-  bool tryType(string name, string type);
-  string getType(string name);
+  // bool tryType(string name, string type);
+  // string getType(string name);
 	
-  unsigned int getSize(string name);
+  //unsigned int getSize(string name);
 	
   void buildTree(TTree* tree, bool bypass);
   void registerBranch(TTree* tree, string name, string type, EDataType t, int len);
@@ -296,9 +297,16 @@ public:
 
 private:
 
-  vector<float> getUnivF(string name);
+  //vector<float> getUnivF(string name);
 
+  float findValue(int id, int idx);
+  void initIds();
 
+  void setIds(string name, int cont, int type, int& id);
+
+  float findSVal(int tType, int key);
+  float findVVal(int tType, int key, int idx);
+  float findAVal(int tType, int key, int idx);
 
   // Public Members
 
@@ -311,24 +319,34 @@ public:
 private:
 
   enum {
-    kInt=0,
-    kUInt,
-    kULong,
-    kDouble,
-    kFloat,
-    kString,
-    kBool,
-    // kVInt,
-    // kVUInt,
-    // kVULong,
-    // kVDouble,
-    // kVFloat,
-    // kVString,
-    // kVBool,
-    kNTypes
+    kNoneType=0,
+    kInt=1,
+    kUInt=2,
+    kULong=3,
+    kDouble=4,
+    kFloat=5,
+    kString=6,
+    kBool=7,
+    kNTypes=8
   };
   //static string objectType[VarClass::kNTypes];
 	
+   enum {
+     kNoneCont=0,
+     kScalar=1,
+     kVector=2,
+     kArray=3,
+     kNConts=4
+   };
+  //static string objectType[VarClass::kNTypes];
+  
+  //mapping names-ids
+  static int oC_;
+  static int oT_;
+  map<int,int> cnt_;
+  map<string, int> varIds_;
+  map<string, int>::const_iterator itVId_;
+
   map<string, int> varTypes;
   map<string, int>::const_iterator itVt;
 	
