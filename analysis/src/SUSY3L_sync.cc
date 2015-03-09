@@ -251,10 +251,6 @@ void SUSY3L_sync::collectKinematicObjects(){
         parameters: none
         return: none
     */
-
-    if(_vc->getI("lumi") == 4780 && _vc->getI("evt") == 77972){
-        cout << "event " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _vc->getI("nLepGood") << endl;
-    }
     
     // loop over all nLepGood leptons in this event and select muons
     for(int i = 0; i < _vc->getI("nLepGood"); ++i){
@@ -386,6 +382,8 @@ void SUSY3L_sync::collectKinematicObjects(){
     //create met candidate for every event
     _met = Candidate::create(_vc->getF("met_pt"), _vc->getF("met_phi") );
 
+
+
 }
 
 
@@ -407,7 +405,7 @@ bool SUSY3L_sync::electronSelection(int elIdx){
 
     //define cuts for electrons
     float pt_cut = 10.;
-    float eta_cut = 2.4;
+    float eta_cut = 2.5;
     float eta_veto_low = 1.4442;
     float eta_veto_high = 1.566;
     float isolation_cut = 0.15;
@@ -417,33 +415,41 @@ bool SUSY3L_sync::electronSelection(int elIdx){
     float deltaR = 0.1;
     float barrel_eta = 1.479;
 
+ 
     //apply the cuts
     //makeCut(variable to cut on, cut value, direction of acception, name, 2nd cut value, counter)
     if(!makeCut<float>( _vc->getF("LepGood_pt", elIdx) , pt_cut, ">"  , "pt selection"    , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->getF("LepGood_etaSc", elIdx)), eta_cut  , "<"  , "eta selection"   , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->getF("LepGood_etaSc", elIdx)), eta_veto_low, "[!]", "eta selection veto"   , eta_veto_high, kElId)) return false;
 
+/*
     bool pog_medium_pass = true;
     //track-super cluster matching in barrel
-    if(std::abs(_vc->getF("LepGood_etaSc", elIdx)) < barrel_eta){
-        if(_vc->getF("LepGood_dEtaScTrkIn", elIdx)      > 0.004 ) pog_medium_pass = false;
-        if(_vc->getF("LepGood_dPhiScTrkIn", elIdx)      > 0.06  ) pog_medium_pass = false;
-        if(_vc->getF("LepGood_sigmaIEtaIEta", elIdx)    > 0.01  ) pog_medium_pass = false;
-        if(_vc->getF("LepGood_hadronicOverEm", elIdx)   > 0.12  ) pog_medium_pass = false;
-        if(_vc->getF("LepGood_eInvMinusPInv", elIdx)    > 0.05  ) pog_medium_pass = false;
+    if(std::abs(_vc->getF("LepGood_etaSc", elIdx)) <= barrel_eta){
+        if(std::fabs(_vc->getF("LepGood_dEtaScTrkIn", elIdx))      >= 0.004 ) pog_medium_pass = false;
+        if(std::fabs(_vc->getF("LepGood_dPhiScTrkIn", elIdx))      >= 0.06  ) pog_medium_pass = false;
+        if(_vc->getF("LepGood_sigmaIEtaIEta", elIdx)    >= 0.01  ) pog_medium_pass = false;
+        if(_vc->getF("LepGood_hadronicOverEm", elIdx)   >= 0.12  ) pog_medium_pass = false;
+        if(std::fabs(_vc->getF("LepGood_eInvMinusPInv", elIdx))    >= 0.05  ) pog_medium_pass = false;
+        //if(_vc->getF("LepGood_relIso03", elIdx) >= 0.15 ) pog_medium_pass = false;
     }    
-    //TODO: full5x5 for sigmaEtaEta?
     
     //track-super cluster matching in endcap
-    if((std::abs(_vc->getF("LepGood_etaSc", elIdx)) >= barrel_eta) && (std::abs(_vc->getF("LepGood_etaSc", elIdx)) < eta_cut )){
-        if(_vc->getF("LepGood_dEtaScTrkIn", elIdx)      > 0.007 ) pog_medium_pass = false;
-        if(_vc->getF("LepGood_dPhiScTrkIn", elIdx)      > 0.03  ) pog_medium_pass = false;
-        if(_vc->getF("LepGood_sigmaIEtaIEta", elIdx)    > 0.03  ) pog_medium_pass = false;
-        if(_vc->getF("LepGood_hadronicOverEm", elIdx)   > 0.10  ) pog_medium_pass = false;
-        if(_vc->getF("LepGood_eInvMinusPInv", elIdx)    > 0.05  ) pog_medium_pass = false;
-    } 
-    if(!makeCut( pog_medium_pass, "POG 2012 medium wp", "=", kElId)) return false;
-    
+    if((std::abs(_vc->getF("LepGood_etaSc", elIdx)) > barrel_eta) && (std::abs(_vc->getF("LepGood_etaSc", elIdx)) < 2.5 )){
+        if(std::fabs(_vc->getF("LepGood_dEtaScTrkIn", elIdx))      >= 0.007 ) pog_medium_pass = false;
+        if(std::fabs(_vc->getF("LepGood_dPhiScTrkIn", elIdx))      >= 0.03  ) pog_medium_pass = false;
+        if(_vc->getF("LepGood_sigmaIEtaIEta", elIdx)    >= 0.03  ) pog_medium_pass = false;
+        if(_vc->getF("LepGood_hadronicOverEm", elIdx)   >= 0.10  ) pog_medium_pass = false;
+        if(std::fabs(_vc->getF("LepGood_eInvMinusPInv", elIdx))    >= 0.05  ) pog_medium_pass = false;
+        //if(_vc->getF("LepGood_pt", elIdx) > 20){
+        //    if(_vc->getF("LepGood_relIso03", elIdx) >= 0.15 ) pog_medium_pass = false;
+        //}
+        //if(_vc->getF("LepGood_pt", elIdx) <= 20){
+        //    if(_vc->getF("LepGood_relIso03", elIdx) >= 0.10 ) pog_medium_pass = false;
+        //} 
+    } */
+    //if(!makeCut( pog_medium_pass, "POG 2012 medium wp", "=", kElId)) return false;
+    if(!makeCut<int>( _vc->getI("LepGood_tightId", elIdx) , 1     , ">", "POG Tight Id "   , 0, kElId)) return false;
     //if(!makeCut<int>( _vc->getI("LepGood_eleCutIdCSA14_50ns_v1", elIdx) , 3     , ">=" , "POG CB WP-M Id " , 0    , kElId)) return false; // replaced by manual impl. of POG 2012 medium WP
     if(!makeCut<float>( _vc->getF("LepGood_relIso03", elIdx) , isolation_cut   , "<"  , "isolation "      , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->getF("LepGood_dz", elIdx)), vertex_dz_cut   , "<"  , "dz selection"    , 0    , kElId)) return false;
@@ -497,8 +503,8 @@ bool SUSY3L_sync::muonSelection(int muIdx){
     //apply the cuts
     if(!makeCut<float>( _vc->getF("LepGood_pt", muIdx), pt_cut, ">", "pt selection"    , 0, kMuId)) return false;
     if(!makeCut<float>( std::abs( _vc->getF("LepGood_eta", muIdx)), eta_cut, "<", "eta selection", 0, kMuId)) return false;
-    if(!makeCut<int>( _vc->getI("LepGood_tightId", muIdx) , 1     , "=", "POG Tight Id "   , 0, kMuId)) return false;
     if(!makeCut<float>( _vc->getF("LepGood_relIso03", muIdx) , isolation_cut   , "<", "isolation "      , 0, kMuId)) return false;
+    if(!makeCut<int>( _vc->getI("LepGood_tightId", muIdx) , 1     , "=", "POG Tight Id "   , 0, kMuId)) return false;
     if(!makeCut<float>(std::abs(_vc->getF("LepGood_dz", muIdx)), vertex_dz_cut   , "<", "dz selection"    , 0, kMuId)) return false;
     if(!makeCut<float>(std::abs(_vc->getF("LepGood_dxy", muIdx)), vertex_dxy_cut , "<", "dxy selection"   , 0, kMuId)) return false;
     if(!makeCut<float>( std::abs(_vc->getF("LepGood_sip3d", muIdx)), sip3d_cut  , "<"  , "sip3d selection"   , 0    , kMuId)) return false;
@@ -1022,30 +1028,155 @@ bool SUSY3L_sync::baseSelection(){
     */
 
     //print event information before selection
-    
-    if(_vc->getI("lumi") == 4640 && _vc->getI("evt") == 63905){
+/*
+    if(_vc->getI("lumi") == 2841 && _vc->getI("evt") == 84063){
         cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-    }
-    if(_vc->getI("lumi") == 4780 && _vc->getI("evt") == 77972){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-    }
-    if(_vc->getI("lumi") == 1402 && _vc->getI("evt") == 140153){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-    }   
-  if(_vc->getI("lumi") == 2685 && _vc->getI("evt") == 68461){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-    }
-   if(_vc->getI("lumi") == 4993 && _vc->getI("evt") == 99216){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-    }    
-    if(_vc->getI("lumi") == 4173 && _vc->getI("evt") == 17221){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-    }
-     
-    if(_vc->getI("lumi") == 4301 && _vc->getI("evt") == 30051){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+        //for(int i=0;i<_els.size();i++){
+        //    cout << "pt: " << _els[i]->pt() << endl;
+        //    cout << "eta: " << _els[i]->eta() << endl;
+        //    cout << "phi: " << _els[i]->phi() << endl;
+        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
+        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
+        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
+        //}
     }
 
+
+    if(_vc->getI("lumi") == 4301 && _vc->getI("evt") == 30051){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+        //for(int i=0;i<_els.size();i++){
+        //    cout << "pt: " << _els[i]->pt() << endl;
+        //    cout << "eta: " << _els[i]->eta() << endl;
+        //    cout << "phi: " << _els[i]->phi() << endl;
+        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
+        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
+        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
+        //} 
+    }   
+    
+    if(_vc->getI("lumi") == 3516 && _vc->getI("evt") == 151567){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+        //for(int i=0;i<_els.size();i++){
+        //    cout << "pt: " << _els[i]->pt() << endl;
+        //    cout << "eta: " << _els[i]->eta() << endl;
+        //    cout << "phi: " << _els[i]->phi() << endl;
+        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
+        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
+        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
+        //} 
+   }
+   if(_vc->getI("lumi") == 3477 && _vc->getI("evt") == 147619){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+        //for(int i=0;i<_els.size();i++){
+        //    cout << "pt: " << _els[i]->pt() << endl;
+        //    cout << "eta: " << _els[i]->eta() << endl;
+        //    cout << "phi: " << _els[i]->phi() << endl;
+        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
+        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
+        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
+        //}  
+    }    
+    if(_vc->getI("lumi") == 3713 && _vc->getI("evt") == 171250){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+        //for(int i=0;i<_els.size();i++){
+        //    cout << "pt: " << _els[i]->pt() << endl;
+        //    cout << "eta: " << _els[i]->eta() << endl;
+        //    cout << "phi: " << _els[i]->phi() << endl;
+        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
+        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
+        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
+        //} 
+  }
+     
+    if(_vc->getI("lumi") == 1990 && _vc->getI("evt") == 198993){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+        //for(int i=0;i<_els.size();i++){
+        //    cout << "pt: " << _els[i]->pt() << endl;
+        //    cout << "eta: " << _els[i]->eta() << endl;
+        //   cout << "phi: " << _els[i]->phi() << endl;
+        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
+        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
+        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
+        //}
+    }
+ 
+    if(_vc->getI("lumi") == 2671 && _vc->getI("evt") == 67066){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+        //for(int i=0;i<_els.size();i++){
+        //    cout << "pt: " << _els[i]->pt() << endl;
+        //    cout << "eta: " << _els[i]->eta() << endl;
+        //    cout << "phi: " << _els[i]->phi() << endl;
+        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
+        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
+        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
+        //}   
+    }
+  
+    if(_vc->getI("lumi") == 2339 && _vc->getI("evt") == 33815){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+        //for(int i=0;i<_els.size();i++){
+        //    cout << "pt: " << _els[i]->pt() << endl;
+        //    cout << "eta: " << _els[i]->eta() << endl;
+        //    cout << "phi: " << _els[i]->phi() << endl;
+        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
+        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
+        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
+        //} 
+    } 
+    
+    if(_vc->getI("lumi") == 34 && _vc->getI("evt") == 3308){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+        //for(int i=0;i<_els.size();i++){
+        //    cout << "pt: " << _els[i]->pt() << endl;
+        //    cout << "eta: " << _els[i]->eta() << endl;
+        //    cout << "phi: " << _els[i]->phi() << endl;
+        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
+        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
+        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
+        // }
+    }   
+  
+    if(_vc->getI("lumi") == 724 && _vc->getI("evt") == 72384){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+        //for(int i=0;i<_els.size();i++){
+        //    cout << "pt: " << _els[i]->pt() << endl;
+        //    cout << "eta: " << _els[i]->eta() << endl;
+        //    cout << "phi: " << _els[i]->phi() << endl;
+        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
+        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
+        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
+        //}   
+    }
+  
+    if(_vc->getI("lumi") == 688 && _vc->getI("evt") == 68727){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+        //for(int i=0;i<_els.size();i++){
+        //    cout << "pt: " << _els[i]->pt() << endl;
+        //    cout << "eta: " << _els[i]->eta() << endl;
+        //    cout << "phi: " << _els[i]->phi() << endl;
+        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
+        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
+        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
+        //} 
+    } 
+    
+    if(_vc->getI("lumi") == 783 && _vc->getI("evt") == 78281){
+        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+        //for(int i=0;i<_els.size();i++){
+        //    cout << "pt: " << _els[i]->pt() << endl;
+        //    cout << "eta: " << _els[i]->eta() << endl;
+        //    cout << "phi: " << _els[i]->phi() << endl;
+        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
+        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
+        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
+        //} 
+    }   
+       
+  */    
+    
+    
+    
+    
     
     //select events with certain lepton multiplicity of all flavor combinations
     if(!makeCut<int>( _nEls + _nMus, _valCutLepMultiplicityBR, _cTypeLepMultiplicityBR, "lepton multiplicity", _upValCutLepMultiplicityBR ) ) return false;
@@ -1073,17 +1204,17 @@ bool SUSY3L_sync::baseSelection(){
 
     //select on or off-Z events according to specification in config file
     //bool is_reconstructed_Z = !ZEventSelection();
-//    bool is_reconstructed_Z = ZEventSelectionLoop();
+    bool is_reconstructed_Z = ZEventSelectionLoop();
 
-//    if(is_reconstructed_Z){
+    //if(is_reconstructed_Z){
         //fill("Zmass" , _Z->mass()        , _weight);
-//    }
-//    if(_pairmass == "off"){
-//        if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
-//    }
-//    else if(_pairmass == "on"){
-//        if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
-//    }
+    //}
+    if(_pairmass == "off"){
+        if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
+    }
+    else if(_pairmass == "on"){
+        if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
+    }
 
     return true;
 }

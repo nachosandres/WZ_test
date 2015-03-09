@@ -25,11 +25,11 @@
     //string obs[6]={"","","","","",""};
     //md.dp.setObservables("Zmass");
     //md.dp.setObservables("deltaR_elmu");
-    md.dp.setObservables("BR_NJets");
+   // md.dp.setObservables("BR_NJets");
     //md.dp.setObservables("BR_NBJets");
     //md.dp.setObservables("BR_HT");
     //md.dp.setObservables("BR_MET");
-    //md.dp.setObservables("SR_NJets");
+    md.dp.setObservables("SR_NJets");
     //md.dp.setObservables("SR_NBJets");
     //md.dp.setObservables("SR_HT");
     //md.dp.setObservables("SR_MET");
@@ -40,7 +40,7 @@
     int binning=1;
     int addBinBkg=1; //BinB = binning*AddBin
     double rangeY[2]={0,0};
-    double rangeX[2]={0,10};
+    double rangeX[2]={0,7};
     int xDiv[3]={8,6,0};
     int yDiv[3]={6,6,0}; //Nlabel /  sous-Div /ssdiv
     bool logYScale=false;
