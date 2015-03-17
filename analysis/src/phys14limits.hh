@@ -71,6 +71,8 @@ private:
   float HT();
   int eventCharge();
 
+  bool dilepIsolated();
+
 private: 
 
   //counter categories, 0 is ALWAYS global (even if not specified later)
@@ -152,7 +154,11 @@ private:
   string _PT;
   string _BR;
   string _SR;
-  
+
+  float _bckFake;
+  float _bckFakeH;
+  float _bckFakeL;
+  vector<int> _fakableObj;
 
 };
 

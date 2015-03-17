@@ -39,6 +39,11 @@ phys14limits::phys14limits(std::string cfg){
   initialize();
 
   _mvaId=false;
+
+  _bckFake = 0;
+  _bckFakeH = 0;
+  _bckFakeL = 0;
+
 }
 
 
@@ -260,12 +265,46 @@ void phys14limits::run(){
   // sr event selection
   if(!srSelection()) return;
 	
-  //fillSkimTree();
-  //return;
-  // calling the modules
-  fillEventPlots("SR");
-  fillJetPlots("SR");
-  fillLeptonPlots("SR");
+
+  if( makeCut(dilepIsolated(),"=","Iso+SIP") ) {
+
+    //fillSkimTree();
+    //return;
+    // calling the modules
+    fillEventPlots("SR");
+    fillJetPlots("SR");
+    fillLeptonPlots("SR");
+
+  } else { //goes to Fbackground
+    
+    float p=1, ph=1, pl=1, fr=0, ehfr=0, elfr=0;
+    for(size_t il=0;il<_fakableObj.size();il++) {
+      int idx = _fakableObj[il];
+      if( std::abs(_vc->getF("LepGood_pdgId", idx) )==13 ) {
+	fr = _dbm->getDBValue("FRMCMu", min(_vc->getF("LepGood_pt",idx),(float)49.99), std::abs(_vc->getF("LepGood_eta",idx)) );
+	ehfr = _dbm->getDBErrH("FRMCMu", min(_vc->getF("LepGood_pt",idx),(float)49.99), std::abs(_vc->getF("LepGood_eta",idx)) );
+	elfr = _dbm->getDBErrL("FRMCMu", min(_vc->getF("LepGood_pt",idx),(float)49.99), std::abs(_vc->getF("LepGood_eta",idx)) );
+      }
+      else {
+	fr = _dbm->getDBValue("FRMCEl", min(_vc->getF("LepGood_pt",idx),(float)49.99), std::abs(_vc->getF("LepGood_eta",idx)) );
+	ehfr = _dbm->getDBErrH("FRMCEl", min(_vc->getF("LepGood_pt",idx),(float)49.99), std::abs(_vc->getF("LepGood_eta",idx)) );
+	elfr = _dbm->getDBErrL("FRMCEl", min(_vc->getF("LepGood_pt",idx),(float)49.99), std::abs(_vc->getF("LepGood_eta",idx)) );
+      }
+      
+      p *= fr/(1-fr);
+      ph *=  (fr+ehfr)/(1-(fr+ehfr));
+      pl *=  (fr-elfr)/(1-(fr-elfr)); 
+    }
+    
+    _bckFake += p;
+    _bckFakeH += ph;
+    _bckFakeL += pl;
+  
+    fill("FakeBkgrd", _vc->getI("nBJetMedium25") , _weight*p);
+    fill("FakeBkgrdUp", _vc->getI("nBJetMedium25") , _weight*ph);
+    fill("FakeBkgrdDown", _vc->getI("nBJetMedium25") , _weight*pl);
+
+  }
 
 	
 }
@@ -340,6 +379,13 @@ void phys14limits::defineOutput(){
   _hm->addVariable("SR_JetCSVBTag",   50,   0.0,    1.0, "jet CSV B-Tag"        );
   _hm->addVariable("SR_JetPt"     , 1000,   0.0, 1000.0, "P_T(jet) [GeV]"       );
 
+
+  //fake background
+  _hm->addVariable("FakeBkgrd",10,0,10,"nBjet");
+  _hm->addVariable("FakeBkgrdUp",10,0,10,"nBjet");
+  _hm->addVariable("FakeBkgrdDown",10,0,10,"nBjet");
+  
+
 }
 
 
@@ -364,6 +410,10 @@ void phys14limits::writeOutput(){
     paramters: none
     return: none
   */
+
+
+  std::cout<<"Fake background : "<<_bckFake<<" var("<<_bckFakeL<<","<<_bckFakeH<<")"<<endl;
+
 
   _hm->saveHistos ("phys14limits", _cfgName);
   _au->saveNumbers("phys14limits", _cfgName);
@@ -563,8 +613,8 @@ bool phys14limits::electronSelection(int elIdx){
   if(!makeCut<float>( _vc->getD("LepGood_pt"      , elIdx)          , 10.   , ">"  , "pt selection"      , 0    , kElId)) return false;
   if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx))     , 2.4   , "<"  , "eta selection"     , 0    , kElId)) return false;
   if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx))     , 1.4442, "[!]", "eta selection veto", 1.566, kElId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_sip3d"   , elIdx)          , 4     , "<"  , "SIP 3D"            , 0    , kElId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03", elIdx)          , 0.1   , "<"  , "Isolation "        , 0    , kElId)) return false;
+  //if(!makeCut<float>( _vc->getD("LepGood_sip3d"   , elIdx)          , 4     , "<"  , "SIP 3D"            , 0    , kElId)) return false;
+  //if(!makeCut<float>( _vc->getD("LepGood_relIso03", elIdx)          , 0.1   , "<"  , "Isolation "        , 0    , kElId)) return false;
   if(!makeCut<float>(std::abs(_vc->getD("LepGood_dz" , elIdx))      , 0.1   , "<"  , "dz selection"      , 0    , kElId)) return false;
   //if(!makeCut<int>( _vc->getI("LepGood_tightId", elIdx), 1     , ">=" , "POG CB WP-M Id "   , 0    , kElId)) return false;
   if(!makeCut<int>( _vc->getI("LepGood_eleCutId2012_full5x5", elIdx), 3     , ">=" , "POG CB WP-M Id "   , 0    , kElId)) return false;
@@ -591,7 +641,7 @@ bool phys14limits::muonSelection(int muIdx){
   if(!makeCut<float>( _vc->getD("LepGood_pt"      , muIdx)    , 10., ">", "pt selection"   , 0, kMuId)) return false;
   if(!makeCut<float>( _vc->getD("LepGood_eta"     , muIdx)    , 2.4, "<", "eta selection"  , 0, kMuId)) return false;
   if(!makeCut<float>( _vc->getD("LepGood_sip3d"   , muIdx)    , 4  , "<", "SIP 3D"         , 0, kMuId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03", muIdx)    , 0.1, "<", "Isolation "     , 0, kMuId)) return false;
+  //if(!makeCut<float>( _vc->getD("LepGood_relIso03", muIdx)    , 0.1, "<", "Isolation "     , 0, kMuId)) return false;
   if(!makeCut<float>(std::abs(_vc->getD("LepGood_dz", muIdx)) , 0.1, "<", "dz selection"  , 0, kMuId)) return false;
   //if(!makeCut<int>( _vc->getI("LepGood_tightId"   , muIdx)    , 0  , ">", "POG CB WP-T Id", 0, kMuId)) return false;
   if(!makeCut<int>( _vc->getI("LepGood_tightId"   , muIdx)    , 1  , ">=", "POG CB WP-T Id", 0, kMuId)) return false;
@@ -612,7 +662,7 @@ bool phys14limits::tightVetoElectronSelection(int elIdx){
 
   if(!makeCut<float>( _vc->getD("LepGood_pt"         , elIdx), 10. , ">" , "pt selection"    , 0, kTVElId)) return false;
   if(!makeCut<float>( _vc->getD("LepGood_sip3d"      , elIdx),  4  , "<" , "SIP 3D"          , 0, kTVElId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03"   , elIdx),  0.1, "<" , "isolation"       , 0, kTVElId)) return false;
+  //if(!makeCut<float>( _vc->getD("LepGood_relIso03"   , elIdx),  0.1, "<" , "isolation"       , 0, kTVElId)) return false;
   if(!makeCut<int>(   _vc->getI("LepGood_tightId"    , elIdx),  2  , ">=", "POG CB WP-M Id"  , 0, kTVElId)) return false;
   if(!makeCut<int>(   _vc->getI("LepGood_tightCharge", elIdx),  1  , ">" , "charge selection", 0, kTVElId)) return false;
   bool conv = (_vc->getI("LepGood_convVeto", elIdx) > 0 && _vc->getI("LepGood_lostHits", elIdx)==0);
@@ -635,7 +685,7 @@ bool phys14limits::tightVetoMuonSelection(int muIdx){
   
   if(!makeCut<float>( _vc->getD("LepGood_pt"      , muIdx)    , 10., ">", "pt selection"  , 0, kTVMuId)) return false;
   if(!makeCut<float>( _vc->getD("LepGood_sip3d"   , muIdx)    , 4  , "<", "SIP 3D"        , 0, kTVMuId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03", muIdx)    , 0.1, "<", "isolation"     , 0, kTVMuId)) return false;
+  //if(!makeCut<float>( _vc->getD("LepGood_relIso03", muIdx)    , 0.1, "<", "isolation"     , 0, kTVMuId)) return false;
   if(!makeCut<int>(   _vc->getI("LepGood_tightId" , muIdx)    , 0  , ">", "POG CB WP-T Id", 0, kTVMuId)) return false;
   
   return true;
@@ -1530,3 +1580,19 @@ phys14limits::eventCharge(){
 
 }
 
+
+
+bool 
+phys14limits::dilepIsolated() {
+
+  _fakableObj.clear();
+
+  for(size_t il=0;il<_lepIdx.size();il++) {
+    int idx = _lepIdx[il];
+    if(_vc->getF("LepGood_relIso3",idx)>0.1 || _vc->getF("LepGood_sip3d", idx) ) {
+      _fakableObj.push_back(idx);
+    } 
+  }
+
+  return _fakableObj.size()==0;
+}
