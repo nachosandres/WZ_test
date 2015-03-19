@@ -32,8 +32,6 @@ synchRA5::synchRA5(std::string cfg){
      parameters: configuration_file
      return: none
   */
-	
-  _verbose->Class("synch");
   
   startExecution(cfg);
   initialize();
@@ -291,29 +289,12 @@ void synchRA5::defineOutput(){
 
 
 //____________________________________________________________________________
-void synchRA5::loadInput(){
-  /*
-    loads all input from the cache or from the database
-    parameters: none
-    return: none
-  */
-
-
-  // define function in MPAF for loading histograms, text files, histograms from database 
-
-}
-
-
-//____________________________________________________________________________
 void synchRA5::writeOutput(){
   /*
     writes all output of this class to the disk
     paramters: none
     return: none
   */
-
-  _hm->saveHistos ("synchRA5", _cfgName);
-  _au->saveNumbers("synchRA5", _cfgName);
 
 }
 

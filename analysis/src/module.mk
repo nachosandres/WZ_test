@@ -7,3 +7,4 @@ FILES += synchECO
 FILES += synchRA5
 FILES += phys14limits
 FILES += FakeRatio
+FILES += UncertaintyTest

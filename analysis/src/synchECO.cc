@@ -32,9 +32,7 @@ synchECO::synchECO(std::string cfg){
      parameters: configuration_file
      return: none
   */
-	
-  _verbose->Class("synchECO");
-  
+	  
   startExecution(cfg);
   initialize();
 
@@ -200,29 +198,12 @@ void synchECO::defineOutput(){
 
 
 //____________________________________________________________________________
-void synchECO::loadInput(){
-  /*
-    loads all input from the cache or from the database
-    parameters: none
-    return: none
-  */
-
-
-  // define function in MPAF for loading histograms, text files, histograms from database 
-
-}
-
-
-//____________________________________________________________________________
 void synchECO::writeOutput(){
   /*
     writes all output of this class to the disk
     paramters: none
     return: none
   */
-
-  _hm->saveHistos ("synchECO", _cfgName);
-  _au->saveNumbers("synchECO", _cfgName);
 
 }
 

@@ -32,9 +32,7 @@ csa14exerc::csa14exerc(std::string cfg){
      parameters: configuration_file
      return: none
   */
-	
-  _verbose->Class("csa14exerc");
-  
+	  
   startExecution(cfg);
   initialize();
 
@@ -315,21 +313,6 @@ void csa14exerc::defineOutput(){
 
 }
 
-
-//____________________________________________________________________________
-void csa14exerc::loadInput(){
-  /*
-    loads all input from the cache or from the database
-    parameters: none
-    return: none
-  */
-
-
-  // define function in MPAF for loading histograms, text files, histograms from database 
-
-}
-
-
 //____________________________________________________________________________
 void csa14exerc::writeOutput(){
   /*
@@ -337,9 +320,6 @@ void csa14exerc::writeOutput(){
     paramters: none
     return: none
   */
-
-  _hm->saveHistos ("csa14exerc", _cfgName);
-  _au->saveNumbers("csa14exerc", _cfgName);
 
 }
 

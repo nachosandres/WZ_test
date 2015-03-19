@@ -33,8 +33,6 @@ phys14limits::phys14limits(std::string cfg){
      return: none
   */
 	
-  _verbose->Class("phys14limits");
-  
   startExecution(cfg);
   initialize();
 
@@ -337,20 +335,6 @@ void phys14limits::defineOutput(){
   _hm->addVariable("FakeBkgrdUp",10,0,10,"nBjet");
   _hm->addVariable("FakeBkgrdDown",10,0,10,"nBjet");
   
-
-}
-
-
-//____________________________________________________________________________
-void phys14limits::loadInput(){
-  /*
-    loads all input from the cache or from the database
-    parameters: none
-    return: none
-  */
-
-
-  // define function in MPAF for loading histograms, text files, histograms from database 
 
 }
 

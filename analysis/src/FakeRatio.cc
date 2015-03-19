@@ -32,8 +32,6 @@ FakeRatio::FakeRatio(std::string cfg){
      parameters: configuration_file
      return: none
   */
-	
-  _verbose->Class("FakeRatio");
   
   startExecution(cfg);
   initialize();
@@ -354,19 +352,6 @@ void FakeRatio::defineOutput(){
 }
 
 
-//____________________________________________________________________________
-void FakeRatio::loadInput(){
-  /*
-    loads all input from the cache or from the database
-    parameters: none
-    return: none
-  */
-
-
-  // define function in MPAF for loading histograms, text files, histograms from database 
-
-}
-
 
 //____________________________________________________________________________
 void FakeRatio::writeOutput(){
@@ -375,10 +360,6 @@ void FakeRatio::writeOutput(){
     paramters: none
     return: none
   */
-
-  _hm->saveHistos ("FakeRatio", _cfgName);
-  _au->saveNumbers("FakeRatio", _cfgName);
-
 }
 
 

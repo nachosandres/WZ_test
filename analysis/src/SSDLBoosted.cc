@@ -3,8 +3,6 @@
 #include <algorithm>
 
 SSDLBoosted::SSDLBoosted(std::string cfg){
-  _verbose->Class("SSDLBoosted");
-  
   startExecution(cfg);
   initialize();
 
@@ -373,10 +371,6 @@ void SSDLBoosted::initialize(){
  
 }
 
-void SSDLBoosted::loadInput(){
-
-}
-
 void SSDLBoosted::modifyWeight() {
 
 }
@@ -433,9 +427,6 @@ void SSDLBoosted::defineOutput(){
 
 void SSDLBoosted::writeOutput(){
  
-  _hm->saveHistos ("SSDLBoosted", _cfgName);
-  _au->saveNumbers("SSDLBoosted", _cfgName);
-
 }
 
 

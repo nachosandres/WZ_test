@@ -32,7 +32,6 @@ private:
 
   void run();
   void defineOutput();
-  void loadInput();
   void modifyWeight();
   void writeOutput();
 

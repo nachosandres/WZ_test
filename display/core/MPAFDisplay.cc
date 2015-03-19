@@ -281,12 +281,11 @@ MPAFDisplay::setHistograms() {
   //do not need to reload everything at each iteration, but let's do it for the moment
   if(!_recompute) return;
 
-
   for(size_t ids=0;ids<_dsnames.size();ids++) {
- 
+    
     _ids = _dsnames[ids];
     _inds = ids;
-    
+
     Dataset* ds=anConf.getDataset( _ids );
     string tmpDs= _ids;
 

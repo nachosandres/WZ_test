@@ -241,8 +241,8 @@ AnaConfig::addSample( string str, string sname, int col) {
     
     _datasets[ sname ]->addSample(str, _path, _dir, _treeName,
 				  _hname,0., 1., 1., 1.);
-	_samplenames.push_back(str);
-	_dsnames.push_back(sname);
+    _samplenames.push_back(str);
+    _dsnames.push_back(sname);
  
     return;
   }
@@ -291,8 +291,8 @@ AnaConfig::addSample( string str, string sname, int col) {
     _datasets[ sname ]->addSample(str, _path, _dir, _treeName,
 				  _hname, xSect, kFact, _lumi,
 				  eqLumi);
-	_samplenames.push_back(str);
-	_dsnames.push_back(sname);
+    _samplenames.push_back(str);
+    _dsnames.push_back(sname);
   }
   else {
     _datasets[ sname ]->addSample(str, "", "", "", "", 0, 0, 0, 0);
@@ -315,7 +315,6 @@ vector<string >
 AnaConfig::getDSNames() {
  
   vector<string> names;
-  
   for(_itNDS=_numDS.begin();_itNDS!=_numDS.end();_itNDS++) {
     _itDs = _datasets.find( _itNDS->second );
     names.push_back( _itDs->second->getName() );
