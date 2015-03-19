@@ -316,6 +316,7 @@ void SUSY3L_sync::collectKinematicObjects(){
             */
         }
     }
+  
     //number of electrons in the event
     _nEls = _els.size();
     //_nVEls = _vEls.size();
@@ -379,6 +380,7 @@ void SUSY3L_sync::collectKinematicObjects(){
    
     //compute sum of jet pT's 
     _HT = HT();
+
     //create met candidate for every event
     _met = Candidate::create(_vc->getF("met_pt"), _vc->getF("met_phi") );
 
@@ -1209,6 +1211,7 @@ bool SUSY3L_sync::baseSelection(){
     //if(is_reconstructed_Z){
         //fill("Zmass" , _Z->mass()        , _weight);
     //}
+    
     if(_pairmass == "off"){
         if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
     }
@@ -1243,7 +1246,7 @@ bool SUSY3L_sync::hardLegSelection(){
 //____________________________________________________________________________
 bool SUSY3L_sync::lowMllPair(){
     /*
-        Checks event has ossf lepton pair with low invariant mass 
+        Checks if event has ossf lepton pair with low invariant mass 
         return: true (if the event has such a lepton pair), false (else)
     */
 

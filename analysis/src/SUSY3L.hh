@@ -58,6 +58,7 @@ private:
 
     float HT();
     float M_T(float, float, float, float);
+    float DeltaPhi(float, float);
 
     string _selectTaus;
     string _pairmass;
@@ -67,8 +68,7 @@ private:
 private:
 
     //counter categories, 0 is ALWAYS global (even if not specified later)
-    enum {kGlobal=0, kElId, kElVeto, kMuId, kMuVeto, kTauId, kJetId, kBJetId, conZEvents};
-
+    enum {kGlobal=0, kElId, kElVeto, kMuId, kMuVeto, kTauId, kTauVeto, kJetId, kBJetId, conZEvents};
     //cut variables
     float _valCutLepMultiplicityBR;
     float _pt_cut_hard_leg;
