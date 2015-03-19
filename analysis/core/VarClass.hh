@@ -252,15 +252,9 @@ public:
   bool isUsefulVar(string name);
 
   float get(string name, int idx=0);
-	  
-  int getI(string name, int idx=0);
-  unsigned int getUI(string name, int idx=0);
-  size_t getUL(string name, int idx=0);
-  bool getB(string name, int idx=0);
-  double getD(string name, int idx=0);
-  float getF(string name, int idx=0);
+  
   string getS(string name, int idx=0);
-	
+
   // const vector<int>& getVI(string name);
   // const vector<unsigned int>& getVUI(string name);
   // const vector<size_t>& getVUL(string name);
@@ -272,7 +266,7 @@ public:
   // bool tryType(string name, string type);
   // string getType(string name);
 	
-  //unsigned int getSize(string name);
+  unsigned int getSize(string name);
 	
   void buildTree(TTree* tree, bool bypass);
   void registerBranch(TTree* tree, string name, string type, EDataType t, int len);

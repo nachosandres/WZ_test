@@ -126,7 +126,7 @@ void MPAF::analyze(){
 	
     // loop over entries
     unsigned int nEvts = _datasets[i]->getNEvents();
-    if(_nEvtMax!=-1) nEvts =  min(_nEvtMax+_nSkip,nEvts);
+    if(_nEvtMax!=(size_t)-1) nEvts =  min(_nEvtMax+_nSkip,nEvts);
     
     cout<<" Starting processing dataset : "<<_sampleName<<"  (running on "<<nEvts<<" events)"<<endl;
 

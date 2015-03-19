@@ -151,7 +151,7 @@ void synchECO::modifyWeight() {
 	
   //_weight = (i->second)->Getweight();
   // if(_PUReweighting) 
-  //   _weight *= _vc->getF("puWeight");
+  //   _weight *= _vc->get("puWeight");
 
 }
 
@@ -248,29 +248,29 @@ void synchECO::collectKinematicObjects(){
     return: none
   */
   
-  for(int i = 0; i < _vc->getI("nLepGood"); ++i){
+  for(int i = 0; i < _vc->get("nLepGood"); ++i){
 
     // electrons
-    if(std::abs(_vc->getI("LepGood_pdgId", i)) == 11){		  
+    if(std::abs(_vc->get("LepGood_pdgId", i)) == 11){		  
       if(electronSelection(i)) {
-        _els.push_back( Candidate::create(_vc->getF("LepGood_pt", i),
-					  _vc->getF("LepGood_eta", i),
-					  _vc->getF("LepGood_phi", i),
-					  _vc->getI("LepGood_pdgId", i),
-					  _vc->getI("LepGood_charge", i),
+        _els.push_back( Candidate::create(_vc->get("LepGood_pt", i),
+					  _vc->get("LepGood_eta", i),
+					  _vc->get("LepGood_phi", i),
+					  _vc->get("LepGood_pdgId", i),
+					  _vc->get("LepGood_charge", i),
 					  0.0005) );
         _elIdx.push_back(i);
       }
     }
 
     // muons
-    else if(std::abs(_vc->getI("LepGood_pdgId", i)) == 13){
+    else if(std::abs(_vc->get("LepGood_pdgId", i)) == 13){
       if(muonSelection(i)) {
-        _mus.push_back( Candidate::create(_vc->getF("LepGood_pt", i),
-					  _vc->getF("LepGood_eta", i),
-					  _vc->getF("LepGood_phi", i),
-					  _vc->getI("LepGood_pdgId", i),
-					  _vc->getI("LepGood_charge", i),
+        _mus.push_back( Candidate::create(_vc->get("LepGood_pt", i),
+					  _vc->get("LepGood_eta", i),
+					  _vc->get("LepGood_phi", i),
+					  _vc->get("LepGood_pdgId", i),
+					  _vc->get("LepGood_charge", i),
 					  0.105) );
         _muIdx.push_back(i);
       }
@@ -293,8 +293,8 @@ bool synchECO::electronSelection(int elIdx){
 
   counter("ElectronDenominator", kElId);
 
-  if(!makeCut<float>( _vc->getF("LepGood_pt", elIdx)           , 5.0, ">", "pt selection" , 0, kElId)) return false;
-  if(!makeCut<float>( std::abs(_vc->getF("LepGood_eta", elIdx)), 2.4, "<", "eta selection", 0, kElId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_pt", elIdx)           , 5.0, ">", "pt selection" , 0, kElId)) return false;
+  if(!makeCut<float>( std::abs(_vc->get("LepGood_eta", elIdx)), 2.4, "<", "eta selection", 0, kElId)) return false;
   
   return true;
 }
@@ -310,8 +310,8 @@ bool synchECO::muonSelection(int muIdx){
 
   counter("MuonDenominator", kMuId);
 	
-  if(!makeCut<float>( _vc->getF("LepGood_pt", muIdx)            , 5.0, ">", "pt selection" , 0, kMuId)) return false;
-  if(!makeCut<float>( std::abs( _vc->getF("LepGood_eta", muIdx)), 2.4, "<", "eta selection", 0, kMuId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_pt", muIdx)            , 5.0, ">", "pt selection" , 0, kMuId)) return false;
+  if(!makeCut<float>( std::abs( _vc->get("LepGood_eta", muIdx)), 2.4, "<", "eta selection", 0, kMuId)) return false;
 
   return true;
 
@@ -392,30 +392,30 @@ bool synchECO::baseSelection(){
   if(!makeCut(first->pt() > 20 && second->pt()>20, true, "=", "lepton pt 20-20") ) return false;
 
   // mva
-  if(!makeCut(_vc->getF("LepGood_mvaTTH", tree_idx1)>0.7 && _vc->getF("LepGood_mvaTTH", tree_idx2)>0.7, true, "=", "lepton mva") ) return false;
+  if(!makeCut(_vc->get("LepGood_mvaTTH", tree_idx1)>0.7 && _vc->get("LepGood_mvaTTH", tree_idx2)>0.7, true, "=", "lepton mva") ) return false;
 
   // charge flip
   bool first_ch, second_ch;
   if(first->pdgId() == 11)
-    first_ch = ((_vc->getI("LepGood_tightCharge", tree_idx1)>1) && (_vc->getI("LepGood_convVeto", tree_idx1)>0) && (_vc->getI("LepGood_lostHits", tree_idx1)==0));
+    first_ch = ((_vc->get("LepGood_tightCharge", tree_idx1)>1) && (_vc->get("LepGood_convVeto", tree_idx1)>0) && (_vc->get("LepGood_lostHits", tree_idx1)==0));
   else
-    first_ch = _vc->getI("LepGood_tightCharge", tree_idx1)>1;
+    first_ch = _vc->get("LepGood_tightCharge", tree_idx1)>1;
 
   if(second->pdgId() == 11)
-    second_ch = ((_vc->getI("LepGood_tightCharge", tree_idx2)>1) && (_vc->getI("LepGood_convVeto", tree_idx2)>0) && (_vc->getI("LepGood_lostHits", tree_idx2)==0));
+    second_ch = ((_vc->get("LepGood_tightCharge", tree_idx2)>1) && (_vc->get("LepGood_convVeto", tree_idx2)>0) && (_vc->get("LepGood_lostHits", tree_idx2)==0));
   else
-    second_ch = _vc->getI("LepGood_tightCharge", tree_idx2)>1;
+    second_ch = _vc->get("LepGood_tightCharge", tree_idx2)>1;
 
   if(!makeCut(first_ch && second_ch, true, "=", "lepton charge flip") ) return false;   
 
   // number of b jets
-  if(!makeCut<int>(_vc->getI("nBJetLoose25"), 2, ">=", "B-jet multiplicity") ) return false;
+  if(!makeCut<int>(_vc->get("nBJetLoose25"), 2, ">=", "B-jet multiplicity") ) return false;
 
   // number of jets
-  if(!makeCut<int>(_vc->getI("nJet25")      , 4, ">=", "Jet multiplicity"  ) ) return false;
+  if(!makeCut<int>(_vc->get("nJet25")      , 4, ">=", "Jet multiplicity"  ) ) return false;
 
-  //printf("%d:%3.3f:%3.3f:%d:%d\t", first->pdgId(), first->eta(), first->pt(), _vc->getI("LepGood_mcMatchId", tree_idx1), _vc->getI("LepGood_mcMatchAny", tree_idx1));
-  //printf("%d:%d:%d:%3.3f:%3.3f:%3.3f:%3.3f:%d:%d\n", _vc->getI("run"), _vc->getI("lumi"), _vc->getI("evt"), first->pt(), _vc->getF("LepGood_mvaTTH", tree_idx1), second->pt(), _vc->getF("LepGood_mvaTTH", tree_idx2), _vc->getI("nBJetLoose25"), _vc->getI("nJet25"));
+  //printf("%d:%3.3f:%3.3f:%d:%d\t", first->pdgId(), first->eta(), first->pt(), _vc->get("LepGood_mcMatchId", tree_idx1), _vc->get("LepGood_mcMatchAny", tree_idx1));
+  //printf("%d:%d:%d:%3.3f:%3.3f:%3.3f:%3.3f:%d:%d\n", _vc->get("run"), _vc->get("lumi"), _vc->get("evt"), first->pt(), _vc->get("LepGood_mvaTTH", tree_idx1), second->pt(), _vc->get("LepGood_mvaTTH", tree_idx2), _vc->get("nBJetLoose25"), _vc->get("nJet25"));
 
   return true;
 

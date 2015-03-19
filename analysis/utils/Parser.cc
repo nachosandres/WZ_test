@@ -47,8 +47,10 @@ Parser::parseLine(string line) {
   string val = tks[1];
 
   vector<string> opts;
-  for(size_t i=2;i<tks.size();i++)
-    opts.push_back(tks[i]);
+  for(size_t i=2;i<tks.size();i++) {
+    if(tks[i].substr(0,1)!="#")
+      opts.push_back(tks[i]);
+  }
   
   pair<int, string> p(type, val);
   

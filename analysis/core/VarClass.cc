@@ -234,201 +234,6 @@ VarClass::registerVar(string name, string type) {
 }
 
 
-//____________________________________________________________________________
-int VarClass::getI(string name, int idx) {
-//   /*
-//     returns the value of a unsigned int variable
-//     parameters: name (variable name), idx (index of the element, if any)
-//     return: the value in the tree entry
-//   */
-  
-//   itI = varmI.find( name );
-
-//   if( itI == varmI.end() ) {
-
-//     itVI = varmVI.find( name );
-//     if( itVI == varmVI.end() ) {
-		
-//       itAI = varmAI.find( name );
-//       if( itAI == varmAI.end() )
-// 	cout << " error, no such variable " << name << endl;
-//       else
-// 	return ((*itAI).second)[idx];
-//     }
-//     else
-//       return (*((*itVI).second))[idx];	
-	
-//   }
-//   else
-//     return (*itI).second;
-
-   return 0;
- }
-
-
-//____________________________________________________________________________
- unsigned int VarClass::getUI(string name, int idx) {
-//   /*
-//     returns the value of a unsigned int variable
-//     parameters: name (variable name), idx (index of the element, if any)
-//     return: the value in the tree entry
-//   */
-  
-//   itUI = varmUI.find( name );
-	
-//   if( itUI == varmUI.end() ) {
-
-//     itVUI = varmVUI.find( name );
-//     if( itVUI == varmVUI.end() ) {
-		
-//       itAUI = varmAUI.find( name );
-//       if( itAUI == varmAUI.end() )
-// 	cout << " error, no such variable " << name << endl;
-//       else
-// 	return ((*itAUI).second)[idx];
-//     }
-//     else
-//       return (*((*itVUI).second))[idx];
-	
-	
-//   }
-//   else
-//     return (*itUI).second;
-	
-   return 0;
- }
-
-
-//____________________________________________________________________________
- unsigned long VarClass::getUL(string name, int idx) {
-//   /*
-//     returns the value of a unsigned long variable
-//     parameters: name (variable name), idx (index of the element, if any)
-//     return: the value in the tree entry
-//   */
-  
-//   itUL = varmUL.find( name );
-
-//   if( itUL == varmUL.end() ) {
-
-//     itVUL = varmVUL.find( name );
-//     if( itVUL == varmVUL.end() ) {
-		
-//       itAUL = varmAUL.find( name );
-//       if( itAUL == varmAUL.end() )
-// 	cout << " error, no such variable " << name << endl;
-//       else
-// 	return ((*itAUL).second)[idx];
-//     }
-//     else
-//       return (*((*itVUL).second))[idx];
-		
-//   }
-//   else
-//     return (*itUL).second;
-
-   return 0;
- }
-
-
-//____________________________________________________________________________
- bool VarClass::getB(string name, int idx) {
-//   /*
-//     returns the value of a boolean variable
-//     parameters: name (variable name), idx (index of the element, if any)
-//     return: the value in the tree entry
-//   */
-
-//   itB = varmB.find( name );
-
-//   if( itB == varmB.end() ) {
-
-//     itVB = varmVB.find( name );
-//     if( itVB == varmVB.end() ) {
-		
-//       itAB = varmAB.find( name );
-//       if( itAB == varmAB.end() )
-// 	cout << " error, no such variable " << name << endl;
-//       else
-// 	return ((*itAB).second)[idx];
-//     }
-//     else
-//       return (*((*itVB).second))[idx];
-
-//   }
-
-//   else
-//     return (*itB).second;
-
-   return 0;
-}
-
-
-// //____________________________________________________________________________
- double VarClass::getD(string name, int idx) {
-//   /*
-//     returns the value of a double variable
-//     parameters: name (variable name), idx (index of the element, if any)
-//     return: the value in the tree entry
-//   */
-  
-//   itD = varmD.find( name );
-
-//   if(itD == varmD.end() ) {
-
-//     itVD = varmVD.find( name );
-//     if( itVD == varmVD.end() ) {
-		
-//       itAD = varmAD.find( name );
-//       if( itAD == varmAD.end() )
-// 	cout << " error, no such variable " << name << endl;
-//       else
-// 	return ((*itAD).second)[idx];
-//     }
-//     else
-//       return (*((*itVD).second))[idx];
-	
-	
-//   }
-//   else
-//     return (*itD).second;
-
-   return 0;
- }
-
-
-// //____________________________________________________________________________
- float VarClass::getF(string name, int idx) {
-//   /*
-//     returns the value of a float variable
-//     parameters: name (variable name), idx (index of the element, if any)
-//     return: the value in the tree entry
-//   */
-
-//   itF = varmF.find( name );
-
-//   if( itF == varmF.end() ) {
-
-//     itAF = varmAF.find( name );
-//     if( itAF == varmAF.end() ) {
-		
-//       itVF = varmVF.find( name );
-//       if( itVF == varmVF.end() )
-// 	cout << " error, no such variable " << name << endl;
-//       else
-// 	return (*((*itVF).second))[idx];
-//     }
-//     else
-//       return ((*itAF).second)[idx];
-	
-	
-//   }
-//   else
-//     return (*itF).second;
-
-   return 0;
- }
-
 
 // //____________________________________________________________________________
  string VarClass::getS(string name, int idx) {
@@ -456,61 +261,36 @@ int VarClass::getI(string name, int idx) {
    }
    return 0;
 
-
-  // itS = varmS.find( name );
-	
-  // if( itS == varmS.end() ) {
-
-  //   itVS = varmVS.find( name );
-  //   if( itVS == varmVS.end() ) {
-		
-  //     itAS = varmAS.find( name );
-  //     if( itAS == varmAS.end() )
-  // 	cout << " error, no such variable " << name << endl;
-  //     else
-  // 	return ((*itAS).second)[idx];
-  //   }
-  //   else
-  //     return (*((*itVS).second))[idx];
-	
-	
-  // }
-  // else
-  //   return (*itS).second;
-
-  //  return "";
  }
 
 
 // //____________________________________________________________________________
-// unsigned int VarClass::getSize(string name) {
-//   /*
-//     returns the size of a variable if it is a vector
-//     parameters: name (the variable)
-//     return: its size
-//   */
+unsigned int VarClass::getSize(string name) {
+  //   /*
+  //     returns the size of a variable if it is a vector
+  //     parameters: name (the variable)
+  //     return: its size
+  //   */
+  //not finished
 
-//   itVS  = varmVS .find( name );
-//   itVD  = varmVD .find( name );
-//   itVI  = varmVI .find( name );
-//   itVF  = varmVF .find( name );
-//   itVUI = varmVUI.find( name );
-//   itVUL = varmVUL.find( name );
+   // itVId_ = varIds_.find(name);
+   // if(itVId_ == varIds_.end() )
+   //   cout << " error, no such variable " << name << endl;
+   // int id = itVId_->second;
+   // int cType = id/oC_;
+   // int tType = (id-cType*oC_)/oT_;
+   // int key = (id-cType*oC_ - tType/oT_);
 
-//   //std::cout << "looking for " << name << " in VF which gives " << (itVF == varmVF.end()) << std::endl;
- 
-//   if     ( itVS  != varmVS .end() ) return (*itVS) .second -> size();
-//   else if( itVD  != varmVD .end() ) return (*itVD) .second -> size();
-//   else if( itVI  != varmVI .end() ) return (*itVI) .second -> size();
-//   else if( itVF  != varmVF .end() ) return (*itVF) .second -> size();
-//   else if( itVUI != varmVUI.end() ) return (*itVUI).second -> size();
-//   else if( itVUL != varmVUL.end() ) return (*itVUL).second -> size();
-//   else { 
-//     cout << "Error for var " << name << endl;
-//     return 0;
-//   }
-// }
+   // if(kScalar==cType) return 0;
 
+  
+   // switch(cType) {
+   // case kVector: {return (*varmVS[key]).size();}
+   // case kArray: {return varmAS[key][idx];}
+   // }
+
+   return 0;
+}
 
 //____________________________________________________________________________
 void VarClass::buildTree(TTree* tree, bool bypass) {

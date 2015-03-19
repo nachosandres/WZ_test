@@ -155,11 +155,6 @@ private:
   string _BR;
   string _SR;
 
-  float _bckFake;
-  float _bckFakeH;
-  float _bckFakeL;
-  vector<int> _fakableObj;
-
 };
 
 
