@@ -61,6 +61,7 @@ class MPAF {
 public:
 
   MPAF();
+  MPAF(string cfg);
   virtual ~MPAF();
 
   void checkResources();
@@ -119,14 +120,13 @@ protected:
   int mucounter;
 
   // virtual functions for the classes
-  virtual void defineOutput();
-  virtual void loadInput();
-  virtual void modifyWeight();
-  virtual void run();
-  virtual void writeOutput();
+  virtual void defineOutput()=0;
+  virtual void modifyWeight()=0;
+  virtual void run()=0;
+  virtual void writeOutput()=0;
   
   //skimming functions
-  virtual void modifySkimming();
+  virtual void modifySkimming()=0;
   template < typename T > void addSkimBranch(string name,T* val) {
     _skimTree->Branch( name.c_str(), val );
   };
@@ -142,6 +142,7 @@ private:
   void initSkimming();
   void finalizeSkimming();
 
+  void internalWriteOutput();
 
   // Protected Members
 
@@ -150,7 +151,6 @@ protected:
   bool _isData;
   TTree * _RootTree;
   VarClass * _vc;
-  Verbose * _verbose;
   DataBaseManager* _dbm;
   HistoManager* _hm;
   AnaUtils* _au;
@@ -187,7 +187,7 @@ private:
 
   // Configuration File Variables
   std::string _inputPath;
-
+  std::string _className;
 
 };
 

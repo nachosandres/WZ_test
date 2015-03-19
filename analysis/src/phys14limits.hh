@@ -32,7 +32,6 @@ private:
 
   void run();
   void defineOutput();
-  void loadInput();
   void modifyWeight();
   void writeOutput();
 
@@ -70,6 +69,8 @@ private:
 
   float HT();
   int eventCharge();
+
+  bool dilepIsolated();
 
 private: 
 
@@ -152,7 +153,6 @@ private:
   string _PT;
   string _BR;
   string _SR;
-  
 
 };
 

@@ -32,8 +32,6 @@ synchRA5::synchRA5(std::string cfg){
      parameters: configuration_file
      return: none
   */
-	
-  _verbose->Class("synch");
   
   startExecution(cfg);
   initialize();
@@ -159,7 +157,7 @@ void synchRA5::modifyWeight() {
 	
   //_weight = (i->second)->Getweight();
   // if(_PUReweighting) 
-  //   _weight *= _vc->getD("puWeight");
+  //   _weight *= _vc->get("puWeight");
 
 }
 
@@ -291,29 +289,12 @@ void synchRA5::defineOutput(){
 
 
 //____________________________________________________________________________
-void synchRA5::loadInput(){
-  /*
-    loads all input from the cache or from the database
-    parameters: none
-    return: none
-  */
-
-
-  // define function in MPAF for loading histograms, text files, histograms from database 
-
-}
-
-
-//____________________________________________________________________________
 void synchRA5::writeOutput(){
   /*
     writes all output of this class to the disk
     paramters: none
     return: none
   */
-
-  _hm->saveHistos ("synchRA5", _cfgName);
-  _au->saveNumbers("synchRA5", _cfgName);
 
 }
 
@@ -342,27 +323,27 @@ void synchRA5::collectKinematicObjects(){
   */
 
   
-  for(int i = 0; i < _vc->getI("nLepGood"); ++i){
+  for(int i = 0; i < _vc->get("nLepGood"); ++i){
 
     // electrons
-    if(std::abs(_vc->getI("LepGood_pdgId", i)) == 11){		  
+    if(std::abs(_vc->get("LepGood_pdgId", i)) == 11){		  
       if(electronSelection(i)) {
-        _els.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					  _vc->getD("LepGood_eta", i),
-					  _vc->getD("LepGood_phi", i),
-					  _vc->getI("LepGood_pdgId", i),
-					  _vc->getI("LepGood_charge", i),
+        _els.push_back( Candidate::create(_vc->get("LepGood_pt", i),
+					  _vc->get("LepGood_eta", i),
+					  _vc->get("LepGood_phi", i),
+					  _vc->get("LepGood_pdgId", i),
+					  _vc->get("LepGood_charge", i),
 					  0.0005) );
         _elIdx.push_back(i);
         _leps.push_back( _els[ _els.size()-1 ] );
       }
       else {
         if(vetoElectronSelection(i))  {
-          _vEls.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					     _vc->getD("LepGood_eta", i),
-					     _vc->getD("LepGood_phi", i),
-					     _vc->getI("LepGood_pdgId", i),
-					     _vc->getI("LepGood_charge", i),
+          _vEls.push_back( Candidate::create(_vc->get("LepGood_pt", i),
+					     _vc->get("LepGood_eta", i),
+					     _vc->get("LepGood_phi", i),
+					     _vc->get("LepGood_pdgId", i),
+					     _vc->get("LepGood_charge", i),
 					     0.0005) );
           _vetoleps.push_back( _vEls[ _vEls.size()-1 ] );
         }
@@ -370,24 +351,24 @@ void synchRA5::collectKinematicObjects(){
     }
 
     // muons
-    else if(std::abs(_vc->getI("LepGood_pdgId", i)) == 13){
+    else if(std::abs(_vc->get("LepGood_pdgId", i)) == 13){
       if(muonSelection(i)) {
-        _mus.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					  _vc->getD("LepGood_eta", i),
-					  _vc->getD("LepGood_phi", i),
-					  _vc->getI("LepGood_pdgId", i),
-					  _vc->getI("LepGood_charge", i),
+        _mus.push_back( Candidate::create(_vc->get("LepGood_pt", i),
+					  _vc->get("LepGood_eta", i),
+					  _vc->get("LepGood_phi", i),
+					  _vc->get("LepGood_pdgId", i),
+					  _vc->get("LepGood_charge", i),
 					  0.105) );
         _muIdx.push_back(i);
         _leps.push_back( _mus[ _mus.size()-1 ] );
       }
       else {
         if(vetoMuonSelection(i))  {
-          _vMus.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					     _vc->getD("LepGood_eta", i),
-					     _vc->getD("LepGood_phi", i),
-					     _vc->getI("LepGood_pdgId", i),
-					     _vc->getI("LepGood_charge", i),
+          _vMus.push_back( Candidate::create(_vc->get("LepGood_pt", i),
+					     _vc->get("LepGood_eta", i),
+					     _vc->get("LepGood_phi", i),
+					     _vc->get("LepGood_pdgId", i),
+					     _vc->get("LepGood_charge", i),
 					     0.105) );
           _vetoleps.push_back( _vMus[ _vMus.size()-1 ] );
         }
@@ -401,11 +382,11 @@ void synchRA5::collectKinematicObjects(){
   _nVEls = _vEls.size();
   _nVMus = _vMus.size();
 	
-  for(int i = 0; i < _vc->getI("nJet"); ++i){
+  for(int i = 0; i < _vc->get("nJet"); ++i){
     if(goodJetSelection(i)) {
-      _jets.push_back( Candidate::create(_vc->getD("Jet_pt", i),
-					 _vc->getD("Jet_eta", i),
-					 _vc->getD("Jet_phi", i) ) );
+      _jets.push_back( Candidate::create(_vc->get("Jet_pt", i),
+					 _vc->get("Jet_eta", i),
+					 _vc->get("Jet_phi", i) ) );
       
     }
   }
@@ -413,7 +394,7 @@ void synchRA5::collectKinematicObjects(){
   _nJets  = _jets.size();
 
   _HT  = HT();
-  _met = Candidate::create(_vc->getD("met_pt"), _vc->getD("met_phi") );
+  _met = Candidate::create(_vc->get("met_pt"), _vc->get("met_phi") );
 
 }
 
@@ -423,14 +404,14 @@ bool synchRA5::goodJetSelection(int jetIdx){
   
   counter("JetDenominator", kJetId);
 
-  if(!makeCut<int>(_vc->getI("Jet_id", jetIdx)         ,  1  , ">=", "POG CB WP-L ID", 0, kJetId) ) return false;
-  if(!makeCut<float>(_vc->getD("Jet_pt", jetIdx)       , 40.0, ">" , "pt selection"  , 0, kJetId) ) return false;
-  if(!makeCut<float>(fabs(_vc->getD("Jet_eta", jetIdx)),  2.4, "<" , "eta selection" , 0, kJetId) ) return false;
+  if(!makeCut<int>(_vc->get("Jet_id", jetIdx)         ,  1  , ">=", "POG CB WP-L ID", 0, kJetId) ) return false;
+  if(!makeCut<float>(_vc->get("Jet_pt", jetIdx)       , 40.0, ">" , "pt selection"  , 0, kJetId) ) return false;
+  if(!makeCut<float>(fabs(_vc->get("Jet_eta", jetIdx)),  2.4, "<" , "eta selection" , 0, kJetId) ) return false;
 
   // CH: jet lepton cleaning for loose leptons pt > 10 (all in LepGood)
-  for(int il=0; il<_vc->getI("nLepGood"); ++il){
-    float dr = KineUtils::dR( _vc->getD("LepGood_eta", il), _vc->getD("Jet_eta", jetIdx),
-			      _vc->getD("LepGood_phi", il), _vc->getD("Jet_phi", jetIdx));
+  for(int il=0; il<_vc->get("nLepGood"); ++il){
+    float dr = KineUtils::dR( _vc->get("LepGood_eta", il), _vc->get("Jet_eta", jetIdx),
+			      _vc->get("LepGood_phi", il), _vc->get("Jet_phi", jetIdx));
     if(!makeCut<float>(dr, 0.4, ">", "jet lepton cleaning selection", 0, kJetId) ) return false;
   }	
 
@@ -444,14 +425,14 @@ bool synchRA5::electronSelection(int elIdx){
 
   counter("ElectronDenominator", kElId);
 
-  if(!makeCut<float>( _vc->getD("LepGood_pt"      , elIdx)         , 10., ">" , "pt selection"    , 0, kElId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_sip3d"   , elIdx)         , 4  , "<" , "SIP 3D"          , 0, kElId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03", elIdx)         , 0.1, "<" , "Isolation "      , 0, kElId)) return false;
-  if(!makeCut<float>(std::abs(_vc->getD("LepGood_dz" , elIdx))     , 0.1, "<" , "dz selection"    , 0, kElId)) return false;
-  if(!makeCut<int>( _vc->getI("LepGood_tightId", elIdx)            , 2  , ">=", "POG CB WP-M Id"  , 0, kElId)) return false;
-  if(!makeCut<int>( _vc->getI("LepGood_tightCharge", elIdx)        , 2  , "=" , "charge selection", 0, kElId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_pt"      , elIdx)         , 10., ">" , "pt selection"    , 0, kElId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_sip3d"   , elIdx)         , 4  , "<" , "SIP 3D"          , 0, kElId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_relIso03", elIdx)         , 0.1, "<" , "Isolation "      , 0, kElId)) return false;
+  if(!makeCut<float>(std::abs(_vc->get("LepGood_dz" , elIdx))     , 0.1, "<" , "dz selection"    , 0, kElId)) return false;
+  if(!makeCut<int>( _vc->get("LepGood_tightId", elIdx)            , 2  , ">=", "POG CB WP-M Id"  , 0, kElId)) return false;
+  if(!makeCut<int>( _vc->get("LepGood_tightCharge", elIdx)        , 2  , "=" , "charge selection", 0, kElId)) return false;
 
-  bool conv= (_vc->getI("LepGood_convVeto", elIdx)>0 || _vc->getI("LepGood_lostHits", elIdx)>0);
+  bool conv= (_vc->get("LepGood_convVeto", elIdx)>0 || _vc->get("LepGood_lostHits", elIdx)>0);
   if(!makeCut( conv, "conversion rejection", "=", kElId)) return false;
   
   return true;
@@ -463,11 +444,11 @@ bool synchRA5::muonSelection(int muIdx){
 
   counter("MuonDenominator", kMuId);
 
-  if(!makeCut<float>( _vc->getD("LepGood_pt"      , muIdx)    , 10., ">", "pt selection"  , 0, kMuId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_sip3d"   , muIdx)    , 4  , "<", "SIP 3D"        , 0, kMuId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03", muIdx)    , 0.1, "<", "Isolation "    , 0, kMuId)) return false;
-  if(!makeCut<float>(std::abs(_vc->getD("LepGood_dz", muIdx)) , 0.1, "<", "dz selection"  , 0, kMuId)) return false;
-  if(!makeCut<int>( _vc->getI("LepGood_tightId"   , muIdx)    , 1  , "=", "POG CB WP-T Id", 0, kMuId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_pt"      , muIdx)    , 10., ">", "pt selection"  , 0, kMuId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_sip3d"   , muIdx)    , 4  , "<", "SIP 3D"        , 0, kMuId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_relIso03", muIdx)    , 0.1, "<", "Isolation "    , 0, kMuId)) return false;
+  if(!makeCut<float>(std::abs(_vc->get("LepGood_dz", muIdx)) , 0.1, "<", "dz selection"  , 0, kMuId)) return false;
+  if(!makeCut<int>( _vc->get("LepGood_tightId"   , muIdx)    , 1  , "=", "POG CB WP-T Id", 0, kMuId)) return false;
 	
   return true;
 
@@ -479,11 +460,11 @@ bool synchRA5::vetoElectronSelection(int elIdx){
 
   counter("VetoElectronDenominator", kElVeto);
 
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03", elIdx)           , 0.5 , "<" , "Isolation"         , 0, kElVeto)) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_dz", elIdx))       , 0.1 , "<" , "dz selection"      , 0, kElVeto)) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_dxy", elIdx))      , 0.05, "<" , "dxy selection"     , 0, kElVeto)) return false;
-  if(!makeCut<int>( _vc->getI("LepGood_tightId", elIdx)              , 0   , ">=", "POG CB WP-V Id 5x5", 0, kElVeto)) return false;
-  bool conv = (_vc->getI("LepGood_convVeto", elIdx)>0 || _vc->getI("LepGood_lostHits", elIdx)>1);
+  if(!makeCut<float>( _vc->get("LepGood_relIso03", elIdx)           , 0.5 , "<" , "Isolation"         , 0, kElVeto)) return false;
+  if(!makeCut<float>( std::abs(_vc->get("LepGood_dz", elIdx))       , 0.1 , "<" , "dz selection"      , 0, kElVeto)) return false;
+  if(!makeCut<float>( std::abs(_vc->get("LepGood_dxy", elIdx))      , 0.05, "<" , "dxy selection"     , 0, kElVeto)) return false;
+  if(!makeCut<int>( _vc->get("LepGood_tightId", elIdx)              , 0   , ">=", "POG CB WP-V Id 5x5", 0, kElVeto)) return false;
+  bool conv = (_vc->get("LepGood_convVeto", elIdx)>0 || _vc->get("LepGood_lostHits", elIdx)>1);
   if(!makeCut( conv, "conversion rejection", "=", kElVeto)) return false;
 
   return true;
@@ -495,10 +476,10 @@ bool synchRA5::vetoMuonSelection(int muIdx){
 
   counter("VetoMuonDenominator", kMuVeto);
 
-  if(!makeCut<int>(   _vc->getI("LepGood_pfMuonId", muIdx)     , 1   , "=", "POG Loose Id" , 0, kMuVeto) ) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03", muIdx)     , 0.2 , "<", "Isolation "   , 0, kMuVeto)) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_dz" , muIdx)), 0.1 , "<", "dz selection" , 0, kMuVeto)) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_dxy", muIdx)), 0.05, "<", "dxy selection", 0, kMuVeto)) return false;
+  if(!makeCut<int>(   _vc->get("LepGood_pfMuonId", muIdx)     , 1   , "=", "POG Loose Id" , 0, kMuVeto) ) return false;
+  if(!makeCut<float>( _vc->get("LepGood_relIso03", muIdx)     , 0.2 , "<", "Isolation "   , 0, kMuVeto)) return false;
+  if(!makeCut<float>( std::abs(_vc->get("LepGood_dz" , muIdx)), 0.1 , "<", "dz selection" , 0, kMuVeto)) return false;
+  if(!makeCut<float>( std::abs(_vc->get("LepGood_dxy", muIdx)), 0.05, "<", "dxy selection", 0, kMuVeto)) return false;
 
   return true;
 
@@ -639,9 +620,9 @@ bool synchRA5::baseSelection(){
  
 
   // triggers 
-  if(_isData && !makeCut<int>(_vc->getD("HLT_DoubleMu"), 1, "=", "HLT DoubleMu") ) return false;	
-  if(_isData && !makeCut<int>(_vc->getD("HLT_DoubleEl"), 1, "=", "HLT DoubleEl") ) return false;	
-  if(_isData && !makeCut<int>(_vc->getD("HLT_MuEG")    , 1, "=", "HLT MuEG"    ) ) return false;	
+  if(_isData && !makeCut<int>(_vc->get("HLT_DoubleMu"), 1, "=", "HLT DoubleMu") ) return false;	
+  if(_isData && !makeCut<int>(_vc->get("HLT_DoubleEl"), 1, "=", "HLT DoubleEl") ) return false;	
+  if(_isData && !makeCut<int>(_vc->get("HLT_MuEG")    , 1, "=", "HLT MuEG"    ) ) return false;	
 
 
   // CH: working version by SF, gives closure to CERN up to 1%, 2015-01-20
@@ -810,9 +791,9 @@ bool synchRA5::srSelection(){
   }
 
   if(!makeCut<int>( _nJets         , _valCutNJetsSR , _cTypeNJetsSR , "SR jet multiplicity"  , _upValCutNJetsSR ) ) return false;
-  if(!makeCut<int>(_vc->getI(_bvar), _valCutNBJetsSR, _cTypeNBJetsSR, "SR b-jet multiplicity", _upValCutNBJetsSR) ) return false;
+  if(!makeCut<int>(_vc->get(_bvar), _valCutNBJetsSR, _cTypeNBJetsSR, "SR b-jet multiplicity", _upValCutNBJetsSR) ) return false;
 
-  printf("%1d %9d %12d\t%2d\t%+2d %5.1f\t%+2d %5.1f\t%d\t%2d\t%5.1f\t%6.1f\n", _vc->getI("run"), _vc->getI("lumi"), _vc->getI("evt"), _vc->getI("nLepGood"),_first->pdgId(), _first->pt(), _second->pdgId(), _second->pt(), _vc->getI("nJet40"), _vc->getI("nBJetMedium40"), _met->pt(), _HT);
+  printf("%1d %9d %12d\t%2d\t%+2d %5.1f\t%+2d %5.1f\t%d\t%2d\t%5.1f\t%6.1f\n", _vc->get("run"), _vc->get("lumi"), _vc->get("evt"), _vc->get("nLepGood"),_first->pdgId(), _first->pt(), _second->pdgId(), _second->pt(), _vc->get("nJet40"), _vc->get("nBJetMedium40"), _met->pt(), _HT);
 
   return true;
 
@@ -964,12 +945,12 @@ void synchRA5::fillEventPlots(std::string kr){
   Candidate* Z = Candidate::create( _first, _second );
   
   fill(kr + "_MLL"       , Z->mass()          , _weight);
-  fill(kr + "_NBJets"    , _vc->getI(_bvar)    , _weight);
+  fill(kr + "_NBJets"    , _vc->get(_bvar)    , _weight);
   fill(kr + "_NElectrons", _nEls               , _weight);
   fill(kr + "_NJets"     , _nJets              , _weight);
   fill(kr + "_NLeps"     , _nEls+_nMus         , _weight);
   fill(kr + "_NMuons"    , _nMus               , _weight);
-  fill(kr + "_NVrtx"     , _vc->getI("nVert")  , _weight);
+  fill(kr + "_NVrtx"     , _vc->get("nVert")  , _weight);
 
 }
 
@@ -983,18 +964,18 @@ void synchRA5::fillLeptonPlots(std::string kr){
   */
 
   for(int i = 0; i < _nEls; ++i){
-    fill(kr + "_ElDXY", std::abs(_vc->getD("LepGood_dxy"     , _elIdx[i])), _weight);
-    fill(kr + "_ElEta", std::abs(_vc->getD("LepGood_eta"     , _elIdx[i])), _weight);
-    fill(kr + "_ElIso",      _vc->getD("LepGood_relIso03", _elIdx[i]) , _weight);
-    fill(kr + "_ElPt" ,      _vc->getD("LepGood_pt"      , _elIdx[i]) , _weight);
+    fill(kr + "_ElDXY", std::abs(_vc->get("LepGood_dxy"     , _elIdx[i])), _weight);
+    fill(kr + "_ElEta", std::abs(_vc->get("LepGood_eta"     , _elIdx[i])), _weight);
+    fill(kr + "_ElIso",      _vc->get("LepGood_relIso03", _elIdx[i]) , _weight);
+    fill(kr + "_ElPt" ,      _vc->get("LepGood_pt"      , _elIdx[i]) , _weight);
     fill(kr + "_ElMT" , Candidate::create( _els[i], _met)->mass(), _weight);
   }
 
   for(int i = 0; i < _nMus; ++i){
-    fill(kr + "_MuDXY", fabs(_vc->getD("LepGood_dxy"     , _muIdx[i])), _weight);
-    fill(kr + "_MuEta", fabs(_vc->getD("LepGood_eta"     , _muIdx[i])), _weight);
-    fill(kr + "_MuIso",      _vc->getD("LepGood_relIso03", _muIdx[i]) , _weight);
-    fill(kr + "_MuPt" ,      _vc->getD("LepGood_pt"      , _muIdx[i]) , _weight);
+    fill(kr + "_MuDXY", fabs(_vc->get("LepGood_dxy"     , _muIdx[i])), _weight);
+    fill(kr + "_MuEta", fabs(_vc->get("LepGood_eta"     , _muIdx[i])), _weight);
+    fill(kr + "_MuIso",      _vc->get("LepGood_relIso03", _muIdx[i]) , _weight);
+    fill(kr + "_MuPt" ,      _vc->get("LepGood_pt"      , _muIdx[i]) , _weight);
     fill(kr + "_MuMT" , Candidate::create( _mus[i], _met)->mass()     , _weight);
   }
 
@@ -1012,7 +993,7 @@ void synchRA5::fillJetPlots(std::string kr){
 
   for(int i = 0; i < _nJets; ++i){
     fill(kr + "_JetPt"     , _jets[i]->pt(), _weight);
-    //    fill(kr + "_JetCSVBTag", _vc->getD("Jet_btagCSV", i)                                       , _weight);
+    //    fill(kr + "_JetCSVBTag", _vc->get("Jet_btagCSV", i)                                       , _weight);
   }
 
 }
@@ -1023,18 +1004,18 @@ void synchRA5::fillJetPlots(std::string kr){
 int synchRA5::genMatchCateg(const Candidate* cand) {
 
   //loop over the number of generated leptons
-  int nGenL = _vc->getI("ngenLep");
+  int nGenL = _vc->get("ngenLep");
 
   for(int ig = 0; ig < nGenL; ++ig) {
 	
-    if(Tools::dR(cand->eta(), _vc->getD("genLep_eta", ig),
-		 cand->phi(), _vc->getD("genLep_phi", ig) ) < 0.05 ) { //to be tuned
+    if(Tools::dR(cand->eta(), _vc->get("genLep_eta", ig),
+		 cand->phi(), _vc->get("genLep_phi", ig) ) < 0.05 ) { //to be tuned
 		  
-      // cout<<"matched lepton "<<cand.pdgId<<"  with "<<_vc->getI("genLep_pdgId",ig)<<" !!! "<<cand.pt<<"  "<<cand.eta<<"   "<<cand.phi<<"   "<<Tools::dR(cand.eta, _vc->getD("genLep_eta", ig),
-      // cand.phi, _vc->getD("genLep_phi", ig) )<<endl;
+      // cout<<"matched lepton "<<cand.pdgId<<"  with "<<_vc->get("genLep_pdgId",ig)<<" !!! "<<cand.pt<<"  "<<cand.eta<<"   "<<cand.phi<<"   "<<Tools::dR(cand.eta, _vc->get("genLep_eta", ig),
+      // cand.phi, _vc->get("genLep_phi", ig) )<<endl;
 		
-      if( (abs(cand->pdgId()) != abs(_vc->getI("genLep_pdgId", ig)) ) && abs(_vc->getI("genLep_pdgId", ig)) != 13 ) return kMisMatchPdgId; //taus are exception to the rule
-      else if(cand->pdgId()*_vc->getI("genLep_pdgId",ig) < 0 ) return kMisChargePdgId; //+*- = -...
+      if( (abs(cand->pdgId()) != abs(_vc->get("genLep_pdgId", ig)) ) && abs(_vc->get("genLep_pdgId", ig)) != 13 ) return kMisMatchPdgId; //taus are exception to the rule
+      else if(cand->pdgId()*_vc->get("genLep_pdgId",ig) < 0 ) return kMisChargePdgId; //+*- = -...
       else return kGenMatched;
 			
       break;

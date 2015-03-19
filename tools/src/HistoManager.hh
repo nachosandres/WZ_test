@@ -100,7 +100,7 @@ public:
   TH1* getHisto(string obs, int ds);
   const hObs* getHObs(string obs);
   
-  vector<string> getObservables();
+  vector<string> getObservables(bool allObs=false);
   
   //Prepare observables
   hObs preparehObs(string var, int nbinX, vector<float> bins, 

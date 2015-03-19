@@ -10,6 +10,7 @@ using namespace std;
 #include "analysis/src/synchRA5.hh"
 #include "analysis/src/phys14limits.hh"
 #include "analysis/src/FakeRatio.hh"
+#include "analysis/src/UncertaintyTest.hh"
 
 MPAF*
 AnalysisFactory::get(const string& analysis, const string& cfg) {
@@ -32,6 +33,9 @@ AnalysisFactory::get(const string& analysis, const string& cfg) {
   }
   if(analysis=="FakeRatio") {
     return new FakeRatio(cfg);
+  }
+ if(analysis=="UncertaintyTest") {
+    return new UncertaintyTest(cfg);
   }
   return 0;
 }

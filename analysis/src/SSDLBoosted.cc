@@ -3,12 +3,10 @@
 #include <algorithm>
 
 SSDLBoosted::SSDLBoosted(std::string cfg){
-  _verbose->Class("SSDLBoosted");
-  
   startExecution(cfg);
   initialize();
 
-  _dbm->loadDb("XS","Phys14XS.db");
+  //_dbm->loadDb("XS","Phys14XS.db");
 }
 
 SSDLBoosted::~SSDLBoosted(){
@@ -60,9 +58,9 @@ void SSDLBoosted::initialize(){
   // _vc->registerVar("met_genPhi","D");
   // _vc->registerVar("met_genEta","D");
 
-  _vc->registerVar("nFatJet","I");
-  _vc->registerVar("FatJet_id","AI");
-  _vc->registerVar("FatJet_puId","AI");
+  _vc->registerVar("nFatJet");
+  _vc->registerVar("FatJet_id");
+  _vc->registerVar("FatJet_puId");
   _vc->registerVar("FatJet_btagCSV","AD");
   _vc->registerVar("FatJet_btagCMVA","AD");
   _vc->registerVar("FatJet_rawPt","AD");
@@ -373,10 +371,6 @@ void SSDLBoosted::initialize(){
  
 }
 
-void SSDLBoosted::loadInput(){
-
-}
-
 void SSDLBoosted::modifyWeight() {
 
 }
@@ -433,23 +427,28 @@ void SSDLBoosted::defineOutput(){
 
 void SSDLBoosted::writeOutput(){
  
-  _hm->saveHistos ("SSDLBoosted", _cfgName);
-  _au->saveNumbers("SSDLBoosted", _cfgName);
-
 }
 
 
 
 void SSDLBoosted::run(){
 
-  // cout<<"100 "<<_dbm->getDBValue("XS","WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola_skim")<<endl;
-  // cout<<"200 "<<_dbm->getDBValue("XS","WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola_skim")<<endl;
-  // cout<<"400 "<<_dbm->getDBValue("XS","WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola_skim")<<endl;
-  // cout<<"600 "<<_dbm->getDBValue("XS","WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola_skim")<<endl;
+  // cout<<"100 "<<_dbm->getBValue("XS","WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola_skim")<<endl;
+  // cout<<"200 "<<_dbm->getBValue("XS","WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola_skim")<<endl;
+  // cout<<"400 "<<_dbm->getBValue("XS","WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola_skim")<<endl;
+  // cout<<"600 "<<_dbm->getBValue("XS","WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola_skim")<<endl;
   // return;
 
   counter("denominator");
-	
+
+  //cout<<_vc->get("nLepGood")<<endl;
+  for(int i=0;i<_vc->get("nLepGood");i++)
+    float pt=_vc->get("LepGood_pt",i);
+
+    //cout<<_vc->get("LepGood_pt",i)<<endl;
+  
+  return;
+
   fillObjLists();
 
 
@@ -468,10 +467,10 @@ void SSDLBoosted::run(){
     fill(leps[il]+"Eta" , _leps[il]->eta(), _weight);
     fill(leps[il]+"Phi" , _leps[il]->phi(), _weight);
 
-    fill(leps[il]+"RelIso" ,  _vc->getD("LepGood_relIso03", _lepIdx[il]) , _weight);
-    fill(leps[il]+"Iso" , _vc->getD("LepGood_relIso03", _lepIdx[il])*_leps[il]->pt(), _weight);
+    fill(leps[il]+"RelIso" ,  _vc->get("LepGood_relIso03", _lepIdx[il]) , _weight);
+    fill(leps[il]+"Iso" , _vc->get("LepGood_relIso03", _lepIdx[il])*_leps[il]->pt(), _weight);
 
-    if(_vc->getD("LepGood_relIso03", _lepIdx[il]) >0.1) {
+    if(_vc->get("LepGood_relIso03", _lepIdx[il]) >0.1) {
       fill(leps[il]+"DRJet", (clJetL1==nullptr)?-1:_leps[il]->dR(clJetL1), _weight);
       fill(leps[il]+"DRFJet", (clFatJetL1==nullptr)?-1:_leps[il]->dR( clFatJetL1), _weight);
 
@@ -490,16 +489,16 @@ void SSDLBoosted::run(){
 
     if(ij!=idx1 || ij!=idx2 ) continue;
 
-    fill("tau1", _vc->getD("FatJet_tau1", ij), _weight);
-    fill("tau2", _vc->getD("FatJet_tau2", ij), _weight);
-    fill("tau3", _vc->getD("FatJet_tau3", ij), _weight);
-    fill("fjMass", _vc->getD("FatJet_mass", ij), _weight);
-    fill("fjMassT", _vc->getD("FatJet_trimmedMass", ij), _weight);
-    fill("fjMassP", _vc->getD("FatJet_prunedMass", ij), _weight);
+    fill("tau1", _vc->get("FatJet_tau1", ij), _weight);
+    fill("tau2", _vc->get("FatJet_tau2", ij), _weight);
+    fill("tau3", _vc->get("FatJet_tau3", ij), _weight);
+    fill("fjMass", _vc->get("FatJet_mass", ij), _weight);
+    fill("fjMassT", _vc->get("FatJet_trimmedMass", ij), _weight);
+    fill("fjMassP", _vc->get("FatJet_prunedMass", ij), _weight);
 
-    fill("tau21", _vc->getD("FatJet_tau2", ij)/_vc->getD("FatJet_tau1", ij), _weight);
-    fill("tau31", _vc->getD("FatJet_tau3", ij)/_vc->getD("FatJet_tau1", ij), _weight);
-    fill("tau32", _vc->getD("FatJet_tau3", ij)/_vc->getD("FatJet_tau2", ij), _weight);
+    fill("tau21", _vc->get("FatJet_tau2", ij)/_vc->get("FatJet_tau1", ij), _weight);
+    fill("tau31", _vc->get("FatJet_tau3", ij)/_vc->get("FatJet_tau1", ij), _weight);
+    fill("tau32", _vc->get("FatJet_tau3", ij)/_vc->get("FatJet_tau2", ij), _weight);
   }
 
 
@@ -536,27 +535,27 @@ SSDLBoosted::fillObjLists() {
   _gTops.clear();
 
   //leptons
-  for(int i = 0; i < _vc->getI("nLepGood"); ++i){
+  for(int i = 0; i < _vc->get("nLepGood"); ++i){
 
     // electrons
-    if(std::abs(_vc->getI("LepGood_pdgId", i)) == 11){		  
+    if(std::abs(_vc->get("LepGood_pdgId", i)) == 11){		  
       //   if(electronSelection(i)) {
-      _els.push_back( Candidate::create(_vc->getD("LepGood_pt",i),
-					_vc->getD("LepGood_eta",i),
-					_vc->getD("LepGood_phi",i),
-					_vc->getI("LepGood_pdgId",i),
-					_vc->getI("LepGood_charge", i),
+      _els.push_back( Candidate::create(_vc->get("LepGood_pt",i),
+					_vc->get("LepGood_eta",i),
+					_vc->get("LepGood_phi",i),
+					_vc->get("LepGood_pdgId",i),
+					_vc->get("LepGood_charge", i),
 					0.0005) );
       _elIdx.push_back(i);
       //}
     }
-    else if(std::abs(_vc->getI("LepGood_pdgId", i)) == 13){
+    else if(std::abs(_vc->get("LepGood_pdgId", i)) == 13){
       //if(muonSelection(i)) {
-      _mus.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					_vc->getD("LepGood_eta", i),
-					_vc->getD("LepGood_phi", i),
-					_vc->getI("LepGood_pdgId", i),
-					_vc->getI("LepGood_charge", i),
+      _mus.push_back( Candidate::create(_vc->get("LepGood_pt", i),
+					_vc->get("LepGood_eta", i),
+					_vc->get("LepGood_phi", i),
+					_vc->get("LepGood_pdgId", i),
+					_vc->get("LepGood_charge", i),
 					0.105) );
       _muIdx.push_back(i);
       //}
@@ -564,33 +563,33 @@ SSDLBoosted::fillObjLists() {
   }
 
 
-  for(int i = 0; i < _vc->getI("nJet"); ++i) {
+  for(int i = 0; i < _vc->get("nJet"); ++i) {
     if(bJetSelection(i) ) {
-      _bJets.push_back( Candidate::create(_vc->getD("Jet_pt", i),
-					  _vc->getD("Jet_eta", i),
-					  _vc->getD("Jet_phi", i) ) );
+      _bJets.push_back( Candidate::create(_vc->get("Jet_pt", i),
+					  _vc->get("Jet_eta", i),
+					  _vc->get("Jet_phi", i) ) );
     }
 
     if(goodJetSelection(i)) {
-      _jets.push_back( Candidate::create(_vc->getD("Jet_pt", i),
-					 _vc->getD("Jet_eta", i),
-					 _vc->getD("Jet_phi", i) ) );
+      _jets.push_back( Candidate::create(_vc->get("Jet_pt", i),
+					 _vc->get("Jet_eta", i),
+					 _vc->get("Jet_phi", i) ) );
       
     }
   }
 
-   for(int i = 0; i < _vc->getI("nFatJet"); ++i) {
-     _fJets.push_back( Candidate::create(_vc->getD("FatJet_pt", i),
-					_vc->getD("FatJet_eta", i),
-					_vc->getD("FatJet_phi", i),
-					 _vc->getD("FatJet_mass",i) ) );
+   for(int i = 0; i < _vc->get("nFatJet"); ++i) {
+     _fJets.push_back( Candidate::create(_vc->get("FatJet_pt", i),
+					_vc->get("FatJet_eta", i),
+					_vc->get("FatJet_phi", i),
+					 _vc->get("FatJet_mass",i) ) );
    }
 
-   for(int i = 0; i < _vc->getI("nGenTop"); ++i) {
-     _gTops.push_back( Candidate::create(_vc->getD("GenTop_pt", i),
-					 _vc->getD("GenTop_eta", i),
-					 _vc->getD("GenTop_phi", i),
-					 _vc->getD("GenTop_mass",i) ) );
+   for(int i = 0; i < _vc->get("nGenTop"); ++i) {
+     _gTops.push_back( Candidate::create(_vc->get("GenTop_pt", i),
+					 _vc->get("GenTop_eta", i),
+					 _vc->get("GenTop_phi", i),
+					 _vc->get("GenTop_mass",i) ) );
    }
 
   _nEls = _els.size();
@@ -600,7 +599,7 @@ SSDLBoosted::fillObjLists() {
   _nJets  = _jets.size();
   _nFJets = _fJets.size();
 
-  //_met = Candidate::create(_vc->getD("met_pt"), _vc->getD("met_phi") );
+  //_met = Candidate::create(_vc->get("met_pt"), _vc->get("met_phi") );
   
 
   map<Candidate*, int> tmp;
@@ -632,11 +631,11 @@ SSDLBoosted::fillObjLists() {
 int
 SSDLBoosted::genMatchId(const Candidate* cand) {
 
-  int nGenL = _vc->getI("nGenPart");
+  int nGenL = _vc->get("nGenPart");
   for(int ig = 0; ig < nGenL; ++ig) {
-    if(Tools::dR2(cand->eta(), _vc->getD("GenPart_eta", ig),
-		  cand->phi(), _vc->getD("GenPart_phi", ig) ) < 0.0025 ) { //to be tuned
-      return _vc->getI("GenPart_pdgId", ig);
+    if(Tools::dR2(cand->eta(), _vc->get("GenPart_eta", ig),
+		  cand->phi(), _vc->get("GenPart_phi", ig) ) < 0.0025 ) { //to be tuned
+      return _vc->get("GenPart_pdgId", ig);
     }
   }
   
@@ -647,18 +646,18 @@ SSDLBoosted::genMatchId(const Candidate* cand) {
 bool 
 SSDLBoosted::goodJetSelection(int jetIdx) {
   
-  if(_vc->getD("Jet_pt", jetIdx)<40.0) return false;
-  if(fabs(_vc->getD("Jet_eta", jetIdx))>  2.4) return false;
+  if(_vc->get("Jet_pt", jetIdx)<40.0) return false;
+  if(fabs(_vc->get("Jet_eta", jetIdx))>  2.4) return false;
 
   for(int ie=0; ie<_nEls; ++ie) {
-    float dr2 = KineUtils::dR2(_els[ie]->eta(),_vc->getD("Jet_eta", jetIdx),
-			      _els[ie]->phi(),_vc->getD("Jet_phi", jetIdx));
+    float dr2 = KineUtils::dR2(_els[ie]->eta(),_vc->get("Jet_eta", jetIdx),
+			      _els[ie]->phi(),_vc->get("Jet_phi", jetIdx));
     if(dr2<0.0025) return false;
   }
 
   for(int im=0; im<_nMus; ++im){
-    float dr2 = KineUtils::dR2(_mus[im]->eta(),_vc->getD("Jet_eta", jetIdx),
-			      _mus[im]->phi(),_vc->getD("Jet_phi", jetIdx)); 
+    float dr2 = KineUtils::dR2(_mus[im]->eta(),_vc->get("Jet_eta", jetIdx),
+			      _mus[im]->phi(),_vc->get("Jet_phi", jetIdx)); 
     if(dr2<0.0025) return false;
   }
 
@@ -670,7 +669,7 @@ bool
 SSDLBoosted::bJetSelection(int jetIdx) {
  
   if(!goodJetSelection(jetIdx) ) return false;
-  if(_vc->getD("Jet_btagCSV", jetIdx)< 0.679) return false;
+  if(_vc->get("Jet_btagCSV", jetIdx)< 0.679) return false;
 
   return true;
 }
