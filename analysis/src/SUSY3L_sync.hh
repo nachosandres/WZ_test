@@ -58,6 +58,7 @@ private:
 
     float HT();
     float M_T(float, float, float, float);
+    float DeltaPhi(float, float);
 
     string _pairmass;
     string _BR;

@@ -157,7 +157,7 @@ void SUSY3L_sync::run(){
     //printout for RA7 synchronization
     int lumi = _vc->getI("lumi");
     int evt = _vc->getI("evt");
-    //cout << "1" << " " << lumi << " " << evt << " " << _nMus << " " << _nEls << " " << _nTaus << " " << _nJets << " " << _nBJets << endl;
+    cout << "1" << " " << lumi << " " << evt << " " << _nMus << " " << _nEls << " " << _nTaus << " " << _nJets << " " << _nBJets << endl;
 
     // initialization of signal region cuts, categorization of events passing the baseline 
     // selection into different signal regions, and filling of plots
@@ -1196,7 +1196,7 @@ bool SUSY3L_sync::baseSelection(){
 //    if(!makeCut<float>( _HT, _valCutHTBR, _cTypeHTBR, "hadronic activity", _upValCutHTBR) ) return false;
 
     //require minimum missing transvers energy (actually missing momentum)
-//    if(!makeCut<float>( _met->pt(), _valCutMETBR, _cTypeMETBR, "missing transverse energy", _upValCutMETBR) ) return false;
+    if(!makeCut<float>( _met->pt(), _valCutMETBR, _cTypeMETBR, "missing transverse energy", _upValCutMETBR) ) return false;
 
     //reject event if ossf lepton pair with low invariant mass is found
 //    bool has_low_mll = lowMllPair();
@@ -1293,12 +1293,31 @@ bool SUSY3L_sync::ZEventSelectionLoop(){
     float pt_3rdLeg = 0;
     float phi_3rdLeg = 0;
     float mt = 0;
-
+   /* 
+    if(_vc->getI("lumi") == 4378 && _vc->getI("evt") == 37750){
+        cout << "mu0: " << _mus[0]->pdgId() << " " << _mus[0]->pt()<< " "  << _mus[0]->eta() <<" "  << _mus[0]->phi() << endl;
+        cout << "mu1: " << _mus[1]->pdgId() << " " << _mus[1]->pt()<< " "  << _mus[1]->eta() <<" "  << _mus[1]->phi() << endl;
+        cout << "mu2: " << _mus[2]->pdgId() << " " << _mus[2]->pt()<< " "  << _mus[2]->eta() <<" "  << _mus[2]->phi() << endl;
+        cout << "met pt and phi: " << _vc->getF("met_pt") << " " <<  _vc->getF("met_phi") << endl;
+        cout << "----------------------" << endl;
+    } 
+    */
+     
     //loop over all possible combination of two electrons
-    for(int ie1=0; ie1 < _nEls; ie1++) {
+    for(int ie1=0; ie1 < _nEls; ie1++){
         for(int ie2 = ie1; ie2 < _nEls; ie2++) {
             //continue if not an ossf pair
-            if(_vc->getI("LepGood_pdgId", ie1) != - _vc->getI("LepGood_pdgId", ie2) ) continue;
+            if( _els[ie1]->pdgId() != - _els[ie2]->pdgId()) continue;
+            //create new Z candidate
+            Candidate* Ztmp = Candidate::create(_els[ie1], _els[ie2]);
+            //keep Z candidate if smallest difference to Z mass
+            if((std::abs(Ztmp->mass()-Zmass) < _ZMassWindow) && (std::abs(Ztmp->mass()-Zmass)<diff) ) {
+                _Z = Ztmp;
+                diff = std::abs(_Z->mass()-Zmass);
+            }
+            else{
+                continue;
+            }
             //measure pt and phi of 3rd lepton
             if(_nEls == 3){
                 if(ie1+ie2 == 1){
@@ -1320,16 +1339,19 @@ bool SUSY3L_sync::ZEventSelectionLoop(){
             }
             //calculate transverse mass of 3rd lepton and met
             mt = M_T(pt_3rdLeg, _vc->getF("met_pt"), phi_3rdLeg, _vc->getF("met_phi"));
-            //reject event if transverse mass of lepton and met is not above cut
-            if(mt < _M_T_3rdLep_MET_cut) continue;
-            //create new Z candidate
-            Candidate* Ztmp = Candidate::create(_els[ie1], _els[ie2]);
-            //keep Z candidate if smallest difference to Z mass
-            if((std::abs(Ztmp->mass()-Zmass) < _ZMassWindow) && (std::abs(Ztmp->mass()-Zmass)<diff) ) {
-                _Z = Ztmp;
-                diff = std::abs(_Z->mass()-Zmass);
+            //accept event if Z candidate exists and mt critirion is fulfilled
+            
+            //if(_vc->getI("lumi") == 4378 && _vc->getI("evt") == 37750){
+            //    cout << "el loop: "<<  ie1 << " " << ie2 << " " << Ztmp->mass() << endl;
+            //}
+
+            
+            if( (mt > _M_T_3rdLep_MET_cut) && (std::abs(_Z->mass()-Zmass) < _ZMassWindow)){
                 Zevent = true;
             }
+            mt = 0.;
+            pt_3rdLeg = 0.;
+            phi_3rdLeg = 0.;
         }
     }
 
@@ -1337,7 +1359,18 @@ bool SUSY3L_sync::ZEventSelectionLoop(){
     for(int im1=0; im1 < _nMus; im1++) {
         for(int im2 = im1; im2 < _nMus; im2++) {
             //continue if not an ossf pair
-            if(_vc->getI("LepGood_pdgId", im1) != - _vc->getI("LepGood_pdgId", im2) ) continue;
+            if( _mus[im1]->pdgId() != - _mus[im2]->pdgId()) continue;
+            //create new Z candidate
+            Candidate* Ztmp = Candidate::create(_mus[im1], _mus[im2]);
+            //keep Z candidate if smallest difference to Z mass
+            if((std::abs(Ztmp->mass()-Zmass) < _ZMassWindow) && (std::abs(Ztmp->mass()-Zmass)<diff) ) {
+                _Z = Ztmp;
+                diff = std::abs(_Z->mass()-Zmass);
+            }
+            else{
+                continue;
+            }
+            
             //measure pt and phi of 3rd lepton
             if(_nMus == 3){
                 if(im1+im2 == 1){
@@ -1359,20 +1392,26 @@ bool SUSY3L_sync::ZEventSelectionLoop(){
             }        
             //calculate transverse mass of 3rd lepton and met
             mt = M_T(pt_3rdLeg, _vc->getF("met_pt"), phi_3rdLeg, _vc->getF("met_phi"));
-            //reject event if transverse mass of lepton and met is not above cut
-            if(mt < _M_T_3rdLep_MET_cut) continue;
-            //create new Z candidate
-            Candidate* Ztmp = Candidate::create(_mus[im1], _mus[im2]);
-            //keep Z candidate if smallest difference to Z mass
-            if((std::abs(Ztmp->mass()-Zmass) < _ZMassWindow) && (std::abs(Ztmp->mass()-Zmass)<diff) ) {
-                _Z = Ztmp;
-                diff = std::abs(_Z->mass()-Zmass);
+            //accept event if Z candidate exists and mt critirion is fulfilled
+            
+          //  if(_vc->getI("lumi") == 4378 && _vc->getI("evt") == 37750){
+          //      cout << "mu loop: " << im1 << " " << im2 << " " << Ztmp->mass() << endl;
+          //      cout << pt_3rdLeg << " " << phi_3rdLeg << endl;
+           //     cout << "mt: " << mt << endl; 
+           // }
+            
+            
+            if( (mt > _M_T_3rdLep_MET_cut) && (std::abs(_Z->mass()-Zmass) < _ZMassWindow)){
                 Zevent = true;
             }
+            mt = 0.;
+            pt_3rdLeg = 0.;
+            phi_3rdLeg = 0.;
         }
     }
-
+    
     return Zevent;
+
 }
 
 
@@ -1422,6 +1461,22 @@ void SUSY3L_sync::fillEventPlots(std::string kr){
 
 
 
+//____________________________________________________________________________
+float SUSY3L_sync::DeltaPhi(float phi1, float phi2){
+    /*
+        computes delta phi for two giveb phis taking into account the phi range
+        parameters: phi1, phi2
+        return: delta phi
+    */
+
+        float result = phi1 - phi2;
+        while( result >   TMath::Pi() ) result -= TMath::TwoPi();
+        while( result <= -TMath::Pi() ) result += TMath::TwoPi();
+        
+        return TMath::Abs(result);
+       
+       
+}
 
 //____________________________________________________________________________
 float SUSY3L_sync::HT(){
@@ -1446,8 +1501,9 @@ float SUSY3L_sync::M_T(float pt_lepton, float met, float phi_lepton, float phi_m
         return: transverse mass M_T
     */
 
+        float deltaPhi = DeltaPhi(phi_lepton, phi_met);
         float m_t = 0;
-        m_t = sqrt(2 * pt_lepton * met * (1 - cos(phi_lepton - phi_met) ));
+        m_t = sqrt(2 * pt_lepton * met * (1 - cos(deltaPhi) ));
         return m_t;
 }
 
