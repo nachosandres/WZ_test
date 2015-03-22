@@ -1030,160 +1030,27 @@ bool SUSY3L_sync::baseSelection(){
     */
 
     //print event information before selection
-/*
-    if(_vc->getI("lumi") == 2841 && _vc->getI("evt") == 84063){
+   /* 
+    if(_vc->getI("lumi") == 4625 && _vc->getI("evt") == 62498){
+        cout << "--------------------------------------------------"<< endl; 
         cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-        //for(int i=0;i<_els.size();i++){
-        //    cout << "pt: " << _els[i]->pt() << endl;
-        //    cout << "eta: " << _els[i]->eta() << endl;
-        //    cout << "phi: " << _els[i]->phi() << endl;
-        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
-        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
-        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
-        //}
-    }
-
-
-    if(_vc->getI("lumi") == 4301 && _vc->getI("evt") == 30051){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-        //for(int i=0;i<_els.size();i++){
-        //    cout << "pt: " << _els[i]->pt() << endl;
-        //    cout << "eta: " << _els[i]->eta() << endl;
-        //    cout << "phi: " << _els[i]->phi() << endl;
-        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
-        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
-        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
-        //} 
-    }   
-    
-    if(_vc->getI("lumi") == 3516 && _vc->getI("evt") == 151567){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-        //for(int i=0;i<_els.size();i++){
-        //    cout << "pt: " << _els[i]->pt() << endl;
-        //    cout << "eta: " << _els[i]->eta() << endl;
-        //    cout << "phi: " << _els[i]->phi() << endl;
-        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
-        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
-        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
-        //} 
+       for(int i=0;i<3;i++){            
+            cout << "----------------------------------" << endl;
+            cout << "pt: " << _vc->getF("LepGood_pt", i) << endl;
+            cout << "eta: " << _vc->getF("LepGood_eta", i) << endl;
+            cout << "phi: " << _vc->getF("LepGood_phi", i) << endl;
+            cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
+            cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
+            cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
+        }
+        cout << "met pt: " << _met->pt() << endl;
+        cout << "met phi: " << _met->phi() << endl;
    }
-   if(_vc->getI("lumi") == 3477 && _vc->getI("evt") == 147619){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-        //for(int i=0;i<_els.size();i++){
-        //    cout << "pt: " << _els[i]->pt() << endl;
-        //    cout << "eta: " << _els[i]->eta() << endl;
-        //    cout << "phi: " << _els[i]->phi() << endl;
-        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
-        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
-        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
-        //}  
-    }    
-    if(_vc->getI("lumi") == 3713 && _vc->getI("evt") == 171250){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-        //for(int i=0;i<_els.size();i++){
-        //    cout << "pt: " << _els[i]->pt() << endl;
-        //    cout << "eta: " << _els[i]->eta() << endl;
-        //    cout << "phi: " << _els[i]->phi() << endl;
-        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
-        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
-        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
-        //} 
-  }
-     
-    if(_vc->getI("lumi") == 1990 && _vc->getI("evt") == 198993){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-        //for(int i=0;i<_els.size();i++){
-        //    cout << "pt: " << _els[i]->pt() << endl;
-        //    cout << "eta: " << _els[i]->eta() << endl;
-        //   cout << "phi: " << _els[i]->phi() << endl;
-        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
-        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
-        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
-        //}
-    }
+    */
  
-    if(_vc->getI("lumi") == 2671 && _vc->getI("evt") == 67066){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-        //for(int i=0;i<_els.size();i++){
-        //    cout << "pt: " << _els[i]->pt() << endl;
-        //    cout << "eta: " << _els[i]->eta() << endl;
-        //    cout << "phi: " << _els[i]->phi() << endl;
-        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
-        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
-        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
-        //}   
-    }
-  
-    if(_vc->getI("lumi") == 2339 && _vc->getI("evt") == 33815){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-        //for(int i=0;i<_els.size();i++){
-        //    cout << "pt: " << _els[i]->pt() << endl;
-        //    cout << "eta: " << _els[i]->eta() << endl;
-        //    cout << "phi: " << _els[i]->phi() << endl;
-        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
-        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
-        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
-        //} 
-    } 
-    
-    if(_vc->getI("lumi") == 34 && _vc->getI("evt") == 3308){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-        //for(int i=0;i<_els.size();i++){
-        //    cout << "pt: " << _els[i]->pt() << endl;
-        //    cout << "eta: " << _els[i]->eta() << endl;
-        //    cout << "phi: " << _els[i]->phi() << endl;
-        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
-        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
-        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
-        // }
-    }   
-  
-    if(_vc->getI("lumi") == 724 && _vc->getI("evt") == 72384){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-        //for(int i=0;i<_els.size();i++){
-        //    cout << "pt: " << _els[i]->pt() << endl;
-        //    cout << "eta: " << _els[i]->eta() << endl;
-        //    cout << "phi: " << _els[i]->phi() << endl;
-        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
-        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
-        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
-        //}   
-    }
-  
-    if(_vc->getI("lumi") == 688 && _vc->getI("evt") == 68727){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-        //for(int i=0;i<_els.size();i++){
-        //    cout << "pt: " << _els[i]->pt() << endl;
-        //    cout << "eta: " << _els[i]->eta() << endl;
-        //    cout << "phi: " << _els[i]->phi() << endl;
-        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
-        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
-        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
-        //} 
-    } 
-    
-    if(_vc->getI("lumi") == 783 && _vc->getI("evt") == 78281){
-        cout << "event  " << _vc->getI("lumi") << " " << _vc->getI("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-        //for(int i=0;i<_els.size();i++){
-        //    cout << "pt: " << _els[i]->pt() << endl;
-        //    cout << "eta: " << _els[i]->eta() << endl;
-        //    cout << "phi: " << _els[i]->phi() << endl;
-        //    cout << "iso: " << _vc->getF("LepGood_relIso03", i) << endl;
-        //    cout << "pdgId: " << _vc->getI("LepGood_pdgId", i) << endl;
-        //    cout << "charge: " << _vc->getI("LepGood_charge", i) << endl;
-        //} 
-    }   
-       
-  */    
-    
-    
-    
-    
-    
     //select events with certain lepton multiplicity of all flavor combinations
     if(!makeCut<int>( _nEls + _nMus, _valCutLepMultiplicityBR, _cTypeLepMultiplicityBR, "lepton multiplicity", _upValCutLepMultiplicityBR ) ) return false;
 
- 
     //require at least 1 of the leptons to have higher pT than original cut
 //    bool has_hard_leg = hardLegSelection();
 //    if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
@@ -1199,7 +1066,7 @@ bool SUSY3L_sync::baseSelection(){
 
     //require minimum missing transvers energy (actually missing momentum)
     if(!makeCut<float>( _met->pt(), _valCutMETBR, _cTypeMETBR, "missing transverse energy", _upValCutMETBR) ) return false;
-
+ 
     //reject event if ossf lepton pair with low invariant mass is found
 //    bool has_low_mll = lowMllPair();
 //    if(!makeCut( !has_low_mll , "low mll rejection", "=") ) return false;
@@ -1218,7 +1085,7 @@ bool SUSY3L_sync::baseSelection(){
     else if(_pairmass == "on"){
         if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
     }
-
+ 
     return true;
 }
 
@@ -1290,7 +1157,7 @@ bool SUSY3L_sync::ZEventSelectionLoop(){
     counter("denominator", conZEvents);
 
     //Z mass
-    float Zmass = 91.1876;
+    float Zmass = 91.;//1876;
     float diff = 1000000;
     bool Zevent = false;
     float pt_3rdLeg = 0;
@@ -1305,7 +1172,8 @@ bool SUSY3L_sync::ZEventSelectionLoop(){
         cout << "----------------------" << endl;
     } 
     */
-     
+    
+    bool el_Zcand = false; 
     //loop over all possible combination of two electrons
     for(int ie1=0; ie1 < _nEls; ie1++){
         for(int ie2 = ie1; ie2 < _nEls; ie2++) {
@@ -1317,6 +1185,7 @@ bool SUSY3L_sync::ZEventSelectionLoop(){
             if((std::abs(Ztmp->mass()-Zmass) < _ZMassWindow) && (std::abs(Ztmp->mass()-Zmass)<diff) ) {
                 _Z = Ztmp;
                 diff = std::abs(_Z->mass()-Zmass);
+                el_Zcand = true;
             }
             else{
                 continue;
@@ -1340,24 +1209,22 @@ bool SUSY3L_sync::ZEventSelectionLoop(){
                 pt_3rdLeg = _mus[0]->pt();
                 phi_3rdLeg = _mus[0]->phi();
             }
-            //calculate transverse mass of 3rd lepton and met
-            mt = M_T(pt_3rdLeg, _vc->getF("met_pt"), phi_3rdLeg, _vc->getF("met_phi"));
-            //accept event if Z candidate exists and mt critirion is fulfilled
-            
-            //if(_vc->getI("lumi") == 4378 && _vc->getI("evt") == 37750){
-            //    cout << "el loop: "<<  ie1 << " " << ie2 << " " << Ztmp->mass() << endl;
-            //}
-
-            
-            if( (mt > _M_T_3rdLep_MET_cut) && (std::abs(_Z->mass()-Zmass) < _ZMassWindow)){
-                Zevent = true;
-            }
-            mt = 0.;
-            pt_3rdLeg = 0.;
-            phi_3rdLeg = 0.;
         }
+    }     
+
+    if(el_Zcand == true){
+        //calculate transverse mass of 3rd lepton and met
+        mt = M_T(pt_3rdLeg, _vc->getF("met_pt"), phi_3rdLeg, _vc->getF("met_phi"));
+        //accept event if Z candidate exists and mt critirion is fulfilled
+        if( (mt > _M_T_3rdLep_MET_cut) && (std::abs(_Z->mass()-Zmass) < _ZMassWindow)){
+        Zevent = true;
+        }
+        mt = 0.;
+        pt_3rdLeg = 0.;
+        phi_3rdLeg = 0.;
     }
 
+    bool mu_Zcand = false;
     //loop over all possible combination of two muons
     for(int im1=0; im1 < _nMus; im1++) {
         for(int im2 = im1; im2 < _nMus; im2++) {
@@ -1369,6 +1236,7 @@ bool SUSY3L_sync::ZEventSelectionLoop(){
             if((std::abs(Ztmp->mass()-Zmass) < _ZMassWindow) && (std::abs(Ztmp->mass()-Zmass)<diff) ) {
                 _Z = Ztmp;
                 diff = std::abs(_Z->mass()-Zmass);
+                mu_Zcand = true;
             }
             else{
                 continue;
@@ -1393,24 +1261,19 @@ bool SUSY3L_sync::ZEventSelectionLoop(){
                 pt_3rdLeg = _els[0]->pt();
                 phi_3rdLeg = _els[0]->phi();
             }        
-            //calculate transverse mass of 3rd lepton and met
-            mt = M_T(pt_3rdLeg, _vc->getF("met_pt"), phi_3rdLeg, _vc->getF("met_phi"));
-            //accept event if Z candidate exists and mt critirion is fulfilled
-            
-          //  if(_vc->getI("lumi") == 4378 && _vc->getI("evt") == 37750){
-          //      cout << "mu loop: " << im1 << " " << im2 << " " << Ztmp->mass() << endl;
-          //      cout << pt_3rdLeg << " " << phi_3rdLeg << endl;
-           //     cout << "mt: " << mt << endl; 
-           // }
-            
-            
-            if( (mt > _M_T_3rdLep_MET_cut) && (std::abs(_Z->mass()-Zmass) < _ZMassWindow)){
-                Zevent = true;
-            }
-            mt = 0.;
-            pt_3rdLeg = 0.;
-            phi_3rdLeg = 0.;
         }
+    }
+      
+    if(mu_Zcand == true){
+        //calculate transverse mass of 3rd lepton and met
+        mt = M_T(pt_3rdLeg, _vc->getF("met_pt"), phi_3rdLeg, _vc->getF("met_phi"));
+        //accept event if Z candidate exists and mt critirion is fulfilled
+        if( (mt > _M_T_3rdLep_MET_cut) && (std::abs(_Z->mass()-Zmass) < _ZMassWindow)){
+            Zevent = true;
+        }
+        mt = 0.;
+        pt_3rdLeg = 0.;
+        phi_3rdLeg = 0.;
     }
     
     return Zevent;
