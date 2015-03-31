@@ -194,8 +194,10 @@ Dataset::getNProcEvents(string path, string dir, string fileName, string sname) 
   string p= string(getenv ("MPAF"))+"/workdir";
   string NameF = p+"/"+dir+"/"+fileName+".root";
   if(path.find(":")!=(size_t)-1) NameF=path+"/"+fileName+".root";
-  if(dir.find("psi.ch")!=(size_t)-1)
+  if(dir.find("psi.ch")!=(size_t)-1){
+    //NameF="root://t3dcachedb.psi.ch:1094/"+dir+"/"+sname+".root";
     NameF="dcap://t3se01.psi.ch:22125/"+dir+"/"+sname+".root";
+  }
   TFile* file = TFile::Open( NameF.c_str() );
   
   TH1* htmp = (TH1*)file->Get( ("nProcEvts/"+sname).c_str());
@@ -281,9 +283,10 @@ Dataset::loadTree(string path, string dir, string sname, string objName) {
   string p= string(getenv ("MPAF"))+"/workdir";
   string NameF = p+"/data/"+dir+"/"+sname+".root"; 
   if(path.find(":")!=(size_t)-1) NameF=path+"/"+sname+".root";
-  if(dir.find("psi.ch")!=(size_t)-1)
+  if(dir.find("psi.ch")!=(size_t)-1){
+    //NameF="root://t3dcachedb.psi.ch:1094/"+dir+"/"+sname+".root";
     NameF="dcap://t3se01.psi.ch:22125/"+dir+"/"+sname+".root";
-
+  }
   datafile = TFile::Open(NameF.c_str());
   if(datafile==nullptr) { 
     cout<<" No such file "<<sname<<endl; return;
@@ -317,9 +320,10 @@ Dataset::loadHistos(string path, string dir, string filename) {
   
   string NameF = path+"/"+dir+"/"+filename+".root"; 
   if(path.find(":")!=(size_t)-1) NameF=dir+"/"+filename+".root";
-  if(dir.find("psi.ch")!=(size_t)-1)
+  if(dir.find("psi.ch")!=(size_t)-1){
+    //NameF="root://t3dcachedb.psi.ch:1094/"+dir+"/"+filename+".root";
     NameF="dcap://t3se01.psi.ch:22125/"+dir+"/"+filename+".root";
-
+  }
   datafile = TFile::Open(NameF.c_str());
 
   //scan the file to retrieve the histograms

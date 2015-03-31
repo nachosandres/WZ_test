@@ -694,211 +694,211 @@ void SUSY3L::setSignalRegion() {
     if(_SR == "SR00") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 60, "[]", 200 );
-        setCut("METSR", 50, "[]", 100 );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 50, "[[", 100 );
     }
  
     if(_SR == "SR01") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 60, "[]", 200 );
-        setCut("METSR", 100, "]]", 200 );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 100, "[[", 200 );
     }   
  
     if(_SR == "SR02") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 60, "[]", 200 );
-        setCut("METSR", 200, ">" );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 200, ">=" );
     } 
 
     if(_SR == "SR03") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 200, ">" );
-        setCut("METSR", 50, "[]", 100 );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 50, "[[", 100 );
     }
  
     if(_SR == "SR04") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 200, ">" );
-        setCut("METSR", 100, "]]", 200 );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 100, "[[", 200 );
     }   
  
     if(_SR == "SR05") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 200, ">" );
-        setCut("METSR", 200, ">" );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 200, ">=" );
     }
 
     if(_SR == "SR06") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 60, "[]", 200 );
-        setCut("METSR", 50, "[]", 100 );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 50, "[[", 100 );
     }
  
     if(_SR == "SR07") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 60, "[]", 200 );
-        setCut("METSR", 100, "]]", 200 );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 100, "[[", 200 );
     }   
  
     if(_SR == "SR08") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 60, "[]", 200 );
-        setCut("METSR", 200, ">" );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 200, ">=" );
     } 
 
     if(_SR == "SR09") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 200, ">" );
-        setCut("METSR", 50, "[]", 100 );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 50, "[[", 100 );
     }
  
     if(_SR == "SR10") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 200, ">" );
-        setCut("METSR", 100, "]]", 200 );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 100, "[[", 200 );
     }   
  
     if(_SR == "SR11") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 200, ">" );
-        setCut("METSR", 200, ">" );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 200, ">=" );
     }
 
     if(_SR == "SR12") {
         setCut("NBJetsSR", 2, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 60, "[]", 200 );
-        setCut("METSR", 50, "[]", 100 );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 50, "[[", 100 );
     }
  
     if(_SR == "SR13") {
         setCut("NBJetsSR", 2, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 60, "[]", 200 );
-        setCut("METSR", 100, "]]", 200 );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 100, "[[", 200 );
     }   
  
     if(_SR == "SR14") {
         setCut("NBJetsSR", 2, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 60, "[]", 200 );
-        setCut("METSR", 200, ">" );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 200, ">=" );
     } 
 
     if(_SR == "SR15") {
         setCut("NBJetsSR", 2, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 200, ">" );
-        setCut("METSR", 50, "[]", 100 );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 50, "[[", 100 );
     }
  
     if(_SR == "SR16") {
         setCut("NBJetsSR", 2, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 200, ">" );
-        setCut("METSR", 100, "]]", 200 );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 100, "[[", 200 );
     }   
  
     if(_SR == "SR17") {
         setCut("NBJetsSR", 2, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 200, ">" );
-        setCut("METSR", 200, ">" );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 200, ">=" );
     }
 
     if(_SR == "SR18") {
         setCut("NBJetsSR", 2, "=" );
         setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 60, "[]", 200 );
-        setCut("METSR", 50, "[]", 100 );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 50, "[[", 100 );
     }
  
     if(_SR == "SR19") {
         setCut("NBJetsSR", 2, "=" );
         setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 60, "[]", 200 );
-        setCut("METSR", 100, "]]", 200 );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 100, "[[", 200 );
     }   
  
     if(_SR == "SR20") {
         setCut("NBJetsSR", 2, "=" );
         setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 60, "[]", 200 );
-        setCut("METSR", 200, ">" );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 200, ">=" );
     } 
 
     if(_SR == "SR21") {
         setCut("NBJetsSR", 2, "=" );
         setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 200, ">" );
-        setCut("METSR", 50, "[]", 100 );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 50, "[[", 100 );
     }
  
     if(_SR == "SR22") {
         setCut("NBJetsSR", 2, "=" );
         setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 200, ">" );
-        setCut("METSR", 100, "]]", 200 );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 100, "[[", 200 );
     }   
  
     if(_SR == "SR23") {
         setCut("NBJetsSR", 2, "=" );
         setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 200, ">" );
-        setCut("METSR", 200, ">" );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 200, ">=" );
     }
 
     if(_SR == "SR24") {
         setCut("NBJetsSR", 3, ">=" );
         setCut("NJetsSR", 2, ">=" );
-        setCut("HTSR", 60, "[]", 200 );
-        setCut("METSR", 50, "[]", 100 );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 50, "[[", 100 );
     }
  
     if(_SR == "SR25") {
         setCut("NBJetsSR", 3, ">=" );
         setCut("NJetsSR", 2, ">=" );
-        setCut("HTSR", 60, "[]", 200 );
-        setCut("METSR", 100, "]]", 200 );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 100, "[[", 200 );
     }   
  
     if(_SR == "SR26") {
         setCut("NBJetsSR", 3, ">=" );
         setCut("NJetsSR", 2, ">=" );
-        setCut("HTSR", 60, "[]", 200 );
-        setCut("METSR", 200, ">" );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 200, ">=" );
     } 
 
     if(_SR == "SR27") {
         setCut("NBJetsSR", 3, ">=" );
         setCut("NJetsSR", 2, ">=" );
-        setCut("HTSR", 200, ">" );
-        setCut("METSR", 50, "[]", 100 );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 50, "[[", 100 );
     }
  
     if(_SR == "SR28") {
         setCut("NBJetsSR", 3, ">=" );
         setCut("NJetsSR", 2, ">=" );
-        setCut("HTSR", 200, ">" );
-        setCut("METSR", 100, "]]", 200 );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 100, "[[", 200 );
     }   
  
     if(_SR == "SR29") {
         setCut("NBJetsSR", 3, ">=" );
         setCut("NJetsSR", 2, ">=" );
-        setCut("HTSR", 200, ">" );
-        setCut("METSR", 200, ">" );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 200, ">=" );
     }
 
 }
@@ -1158,6 +1158,7 @@ bool SUSY3L::ZEventSelectionLoop(){
     float phi_3rdLeg = 0;
     float mt = 0;
 
+    bool el_Zcand = false;
     //loop over all possible combination of two electrons
     for(int ie1=0; ie1 < _nEls; ie1++){
         for(int ie2 = ie1; ie2 < _nEls; ie2++) {
@@ -1169,6 +1170,7 @@ bool SUSY3L::ZEventSelectionLoop(){
             if((std::abs(Ztmp->mass()-Zmass) < _ZMassWindow) && (std::abs(Ztmp->mass()-Zmass)<diff) ) {
                 _Z = Ztmp;
                 diff = std::abs(_Z->mass()-Zmass);
+                el_Zcand = true;
             }
             else{
                 continue;
@@ -1192,19 +1194,23 @@ bool SUSY3L::ZEventSelectionLoop(){
                 pt_3rdLeg = _mus[0]->pt();
                 phi_3rdLeg = _mus[0]->phi();
             }
-            //calculate transverse mass of 3rd lepton and met
-            mt = M_T(pt_3rdLeg, _vc->getD("met_pt"), phi_3rdLeg, _vc->getD("met_phi"));
-            //accept event if Z candidate exists and mt critirion is fulfilled
-                        
-            if( (mt > _M_T_3rdLep_MET_cut) && (std::abs(_Z->mass()-Zmass) < _ZMassWindow)){
-                Zevent = true;
-            }
-            mt = 0.;
-            pt_3rdLeg = 0.;
-            phi_3rdLeg = 0.;
         }
     }
+    
+    if(el_Zcand == true){
+            //calculate transverse mass of 3rd lepton and met
+        mt = M_T(pt_3rdLeg, _vc->getD("met_pt"), phi_3rdLeg, _vc->getD("met_phi"));
+        //accept event if Z candidate exists and mt critirion is fulfilled
+                    
+        if( (mt > _M_T_3rdLep_MET_cut) && (std::abs(_Z->mass()-Zmass) < _ZMassWindow)){
+            Zevent = true;
+        }
+        mt = 0.;
+        pt_3rdLeg = 0.;
+        phi_3rdLeg = 0.;
+    }
 
+    bool mu_Zcand = false;
     //loop over all possible combination of two muons
     for(int im1=0; im1 < _nMus; im1++) {
         for(int im2 = im1; im2 < _nMus; im2++) {
@@ -1240,17 +1246,20 @@ bool SUSY3L::ZEventSelectionLoop(){
                 pt_3rdLeg = _els[0]->pt();
                 phi_3rdLeg = _els[0]->phi();
             }        
-            //calculate transverse mass of 3rd lepton and met
-            mt = M_T(pt_3rdLeg, _vc->getD("met_pt"), phi_3rdLeg, _vc->getD("met_phi"));
-            //accept event if Z candidate exists and mt critirion is fulfilled
-            
-            if( (mt > _M_T_3rdLep_MET_cut) && (std::abs(_Z->mass()-Zmass) < _ZMassWindow)){
-                Zevent = true;
-            }
-            mt = 0.;
-            pt_3rdLeg = 0.;
-            phi_3rdLeg = 0.;
         }
+    }
+
+    if(mu_Zcand == true){
+        //calculate transverse mass of 3rd lepton and met
+        mt = M_T(pt_3rdLeg, _vc->getD("met_pt"), phi_3rdLeg, _vc->getD("met_phi"));
+        //accept event if Z candidate exists and mt critirion is fulfilled
+        
+        if( (mt > _M_T_3rdLep_MET_cut) && (std::abs(_Z->mass()-Zmass) < _ZMassWindow)){
+            Zevent = true;
+        }
+        mt = 0.;
+        pt_3rdLeg = 0.;
+        phi_3rdLeg = 0.;
     }
        
     return Zevent;

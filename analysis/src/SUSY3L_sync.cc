@@ -1217,7 +1217,7 @@ bool SUSY3L_sync::ZEventSelectionLoop(){
         mt = M_T(pt_3rdLeg, _vc->getF("met_pt"), phi_3rdLeg, _vc->getF("met_phi"));
         //accept event if Z candidate exists and mt critirion is fulfilled
         if( (mt > _M_T_3rdLep_MET_cut) && (std::abs(_Z->mass()-Zmass) < _ZMassWindow)){
-        Zevent = true;
+            Zevent = true;
         }
         mt = 0.;
         pt_3rdLeg = 0.;
