@@ -42,10 +42,6 @@ MPAF::~MPAF(){
      return: none
   */
 
-  _verbose->executionTime();
-  _verbose->writeLogFile();
-
-  delete _verbose;
   delete _vc;
   delete _hm;
   delete _dbm;
@@ -62,9 +58,6 @@ void MPAF::initialize(){
     return: none
   */
 
-  _verbose = new Verbose((VerbosityLevel) 0);
-  _verbose->Class("MPAF");
-
   _vc  = new VarClass();
   _hm  = new HistoManager();
   _dbm = new DataBaseManager();
@@ -72,18 +65,20 @@ void MPAF::initialize(){
   
   _fullSkim=true;
   _skim=false;
+
+  _nEvtMax=-1;
 }
 
 
 //____________________________________________________________________________
-void MPAF::modifyWeight() {
+//void MPAF::modifyWeight() {
   /*
     modifies the event weight for every entry in the tree
     parameters: none
     return: none
   */  
 
-}
+//}
 
 
 //____________________________________________________________________________
@@ -100,9 +95,6 @@ void MPAF::analyze(){
   float timeWall=0;
   int nE=0;
 
-  // load data from database
-  loadInput();
-
   // define and book all outputs
   defineOutput();
 
@@ -113,8 +105,6 @@ void MPAF::analyze(){
     _sampleName = _datasets[i]->getName();
     _inds = i;
     _isData = _datasets[i]->isPPcolDataset();
-
-    _verbose->sample(_sampleName);
 		
     _vc->reset();
     _vc->buildTree( _datasets[i]->getTree() , _skim&&_fullSkim );
@@ -126,7 +116,7 @@ void MPAF::analyze(){
 	
     // loop over entries
     unsigned int nEvts = _datasets[i]->getNEvents();
-    if(_nEvtMax!=-1) nEvts =  min(_nEvtMax+_nSkip,nEvts);
+    if(_nEvtMax!=(size_t)-1) nEvts =  min(_nEvtMax+_nSkip,nEvts);
     
     cout<<" Starting processing dataset : "<<_sampleName<<"  (running on "<<nEvts<<" events)"<<endl;
 
@@ -178,7 +168,7 @@ void MPAF::analyze(){
   cout<<"   CPU time = "<<timeCPU/nE<<" s/evt "<<"->"<<nE/timeCPU<<" Hz"<<endl<<endl;
 
   // write all outputs to disk
-  writeOutput();
+  internalWriteOutput();
 
   _au->printNumbers();
 
@@ -250,6 +240,9 @@ void MPAF::loadConfigurationFile(std::string cfg){
   for(MIPar::const_iterator it=_inputVars.begin(); 
       it!=_inputVars.end();it++) {
 
+    if(it->second.type==Parser::kAN) {
+      _className = it->second.val;
+    }
     if(it->second.type==Parser::kDir) {
       _inputPath=it->second.val;
     }
@@ -366,9 +359,7 @@ void MPAF::startExecution(std::string cfg){
 
   setConfigName(cfg);
   loadConfigurationFile(cfg);
-  //checkConfiguration(); // CH: uncomment again as soon as config file and things are fixed
-  //createOutputStructure();
-
+  
   std::vector<std::string> dsNames;
   for(unsigned int i=0; i<_datasets.size(); ++i) {
     dsNames.push_back(_datasets[i]->getName());
@@ -390,14 +381,14 @@ void MPAF::startExecution(std::string cfg){
 
 
 //____________________________________________________________________________
-void MPAF::defineOutput(){
+//void MPAF::defineOutput(){
   /*
     placeholder for defining all outputs per class
     parameters: none
     return: none
   */
 
-}
+//}
 
 
 //____________________________________________________________________________
@@ -415,14 +406,14 @@ void MPAF::fillEventList(){
 
 
 //____________________________________________________________________________
-void MPAF::loadInput(){
+//void MPAF::loadInput(){
   /*
     placeholder for loading input per class
     parameters: none
     return: none
   */
 
-}
+//}
 
 
 //____________________________________________________________________________
@@ -438,15 +429,23 @@ void MPAF::run(){
 
 
 //____________________________________________________________________________
-void MPAF::writeOutput(){
+//void MPAF::writeOutput(){
   /*
     placeholder for writing the output per class
     parameters: none
     return: none
   */
 
-}
+//}
 
+void MPAF::internalWriteOutput() {
+
+  writeOutput();
+  _hm->saveHistos (_className, _cfgName);
+  _au->saveNumbers(_className, _cfgName);
+
+
+}
 
 
 /*****************************************************************************
@@ -619,8 +618,8 @@ void MPAF::counter(string cName, int eCateg) {
 
 
 // skimming functions ======================================
-void MPAF::modifySkimming() {
-}
+// void MPAF::modifySkimming() {
+// }
 
 void MPAF::initSkimming() {
   

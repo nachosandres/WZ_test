@@ -329,7 +329,7 @@ Dataset::loadHistos(string path, string dir, string filename) {
   //scan the file to retrieve the histograms
   TIter nextkey(datafile->GetListOfKeys());
   TKey *key;
-  while (key = (TKey*)nextkey() ) {
+  while (key = ((TKey*)nextkey()) ) {
     TObject* obj = key->ReadObj(); 
     if( obj==nullptr ) continue;
       
@@ -341,9 +341,10 @@ Dataset::loadHistos(string path, string dir, string filename) {
 
     TIter nextkeyD( ((TDirectory*)obj)->GetListOfKeys() );
     TKey *keyD;
-    while (keyD = (TKey*)nextkeyD() ) {
+    while (keyD = ((TKey*)nextkeyD()) ) {
       TObject* objD = keyD->ReadObj(); 
       if( objD==nullptr ) continue;
+      
       if( ((string)(objD->IsA()->GetName())).substr(0,2)!=("TH") &&
 	  ((string)(objD->IsA()->GetName())).substr(0,2)!=("TP") ) continue;
 
@@ -359,9 +360,10 @@ Dataset::loadHistos(string path, string dir, string filename) {
 	  tmp[ sName ] = (TH1*)((TH1*)objD->Clone());
 	  _histos[ varName ]= tmp;
 	}
-	else
+	else {
 	  _histos[ varName ][ sName ]= (TH1*)((TH1*)objD->Clone());
-	  
+	}	  
+
 	break;
 	
       }
@@ -379,8 +381,9 @@ vector<string>
 Dataset::getObservables() {
   vector<string> names;
   for(map<string,map<string, TH1*> >::const_iterator it=_histos.begin();
-      it!=_histos.end();it++)
+      it!=_histos.end();it++) {
     names.push_back( it->first );
+  }
 
   return names;
 }

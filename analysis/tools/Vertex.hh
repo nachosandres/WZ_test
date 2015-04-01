@@ -5,6 +5,7 @@
 #include "analysis/utils/Counter.hh"
 
 #include <iostream>
+#include <ostream>
 
 #include <TVector3.h>
 
@@ -36,7 +37,7 @@ public:
   const TVector3&  pos() const { return _pos; }
     
   // Prints
-  void print( ostream& o ) const;
+  void print( std::ostream& o ) const;
 
   void setIncomingCand( Candidate*  cand );
   void setOutgoingCand( Candidate*  cand );

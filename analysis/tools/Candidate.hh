@@ -5,6 +5,8 @@
 #include "analysis/utils/Counter.hh"
 
 #include <vector>
+#include <iostream>
+#include <ostream>
 
 #include <TLorentzVector.h>
 #include <TVector3.h>
@@ -163,11 +165,11 @@ public:
   static void reset();
 
   // prints
-  void print(   ostream& o ) const;
-  void oneLine( ostream& o, bool ltx=false ) const;
+  void print(   std::ostream& o ) const;
+  void oneLine( std::ostream& o, bool ltx=false ) const;
   
   // global prints
-  static void basePrint( ostream& o );
+  static void basePrint( std::ostream& o );
   static const Candidate* base( size_t uid );
 
   // sorting

@@ -33,12 +33,9 @@ phys14limits::phys14limits(std::string cfg){
      return: none
   */
 	
-  _verbose->Class("phys14limits");
-  
   startExecution(cfg);
   initialize();
 
-  _mvaId=false;
 }
 
 
@@ -61,77 +58,77 @@ void phys14limits::initialize(){
     return: none
   */
 
-  _vc->registerVar("run"                          , "I" );
-  _vc->registerVar("lumi"                         , "I" );
-  _vc->registerVar("evt"                          , "I" );
-  _vc->registerVar("HLT_SingleMu"                 , "D" );
-  _vc->registerVar("HLT_MuEG"                     , "D" );
-  _vc->registerVar("HLT_TripleEl"                 , "D" );
-  _vc->registerVar("HLT_DoubleEl"                 , "D" );
-  _vc->registerVar("HLT_DoubleMu"                 , "D" );
-  _vc->registerVar("nVert"                        , "I" );
-  _vc->registerVar("nTrueInt"                     , "I" );
-  _vc->registerVar("nTrueInt"                     , "I" );
-  _vc->registerVar("nBJetPt40Medium"              , "I" );
-  _vc->registerVar("puWeight"                     , "D" );
-  _vc->registerVar("genWeight"                    , "D" );
-  _vc->registerVar("nLepGood"                     , "I" );
-  _vc->registerVar("LepGood_pt"                   , "AD");
-  _vc->registerVar("LepGood_eta"                  , "AD");
-  _vc->registerVar("LepGood_phi"                  , "AD");
-  _vc->registerVar("LepGood_charge"               , "AI");
-  _vc->registerVar("LepGood_tightCharge"          , "AI");
-  _vc->registerVar("LepGood_pdgId"                , "AI");
-  _vc->registerVar("LepGood_relIso03"             , "AD");
-  _vc->registerVar("LepGood_relIso04"             , "AD");
-  _vc->registerVar("LepGood_dxy"                  , "AD");
-  _vc->registerVar("LepGood_dz"                   , "AD");
-  _vc->registerVar("LepGood_sip3d"                , "AD");
-  _vc->registerVar("LepGood_pfMuonId"             , "AI");
-  _vc->registerVar("LepGood_tightId"              , "AI");
-  _vc->registerVar("LepGood_looseIdSusy"          , "AI");
-  _vc->registerVar("LepGood_convVeto"             , "AI");
-  _vc->registerVar("LepGood_lostHits"             , "AI");
-  _vc->registerVar("LepGood_eleCutIdCSA14_50ns_v1", "AI");
-  _vc->registerVar("LepGood_eleCutIdCSA14_50ns_v1", "AI");
-  _vc->registerVar("LepGood_eleCutId2012_full5x5" , "AI");
+  _vc->registerVar("run"                          );
+  _vc->registerVar("lumi"                         );
+  _vc->registerVar("evt"                          );
+  _vc->registerVar("HLT_SingleMu"                 );
+  _vc->registerVar("HLT_MuEG"                     );
+  _vc->registerVar("HLT_TripleEl"                 );
+  _vc->registerVar("HLT_DoubleEl"                 );
+  _vc->registerVar("HLT_DoubleMu"                 );
+  _vc->registerVar("nVert"                        );
+  _vc->registerVar("nTrueInt"                     );
+  _vc->registerVar("nTrueInt"                     );
+  _vc->registerVar("nBJetPt40Medium"              );
+  _vc->registerVar("puWeight"                     );
+  _vc->registerVar("genWeight"                    );
+  _vc->registerVar("nLepGood"                     );
+  _vc->registerVar("LepGood_pt"                   );
+  _vc->registerVar("LepGood_eta"                  );
+  _vc->registerVar("LepGood_phi"                  );
+  _vc->registerVar("LepGood_charge"               );
+  _vc->registerVar("LepGood_tightCharge"          );
+  _vc->registerVar("LepGood_pdgId"                );
+  _vc->registerVar("LepGood_relIso03"             );
+  _vc->registerVar("LepGood_relIso04"             );
+  _vc->registerVar("LepGood_dxy"                  );
+  _vc->registerVar("LepGood_dz"                   );
+  _vc->registerVar("LepGood_sip3d"                );
+  _vc->registerVar("LepGood_pfMuonId"             );
+  _vc->registerVar("LepGood_tightId"              );
+  _vc->registerVar("LepGood_looseIdSusy"          );
+  _vc->registerVar("LepGood_convVeto"             );
+  _vc->registerVar("LepGood_lostHits"             );
+  _vc->registerVar("LepGood_eleCutIdCSA14_50ns_v1");
+  _vc->registerVar("LepGood_eleCutIdCSA14_50ns_v1");
+  _vc->registerVar("LepGood_eleCutId2012_full5x5" );
   //_vc->registerVar("LepGood_mvaSusyPHYS14"        , "AF");
-  _vc->registerVar("LepGood_mvaSusy"              , "AD");
-  _vc->registerVar("LepGood_mcMatchId"            , "AI");
-  _vc->registerVar("LepGood_mcMatchAny"           , "AI");
-  _vc->registerVar("met_pt"                       , "D" );
-  _vc->registerVar("met_eta"                      , "D" );
-  _vc->registerVar("met_phi"                      , "D" );
-  _vc->registerVar("met_mass"                     , "D" );
-  _vc->registerVar("nJet25"                       , "I" );
-  _vc->registerVar("nJet40"                       , "I" );
-  _vc->registerVar("nJet"                         , "I" );
-  _vc->registerVar("Jet_id"                       , "AI");
-  _vc->registerVar("Jet_pt"                       , "AD");
-  _vc->registerVar("Jet_rawPt"                    , "AD");
-  _vc->registerVar("Jet_eta"                      , "AD");
-  _vc->registerVar("Jet_phi"                      , "AD");
-  _vc->registerVar("Jet_mass"                     , "AD");
-  _vc->registerVar("Jet_btagCSV"                  , "AD");
+  _vc->registerVar("LepGood_mvaSusy"              );
+  _vc->registerVar("LepGood_mcMatchId"            );
+  _vc->registerVar("LepGood_mcMatchAny"           );
+  _vc->registerVar("met_pt"                       );
+  _vc->registerVar("met_eta"                      );
+  _vc->registerVar("met_phi"                      );
+  _vc->registerVar("met_mass"                     );
+  _vc->registerVar("nJet25"                       );
+  _vc->registerVar("nJet40"                       );
+  _vc->registerVar("nJet"                         );
+  _vc->registerVar("Jet_id"                       );
+  _vc->registerVar("Jet_pt"                       );
+  _vc->registerVar("Jet_rawPt"                    );
+  _vc->registerVar("Jet_eta"                      );
+  _vc->registerVar("Jet_phi"                      );
+  _vc->registerVar("Jet_mass"                     );
+  _vc->registerVar("Jet_btagCSV"                  );
 
-  _vc->registerVar("htJet40j"                     , "D" );
-  _vc->registerVar("minMllAFAS"                   , "D" );
-  _vc->registerVar("minMllAFOS"                   , "D" );
-  _vc->registerVar("mZ1"                          , "D" );
-  _vc->registerVar("nLepGood10"                   , "I" );
+  _vc->registerVar("htJet40j"                     );
+  _vc->registerVar("minMllAFAS"                   );
+  _vc->registerVar("minMllAFOS"                   );
+  _vc->registerVar("mZ1"                          );
+  _vc->registerVar("nLepGood10"                   );
 
  
   //generator informations
-  _vc->registerVar("nGenPart"                     , "I" );
-  _vc->registerVar("GenPart_eta"                  , "AD");
-  _vc->registerVar("GenPart_phi"                  , "AD");
-  _vc->registerVar("GenPart_pdgId"                , "AI");
+  _vc->registerVar("nGenPart"                     );
+  _vc->registerVar("GenPart_eta"                  );
+  _vc->registerVar("GenPart_phi"                  );
+  _vc->registerVar("GenPart_pdgId"                );
   
   //bjets
-  _vc->registerVar("nBJetLoose25"                 , "I" );
-  _vc->registerVar("nBJetMedium40"                , "I" );
-  _vc->registerVar("nBJetMedium25"                , "I" );
-  _vc->registerVar("nSoftBJetMedium25"            , "I" );
+  _vc->registerVar("nBJetLoose25"                 );
+  _vc->registerVar("nBJetMedium40"                );
+  _vc->registerVar("nBJetMedium25"                );
+  _vc->registerVar("nSoftBJetMedium25"            );
 
   //additional counter categories
   _au->addCategory( kElId        , "el Id"        );
@@ -166,7 +163,7 @@ void phys14limits::modifyWeight() {
 	
   //_weight = (i->second)->Getweight();
   // if(_PUReweighting) 
-  //   _weight *= _vc->getD("puWeight");
+  //   _weight *= _vc->get("puWeight");
 
 }
 
@@ -259,15 +256,7 @@ void phys14limits::run(){
 	
   // sr event selection
   if(!srSelection()) return;
-	
-  //fillSkimTree();
-  //return;
-  // calling the modules
-  fillEventPlots("SR");
-  fillJetPlots("SR");
-  fillLeptonPlots("SR");
-
-	
+		
 }
 
 
@@ -340,19 +329,12 @@ void phys14limits::defineOutput(){
   _hm->addVariable("SR_JetCSVBTag",   50,   0.0,    1.0, "jet CSV B-Tag"        );
   _hm->addVariable("SR_JetPt"     , 1000,   0.0, 1000.0, "P_T(jet) [GeV]"       );
 
-}
 
-
-//____________________________________________________________________________
-void phys14limits::loadInput(){
-  /*
-    loads all input from the cache or from the database
-    parameters: none
-    return: none
-  */
-
-
-  // define function in MPAF for loading histograms, text files, histograms from database 
+  //fake background
+  _hm->addVariable("FakeBkgrd",10,0,10,"nBjet");
+  _hm->addVariable("FakeBkgrdUp",10,0,10,"nBjet");
+  _hm->addVariable("FakeBkgrdDown",10,0,10,"nBjet");
+  
 
 }
 
@@ -364,6 +346,8 @@ void phys14limits::writeOutput(){
     paramters: none
     return: none
   */
+
+
 
   _hm->saveHistos ("phys14limits", _cfgName);
   _au->saveNumbers("phys14limits", _cfgName);
@@ -395,7 +379,7 @@ bool phys14limits::bJetSelection(int jetIdx){
   counter("BJetDenominator", kBJetId);
 
   if(!makeCut(goodJetSelection(jetIdx), "jet Id", "=", kBJetId) ) return false;
-  if(!makeCut<float>(_vc->getD("Jet_btagCSV", jetIdx), 0.679, ">=", "csv btag selection", 0, kBJetId) ) return false;
+  if(!makeCut<float>(_vc->get("Jet_btagCSV", jetIdx), 0.679, ">=", "csv btag selection", 0, kBJetId) ) return false;
 
   return true;
 
@@ -410,27 +394,27 @@ void phys14limits::collectKinematicObjects(){
     return: none
   */
   
-  for(int i = 0; i < _vc->getI("nLepGood"); ++i){
+  for(int i = 0; i < _vc->get("nLepGood"); ++i){
 
     // electrons
-    if(std::abs(_vc->getI("LepGood_pdgId", i)) == 11){		  
+    if(std::abs(_vc->get("LepGood_pdgId", i)) == 11){		  
       if(electronSelection(i)) {
-        _els.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					  _vc->getD("LepGood_eta", i),
-					  _vc->getD("LepGood_phi", i),
-					  _vc->getI("LepGood_pdgId", i),
-					  _vc->getI("LepGood_charge", i),
+        _els.push_back( Candidate::create(_vc->get("LepGood_pt", i),
+					  _vc->get("LepGood_eta", i),
+					  _vc->get("LepGood_phi", i),
+					  _vc->get("LepGood_pdgId", i),
+					  _vc->get("LepGood_charge", i),
 					  0.0005) );
         _elIdx.push_back(i);
         _leps.push_back( _els[ _els.size()-1 ] );
         _lepIdx.push_back(i);
       }
       if(tightVetoElectronSelection(i)) {
-        _tVEls.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-                      _vc->getD("LepGood_eta", i),
-                      _vc->getD("LepGood_phi", i),
-                      _vc->getI("LepGood_pdgId", i),
-                      _vc->getI("LepGood_charge", i),
+        _tVEls.push_back( Candidate::create(_vc->get("LepGood_pt", i),
+                      _vc->get("LepGood_eta", i),
+                      _vc->get("LepGood_phi", i),
+                      _vc->get("LepGood_pdgId", i),
+                      _vc->get("LepGood_charge", i),
                       0.0005) );
         _tVElIdx.push_back(i);
         _tVLeps.push_back( _tVEls[ _tVEls.size()-1 ] );
@@ -438,11 +422,11 @@ void phys14limits::collectKinematicObjects(){
       }
       else {
         if(vetoElectronSelection(i))  {
-          _vEls.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					     _vc->getD("LepGood_eta", i),
-					     _vc->getD("LepGood_phi", i),
-					     _vc->getI("LepGood_pdgId", i),
-					     _vc->getI("LepGood_charge", i),
+          _vEls.push_back( Candidate::create(_vc->get("LepGood_pt", i),
+					     _vc->get("LepGood_eta", i),
+					     _vc->get("LepGood_phi", i),
+					     _vc->get("LepGood_pdgId", i),
+					     _vc->get("LepGood_charge", i),
 					     0.0005) );
           _vElIdx.push_back(i);
           _vLeps.push_back( _vEls[ _vEls.size()-1 ] );
@@ -452,24 +436,24 @@ void phys14limits::collectKinematicObjects(){
     }
 
     // muons
-    else if(std::abs(_vc->getI("LepGood_pdgId", i)) == 13){
+    else if(std::abs(_vc->get("LepGood_pdgId", i)) == 13){
       if(muonSelection(i)) {
-        _mus.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					  _vc->getD("LepGood_eta", i),
-					  _vc->getD("LepGood_phi", i),
-					  _vc->getI("LepGood_pdgId", i),
-					  _vc->getI("LepGood_charge", i),
+        _mus.push_back( Candidate::create(_vc->get("LepGood_pt", i),
+					  _vc->get("LepGood_eta", i),
+					  _vc->get("LepGood_phi", i),
+					  _vc->get("LepGood_pdgId", i),
+					  _vc->get("LepGood_charge", i),
 					  0.105) );
         _muIdx.push_back(i);
         _leps.push_back( _mus[ _mus.size()-1 ] );
         _lepIdx.push_back(i);
       }
       if(tightVetoMuonSelection(i)) {
-        _tVMus.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-                      _vc->getD("LepGood_eta", i),
-                      _vc->getD("LepGood_phi", i),
-                      _vc->getI("LepGood_pdgId", i),
-                      _vc->getI("LepGood_charge", i),
+        _tVMus.push_back( Candidate::create(_vc->get("LepGood_pt", i),
+                      _vc->get("LepGood_eta", i),
+                      _vc->get("LepGood_phi", i),
+                      _vc->get("LepGood_pdgId", i),
+                      _vc->get("LepGood_charge", i),
                       0.105) );
         _tVMuIdx.push_back(i);
         _tVLeps.push_back( _tVMus[ _tVMus.size()-1 ] );
@@ -477,11 +461,11 @@ void phys14limits::collectKinematicObjects(){
       }
       else {
         if(vetoMuonSelection(i))  {
-          _vMus.push_back( Candidate::create(_vc->getD("LepGood_pt", i),
-					     _vc->getD("LepGood_eta", i),
-					     _vc->getD("LepGood_phi", i),
-					     _vc->getI("LepGood_pdgId", i),
-					     _vc->getI("LepGood_charge", i),
+          _vMus.push_back( Candidate::create(_vc->get("LepGood_pt", i),
+					     _vc->get("LepGood_eta", i),
+					     _vc->get("LepGood_phi", i),
+					     _vc->get("LepGood_pdgId", i),
+					     _vc->get("LepGood_charge", i),
 					     0.105) );
           _vMuIdx.push_back(i);
           _vLeps.push_back( _vMus[ _vMus.size()-1 ] );
@@ -501,11 +485,11 @@ void phys14limits::collectKinematicObjects(){
   _nVLeps  = _vLeps .size();
   _nVMus   = _vMus  .size();
   
-  for(int i = 0; i < _vc->getI("nJet40"); ++i){
+  for(int i = 0; i < _vc->get("nJet40"); ++i){
     if(goodJetSelection(i)) {
-      _jets.push_back( Candidate::create(_vc->getD("Jet_pt", i),
-					 _vc->getD("Jet_eta", i),
-					 _vc->getD("Jet_phi", i) ) );
+      _jets.push_back( Candidate::create(_vc->get("Jet_pt", i),
+					 _vc->get("Jet_eta", i),
+					 _vc->get("Jet_phi", i) ) );
       
     }
   }
@@ -513,7 +497,7 @@ void phys14limits::collectKinematicObjects(){
   _nJets  = _jets.size();
 
   _HT  = HT();
-  _met = Candidate::create(_vc->getD("met_pt"), _vc->getD("met_phi") );
+  _met = Candidate::create(_vc->get("met_pt"), _vc->get("met_phi") );
 
 }
 
@@ -528,19 +512,19 @@ bool phys14limits::goodJetSelection(int jetIdx){
   
   counter("JetDenominator", kJetId);
 
-  if(!makeCut<float>(_vc->getD("Jet_pt", jetIdx)       , 40.0, ">", "pt selection" , 0, kJetId) ) return false;
-  //if(!makeCut<float>(fabs(_vc->getD("Jet_eta", jetIdx)),  2.4, "<", "eta selection", 0, kJetId) ) return false;
+  if(!makeCut<float>(_vc->get("Jet_pt", jetIdx)       , 40.0, ">", "pt selection" , 0, kJetId) ) return false;
+  //if(!makeCut<float>(fabs(_vc->get("Jet_eta", jetIdx)),  2.4, "<", "eta selection", 0, kJetId) ) return false;
 
   //// SF: here we require dR(j,every loose lepton) > 0.4
   //for(unsigned int il=0; il<_leps.size(); ++il){
-  //  float dr = KineUtils::dR(_leps[il]->eta(), _vc->getD("Jet_eta", jetIdx),
-  //  		     _leps[il]->phi(), _vc->getD("Jet_phi", jetIdx));
+  //  float dr = KineUtils::dR(_leps[il]->eta(), _vc->get("Jet_eta", jetIdx),
+  //  		     _leps[il]->phi(), _vc->get("Jet_phi", jetIdx));
   //  if(!makeCut<float>(dr, 0.4, ">", "dR selection", 0, kJetId) ) return false;
   //}
 
   //for(unsigned int il=0; il<_vLeps.size(); ++il){
-  //  float dr = KineUtils::dR(_vLeps[il]->eta(), _vc->getD("Jet_eta", jetIdx),
-  //  		     _vLeps[il]->phi(), _vc->getD("Jet_phi", jetIdx));
+  //  float dr = KineUtils::dR(_vLeps[il]->eta(), _vc->get("Jet_eta", jetIdx),
+  //  		     _vLeps[il]->phi(), _vc->get("Jet_phi", jetIdx));
   //  if(!makeCut<float>(dr, 0.4, ">", "dR selection", 0, kJetId) ) return false;
   //}
 
@@ -560,17 +544,17 @@ bool phys14limits::electronSelection(int elIdx){
 
   counter("ElectronDenominator", kElId);
   
-  if(!makeCut<float>( _vc->getD("LepGood_pt"      , elIdx)          , 10.   , ">"  , "pt selection"      , 0    , kElId)) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx))     , 2.4   , "<"  , "eta selection"     , 0    , kElId)) return false;
-  if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx))     , 1.4442, "[!]", "eta selection veto", 1.566, kElId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_sip3d"   , elIdx)          , 4     , "<"  , "SIP 3D"            , 0    , kElId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03", elIdx)          , 0.1   , "<"  , "Isolation "        , 0    , kElId)) return false;
-  if(!makeCut<float>(std::abs(_vc->getD("LepGood_dz" , elIdx))      , 0.1   , "<"  , "dz selection"      , 0    , kElId)) return false;
-  //if(!makeCut<int>( _vc->getI("LepGood_tightId", elIdx), 1     , ">=" , "POG CB WP-M Id "   , 0    , kElId)) return false;
-  if(!makeCut<int>( _vc->getI("LepGood_eleCutId2012_full5x5", elIdx), 3     , ">=" , "POG CB WP-M Id "   , 0    , kElId)) return false;
-  if(!makeCut<int>( _vc->getI("LepGood_tightCharge", elIdx)         , 1     , ">"  , "charge selection"  , 0    , kElId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_pt"      , elIdx)          , 10.   , ">"  , "pt selection"      , 0    , kElId)) return false;
+  if(!makeCut<float>( std::abs(_vc->get("LepGood_eta", elIdx))     , 2.4   , "<"  , "eta selection"     , 0    , kElId)) return false;
+  if(!makeCut<float>( std::abs(_vc->get("LepGood_eta", elIdx))     , 1.4442, "[!]", "eta selection veto", 1.566, kElId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_sip3d"   , elIdx)          , 4     , "<"  , "SIP 3D"            , 0    , kElId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_relIso03", elIdx)          , 0.1   , "<"  , "Isolation "        , 0    , kElId)) return false;
+  if(!makeCut<float>(std::abs(_vc->get("LepGood_dz" , elIdx))      , 0.1   , "<"  , "dz selection"      , 0    , kElId)) return false;
+  //if(!makeCut<int>( _vc->get("LepGood_tightId", elIdx), 1     , ">=" , "POG CB WP-M Id "   , 0    , kElId)) return false;
+  if(!makeCut<int>( _vc->get("LepGood_eleCutId2012_full5x5", elIdx), 3     , ">=" , "POG CB WP-M Id "   , 0    , kElId)) return false;
+  if(!makeCut<int>( _vc->get("LepGood_tightCharge", elIdx)         , 1     , ">"  , "charge selection"  , 0    , kElId)) return false;
   
-  bool conv= (_vc->getI("LepGood_convVeto", elIdx) > 0 && _vc->getI("LepGood_lostHits", elIdx)==0);
+  bool conv= (_vc->get("LepGood_convVeto", elIdx) > 0 && _vc->get("LepGood_lostHits", elIdx)==0);
   if(!makeCut( conv, "conversion rejection", "=", kElId)) return false;
   
   return true;
@@ -588,13 +572,13 @@ bool phys14limits::muonSelection(int muIdx){
 
   counter("MuonDenominator", kMuId);
   
-  if(!makeCut<float>( _vc->getD("LepGood_pt"      , muIdx)    , 10., ">", "pt selection"   , 0, kMuId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_eta"     , muIdx)    , 2.4, "<", "eta selection"  , 0, kMuId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_sip3d"   , muIdx)    , 4  , "<", "SIP 3D"         , 0, kMuId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03", muIdx)    , 0.1, "<", "Isolation "     , 0, kMuId)) return false;
-  if(!makeCut<float>(std::abs(_vc->getD("LepGood_dz", muIdx)) , 0.1, "<", "dz selection"  , 0, kMuId)) return false;
-  //if(!makeCut<int>( _vc->getI("LepGood_tightId"   , muIdx)    , 0  , ">", "POG CB WP-T Id", 0, kMuId)) return false;
-  if(!makeCut<int>( _vc->getI("LepGood_tightId"   , muIdx)    , 1  , ">=", "POG CB WP-T Id", 0, kMuId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_pt"      , muIdx)    , 10., ">", "pt selection"   , 0, kMuId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_eta"     , muIdx)    , 2.4, "<", "eta selection"  , 0, kMuId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_sip3d"   , muIdx)    , 4  , "<", "SIP 3D"         , 0, kMuId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_relIso03", muIdx)    , 0.1, "<", "Isolation "     , 0, kMuId)) return false;
+  if(!makeCut<float>(std::abs(_vc->get("LepGood_dz", muIdx)) , 0.1, "<", "dz selection"  , 0, kMuId)) return false;
+  //if(!makeCut<int>( _vc->get("LepGood_tightId"   , muIdx)    , 0  , ">", "POG CB WP-T Id", 0, kMuId)) return false;
+  if(!makeCut<int>( _vc->get("LepGood_tightId"   , muIdx)    , 1  , ">=", "POG CB WP-T Id", 0, kMuId)) return false;
   
   return true;
 
@@ -610,12 +594,12 @@ bool phys14limits::tightVetoElectronSelection(int elIdx){
 
   counter("TightVetoElectronDenominator", kTVElId);
 
-  if(!makeCut<float>( _vc->getD("LepGood_pt"         , elIdx), 10. , ">" , "pt selection"    , 0, kTVElId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_sip3d"      , elIdx),  4  , "<" , "SIP 3D"          , 0, kTVElId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03"   , elIdx),  0.1, "<" , "isolation"       , 0, kTVElId)) return false;
-  if(!makeCut<int>(   _vc->getI("LepGood_tightId"    , elIdx),  2  , ">=", "POG CB WP-M Id"  , 0, kTVElId)) return false;
-  if(!makeCut<int>(   _vc->getI("LepGood_tightCharge", elIdx),  1  , ">" , "charge selection", 0, kTVElId)) return false;
-  bool conv = (_vc->getI("LepGood_convVeto", elIdx) > 0 && _vc->getI("LepGood_lostHits", elIdx)==0);
+  if(!makeCut<float>( _vc->get("LepGood_pt"         , elIdx), 10. , ">" , "pt selection"    , 0, kTVElId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_sip3d"      , elIdx),  4  , "<" , "SIP 3D"          , 0, kTVElId)) return false;
+  //if(!makeCut<float>( _vc->get("LepGood_relIso03"   , elIdx),  0.1, "<" , "isolation"       , 0, kTVElId)) return false;
+  if(!makeCut<int>(   _vc->get("LepGood_tightId"    , elIdx),  2  , ">=", "POG CB WP-M Id"  , 0, kTVElId)) return false;
+  if(!makeCut<int>(   _vc->get("LepGood_tightCharge", elIdx),  1  , ">" , "charge selection", 0, kTVElId)) return false;
+  bool conv = (_vc->get("LepGood_convVeto", elIdx) > 0 && _vc->get("LepGood_lostHits", elIdx)==0);
   if(!makeCut( conv, "conversion rejection", "=", kTVElId)) return false;
   
   return true;
@@ -633,10 +617,10 @@ bool phys14limits::tightVetoMuonSelection(int muIdx){
 
   counter("TightVetoMuonDenominator", kTVMuId);
   
-  if(!makeCut<float>( _vc->getD("LepGood_pt"      , muIdx)    , 10., ">", "pt selection"  , 0, kTVMuId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_sip3d"   , muIdx)    , 4  , "<", "SIP 3D"        , 0, kTVMuId)) return false;
-  if(!makeCut<float>( _vc->getD("LepGood_relIso03", muIdx)    , 0.1, "<", "isolation"     , 0, kTVMuId)) return false;
-  if(!makeCut<int>(   _vc->getI("LepGood_tightId" , muIdx)    , 0  , ">", "POG CB WP-T Id", 0, kTVMuId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_pt"      , muIdx)    , 10., ">", "pt selection"  , 0, kTVMuId)) return false;
+  if(!makeCut<float>( _vc->get("LepGood_sip3d"   , muIdx)    , 4  , "<", "SIP 3D"        , 0, kTVMuId)) return false;
+  //if(!makeCut<float>( _vc->get("LepGood_relIso03", muIdx)    , 0.1, "<", "isolation"     , 0, kTVMuId)) return false;
+  if(!makeCut<int>(   _vc->get("LepGood_tightId" , muIdx)    , 0  , ">", "POG CB WP-T Id", 0, kTVMuId)) return false;
   
   return true;
 
@@ -653,11 +637,11 @@ bool phys14limits::vetoElectronSelection(int elIdx){
 
   counter("VetoElectronDenominator", kVElId);
 
-  //if(!makeCut<float>( _vc->getD("LepGood_pt", elIdx) , 10.0   , ">"  , "pt selection"    , 0    , kElVeto)) return false; 
-  //if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), 2.4   , "<"  , "eta selection"   , 0    , kElVeto)) return false;
-  //if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", elIdx)), 1.4442, "[!]", "eta selection veto" , 1.566, kElVeto)) return false;
+  //if(!makeCut<float>( _vc->get("LepGood_pt", elIdx) , 10.0   , ">"  , "pt selection"    , 0    , kElVeto)) return false; 
+  //if(!makeCut<float>( std::abs(_vc->get("LepGood_eta", elIdx)), 2.4   , "<"  , "eta selection"   , 0    , kElVeto)) return false;
+  //if(!makeCut<float>( std::abs(_vc->get("LepGood_eta", elIdx)), 1.4442, "[!]", "eta selection veto" , 1.566, kElVeto)) return false;
 
-  //bool conv = (_vc->getI("LepGood_convVeto", elIdx) > 0 && _vc->getI("LepGood_lostHits", elIdx)==0);
+  //bool conv = (_vc->get("LepGood_convVeto", elIdx) > 0 && _vc->get("LepGood_lostHits", elIdx)==0);
   //if(!makeCut( conv, "conversion rejection", "=", kElVeto)) return false;
 
   
@@ -676,13 +660,13 @@ bool phys14limits::vetoMuonSelection(int muIdx){
 
   counter("VetoMuonDenominator", kVMuId);
 
-  //if(!makeCut<float>(  _vc->getD("LepGood_pt"     , muIdx), 10.0, ">", "pt selection", 0, kMuVeto ) ) return false;
-  //if(!makeCut<float>( std::abs(_vc->getD("LepGood_eta", muIdx)), 2.4   , "<"  , "eta selection"   , 0    , kMuVeto)) return false;
+  //if(!makeCut<float>(  _vc->get("LepGood_pt"     , muIdx), 10.0, ">", "pt selection", 0, kMuVeto ) ) return false;
+  //if(!makeCut<float>( std::abs(_vc->get("LepGood_eta", muIdx)), 2.4   , "<"  , "eta selection"   , 0    , kMuVeto)) return false;
  
-  //if(!makeCut<int>(   _vc->getI("LepGood_pfMuonId", muIdx)     , 1   , "=", "POG Loose Id" , 0, kMuVeto) ) return false;
-  //if(!makeCut<float>( _vc->getD("LepGood_relIso03", muIdx)     , 0.2 , "<", "Isolation "   , 0, kMuVeto)) return false;
-  //if(!makeCut<float>( std::abs(_vc->getD("LepGood_dz" , muIdx)), 0.1 , "<", "dz selection" , 0, kMuVeto)) return false;
-  //if(!makeCut<float>( std::abs(_vc->getD("LepGood_dxy", muIdx)), 0.05, "<", "dxy selection", 0, kMuVeto)) return false;
+  //if(!makeCut<int>(   _vc->get("LepGood_pfMuonId", muIdx)     , 1   , "=", "POG Loose Id" , 0, kMuVeto) ) return false;
+  //if(!makeCut<float>( _vc->get("LepGood_relIso03", muIdx)     , 0.2 , "<", "Isolation "   , 0, kMuVeto)) return false;
+  //if(!makeCut<float>( std::abs(_vc->get("LepGood_dz" , muIdx)), 0.1 , "<", "dz selection" , 0, kMuVeto)) return false;
+  //if(!makeCut<float>( std::abs(_vc->get("LepGood_dxy", muIdx)), 0.05, "<", "dxy selection", 0, kMuVeto)) return false;
   
   return true;
 
@@ -1051,37 +1035,37 @@ bool phys14limits::cernSelection(){
 
 
 
-  if(!makeCut( _vc->getI("nLepGood10") >= 2, "new lepton multiplicity initial") ) return false;
-  if(!makeCut( _vc->getD("minMllAFAS") > 8, "new mll", "=") ) return false;
-  if(!makeCut( _vc->getD("minMllAFOS")<=0 || _vc->getD("minMllAFOS")>12, "new veto part 2", "=") ) return false;
-  if(!makeCut( _vc->getD("mZ1")<76 || _vc->getD("mZ1")>106, "new veto on 3 leptons"  , "=") ) return false;
-  if(!makeCut<int>( _vc->getI("nLepGood10"), 2, "=", "new lepton multiplicity") ) return false;
+  if(!makeCut( _vc->get("nLepGood10") >= 2, "new lepton multiplicity initial") ) return false;
+  if(!makeCut( _vc->get("minMllAFAS") > 8, "new mll", "=") ) return false;
+  if(!makeCut( _vc->get("minMllAFOS")<=0 || _vc->get("minMllAFOS")>12, "new veto part 2", "=") ) return false;
+  if(!makeCut( _vc->get("mZ1")<76 || _vc->get("mZ1")>106, "new veto on 3 leptons"  , "=") ) return false;
+  if(!makeCut<int>( _vc->get("nLepGood10"), 2, "=", "new lepton multiplicity") ) return false;
 
-  if(!makeCut( std::abs(_vc->getI("LepGood_pdgId", 0)) > 0 && 
-               std::abs(_vc->getI("LepGood_pdgId", 1)) > 0, "new sanity", "=")) return false;
-  if(!makeCut( _vc->getI("LepGood_charge",0)*_vc->getI("LepGood_charge",1) > 0, "new same-sign", "=") ) return false;
+  if(!makeCut( std::abs(_vc->get("LepGood_pdgId", 0)) > 0 && 
+               std::abs(_vc->get("LepGood_pdgId", 1)) > 0, "new sanity", "=")) return false;
+  if(!makeCut( _vc->get("LepGood_charge",0)*_vc->get("LepGood_charge",1) > 0, "new same-sign", "=") ) return false;
 
-  if(!makeCut( _vc->getD("LepGood_pt", 0) > 25 && 
-               _vc->getD("LepGood_pt", 1) > 25, "new pt hh", "=") ) return false;
-  if(!makeCut( std::max(_vc->getD("LepGood_relIso03",0),
-                        _vc->getD("LepGood_relIso03",1)) < 0.1, "new iso", "=")) return false;
-if(!makeCut( _vc ->getI("LepGood_tightId",0) > (std::abs(_vc->getI("LepGood_pdgId",0)) == 11) && 
-              _vc->getI("LepGood_tightId",1) > (std::abs(_vc->getI("LepGood_pdgId",1)) == 11) , "Id") ) return false;
-//  if(!makeCut( _vc->getI("LepGood_tightId", 0) > (std::abs(_vc->getI("LepGood_pdgId",0)) == 11) && 
-//               _vc->getI("LepGood_tightId", 1) > (std::abs(_vc->getI("LepGood_pdgId",1)) == 11), "new tight id", "=") ) return false; 
-  if(!makeCut( std::max(_vc->getD("LepGood_sip3d",0),
-                        _vc->getD("LepGood_sip3d",1)) < 4, "new sip", "=")) return false;
+  if(!makeCut( _vc->get("LepGood_pt", 0) > 25 && 
+               _vc->get("LepGood_pt", 1) > 25, "new pt hh", "=") ) return false;
+  if(!makeCut( std::max(_vc->get("LepGood_relIso03",0),
+                        _vc->get("LepGood_relIso03",1)) < 0.1, "new iso", "=")) return false;
+if(!makeCut( _vc ->get("LepGood_tightId",0) > (std::abs(_vc->get("LepGood_pdgId",0)) == 11) && 
+              _vc->get("LepGood_tightId",1) > (std::abs(_vc->get("LepGood_pdgId",1)) == 11) , "Id") ) return false;
+//  if(!makeCut( _vc->get("LepGood_tightId", 0) > (std::abs(_vc->get("LepGood_pdgId",0)) == 11) && 
+//               _vc->get("LepGood_tightId", 1) > (std::abs(_vc->get("LepGood_pdgId",1)) == 11), "new tight id", "=") ) return false; 
+  if(!makeCut( std::max(_vc->get("LepGood_sip3d",0),
+                        _vc->get("LepGood_sip3d",1)) < 4, "new sip", "=")) return false;
 
-  if(!makeCut((std::abs(_vc->getI("LepGood_pdgId",0)) == 13 || 
-    (_vc->getI("LepGood_convVeto",0) && _vc->getI("LepGood_lostHits",0) == 0 && _vc->getI("LepGood_tightCharge",0) > 1)) && 
-              (std::abs(_vc->getI("LepGood_pdgId",1)) == 13 || 
-    (_vc->getI("LepGood_convVeto",1) && _vc->getI("LepGood_lostHits",1) == 0 && _vc->getI("LepGood_tightCharge",1) > 1)), 
+  if(!makeCut((std::abs(_vc->get("LepGood_pdgId",0)) == 13 || 
+    (_vc->get("LepGood_convVeto",0) && _vc->get("LepGood_lostHits",0) == 0 && _vc->get("LepGood_tightCharge",0) > 1)) && 
+              (std::abs(_vc->get("LepGood_pdgId",1)) == 13 || 
+    (_vc->get("LepGood_convVeto",1) && _vc->get("LepGood_lostHits",1) == 0 && _vc->get("LepGood_tightCharge",1) > 1)), 
     "new conversion rejection", "=") ) return false;
 
-  if(!makeCut<float>( _vc->getD("htJet40j"), 80, ">", "SR HT selection"              ) ) return false;
-  if(!makeCut(_met->pt() > 30 || _vc->getD("htJet40j") > 500, "SR HT-MET condition", "="  ) ) return false;
-  if(!makeCut<int>(   _vc->getI("nJet40"), 2, ">=", "SR jet-multiplicity"            ) ) return false;
-  if(!makeCut<int>(   _vc->getI("nBJetMedium25"), 0, "=", "SR b-jet-multiplicity"   ) ) return false;
+  if(!makeCut<float>( _vc->get("htJet40j"), 80, ">", "SR HT selection"              ) ) return false;
+  if(!makeCut(_met->pt() > 30 || _vc->get("htJet40j") > 500, "SR HT-MET condition", "="  ) ) return false;
+  if(!makeCut<int>(   _vc->get("nJet40"), 2, ">=", "SR jet-multiplicity"            ) ) return false;
+  if(!makeCut<int>(   _vc->get("nBJetMedium25"), 0, "=", "SR b-jet-multiplicity"   ) ) return false;
 
   return true;
 }
@@ -1098,9 +1082,9 @@ bool phys14limits::baseSelection(){
 
 
   // triggers  
-  if(_isData && !makeCut<int>(_vc->getI("HLT_DoubleMu"), 1, "=", "HLT DoubleMu") ) return false;	
-  if(_isData && !makeCut<int>(_vc->getI("HLT_DoubleEl"), 1, "=", "HLT DoubleEl") ) return false;	
-  if(_isData && !makeCut<int>(_vc->getI("HLT_MuEG")    , 1, "=", "HLT MuEG"    ) ) return false;	
+  if(_isData && !makeCut<int>(_vc->get("HLT_DoubleMu"), 1, "=", "HLT DoubleMu") ) return false;	
+  if(_isData && !makeCut<int>(_vc->get("HLT_DoubleEl"), 1, "=", "HLT DoubleEl") ) return false;	
+  if(_isData && !makeCut<int>(_vc->get("HLT_MuEG")    , 1, "=", "HLT MuEG"    ) ) return false;	
 
   // lepton multiplicity
   if(!makeCut<int>( _nLeps, 2, ">=", "lepton multiplicity and flavor" ) ) return false; 
@@ -1146,13 +1130,13 @@ bool phys14limits::srSelection(){
   }
 
   if(!makeCut<int>( _nJets         , _valCutNJetsSR , _cTypeNJetsSR , "SR jet multiplicity"  , _upValCutNJetsSR ) ) return false;
-  if(!makeCut<int>(_vc->getI(_bvar), _valCutNBJetsSR, _cTypeNBJetsSR, "SR b-jet multiplicity", _upValCutNBJetsSR) ) return false;
+  if(!makeCut<int>(_vc->get(_bvar), _valCutNBJetsSR, _cTypeNBJetsSR, "SR b-jet multiplicity", _upValCutNBJetsSR) ) return false;
 
   //fillSkimTree(); 
 
   //if(!makeCut( mllVetoSelection(), "mll vetos", "=") ) return false;
 
-  cout << _vc->getI("run") << ":" << _vc->getI("lumi") << ":" << _vc->getI("evt") << endl;
+  cout << _vc->get("run") << ":" << _vc->get("lumi") << ":" << _vc->get("evt") << endl;
 
 
 
@@ -1222,31 +1206,31 @@ bool phys14limits::mllVetoSelection(){
 	does the three mll vetos for all selected leptons
   */
 
-//    if(_vc->getI("run") == 1 && _vc->getI("lumi") == 252987 && _vc->getI("evt") == 25298612){
+//    if(_vc->get("run") == 1 && _vc->get("lumi") == 252987 && _vc->get("evt") == 25298612){
 //DUMPVECTOR(_vLepIdx);
 //DUMPVECTOR(_tVLepIdx);
 //}
 
-//  if(_vc->getI("run") == 1 && _vc->getI("lumi") == 252987 && _vc->getI("evt") == 25298612)
+//  if(_vc->get("run") == 1 && _vc->get("lumi") == 252987 && _vc->get("evt") == 25298612)
 //     cout << "here in case 0" << endl;
 
   for(unsigned int i = 0; i < _tVLeps.size(); ++i){
-//    if(_vc->getI("run") == 1 && _vc->getI("lumi") == 252987 && _vc->getI("evt") == 25298612)
+//    if(_vc->get("run") == 1 && _vc->get("lumi") == 252987 && _vc->get("evt") == 25298612)
 //      cout << "looping on tV lepton " << i << " (" << _tVLeps[i]->pt() << "," << _tVLeps[i]->pdgId() << ", " << _tVLeps[i]->eta() << "," << _tVLeps[i]->phi() <<")" << endl;
     for(unsigned int j = i+1; j < _tVLeps.size(); ++j){
-//      if(_vc->getI("run") == 1 && _vc->getI("lumi") == 252987 && _vc->getI("evt") == 25298612)
+//      if(_vc->get("run") == 1 && _vc->get("lumi") == 252987 && _vc->get("evt") == 25298612)
 //        cout << "adding tV lepton " << j << " (" << _tVLeps[j]->pt() << "," << _tVLeps[j]->pdgId() << ")" << endl;
 //      if(mllLMGVeto(_tVLeps[i], _tVLeps[j])) return false;
       if(mllZVeto  (_tVLeps[i], _tVLeps[j])) return false;
     }
     for(unsigned int j = 0; j < _vLeps.size(); ++j){
-//      if(_vc->getI("run") == 1 && _vc->getI("lumi") == 252987 && _vc->getI("evt") == 25298612)
+//      if(_vc->get("run") == 1 && _vc->get("lumi") == 252987 && _vc->get("evt") == 25298612)
 //        cout << "adding v lepton " << j << " (" << _vLeps[j]->pt() << "," << _vLeps[j]->pdgId() << ", " << _vLeps[j]->eta() << "," << _vLeps[j]->phi() << ")" << endl;
       if(mllLMGVeto(_tVLeps[i], _vLeps[j])) return false;
 //      if(mllZVeto  (_tVLeps[i], _vLeps[j])) return false;
     }
   }
-//  if(_vc->getI("run") == 1 && _vc->getI("lumi") == 252987 && _vc->getI("evt") == 25298612)
+//  if(_vc->get("run") == 1 && _vc->get("lumi") == 252987 && _vc->get("evt") == 25298612)
 //     cout << "here in case 0" << endl;
 
   return true;
@@ -1382,14 +1366,14 @@ void phys14limits::fillTestPlots(){
   Z = Candidate::create( _first, _second);
   fill("test_MLL"       , Z->mass()          , _weight);
   fill("test_NJets"     , _nJets              , _weight);
-  fill("test_NBJets"    , _vc->getI(_bvar)    , _weight);
+  fill("test_NBJets"    , _vc->get(_bvar)    , _weight);
   fill("test_NLeps"     , _nEls+_nMus         , _weight);
-  fill("test_nLepGood10", _vc->getI("nLepGood10"), _weight);
-  fill("test_mZ1"       , _vc->getD("mZ1"), _weight);
-  fill("test_minMllAFOS", _vc->getD("minMllAFOS"), _weight);
-  fill("test_minMllAFAS", _vc->getD("minMllAFAS"), _weight);
-  fill("test_nJet40"   , _vc->getI("nJet40"), _weight);
-  fill("test_nBJetMedium25", _vc->getI("nBJetMedium25"), _weight);
+  fill("test_nLepGood10", _vc->get("nLepGood10"), _weight);
+  fill("test_mZ1"       , _vc->get("mZ1"), _weight);
+  fill("test_minMllAFOS", _vc->get("minMllAFOS"), _weight);
+  fill("test_minMllAFAS", _vc->get("minMllAFAS"), _weight);
+  fill("test_nJet40"   , _vc->get("nJet40"), _weight);
+  fill("test_nBJetMedium25", _vc->get("nBJetMedium25"), _weight);
 
 }
 
@@ -1410,12 +1394,12 @@ void phys14limits::fillEventPlots(std::string kr){
   //Z = Candidate::create( _first, _second);
   //fill(kr + "_MLL"       , Z->mass()          , _weight);
   //fill(kr + "_NBJets"    , _NumKinObj["BJet"]                               , _weight);
-  fill(kr + "_NBJets"    , _vc->getI(_bvar)    , _weight);
+  fill(kr + "_NBJets"    , _vc->get(_bvar)    , _weight);
   fill(kr + "_NElectrons", _nEls               , _weight);
   fill(kr + "_NJets"     , _nJets              , _weight);
   fill(kr + "_NLeps"     , _nLeps              , _weight);
   fill(kr + "_NMuons"    , _nMus               , _weight);
-  fill(kr + "_NVrtx"     , _vc->getI("nVert")  , _weight);
+  fill(kr + "_NVrtx"     , _vc->get("nVert")  , _weight);
 
 }
 
@@ -1429,18 +1413,18 @@ void phys14limits::fillLeptonPlots(std::string kr){
   */
 
   for(int i = 0; i < _nEls; ++i){
-    fill(kr + "_ElDXY", fabs(_vc->getD("LepGood_dxy"     , _elIdx[i])), _weight);
-    fill(kr + "_ElEta", fabs(_vc->getD("LepGood_eta"     , _elIdx[i])), _weight);
-    fill(kr + "_ElIso",      _vc->getD("LepGood_relIso03", _elIdx[i]) , _weight);
-    fill(kr + "_ElPt" ,      _vc->getD("LepGood_pt"      , _elIdx[i]) , _weight);
+    fill(kr + "_ElDXY", fabs(_vc->get("LepGood_dxy"     , _elIdx[i])), _weight);
+    fill(kr + "_ElEta", fabs(_vc->get("LepGood_eta"     , _elIdx[i])), _weight);
+    fill(kr + "_ElIso",      _vc->get("LepGood_relIso03", _elIdx[i]) , _weight);
+    fill(kr + "_ElPt" ,      _vc->get("LepGood_pt"      , _elIdx[i]) , _weight);
     fill(kr + "_ElMT" , Candidate::create( _els[i], _met) -> mass()   , _weight);
   }
 
   for(int i = 0; i < _nMus; ++i){
-    fill(kr + "_MuDXY", fabs(_vc->getD("LepGood_dxy"     , _muIdx[i])), _weight);
-    fill(kr + "_MuEta", fabs(_vc->getD("LepGood_eta"     , _muIdx[i])), _weight);
-    fill(kr + "_MuIso",      _vc->getD("LepGood_relIso03", _muIdx[i]) , _weight);
-    fill(kr + "_MuPt" ,      _vc->getD("LepGood_pt"      , _muIdx[i]) , _weight);
+    fill(kr + "_MuDXY", fabs(_vc->get("LepGood_dxy"     , _muIdx[i])), _weight);
+    fill(kr + "_MuEta", fabs(_vc->get("LepGood_eta"     , _muIdx[i])), _weight);
+    fill(kr + "_MuIso",      _vc->get("LepGood_relIso03", _muIdx[i]) , _weight);
+    fill(kr + "_MuPt" ,      _vc->get("LepGood_pt"      , _muIdx[i]) , _weight);
     fill(kr + "_MuMT" , Candidate::create( _mus[i], _met)->mass()     , _weight);
   }
 
@@ -1458,7 +1442,7 @@ void phys14limits::fillJetPlots(std::string kr){
 
   for(int i = 0; i < _nJets; ++i){
     fill(kr + "_JetPt"     , _jets[i]->pt(), _weight);
-    //    fill(kr + "_JetCSVBTag", _vc->getD("Jet_btagCSV", i)                                       , _weight);
+    //    fill(kr + "_JetCSVBTag", _vc->get("Jet_btagCSV", i)                                       , _weight);
   }
 
 }
@@ -1468,18 +1452,18 @@ void phys14limits::fillJetPlots(std::string kr){
 int phys14limits::genMatchCateg(const Candidate* cand) {
 
   //loop over the number of generated leptons
-  int nGenL = _vc->getI("nGenPart");
+  int nGenL = _vc->get("nGenPart");
 
   for(int ig = 0; ig < nGenL; ++ig) {
 	
-    if(Tools::dR(cand->eta(), _vc->getD("GenPart_eta", ig),
-		 cand->phi(), _vc->getD("GenPart_phi", ig) ) < 0.05 ) { //to be tuned
+    if(Tools::dR(cand->eta(), _vc->get("GenPart_eta", ig),
+		 cand->phi(), _vc->get("GenPart_phi", ig) ) < 0.05 ) { //to be tuned
 		  
-      // cout<<"matched lepton "<<cand.pdgId<<"  with "<<_vc->getI("GenPart_pdgId",ig)<<" !!! "<<cand.pt<<"  "<<cand.eta<<"   "<<cand.phi<<"   "<<Tools::dR(cand.eta, _vc->getD("GenPart_eta", ig),
-      // cand.phi, _vc->getD("GenPart_phi", ig) )<<endl;
+      // cout<<"matched lepton "<<cand.pdgId<<"  with "<<_vc->get("GenPart_pdgId",ig)<<" !!! "<<cand.pt<<"  "<<cand.eta<<"   "<<cand.phi<<"   "<<Tools::dR(cand.eta, _vc->get("GenPart_eta", ig),
+      // cand.phi, _vc->get("GenPart_phi", ig) )<<endl;
 		
-      if( (abs(cand->pdgId()) != abs(_vc->getI("GenPart_pdgId", ig)) ) && abs(_vc->getI("GenPart_pdgId", ig)) != 13 ) return kMisMatchPdgId; //taus are exception to the rule
-      else if(cand->pdgId()*_vc->getI("GenPart_pdgId",ig) < 0 ) return kMisChargePdgId; //+*- = -...
+      if( (abs(cand->pdgId()) != abs(_vc->get("GenPart_pdgId", ig)) ) && abs(_vc->get("GenPart_pdgId", ig)) != 13 ) return kMisMatchPdgId; //taus are exception to the rule
+      else if(cand->pdgId()*_vc->get("GenPart_pdgId",ig) < 0 ) return kMisChargePdgId; //+*- = -...
       else return kGenMatched;
 			
       break;
@@ -1529,4 +1513,3 @@ phys14limits::eventCharge(){
   return charge; 
 
 }
-

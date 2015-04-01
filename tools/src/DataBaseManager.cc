@@ -203,7 +203,7 @@ DataBaseManager::readDb(string key, string dbName) {
 void
 DataBaseManager::readDbHisto(string key, string dbName, string hname) {
 
-  string ndb= (string)getenv("MPAF")+"/database/"+dbName;
+  string ndb= (string)getenv("MPAF")+"/workdir/database/"+dbName;
   TFile* dbFile=new TFile( ndb.c_str() ,"READ");
  
   TObject* obj =dbFile->Get(hname.c_str());
@@ -259,7 +259,7 @@ DataBaseManager::readDbHisto(string key, string dbName, string hname) {
     for(int i=1;i<((TH3*)obj)->GetNbinsZ()+2;i++) {
       _cDbLim[key][2].push_back( ((TH3*)obj)->GetZaxis()->GetBinLowEdge(i) );
     }
-  
+ 
   //ok, now create and fill the DB
   
   //ugly :( why ROOT does not support vectors...
@@ -318,7 +318,7 @@ DataBaseManager::readDbHisto(string key, string dbName, string hname) {
 	 _mDBs[ key ]->SetBinContent( vbin, (i<nBx && j<nBy)?((TH2*)obj)->GetBinContent( vbin[0]+1, vbin[1]+1 ):1. );
 	 _mDBEHs[ key ]->SetBinContent( vbin, (i<nBx && j<nBy)?((TH2*)obj)->GetBinError( vbin[0]+1, vbin[1]+1 ):1. );
 	 _mDBELs[ key ]->SetBinContent( vbin, (i<nBx && j<nBy)?((TH2*)obj)->GetBinError( vbin[0]+1, vbin[1]+1 ):1. );
-
+	 
 	 idxs[  _mDBs[ key ]->GetBin( vbin ) ] = vbin;
        }//i    
      }//j
@@ -409,10 +409,11 @@ DataBaseManager::getDBValue(string key, float v1, float v2, float v3, float v4,
 
   for(size_t i=0;i<_cDbLim[key].size();i++) {
     if(vals[i]!=-1000000) {
-      vbin[i] = StatUtils::findBin( vals[i], _cDbLim[key][i] );
+      vbin[i] = StatUtils::findBin<float>( vals[i], _cDbLim[key][i] );
       if(vbin[i]==-1) return 1;
     }
   }
+
 
   return _mDBs[ key ]->GetBinContent( vbin );
 }
