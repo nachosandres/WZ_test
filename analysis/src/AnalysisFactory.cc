@@ -11,6 +11,7 @@ using namespace std;
 #include "analysis/src/phys14exerc.hh"
 #include "analysis/src/SUSY3L.hh"
 #include "analysis/src/SUSY3L_sync.hh"
+#include "analysis/src/SUSY3L_sync2.hh"
 #include "analysis/src/phys14limits.hh"
 #include "analysis/src/FakeRatio.hh"
 
@@ -39,6 +40,9 @@ AnalysisFactory::get(const string& analysis, const string& cfg) {
   }
   if(analysis=="SUSY3L_sync") {
     return new SUSY3L_sync(cfg);
+  }
+  if(analysis=="SUSY3L_sync2") {
+    return new SUSY3L_sync2(cfg);
   }
   if(analysis=="FakeRatio") {
     return new FakeRatio(cfg);

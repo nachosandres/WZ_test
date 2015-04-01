@@ -167,10 +167,10 @@
     md.anConf.addSample( "WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola"          ,  "non-prompt e/#mu"    , kRed      );
     
     //signal
-    md.anConf.addSample( "SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola" ,  "T1tttt (800) * 20 sig" , kViolet-3 );
-    md.anConf.addSample( "SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola" ,  "T1tttt (100) * 20 sig" , kViolet+3  );
-    md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"                    ,  "T5tttt (1000) * 20 sig" , kOrange-3 );
-    md.anConf.addSample( "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280"                    ,  "T5tttt (1300) * 20 sig" , kOrange+6 );
+    md.anConf.addSample( "SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola" ,  "T1tttt (800)" , kViolet-3 );
+    md.anConf.addSample( "SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola" ,  "T1tttt (100)" , kViolet+3  );
+    md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"                    ,  "T5tttt (1000)" , kOrange-3 );
+    md.anConf.addSample( "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280"                    ,  "T5tttt (1300)" , kOrange+6 );
     // }
     //===============================================================
 
