@@ -52,7 +52,8 @@ MODULES    := $(subst /module.mk,,$(wildcard */module.mk))
 
 __dummy := $(shell ./genmak.sh $(MODULES))
 
-all: lib pcm
+#all: lib pcm
+all: lib
 #prog
 
 # the source files to compile (without suffix)
