@@ -724,7 +724,7 @@ bool FakeRatio::tightElectronSelection(int elIdx){
   for(unsigned int il=elIdx+1; il<_vc->get("nLepGood"); ++il){
     float dr = KineUtils::dR(_vc->get("LepGood_eta", il), _vc->get("LepGood_eta", elIdx),
 			                 _vc->get("LepGood_phi", il), _vc->get("LepGood_phi", elIdx));
-    if(std::abs(_vc->get("LepGood_pdgId")) == 13 && !makeCut<float>(dr, 0.2, ">", "electron cleaning selection", 0, kTElId) ) return false;
+    if(std::abs(_vc->get("LepGood_pdgId")) == 13 && !makeCut<float>(dr, 0.05, ">", "electron cleaning selection", 0, kTElId) ) return false;
   }
   
   return true;
