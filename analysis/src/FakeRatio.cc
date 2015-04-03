@@ -203,13 +203,13 @@ void FakeRatio::run(){
 	
 	
   // measurement region selection
-  //if(!skimSelection()) return;
-  if(!genMRSelection()) return;
+  if(!skimSelection()) return;
+  //if(!genMRSelection()) return;
   //if(!mrSelection()) return;
 
   //skim right after the basic selection
-  //fillSkimTree();
-  //return;
+  fillSkimTree();
+  return;
  
 	
   // calling the modules
@@ -637,7 +637,14 @@ bool FakeRatio::looseElectronSelection(int elIdx){
   
   bool conv= (_vc->getI("LepGood_convVeto", elIdx) > 0 && _vc->getI("LepGood_lostHits", elIdx)==0);
   if(!makeCut( conv, "conversion rejection", "=", kLElId)) return false;
-  
+ 
+  // electron cleaning 
+  for(unsigned int il=elIdx+1; il<_vc->getI("nLepGood"); ++il){
+    float dr = KineUtils::dR(_vc->getD("LepGood_eta", il), _vc->getD("LepGood_eta", elIdx),
+                             _vc->getD("LepGood_phi", il), _vc->getD("LepGood_phi", elIdx));
+    if(std::abs(_vc->getI("LepGood_pdgId")) == 13 && !makeCut<float>(dr, 0.2, ">", "electron cleaning selection", 0, kLElId) ) return false;
+  } 
+ 
   return true;
 
 }
