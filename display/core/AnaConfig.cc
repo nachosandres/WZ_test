@@ -18,6 +18,8 @@ AnaConfig::AnaConfig() {
   _runNum=0;
 
   _testNMax=(size_t)-1;
+
+  _dbm = new DataBaseManager();
   
 }
 
@@ -156,13 +158,12 @@ void AnaConfig::configureLumi(map<string,float> LumisXS, map<string,float> Kfac,
 }
 
 void 
-AnaConfig::configureNames(string dir, string treeName, string fileList, string hName, bool multiple) {
+AnaConfig::configureNames(string dir, string treeName, string fileList, string hName) {
   _dir = dir;
   _treeName = treeName;
   vector<string> filenames = listFiles((string)(getenv("MPAF")) + "/workdir/stats/" + dir + "/", fileList + ".dat");
   _fileList = filenames;
   _hname = hName;
-  _mode = multiple;
 }
 
 
@@ -171,6 +172,11 @@ void AnaConfig::configureData(bool runfilter, int runnum,bool MCOnly ) {
   _runNum=runnum;
 
   _noData = MCOnly;
+}
+
+void
+AnaConfig::loadXSDB(string dbname) {
+  _dbm->loadDb("XSections",dbname);
 }
 
 void
@@ -231,19 +237,19 @@ AnaConfig::addSample( string str, string sname, int col) {
 
   if(sname=="data" || sname=="Data" || 
      str.find("DD")!=(size_t)-1 ||
-     (str.find("CS")!=(size_t)-1 && str.find("CSA14")==(size_t)-1)) {
+     (str.find("CS")!=(size_t)-1 && str.find("CSA14")==(size_t)-1) ) {
     
     _datasets[ sname ]->addSample(str, _path, _dir, _treeName,
 				  _hname,0., 1., 1., 1.);
-	_samplenames.push_back(str);
-	_dsnames.push_back(sname);
+    _samplenames.push_back(str);
+    _dsnames.push_back(sname);
  
     return;
   }
  
  
   //histogram analysis
-  if(!_skiptree){// && !_mode) {
+  if(!_skiptree){
 
     //find xSect/kFact/eqLumi
     float xSect=1.,kFact=1.,eqLumi=1.;
@@ -255,13 +261,20 @@ AnaConfig::addSample( string str, string sname, int col) {
 
     _itXS=_xSecLumis.find(tmpStr);
     if(_itXS==_xSecLumis.end()) {
-      xSect =1.; eqLumi=1.;
-      cout<<" Be careful, no specified "
-	  <<(string)((_useXSect)?" cross section":" equivalent luminosity")
-	  <<" for "<<str<<" , 1 by default *****======== "<<endl;
+      xSect =-1000; eqLumi=1.;
+      
+      //first, check if a Xsection DB is loaded
+      if(_dbm->exists("Xsections"))
+	xSect = _dbm->getDBValue("Xsections", tmpStr);
+      
+      if(xSect==-1000) { //nothing found in DB
+	cout<<" Be careful, no specified "
+	    <<(string)((_useXSect)?" cross section":" equivalent luminosity")
+	    <<" for "<<tmpStr<<" , 1 by default *****======== "<<endl;
     
-      //FIXME, set weight to 1 by compensating with the lumi
-      xSect =1.; eqLumi=1.;
+	//FIXME, set weight to 1 by compensating with the lumi
+	xSect =1.; eqLumi=1.;
+      }
     }
     else {
       if(_useXSect || _hname!="")
@@ -278,11 +291,10 @@ AnaConfig::addSample( string str, string sname, int col) {
     _datasets[ sname ]->addSample(str, _path, _dir, _treeName,
 				  _hname, xSect, kFact, _lumi,
 				  eqLumi);
-	_samplenames.push_back(str);
-	_dsnames.push_back(sname);
+    _samplenames.push_back(str);
+    _dsnames.push_back(sname);
   }
   else {
-    //if(!_mode) _datasets[ sname ]->addSample(str, "", "", "", "", 0, 0, 0, 0);
     _datasets[ sname ]->addSample(str, "", "", "", "", 0, 0, 0, 0);
     _samplenames.push_back(str);
     _dsnames.push_back(sname);
@@ -303,7 +315,6 @@ vector<string >
 AnaConfig::getDSNames() {
  
   vector<string> names;
-  
   for(_itNDS=_numDS.begin();_itNDS!=_numDS.end();_itNDS++) {
     _itDs = _datasets.find( _itNDS->second );
     names.push_back( _itDs->second->getName() );

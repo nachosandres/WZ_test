@@ -2380,14 +2380,17 @@ Display::computeSystematics(bool isProf, bool cumul) {
   //protection against no uncertainty on the plot
   if( (systs.size() + systsUp.size() + _mcSyst) == 0) {_addSyst=false; return;}
 
-  //First, rebin the histograms, they are already copied ==============
+  //First, weight and rebin the histograms, they are already copied ==============
   for(itSystM itS=systs.begin();itS!=systs.end();itS++) {
+    ((*itS).second)->Scale( _lumi );
     ((*itS).second)->Rebin(_gBin);
   }
   for(itSystM itS=systsUp.begin();itS!=systsUp.end();itS++) {
+    ((*itS).second)->Scale( _lumi );
     ((*itS).second)->Rebin(_gBin);
   }
   for(itSystM itS=systsDo.begin();itS!=systsDo.end();itS++) {
+    ((*itS).second)->Scale( _lumi );
     ((*itS).second)->Rebin(_gBin);
   }
   //==========================================
@@ -2534,14 +2537,17 @@ Display::computeSystematics(bool isProf, bool cumul) {
       for(size_t iv=nu;iv<(cumul?systU.size():(nu+1));iv++) {
 	
 	if( sU*sD > 0) { //same sign errors
-	  systU[iv] +=sU>=0?(sU>sD?(sU*sU):(sD*sD)):0;
-	  systD[iv] +=sU<0?(sU<sD?(sU*sU):(sD*sD)):0;
+	  systU[iv] +=sU>0?(sU>sD?(sU*sU):(sD*sD)):0;
+	  systD[iv] +=sU<=0?(sU<sD?(sU*sU):(sD*sD)):0;
 	}
 	else { //opposite sign errors
-	  systU[iv] +=sU>=0?(sU*sU):(sD*sD);
-	  systD[iv] +=sU<0?(sU*sU):(sD*sD);
+	  systU[iv] +=sU>0?(sU*sU):(sD*sD);
+	  systD[iv] +=sU<=0?(sU*sU):(sD*sD);
 	}
 	
+	// if(ib == 20)
+	//   cout<<_hMC->GetBinContent(ib)<<"   sU="<<sU<<"   sD="<<sD<<"   "<<_hMC->GetXaxis()->GetBinCenter(ib)<<" ===> sysU="<<sqrt(systU[iv])<<"   sysD="<<sqrt(systD[iv])<<endl;
+
 	if(ib==0 && _uncDet) {
 	  _uncNames[iv] = (*itS).first;
 	}
