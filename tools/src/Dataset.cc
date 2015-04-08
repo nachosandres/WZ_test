@@ -162,7 +162,7 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
 	
   //Looking for the tree if not data-driven
   int nEvent = 0; //MM: not really needed anymore, kept for now
-  int nProcEvt = 0; //getNProcEvents(path, dir, objName, sname);
+  int nProcEvt = (hname=="")?0:getNProcEvents(path, dir, objName, hname);
 
   Sample s(sname, nEvent, nProcEvt, xSect, kFact, eqLumi);
   _samples.push_back(s);
@@ -178,7 +178,7 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
 	<<" gen) "<<" / w (/pb-1) = "<<s.getLumW()<<endl;
   }
   else { //reading histograms
-    loadHistos(path, dir, objName);
+    loadHistos(path, dir, objName, hname);
 	  
     cout<<" Adding "<<sname<<"  to "<<_name
 	<<"   :  nEvt "<<nEvent<<" ("<<nProcEvt
@@ -189,16 +189,16 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
 
 
 int
-Dataset::getNProcEvents(string path, string dir, string fileName, string sname) {
+Dataset::getNProcEvents(string path, string dir, string fileName, string hname) {
 
   string p= string(getenv ("MPAF"))+"/workdir";
   string NameF = p+"/"+dir+"/"+fileName+".root";
   if(path.find(":")!=(size_t)-1) NameF=path+"/"+fileName+".root";
   if(dir.find("psi.ch")!=(size_t)-1)
-    NameF="dcap://t3se01.psi.ch:22125/"+dir+"/"+sname+".root";
+    NameF="dcap://t3se01.psi.ch:22125/"+dir+"/"+fileName+".root";
   TFile* file = TFile::Open( NameF.c_str() );
   
-  TH1* htmp = (TH1*)file->Get( ("nProcEvts/"+sname).c_str());
+  TH1* htmp = (TH1*)file->Get( hname.c_str() );
   
   int nProc=0;
   if(htmp) {
@@ -312,7 +312,7 @@ Dataset::loadTree(string path, string dir, string sname, string objName) {
 }
 
 void 
-Dataset::loadHistos(string path, string dir, string filename) {
+Dataset::loadHistos(string path, string dir, string filename, string hname) {
   TFile* datafile(nullptr);
   
   string NameF = path+"/"+dir+"/"+filename+".root"; 
@@ -350,7 +350,7 @@ Dataset::loadHistos(string path, string dir, string filename) {
 	if( sName!=_samples[is].getName() ) continue;
 	   
 	//histograms and not normalization file
-	if(varName=="nEvtProc") continue;
+	if(varName==hname) continue;
 	
 	if(_histos[ varName ].size()==0) { //initialization
 	  tmp[ sName ] = (TH1*)((TH1*)objD->Clone());

@@ -28,7 +28,7 @@ private:
 
   bool _recompute;
 
-  vector<string> _dsnames;
+  vector<string> _dsNames;
 
   string _currentObs;
 
@@ -41,6 +41,13 @@ private:
   HistoManager* _hm;
   DataBaseManager* _dbm;
   AnaUtils* _au;
+
+  //datacard stuff
+  std::map<std::string, bool> _isSigDs;
+  std::map<std::string, vector<string> > _nuisPars;
+  std::map<std::string, vector<string> > _nuisParVals;
+  std::map<std::string, string > _nuisParScheme;
+  std::map<std::string, vector<string> >::const_iterator _itNp;
 
 public:
 
@@ -78,7 +85,7 @@ public:
   void doPlot();
 
 
-  void makeDataCard(string dirname, string categ = "global", string cname = "");
+  // void makeSingleDataCard(string sigName, string categ = "global", string cname = "");
 
   void getStatistics(string categ="global");
   void drawStatistics(string categ="global", string cname="");
@@ -104,6 +111,13 @@ public:
   void getIntegral(float x1, float x2, float y1=0, float y2=1000000);
   
   void saveDataMCRatio(string fname,string hname);
+
+  //data cards
+  void addDataCardBkgSample(string sName, string dsName);
+  void addDataCardSigSample(string sName, string dsName);
+  void addNuisanceParameter(string npName, string dss, string scheme,  string vals) ;
+  vector<string> getExternalNuisanceParameters(string sigName);
+  void makeSingleDataCard(string sigName, string categ, string cname);
 
 
 

@@ -40,6 +40,7 @@ VarClass::VarClass() {
   */
 
   initIds();
+  _nextEvent=false;
 
   _su = new SystUtils();
 
@@ -923,147 +924,201 @@ float VarClass::get(string name, int idx) {
 ******************************************************************************
 *****************************************************************************/
 
-//____________________________________________________________________________
-// vector<float> VarClass::getUnivF(string name) {
-//   /*
-//     returns the value(s) of a variable as a float, i.e. converts it to a float
-//     if it ain't a float
-//     parameters: name (the variable)
-//     return: the value(s) as float(s)
-//   */
-
-//   vector<float> dummy;
-
-//   //if( tryType(name,"S"  ) ) return convertVal<string>(getS(name));
-//   //if( tryType(name,"B"  ) ) return convertVal<bool>(getB(name));
-//   if( tryType(name,"UI" ) ) return convertVal<unsigned int>(getUI(name));
-//   if( tryType(name,"UL" ) ) return convertVal<unsigned long>(getUL(name));
-//   if( tryType(name,"I"  ) ) return convertVal<int>(getI(name));
-//   if( tryType(name,"D"  ) ) return convertVal<double>(getD(name));
-//   if( tryType(name,"F"  ) ) return convertVal<float>(getF(name));
-//   //if( tryType(name,"VS" ) ) return convertVal<string>(getS(name));
-//   //if( tryType(name,"VB" ) ) return convertVal<bool>(getB(name));
-//   if( tryType(name,"VUI") ) return convertVal<unsigned int>(getUI(name));
-//   if( tryType(name,"VUL") ) return convertVal<unsigned long>(getUL(name));
-//   if( tryType(name,"VI" ) ) return convertVal<int>(getI(name));
-//   if( tryType(name,"VD" ) ) return convertVal<double>(getD(name));
-//   if( tryType(name,"VF" ) ) return convertVal<float>(getF(name));
-	
-//   return dummy;
-// }
-
-
 // //____________________________________________________________________________
-// void VarClass::reinitVars( string mvar ) {
-//   backPortVar(mvar);
-// }
+void VarClass::applySystVar(string name, int dir, string mvar, float mag, string type) {
 
-// //____________________________________________________________________________
-// void VarClass::applySystVar(string name, int dir, string mvar, float mag, string type) {
+  int id = varIds_.find(mvar)->second;
+  
+  backPortVar(id);
 
-//   backPortVar(mvar);
+  int cType = (id/oC_);
+  int tType = ((id-cType*oC_)/oT_);
+  int key = (id-cType*oC_ - tType*oT_);
+  
+  switch(cType) {
+  case kScalar:
+    switch(tType) {
+    case kInt:    {_su->systOp<int>(name, dir, type, varmI[key], mag); break;}
+    case kUInt:   {_su->systOp<unsigned int>(name, dir, type, varmUI[key], mag); break;}
+    case kULong:  {_su->systOp<unsigned long>(name, dir, type, varmUL[key], mag); break;}
+    case kDouble: {_su->systOp<double>(name, dir, type, varmD[key], mag); break;}
+    case kFloat:  {_su->systOp<float>(name, dir, type, varmF[key], mag); break;}
+      //   case kBool:   {_su->systOpA<bool>(name, dir, type, varmAB[key], mag); break;}
+    }
+  case kVector:
+    switch(tType) {
+    case kInt:    {_su->systOpV<int>(name, dir, type, varmVI[key], mag); break;}
+    case kUInt:   {_su->systOpV<unsigned int>(name, dir, type, varmVUI[key], mag); break;}
+    case kULong:  {_su->systOpV<unsigned long>(name, dir, type, varmVUL[key], mag); break;}
+    case kDouble: {_su->systOpV<double>(name, dir, type, varmVD[key], mag); break;}
+    case kFloat:  {_su->systOpV<float>(name, dir, type, varmVF[key], mag); break;}
+      //   case kBool:   {_su->systOpA<bool>(name, dir, type, varmAB[key], mag); break;}
+    }
+  case kArray:
+    switch(tType) {
+    case kInt:    {_su->systOpA<int>(name, dir, type, varmAI[key], mag); break;}
+    case kUInt:   {_su->systOpA<unsigned int>(name, dir, type, varmAUI[key], mag); break;}
+    case kULong:  {_su->systOpA<unsigned long>(name, dir, type, varmAUL[key], mag); break;}
+    case kDouble: {_su->systOpA<double>(name, dir, type, varmAD[key], mag); break;}
+    case kFloat:  {_su->systOpA<float>(name, dir, type, varmAF[key], mag); break;}
+      //   case kBool:   {_su->systOpA<bool>(name, dir, type, varmAB[key], mag); break;}
+    }
+  }
 
-//   //for(size_t iv=0;iv<mvars.size();iv++) {
-
-//     //if( tryType(mvar,"S") )    _su->systOp<string>(name, dir, type, varmS[mvar], mag);
-//     //if( tryType(mvar,"B") )    _su->systOp<bool>(name, dir, type, varmB[mvar], mag);
-//     if( tryType(mvar,"UI") )   _su->systOp<unsigned int>(name, dir, type, varmUI[mvar], mag);
-//     if( tryType(mvar,"UL") )   _su->systOp<unsigned long>(name, dir, type, varmUL[mvar], mag);
-//     if( tryType(mvar,"I") )    _su->systOp<int>(name, dir, type, varmI[mvar], mag);
-//     if( tryType(mvar,"D") )    _su->systOp<double>(name, dir, type, varmD[mvar], mag);
-//     if( tryType(mvar,"F") )    _su->systOp<float>(name, dir, type, varmF[mvar], mag);
-//     //if( tryType(mvar,"VS") )   _su->systOpV<string>(name, dir, type, varmVS[mvar], mag);
-//     //if( tryType(mvar,"VB") )   _su->systOpV<bool>(name, dir, type, varmVB[mvar], mag);
-//     if( tryType(mvar,"VUI") )  _su->systOpV<unsigned int>(name, dir, type, varmVUI[mvar], mag);
-//     if( tryType(mvar,"VUL") )  _su->systOpV<unsigned long>(name, dir, type, varmVUL[mvar], mag);
-//     if( tryType(mvar,"VI") )   _su->systOpV<int>(name, dir, type, varmVI[mvar], mag);
-//     if( tryType(mvar,"VD") )   _su->systOpV<double>(name, dir, type, varmVD[mvar], mag);
-//     if( tryType(mvar,"VF") )   _su->systOpV<float>(name, dir, type, varmVF[mvar], mag);
-
-// }
+}
 
 
 
 
 //____________________________________________________________________________
-// void
-// VarClass::applySystVar(string name, int dir, string mvar, vector<string> vars, string db, string type) {
-
-//   backPortVar(mvar);
-
-//   vector<vector<float> > vals; //order needed
-//   for(size_t iv=0;iv<vars.size();iv++) {
-//     vector<float> p = getUnivF( vars[iv] );
-//     vals.push_back(p);
-//   }
+void
+VarClass::applySystVar(string name, int dir, string mvar, vector<string> vars, string db, string type) {
   
-//   //if( tryType(mvar,"S") )   _su->systOp<string>(name, dir, type, varmS[mvar], db, vals);
-//   //if( tryType(mvar,"B") )   _su->systOp<bool>(name, dir, type, varmB[mvar], db, vals);
-//   if( tryType(mvar,"UI") )  _su->systOp<unsigned int>(name, dir, type, varmUI[mvar], db, vals);
-//   if( tryType(mvar,"UL") )  _su->systOp<unsigned long>(name, dir, type, varmUL[mvar], db, vals);
-//   if( tryType(mvar,"I") )   _su->systOp<int>(name, dir, type, varmI[mvar], db, vals);
-//   if( tryType(mvar,"D") )   _su->systOp<double>(name, dir, type, varmD[mvar], db, vals);
-//   if( tryType(mvar,"F") )   _su->systOp<float>(name, dir, type, varmF[mvar], db, vals);
-//   //if( tryType(mvar,"VS") )  _su->systOpV<string>(name, dir, type, varmVS[mvar], db, vals);
-//   //if( tryType(mvar,"VB") )  _su->systOpV<bool>(name, dir, type, varmVB[mvar], db, vals);
-//   if( tryType(mvar,"VUI") ) _su->systOpV<unsigned int>(name, dir, type, varmVUI[mvar], db, vals);
-//   if( tryType(mvar,"VUL") ) _su->systOpV<unsigned long>(name, dir, type, varmVUL[mvar], db, vals);
-//   if( tryType(mvar,"VI") )  _su->systOpV<int>(name, dir, type, varmVI[mvar], db, vals);
-//   if( tryType(mvar,"VD") )  _su->systOpV<double>(name, dir, type, varmVD[mvar], db, vals);
-//   if( tryType(mvar,"VF") )  _su->systOpV<float>(name, dir, type, varmVF[mvar], db, vals);
+  int id = varIds_.find(mvar)->second;
+  backPortVar(id);
   
-// }
+  vector<vector<float> > vals; //order needed
+  for(size_t iv=0;iv<vars.size();iv++) {
+    int vid = varIds_.find(vars[iv])->second;
+    vector<float> p = getUnivF( vid );
+    vals.push_back(p);
+  }
 
+  int cType = (id/oC_);
+  int tType = ((id-cType*oC_)/oT_);
+  int key = (id-cType*oC_ - tType*oT_);
+  
+  switch(cType) {
+  case kScalar:
+    switch(tType) {
+    case kInt:    {_su->systOp<int>(name, dir, type, varmI[key], db, vals); break;}
+    case kUInt:   {_su->systOp<unsigned int>(name, dir, type, varmUI[key], db, vals); break;}
+    case kULong:  {_su->systOp<unsigned long>(name, dir, type, varmUL[key], db, vals); break;}
+    case kDouble: {_su->systOp<double>(name, dir, type, varmD[key], db, vals); break;}
+    case kFloat:  {_su->systOp<float>(name, dir, type, varmF[key], db, vals); break;}
+      //   case kBool:   {_su->systOpA<bool>(name, dir, type, varmAB[key], db, vals); break;}
+    }
+  case kVector:
+    switch(tType) {
+    case kInt:    {_su->systOpV<int>(name, dir, type, varmVI[key], db, vals); break;}
+    case kUInt:   {_su->systOpV<unsigned int>(name, dir, type, varmVUI[key], db, vals); break;}
+    case kULong:  {_su->systOpV<unsigned long>(name, dir, type, varmVUL[key], db, vals); break;}
+    case kDouble: {_su->systOpV<double>(name, dir, type, varmVD[key], db, vals); break;}
+    case kFloat:  {_su->systOpV<float>(name, dir, type, varmVF[key], db, vals); break;}
+      //   case kBool:   {_su->systOpA<bool>(name, dir, type, varmAB[key], db, vals); break;}
+    }
+  case kArray:
+    switch(tType) {
+    case kInt:    {_su->systOpA<int>(name, dir, type, varmAI[key], db, vals); break;}
+    case kUInt:   {_su->systOpA<unsigned int>(name, dir, type, varmAUI[key], db, vals); break;}
+    case kULong:  {_su->systOpA<unsigned long>(name, dir, type, varmAUL[key], db, vals); break;}
+    case kDouble: {_su->systOpA<double>(name, dir, type, varmAD[key], db, vals); break;}
+    case kFloat:  {_su->systOpA<float>(name, dir, type, varmAF[key], db, vals); break;}
+      //   case kBool:   {_su->systOpA<bool>(name, dir, type, varmAB[key], db, vals); break;}
+    }
+  }
+
+}
 
 //____________________________________________________________________________
-// void
-// VarClass::applyWSystVar(string name, int dir, float& w, vector<fliats> vars, string db, string type) {
-  
-//   vector<vector<float> > vals; //order needed
-//   for(size_t iv=0;iv<vars.size();iv++) {
-//     vector<float> p = getUnivF( vars[iv] );
-//     vals.push_back(p);
-//   }
+void
+VarClass::backPortVar(int mvar) {
 
-//   _su->systOpW(name, dir, type , w, db, vals);
- 
-// }
+
+  int cType = (mvar/oC_);
+  int tType = ((mvar-cType*oC_)/oT_);
+  int key = (mvar-cType*oC_ - tType*oT_);
+  
+  switch(cType) {
+  case kScalar:
+    switch(tType) {
+    case kInt:    {storeAccess<int>(key, varmI, uncmI); break;}
+    case kUInt:   {storeAccess<unsigned int>(key, varmUI, uncmUI); break;}
+    case kULong:  {storeAccess<unsigned long>(key, varmUL, uncmUL); break;}
+    case kDouble: {storeAccess<double>(key, varmD, uncmD); break;}
+    case kFloat:  {storeAccess<float>(key, varmF, uncmF); break;}
+      //   case kBool:   {_su->systOpA<bool>(name, dir, type, varmAB[key], db, vals); break;}
+    }
+  case kVector:
+    switch(tType) {
+    case kInt:    {storeAccessV<int>(key, varmVI, uncmVI); break;}
+    case kUInt:   {storeAccessV<unsigned int>(key, varmVUI, uncmVUI); break;}
+    case kULong:  {storeAccessV<unsigned long>(key, varmVUL, uncmVUL); break;}
+    case kDouble: {storeAccessV<double>(key, varmVD, uncmVD); break;}
+    case kFloat:  {storeAccessV<float>(key, varmVF, uncmVF); break;}
+      //   case kBool:   {_su->systOpA<bool>(name, dir, type, varmAB[key], db, vals); break;}
+    }
+  case kArray:
+    switch(tType) {
+    case kInt:    {storeAccessA<int>(key, varmAI, uncmAI); break;}
+    case kUInt:   {storeAccessA<unsigned int>(key, varmAUI, uncmAUI); break;}
+    case kULong:  {storeAccessA<unsigned long>(key, varmAUL, uncmAUL); break;}
+    case kDouble: {storeAccessA<double>(key, varmAD, uncmAD); break;}
+    case kFloat:  {storeAccessA<float>(key, varmAF, uncmAF); break;}
+      //   case kBool:   {_su->systOpA<bool>(name, dir, type, varmAB[key], db, vals); break;}
+    }
+  }
+  
+}
 
 //____________________________________________________________________________
-// void
-// VarClass::backPortVar(string mvar) {
-
-//   if( tryType(mvar,"UI") ) storeAccess<unsigned int>(mvar, varmUI, uncmUI );
-//   if( tryType(mvar,"UL") ) storeAccess<unsigned long>(mvar, varmUL, uncmUL );
-//   if( tryType(mvar,"I") )  storeAccess<int>(mvar, varmI, uncmI );
-//   if( tryType(mvar,"D") )  storeAccess<double>(mvar, varmD, uncmD );
-//   if( tryType(mvar,"F") )  storeAccess<float>(mvar, varmF, uncmF );
-
-//   if( tryType(mvar,"VUI") ) storeAccessV<unsigned int>(mvar, varmVUI, uncmVUI );
-//   if( tryType(mvar,"VUL") ) storeAccessV<unsigned long>(mvar, varmVUL, uncmVUL );
-//   if( tryType(mvar,"VI") )  storeAccessV<int>(mvar, varmVI, uncmVI );
-//   if( tryType(mvar,"VD") )  storeAccessV<double>(mvar, varmVD, uncmVD );
-//   if( tryType(mvar,"VF") )  storeAccessV<float>(mvar, varmVF, uncmVF );
+void
+VarClass::backPortAllVars() {
   
-// }
+  multiReinit<unsigned int>( varmUI, uncmUI );
+  multiReinit<unsigned long>( varmUL, uncmUL );
+  multiReinit<int>( varmI, uncmI );
+  multiReinit<double>( varmD, uncmD );
+  multiReinit<float>( varmF, uncmF );
 
-//____________________________________________________________________________
-// void
-// VarClass::backPortAllVars() {
-  
-//   multiReinit<unsigned int>( varmUI, uncmUI );
-//   multiReinit<unsigned long>( varmUL, uncmUL );
-//   multiReinit<int>( varmI, uncmI );
-//   multiReinit<double>( varmD, uncmD );
-//   multiReinit<float>( varmF, uncmF );
+  multiReinitV<unsigned int>( varmVUI, uncmVUI );
+  multiReinitV<unsigned long>( varmVUL, uncmVUL );
+  multiReinitV<int>( varmVI, uncmVI );
+  multiReinitV<double>( varmVD, uncmVD );
+  multiReinitV<float>( varmVF, uncmVF );
 
-//   multiReinitV<unsigned int>( varmVUI, uncmVUI );
-//   multiReinitV<unsigned long>( varmVUL, uncmVUL );
-//   multiReinitV<int>( varmVI, uncmVI );
-//   multiReinitV<double>( varmVD, uncmVD );
-//   multiReinitV<float>( varmVF, uncmVF );
+  multiReinitA<unsigned int>( varmAUI, uncmVUI );
+  multiReinitA<unsigned long>( varmAUL, uncmVUL );
+  multiReinitA<int>( varmAI, uncmVI );
+  multiReinitA<double>( varmAD, uncmVD );
+  multiReinitA<float>( varmAF, uncmVF );
+
+}
+
+
+vector<float>
+VarClass::getUnivF(int id) {
   
-// }
+  vector<float> vf;
+
+  int cType = (id/oC_);
+  int tType = ((id-cType*oC_)/oT_);
+  int key = (id-cType*oC_ - tType*oT_);
+
+  switch(cType) {
+  case kScalar: {vf.push_back( findSVal(tType, key) ); break;}
+  case kVector: { 
+    switch(tType) {
+    case kInt:    { vf = convertVal<int>( (*varmVI[key]) ); break;}
+    case kUInt:   { vf = convertVal<unsigned int>( (*varmVUI[key]) ); break;}
+    case kULong:  { vf = convertVal<unsigned long>( (*varmVUL[key]) ); break;}
+    case kDouble: { vf = convertVal<double>( (*varmVD[key]) ); break;}
+    case kFloat:  { vf = convertVal<float>( (*varmVF[key]) ); break;}
+    }
+  }
+  case kArray: {
+    switch(tType) {
+    case kInt:    { vf = convertVal<int>(varmAI[key]); break;}
+    case kUInt:   { vf = convertVal<unsigned int>(varmAUI[key]); break;}
+    case kULong:  { vf = convertVal<unsigned long>(varmAUL[key]); break;}
+    case kDouble: { vf = convertVal<double>(varmAD[key]); break;}
+    case kFloat:  { vf = convertVal<float>(varmAF[key]); break;}
+    }
+  }
+  }
+    
+  return vf;
+}
 
 
 //____________________________________________________________________________
