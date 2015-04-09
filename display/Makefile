@@ -27,7 +27,9 @@ BINDIR     := $(MPAFDisplay)/bin
 
 # output directories
 SOLIBDIR   := $(MPAFDisplay)/lib
+PCMDIR     := $(MPAFDisplay)/lib
 SOLIB      := $(SOLIBDIR)/lib$(PKGNAME).$(DLLSUFFIX)
+PCM	   := $(PKGNAME)_dict_src_rdict.pcm
 
 __dummy := $(shell mkdir -p $(OBJDIR) $(DEPDIR) $(BINDIR) $(SOLIBDIR))
 
@@ -50,7 +52,12 @@ MODULES    := $(subst /module.mk,,$(wildcard */module.mk))
 
 __dummy := $(shell ./genmak.sh $(MODULES))
 
-#all: lib prog
+
+ifneq (,$(findstring v5,$(ROOTSYS)))
+all: lib
+else
+all: lib pcm
+endif
 
 # the source files to compile (without suffix)
 SRC        :=
@@ -88,7 +95,7 @@ LIBS       += $(ROOTGLIBS)
 .PRECIOUS: ${OBJDIR}/%.bin %SK.cc %.hh
 
 lib: $(SOLIB)
-
+pcm: $(PCM)
 prog: $(PROG)
 
 #gen.mk dictgen.mk: $(MODULES)
@@ -165,6 +172,12 @@ ${DEPDIR}/%.$(DEPSUFFIX): %.C
 # .bin building rules
 ${OBJDIR}/%.bin: ${OBJDIR}/%.$(OBJSUFFIX) | $(SOLIB)
 	$(CXX) $(CXXFLAGS) $(LIBS) -L$(SOLIBDIR) -l$(PKGNAME) $^ -o $@
+
+$(PCM): core/$(PKGNAME)_dict_core_rdict.pcm  #core/$(PKGNAME)_dict_core.cc
+	cp $< $(PCMDIR)/$@
+	cp $< $(MPAFDisplay)/$@
+#	cp $< $(PCMDIR)/$@
+
 
 ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)

@@ -1067,7 +1067,7 @@ vector<float>
 HistoUtils::getXbinning(TH1* h ) {
   vector<float> bins;
   for(int ib=1;ib<h->GetNbinsX()+2;ib++) {
-    bins.push_back( h->GetBinLowEdge(ib) );
+    bins.push_back( h->GetXaxis()->GetBinLowEdge(ib) );
   }
   return bins;
 }

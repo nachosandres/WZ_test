@@ -18,7 +18,7 @@
 #include "TFile.h"
 
 #include "tools/src/StatUtils.hh"
-//#include "tools/utils/SystUtils.hh"
+#include "tools/src/SystUtils.hh"
 #include "tools/src/Format.cc"
 #include "tools/src/Debug.cc"
 
@@ -58,6 +58,7 @@ typedef eIMap::iterator itEIMap;
 typedef eMap::iterator itEMap;
 typedef multiEMap::iterator itMultiEMap;
 
+
 class AnaUtils {
 
 private:
@@ -67,6 +68,12 @@ private:
   itEMap _itEMap;
   itEIMap _itEIMap;
   itMultiEMap _itMEMap;
+
+  //workflows
+  std::map<int, bool> _isWF;
+  int _nWF;
+  int _curWF;
+  std::map<string, int> _uncWorkflow;
 
   //Acceptance
   bool _inAcc;
@@ -81,7 +88,7 @@ private:
   vector<string> _dsNames;
   map<int,string> _catNames;
   map<int, vector<string> > _effNames; //key=categ
-  map<string, int>::const_iterator _itMSI;
+  //map<string, int>::const_iterator _itMSI;
   
   int _kGlobal;
   int _kMC;
@@ -146,6 +153,9 @@ public:
   void setSystematics( int ids, string cName, string sName, bool up, bool down, float w);
   void getYieldSysts(string ds, string lvl);
 
+  //workflows
+  void setWFEfficiencies(int ids, string cName, float w, bool acc);
+
   void saveNumbers(string anName, string conName);
   void printNumbers();
 
@@ -156,6 +166,10 @@ public:
   int findElement(vector<string> v, string e);
   //vector< pair<string, vector<vector<float> > > > retrieveNumbers(string anName, string conName, vector<string> snames, vector<string> dsnames, vector<float> weights);
   vector< pair<string, vector<vector<float> > > > retrieveNumbers(string categ, bool mcat, string cname);
+  bool getDataCardLines(map<string,string>& lines, vector<string> dsNames, string sigName,
+			string categ, string cname, int bin,
+			map<string,vector<string> > intNuisPars);
+ 
 
   //void drawNumbers();
   
@@ -171,6 +185,11 @@ public:
 
   void addDataset(string dsName); 
   void addCategory(int iCateg, string eCateg); 
+  void addWorkflow(int iCateg, string eCateg); 
+  void addAutoWorkflow(string eCateg);
+  void setCurrentWorkflow(int wf);
+  int getUncWorkflow(string wf);
+
   
 private:
 
@@ -178,13 +197,12 @@ private:
   bool internalMakeCut( T value, T valcut, string type, int ids, string cName, float w, T seccut=0, int eCateg=AUtils::kGlobal, bool noRegister=false) {
 
     bool accept;
-    
+
     if(!cbool(_skipCut, _nm1Var.find(cName)!=_nm1Var.end() ) )
       { return true; }
-
     if( !cbool( _invCut, _nm1Var.find(cName)!=_nm1Var.end() ) ) {
       type = invCut(type); }
- 
+   
     if(type=="<") {
       accept = (value < valcut);
     }
@@ -216,31 +234,38 @@ private:
       accept = !(value > valcut && value < seccut );
     }
     else {
-      accept =false; cout<<" Warning cut :"<<type<<":"<<" for selection "<<cName<<endl;
+      accept =false; //cout<<" Warning cut :"<<type<<":"<<" for selection "<<cName<<endl;
     }  
     
     ids+=1;//0 booked for MC
 
     if(!noRegister || _dsNames[ids].find("GHO")!=(size_t)-1 ) {
-      //deprecated to take into account uncertainties
-      // setEfficiency(ds, cName, w, accept);
-      // setSystematics( ds, cName,0,0, w);
- 
       if(_uncSrc=="") {
-	setEfficiency(ids, cName, eCateg, w, accept);
-	//setSystematics( ds, cName,_uncSrc,false,false, w);
+    	if(eCateg!=_kGlobal) { //eff categories
+    	  setEfficiency(ids, cName, eCateg, w, accept);
+    	}
+    	else {
+    	  if( _nWF==1 || _curWF!=-100) { //single workflow
+    	    setEfficiency(ids, cName, (_curWF==-100)?eCateg:_curWF , w, accept);
+    	  }
+    	  else {//multiple workflows
+    	    setWFEfficiencies(ids, cName, w, accept);
+    	  }
+    	}
       }
       else {
-	setEfficiency(ids, cName, eCateg, 0, accept);
-	// if(_uncDir==SystUtils::kUp)
-	//   setSystematics( ds, cName,_uncSrc,accept,false, w);
-	// else if(_uncDir==SystUtils::kDown)
-	//   setSystematics( ds, cName,_uncSrc,false,accept, w);
+    	//separated workflow for uncerrtainty
+    	  setEfficiency(ids, cName, _curWF, w, accept);
+    	//and systematic uncertainties
+    	if(_uncDir==SystUtils::kUp)
+    	  setSystematics( ids, cName,_uncSrc,accept,false, w);
+    	else if(_uncDir==SystUtils::kDown)
+    	  setSystematics( ids, cName,_uncSrc,false,accept, w);
       } 
     }
     if( _bkgFC.find(cName)!=_bkgFC.end() ) {
       accept=true;
-    }
+    }  
     return accept;
   };
 
@@ -251,6 +276,8 @@ private:
   vector<string> prepareDSNames(bool wMC, vector<int>& idxs);
   int getCategId(string categ);
   
+  void internalAddCategory(int iCateg, string eCateg); 
+
 
   ClassDef(AnaUtils,0)
   

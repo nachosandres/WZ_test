@@ -6,7 +6,7 @@ FILES += Debug
 FILES += KineUtils
 FILES += ObjectStore
 FILES += Parser
-FILES += SystUtils
+#FILES += SystUtils
 FILES += Tools
 FILES += Verbose
 

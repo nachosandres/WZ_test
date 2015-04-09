@@ -106,7 +106,7 @@ public:
 private:
 
   void loadTree(std::string path, std::string dir, std::string sname, std::string objName);
-  void loadHistos(std::string path, std::string dir, std::string sname);
+  void loadHistos(std::string path, std::string dir, std::string sname, std::string hname);
 
   // float computeWeight(float nEvts, float xSect, float kFact,
   // 		      float lumi, float& eqLumi);

@@ -29,7 +29,7 @@
 #include <TChain.h>
 #include <TLeaf.h>
 
-#include "analysis/utils/SystUtils.hh"
+#include "tools/src/SystUtils.hh"
 
 
 using namespace std;
@@ -108,7 +108,6 @@ private:
     vf.push_back((float) val);
 
     return vf;
-
   };
 
 
@@ -126,113 +125,153 @@ private:
       vf.push_back( (float) vals[iv] );
 
     return vf;
+  };
 
+  template<typename T> inline vector<float> convertVal(T* vals) {
+    
+    vector<float> vf(vals, vals + sizeof(vals) / sizeof(vals[0]));
+    return vf;
   };
 
  
   //____________________________________________________________________________
-  // template<typename T> inline void storeAccess(string mvar, map<string, T>& imap, map<string, T>& cmap) {
-  //   /*
-  //     adds a scalar variable mvar to the map cmap taking the values from imap, if it is 
-  //     not already registered; if it is, it reinitializes the map cmap for new events,
-  //     otherwise loads the value from cmap into imap
-  //     parameters: mvar, imap, cmap
-  //     return: none
-  //   */
+  template<typename T> inline void storeAccess(int mvar, map<int, T>& imap, map<int, T>& cmap) {
+    /*
+      adds a scalar variable mvar to the map cmap taking the values from imap, if it is 
+      not already registered; if it is, it reinitializes the map cmap for new events,
+      otherwise loads the value from cmap into imap
+      parameters: mvar, imap, cmap
+      return: none
+    */
 	
-  //   typename map<string, T>::const_iterator it = cmap.find(mvar);
-	
-  //   // variable not yet registered in the backup map	
-  //   if( it == cmap.end() ) { 
-  //     cmap[ mvar ] = imap[ mvar ];
-  //     //cout<<" init step : "<<mvar<<"  "<<cmap[ mvar ]<<" / "<<imap[ mvar ]<<"   "<<(&(cmap[ mvar ]))<<endl;
-  //   }
-	
-  //   // variable already registered, reinitialization
-  //   else { 
-  //     if(_nextEvent)
-  // 	cmap[ mvar ] = imap[ mvar ];
-  //     else
-  // 	imap[ mvar ] = cmap[ mvar ];
-  //     //cout<<" back step : "<<cmap[ mvar ]<<" / "<<imap[ mvar ]<<"   "<<(&(cmap[ mvar ]))<<endl;
-  //   }
-  // };
+    typename map<int, T>::const_iterator it = cmap.find(mvar);
+    if( it == cmap.end() ) { // variable not yet registered in the backup map	
+      cmap[ mvar ] = imap[ mvar ];
+      //cout<<" init step : "<<mvar<<"  "<<cmap[ mvar ]<<" / "<<imap[ mvar ]<<"   "<<(&(cmap[ mvar ]))<<endl;
+    }
+    else {   // variable already registered, reinitialization
+      if(_nextEvent)
+  	cmap[ mvar ] = imap[ mvar ];
+      else
+  	imap[ mvar ] = cmap[ mvar ];
+      //cout<<" back step : "<<cmap[ mvar ]<<" / "<<imap[ mvar ]<<"   "<<(&(cmap[ mvar ]))<<endl;
+    }
+  };
 
 
   //____________________________________________________________________________
-  // template<typename T> inline void storeAccessV(string mvar, map<string, vector<T>* >& imap, map<string, vector<T>* >& cmap) {
-  //   /*
-  //     adds a vector variable mvar to a map cmap with values taken from imap if it is 
-  //     not already registered; if it is, it reinitializes the vector in the map cmap 
-  //     for new events, otherwise it reinitializes the map imap with values from cmap
-  //     parameters: mvar (the variable), imap, cmap
-  //     return: none
-  //   */
+  template<typename T> inline void storeAccessV(int mvar, map<int, vector<T>* >& imap, map<int, vector<T>* >& cmap) {
+    /*
+      adds a vector variable mvar to a map cmap with values taken from imap if it is 
+      not already registered; if it is, it reinitializes the vector in the map cmap 
+      for new events, otherwise it reinitializes the map imap with values from cmap
+      parameters: mvar (the variable), imap, cmap
+      return: none
+    */
 	
-  //   typename map<string, vector<T>* >::const_iterator it = cmap.find(mvar);
+    typename map<int, vector<T>* >::const_iterator it = cmap.find(mvar);
 	
-  //   // variable not yet registered in the backup map
-  //   if( it == cmap.end() ) { 
+    if( it == cmap.end() ) {   // variable not yet registered in the backup map
+      cmap[ mvar ] = new vector<T>;
+      for(size_t ie = 0; ie < imap[mvar]->size(); ++ie) {
+  	cmap[ mvar ]->push_back( imap[ mvar ]->at(ie) );
+  	//cout << " init step : " << cmap[ mvar ]->at(ie) << " / " << imap[ mvar ]->at(ie) << endl;
+      }
+    }
+    else { // variable already registered, reinitialization 
+      // vector reinitialization (for new events)
+      if( _nextEvent ) {
+	cmap[ mvar ]->resize( imap[mvar]->size() );
+  	for(size_t ie = 0; ie < imap[mvar]->size(); ++ie)
+  	  cmap[ mvar ]->at(ie) = imap[ mvar ]->at(ie);
+      }
+      else {
+  	for(size_t ie = 0; ie < imap[mvar]->size(); ++ie) {
+  	  imap[ mvar ]->at(ie) = cmap[ mvar ]->at(ie);
+  	  //cout << " back step : " << cmap[ mvar ]->at(ie) << " / " << imap[ mvar ]->at(ie) << endl;
+  	}
+      }
+    }
+  };
+
+
+  template<typename T> inline void storeAccessA(int mvar, map<int, T* >& imap, map<int, vector<T>* >& cmap) {
+    
+    typename map<int, vector<T>* >::const_iterator it = cmap.find(mvar);
 	
-  //     cmap[ mvar ] = new vector<T>;
-  //     for(size_t ie = 0; ie < imap[mvar] -> size(); ++ie) {
-  // 	cmap[ mvar ] -> push_back( imap[ mvar ] -> at(ie) );
-  // 	//cout << " init step : " << cmap[ mvar ] -> at(ie) << " / " << imap[ mvar ] -> at(ie) << endl;
-  //     }
-  //   }
-	
-  //   // variable already registered, reinitialization
-  //   else { 
-	
-  //     // vector reinitialization (for new events)
-  //     if( _nextEvent ) {
-	
-  // 	cmap[ mvar ] -> resize( imap[mvar] -> size() );
-  // 	for(size_t ie = 0; ie < imap[mvar] -> size(); ++ie)
-  // 	  cmap[ mvar ] -> at(ie) = imap[ mvar ] -> at(ie);
-  //     }
-	
-  //     else {
-  // 	for(size_t ie = 0; ie < imap[mvar] -> size(); ++ie) {
-  // 	  imap[ mvar ] -> at(ie) = cmap[ mvar ] -> at(ie);
-  // 	  //cout << " back step : " << cmap[ mvar ] -> at(ie) << " / " << imap[ mvar ] -> at(ie) << endl;
-  // 	}
-  //     }
-  //   }
-  // };
+    int as = sizeof(imap[mvar])/sizeof(imap[mvar][0]);
+
+    if( it == cmap.end() ) {   // variable not yet registered in the backup map
+      cmap[mvar] = new vector<T>;
+      for(size_t ie=0;ie<as;++ie) {
+  	cmap[mvar]->push_back( imap[mvar][ie] );
+  	//cout << " init step : " << cmap[ mvar ]->at(ie) << " / " << imap[ mvar ]->at(ie) << endl;
+      }
+    }
+    else { // variable already registered, reinitialization 
+      // vector reinitialization (for new events)
+      if( _nextEvent ) {
+	cmap[ mvar ]->resize( as );
+  	for(size_t ie=0;ie<as;++ie)
+  	  cmap[mvar]->at(ie) = imap[mvar][ie];
+      }
+      else {
+  	for(size_t ie=0;ie<as;++ie) {
+  	  imap[mvar][ie] = cmap[ mvar]->at(ie);
+  	  //cout << " back step : " << cmap[ mvar ]->at(ie) << " / " << imap[ mvar ]->at(ie) << endl;
+  	}
+      }
+    }
+  };
 
 
   //____________________________________________________________________________
-  // template<typename T> inline void multiReinit(map<string, T>& imap, map<string, T> cmap) {
-  //   /*
-  //     reinitializes a map (imap) of scalars with values from another map (cmap)
-  //     parameters: imap, cmap
-  //     return: none
-  //   */
+  template<typename T> inline void multiReinit(map<int, T>& imap, map<int, T> cmap) {
+    /*
+      reinitializes a map (imap) of scalars with values from another map (cmap)
+      parameters: imap, cmap
+      return: none
+    */
 
-  //   typename map<string, T>::const_iterator it;
+    typename map<int, T>::const_iterator it;
 		
-  //   for(it = cmap.begin(); it != cmap.end(); ++it)
-  //     imap[ it -> first ] = it -> second;
+    for(it = cmap.begin(); it != cmap.end(); ++it)
+      imap[ it->first ] = it->second;
 		
-  // };
+  };
 
 
   // //____________________________________________________________________________
-  // template<typename T> inline void multiReinitV(map<string, vector<T>* >& imap, map<string, vector<T>* > cmap) {
-  //   /*
-  //     reinitializes a map (imap) of vectors with values from another map (cmap)
-  //     parameters: imap, cmap
-  //     return: none
-  //   */
+  template<typename T> inline void multiReinitV(map<int, vector<T>* >& imap, map<int, vector<T>* > cmap) {
+    /*
+      reinitializes a map (imap) of vectors with values from another map (cmap)
+      parameters: imap, cmap
+      return: none
+    */
 	
-  //   typename map<string, vector<T>* >::const_iterator it;
+    typename map<int, vector<T>* >::const_iterator it;
 	
-  //   for(it = cmap.begin(); it != cmap.end(); ++it)
-  //     for(size_t ie = 0; ie < imap[ it -> first ] -> size(); ++ie)
-  // 	imap[ it -> first ] -> at(ie) = it -> second -> at(ie);
+    for(it = cmap.begin(); it != cmap.end(); ++it)
+      for(size_t ie = 0; ie < imap[ it->first ]->size(); ++ie)
+  	imap[ it->first ]->at(ie) = it->second->at(ie);
 	
-  // };
+  };
+
+  template<typename T> inline void multiReinitA(map<int, T* >& imap, map<int, vector<T>* > cmap) {
+    /*
+      reinitializes a map (imap) of arrays with values from another map (cmap)
+      parameters: imap, cmap
+      return: none
+    */
+	
+    typename map<int, vector<T>* >::const_iterator it;
+	
+    for(it = cmap.begin(); it != cmap.end(); ++it) {
+      for(size_t ie = 0; ie <it->second->size(); ++ie)
+  	imap[ it->first ][ie]=it->second->at(ie);
+    }
+	
+  };
 
 
 
@@ -272,16 +311,16 @@ public:
   void registerBranch(TTree* tree, string name, string type, EDataType t, int len);
 	
   //systematic ucnertainty propagation     ============
-  // void applySystVar(string name, int dir, string mvar, float mag, string type);
-  // void applySystVar(string name, int dir, string mvar, vector<string> vars,
-  // 		    string db, string type);
-  // void backPortVar(string mvar);
-  // void backPortAllVars();
+  void applySystVar(string name, int dir, string mvar, float mag, string type);
+  void applySystVar(string name, int dir, string mvar, 
+		    vector<string> vars, string db, string type);
+  void backPortVar(int mvar);
+  void backPortAllVars();
   // void applyWSystVar(string name, int dir, float& w, vector<string> vars, 
   // 		     string db, string type);
 	
-  // void nextEvent(){ _nextEvent=true;};
-  // void sameEvent(){ _nextEvent=false;};
+  void nextEvent(){ _nextEvent=true;};
+  void sameEvent(){ _nextEvent=false;};
 	
   SystUtils* _su;
   //===================================================
@@ -301,6 +340,8 @@ private:
   float findSVal(int tType, int key);
   float findVVal(int tType, int key, int idx);
   float findAVal(int tType, int key, int idx);
+
+  vector<float> getUnivF(int id);
 
   // Public Members
 
@@ -408,6 +449,12 @@ private:
   mapVUL uncmVUL;
   mapVD uncmVD;
   mapVF uncmVF;
+
+  mapVI uncmAI;
+  mapVUI uncmAUI;
+  mapVUL uncmAUL;
+  mapVD uncmAD;
+  mapVF uncmAF;
 	
   mapI uncmI;
   mapUI uncmUI;
@@ -415,6 +462,8 @@ private:
   mapD uncmD;
   mapF uncmF;
 	
+
+
   bool _nextEvent;
 	
   //ClassDef(VarClass,0)

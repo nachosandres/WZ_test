@@ -81,6 +81,14 @@ public:
   };
 
   template <typename T> inline
+  void systOpA(string name, int dir, string type, T* &v, float x) {
+    int sa = sizeof(v)/sizeof(v[0]);
+    for(size_t i=0;i<sa;i++) {
+      systOp<T>(name, dir, type,v[i],x);
+    }
+  };
+
+  template <typename T> inline
   void systOp(string name, int dir, string type, T &v, string db,
 	      vector<vector<float> > vals) {
     
@@ -111,6 +119,24 @@ public:
 	p[iv]=vals[i];
       }
       systOp<T>(name, dir, type,(*v)[i] ,db, p);
+    }
+
+  };
+
+
+  template <typename T> inline 
+  void systOpA(string name, int dir, string type,
+	       T* &v, string db, 
+	       vector<vector<float> > vals) {
+
+    //splitting objects
+    vector<vector<float> > p(vals.size(),vector<float>(0,0));
+    int sa = sizeof(v)/sizeof(v[0]);
+    for(size_t i=0;i<sa;i++) {
+      for(size_t iv=0;iv<vals.size();iv++) {
+	p[iv]=vals[i];
+      }
+      systOp<T>(name, dir, type,v[i] ,db, p);
     }
 
   };

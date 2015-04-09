@@ -1,4 +1,4 @@
-#include "analysis/utils/SystUtils.hh"
+#include "tools/src/SystUtils.hh"
 
 using namespace std;
 
@@ -27,7 +27,6 @@ SystUtils::parseDb(string db) {
   while(ie!=(size_t)-1) {
     ie = db.find(":",ib);
     vars.push_back( db.substr(ib,ie) );
-    //cout<<vars.back()<<"  "<<ib<<"  "<<ie<<" / "<<(size_t)-1<<endl;
     ib = ie+1;
   }
 
@@ -115,8 +114,7 @@ SystUtils::systOpW(string name, int dir, string type, float& w,
 				      vals[5], vals[6], vals[7], vals[8], vals[9]);
   
   systOp<float>(name, dir, type, w, dw);
-  //cout<<" :=> "<<w<<endl;
-
+ 
 }
 
 void

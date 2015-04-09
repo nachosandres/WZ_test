@@ -64,23 +64,14 @@ public:
   MPAF(string cfg);
   virtual ~MPAF();
 
-  void checkResources();
-  void checkConfiguration();
-  void createOutputStructure();
-  void endExecution();
-  void loadConfigurationFile(std::string);
-  //void setAllModules(std::vector<std::string>);
-  void setConfigName(std::string);
-  void startExecution(std::string);
-
-  void analyze();	
-  void fillEventList();
-  void resetKinematicObjects();
-
   // Protected Non-Template Methods
 
 protected:
 
+  void startExecution(std::string);
+  
+  void fillEventList();
+  void resetKinematicObjects();
 
   // varclass functions
   void fill(string var, float valx, float weight = 1.);
@@ -112,12 +103,14 @@ protected:
   bool makeCut(T value, T valcut, string type, string cName, T seccut=0, int eCateg = AUtils::kGlobal) {
     return _au -> makeCut<T>(value, valcut, type, _inds
 			     , cName, _weight, seccut, eCateg, false);
-    //_SampleName+_SampleOption[_SampleName]
   };
   bool makeCut(bool decision, string cName, string type = "=", int eCateg = AUtils::kGlobal);
   void counter(string cName, int eCateg = AUtils::kGlobal);
 
-  int mucounter;
+  //workflows
+  void setWorkflow(int wf);
+  void addWorkflow(int wfid, string wfName);
+  int getCurrentWorkflow() {return _curWF;};
 
   // virtual functions for the classes
   virtual void defineOutput()=0;
@@ -133,16 +126,35 @@ protected:
   void fillSkimTree() { if(_skim) _skimTree->Fill();};
 
 
+  //uncertainties
+  void addSystSource(string name, int dir, string type, vector<string> modVar, 
+		     float val, bool wUnc=false);
+  void addSystSource(string name, int dir, string type, vector<string> modVar,
+		     string db, string hname, bool wUnc=false);
+  void addWSystSource(string name, int dir, string type, float val);
+  void addWSystSource(string name, int dir, string type, string db, string hname);
+
   // Private Non-Template Methods
 	
 private:
 
+  void loadConfigurationFile(std::string);
+  void setConfigName(std::string);
+  
   void initialize();
 
   void initSkimming();
   void finalizeSkimming();
 
   void internalWriteOutput();
+
+  void addWorkflowHistos();
+
+  void analyze();
+
+  void applySystVar(SystST s);
+  float applySystDBVar(SystST s, string db, float v1, float v2, float v3, float v4,
+		       float v5,float v6,float v7,float v8,float v9, float v10);
 
   // Protected Members
 
@@ -164,10 +176,9 @@ protected:
   std::string _cfgName;
 
   // Private Members
-
+ 
 private:
-  
-	
+   
   int _inds;
 
   unsigned int _nEvtMax; 
@@ -180,6 +191,8 @@ private:
   TTree* _skimTree;
   TH1I* _hnSkim;
 
+
+
   bool _skim;
   bool _fullSkim;
 
@@ -188,6 +201,22 @@ private:
   // Configuration File Variables
   std::string _inputPath;
   std::string _className;
+
+  std::string _hname;
+
+  //workflows
+  int _curWF;
+  std::map<int, std::string> _wfNames;
+  std::map<int, std::string>::const_iterator _itWF;
+
+  //uncertainties
+  string _unc;
+  bool _uncId;
+  int _uDir;
+  float _wBack;
+  vector<string> _uncSrcs;
+  vector<int> _uncDirs;
+  map<string, bool> _uType;
 
 };
 
