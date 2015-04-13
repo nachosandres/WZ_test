@@ -10,6 +10,7 @@ using namespace std;
 #include "analysis/src/synchRA5.hh"
 #include "analysis/src/phys14exerc.hh"
 #include "analysis/src/SUSY3L.hh"
+#include "analysis/src/SUSY3L_FR.hh"
 #include "analysis/src/SUSY3L_sync.hh"
 #include "analysis/src/SUSY3L_sync2.hh"
 #include "analysis/src/phys14limits.hh"
@@ -38,6 +39,9 @@ AnalysisFactory::get(const string& analysis, const string& cfg) {
   }
   if(analysis=="SUSY3L") {
     return new SUSY3L(cfg);
+  }
+  if(analysis=="SUSY3L_FR") {
+    return new SUSY3L_FR(cfg);
   }
   if(analysis=="SUSY3L_sync") {
     return new SUSY3L_sync(cfg);
