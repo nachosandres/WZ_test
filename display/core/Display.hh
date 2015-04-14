@@ -175,6 +175,8 @@ private:
   bool _prel;
   bool _cumulative;
   
+  vector<string> _cNames;
+
 
 public:
 
