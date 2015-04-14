@@ -171,7 +171,7 @@ void AnaUtils::setEffFromStat(int ids, string cName, int iCateg, float sw, float
 
     _effMap[ _kMC ][ iCateg ][ cName ] = tmp;
   }
-  //cout<<iCateg<<"  "<<ids<<"  "<<_effMap[ ids ][ iCateg ].size()<<endl;
+
   setNumFromStat(ids, cName, iCateg, sw, esw, ngen );
 
 }
@@ -372,7 +372,8 @@ AnaUtils::getYieldSysts(string ds, string lvl) {
 
 
 
-void AnaUtils::saveNumbers(string anName, string conName) {
+void 
+AnaUtils::saveNumbers(string anName, string conName) {
 
   // testing write permission on output directory
   cout << endl;
@@ -457,7 +458,7 @@ void AnaUtils::saveNumbers(string anName, string conName) {
 	  itm = _effMap[ids][icat].find( _itEIMap -> first );
 	  
 	  if(itm == _effMap[ids][icat].end()) 
-	    ofile << "\t 0 0\t 0 ";
+	    ofile << "\t0\t0\t0 ";
 	  //ofile << " - ";
 
 	  else {
@@ -608,10 +609,6 @@ AnaUtils::getCategId(string categ) {
       break;
     }
   }
-
-  // if(icat==0) {//by pass for adding a category MM: FIXME
-  //   addCategory( _catNames.size(), categ);
-  // }
 
   return icat;
 }
@@ -785,12 +782,11 @@ AnaUtils::retrieveNumbers(string categ, int mcat, string cname) {
   vector<int> catIds;
 
   //MM some fixme needed
-  if(mcat!=kGeneral) { //monocateg for datacards
+  if(mcat!=kGeneral) { //monocateg for datacards, multicateg for drawstatistics
     for(map<int, vector<string> >::const_iterator itc=_effNames.begin();
 	itc!=_effNames.end();itc++) { //cuts for uni-categ
 
       string catname = _catNames[ itc->first ];
-      //cout<<catname<<"   "<<mcat<<"   "<<categ<<"   "<<cname<<endl;
       if(mcat==kMulti) {
 	if(itc->first==_kGlobal || catname.find(categ)==string::npos ) continue;
 	if(catname.find(categ)==string::npos ) continue;     
@@ -843,7 +839,6 @@ AnaUtils::retrieveNumbers(string categ, int mcat, string cname) {
     //to skip the simulation summary
     for(size_t id=0;id<dsNames.size();id++) { //datasets
       int ids = idxs[id];
-      //cout<<ids<<"   "<<dsNames[ids]<<"  "<<cN<<"   "<<_effMap[ ids ][ icat ].size()<<endl;
       
       { //simulation detail
         _itEIMap=_effMap[ ids ][ icat ].find( cN );
@@ -851,7 +846,6 @@ AnaUtils::retrieveNumbers(string categ, int mcat, string cname) {
           p.second[ids][0] = 0.; //no data for this point
         }
         else {
-	  //cout<<ic<<"   "<<ids<<"   "<<_itEIMap->second.sumw<<endl;
           p.second[ids][0] = _itEIMap->second.sumw;
           p.second[ids][1] = sqrt(_itEIMap->second.sumw2);
           p.second[ids][2] = 0.;
@@ -864,8 +858,7 @@ AnaUtils::retrieveNumbers(string categ, int mcat, string cname) {
     onums.push_back( p );
   }//cuts
  
-  //protection against empty categories
-  // cout<<onums.size()<<"  ===>  "<<mcat<<endl;
+  //protection against empty categories, FIXME
   if(mcat!=kMulti && onums.size()==0) {
     pair<string, vector<vector<float> > > p;
     //vector<vector<float> > v(dsNames.size(),vector<float>(4,0));
@@ -906,10 +899,8 @@ AnaUtils::getDataCardLines(map<string,string>& lines, vector<string> dsNames, st
     
     ostringstream osB; osB<<bin;  
    
-    //cout<<ids<<"    "<<numbers[0].second[ids][0]<<endl;
-
     if(dsNames[ids-1]!=sigName && dsNames[ids-1].find("sig")==string::npos) {
-      sumBkg+= (numbers[0].second[ids][0]==0); //?0.0001:numbers[0].second[ids][0]
+      sumBkg+= (numbers[0].second[ids][0]==0);
       
       binLine += osB.str()+"\t";
       ostringstream os;
@@ -956,7 +947,7 @@ AnaUtils::getDataCardLines(map<string,string>& lines, vector<string> dsNames, st
     string line;
     
     for(unsigned int ids=1;ids<dsNames.size()+1;ids++) {
-      float vUp = numbers[0].second[ids][0]/numbers[0].second[ids][0]; //MM FIXME
+      float vUp = numbers[0].second[ids][0]/numbers[0].second[ids][0]; //MM FIXME -> always 1
       float vDo = numbers[0].second[ids][0]/numbers[0].second[ids][0];
 
       ostringstream osU, osD;
@@ -1043,8 +1034,6 @@ void AnaUtils::setNumbers(int ids,string cName, int iCateg, float w, bool acc) {
 
 void AnaUtils::setNumFromStat(int ids, string cName, int iCateg, float sw, float esw, int ngen) {
  
-  //cout<<ids<<"   "<<iCateg<<"   "<<sw<<"   "<<esw<<endl;
-
   _effMap[ ids ][ iCateg ][ cName ].NTot +=ngen;
   _effMap[ ids ][ iCateg ][ cName ].sumwTot +=sw;
   _effMap[ ids ][ iCateg ][ cName ].sumw2Tot +=esw*esw;

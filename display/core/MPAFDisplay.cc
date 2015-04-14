@@ -74,7 +74,6 @@ MPAFDisplay::setNumbers() {
   if(!_recompute) return;
 
   for(size_t id=0;id<_dsNames.size();id++) {
-    //cout<<" ----> "<<_dsNames[id]<<endl;
     _au->addDataset(_dsNames[id]);
   }
   
@@ -94,8 +93,6 @@ MPAFDisplay::setNumbers() {
 
     if(ctag.size()>4 && ctag.substr(ctag.size()-4) == ".dat")
       ctag.erase(ctag.size()-4,4);
-
-    //cout<<statFiles[i]<<"   "<<ctag<<"   "<<icat<<endl;
       
     readStatFile( statFiles[i], ctag, icat);
   }
@@ -150,7 +147,6 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
      
 	if(ctag!="")
 	  categ+="_"+ctag;
-	//cout<<categ<<endl;
       
         if(categ!="global") {
           _au->addCategory(icat, categ);
@@ -182,8 +178,6 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
         ids=-1;
 	modIds=-1;
 
-	//cout<<sname<<"  "<<categ<<"   "<<modName<<"   "<<modIds<<"   "<<modDs<<"   "<<tmpCateg<<"   "<<ctag<<endl;
-
         if(ds==nullptr && modDs==nullptr) {
 	  if(ds==nullptr) continue;
 	}
@@ -200,7 +194,6 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
         float w = ds->getWeight(sname)*anConf.getLumi();
    
         yield  = atof( tks[n+1].c_str() ) *w ;
-	//cout << "adding " << atof( tks[n+1].c_str() ) << " for " << ds->getName() <<","<<cname<<","<<icat<<"   "<<cname+sname<<"   "<<atoi( tks[n+2].c_str() )<<"   "<<categ <<endl;   
         gen = atoi( tks[n+2].c_str() );
         eyield = atof( tks[n+3].c_str() ) *w;
 
@@ -210,9 +203,7 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
 	  if(ids!=-1)
 	    _au->setEffFromStat(ids,cname,icat,yield,eyield,gen);
 	  if(modIds!=-1) { //goes to global
-	    //cout<<modIds<<"  "<<cname<<"   "<<modDs->getName()<<"   "<<"global_"+ctag<<endl;
 	    int tmpcat=((ctag!="")?(_au->getCategId("global_"+ctag)):0);
-	    //cout<<" =========> "<<tmpcat<<"   "<<(ctag!="")<<"   "<<_au->getCategId("global_"+ctag)<<endl;
 	    _au->setEffFromStat(modIds,cname,tmpcat,yield,eyield,gen);
 	  }
 	}
