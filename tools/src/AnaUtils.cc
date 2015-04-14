@@ -150,9 +150,6 @@ void AnaUtils::setEffFromStat(int ids, string cName, int iCateg, float sw, float
     tmp.sumwTot = 0; tmp.sumw2Tot = 0;
     tmp.NTot = 0;    
    
-
-   
- 
     _effMap[ ids ][ iCateg ][ cName ] = tmp;
 
     bool exists=false;
@@ -174,7 +171,7 @@ void AnaUtils::setEffFromStat(int ids, string cName, int iCateg, float sw, float
 
     _effMap[ _kMC ][ iCateg ][ cName ] = tmp;
   }
-
+  //cout<<iCateg<<"  "<<ids<<"  "<<_effMap[ ids ][ iCateg ].size()<<endl;
   setNumFromStat(ids, cName, iCateg, sw, esw, ngen );
 
 }
@@ -209,6 +206,9 @@ AnaUtils::init() {
 void
 AnaUtils::internalAddCategory(int iCateg, string eCateg) {
   
+  map<int, string>::const_iterator it = _catNames.find(iCateg);
+  if(it !=_catNames.end() ) return;
+
   _catNames[ iCateg ] = eCateg;
   vector<string> vtmp;
   _effNames[ iCateg ] = vtmp; 
@@ -419,8 +419,10 @@ void AnaUtils::saveNumbers(string anName, string conName) {
     catNames.push_back( it->first ); 
   }
 
-  if(hasGlobEff)
-    catNames.push_back( _kGlobal );
+  if(hasGlobEff) {
+    //catNames.push_back( _kGlobal );
+    catNames.insert(catNames.begin(), _kGlobal );
+  }
 
   for(size_t ic = 0; ic < catNames.size(); ++ic) {
     int icat = catNames[ic];
@@ -607,6 +609,10 @@ AnaUtils::getCategId(string categ) {
     }
   }
 
+  // if(icat==0) {//by pass for adding a category MM: FIXME
+  //   addCategory( _catNames.size(), categ);
+  // }
+
   return icat;
 }
 
@@ -767,7 +773,7 @@ AnaUtils::findElement(vector<string> v, string e){
 
 
 vector< pair<string, vector<vector<float> > > >
-AnaUtils::retrieveNumbers(string categ, bool mcat, string cname) {
+AnaUtils::retrieveNumbers(string categ, int mcat, string cname) {
 
   vector< pair<string, vector<vector<float> > > > onums;
 
@@ -779,15 +785,18 @@ AnaUtils::retrieveNumbers(string categ, bool mcat, string cname) {
   vector<int> catIds;
 
   //MM some fixme needed
-  if(mcat) { //monocateg
+  if(mcat!=kGeneral) { //monocateg for datacards
     for(map<int, vector<string> >::const_iterator itc=_effNames.begin();
 	itc!=_effNames.end();itc++) { //cuts for uni-categ
 
       string catname = _catNames[ itc->first ];
-
-      //if(itc->first==_kGlobal || catname.find(categ)==(size_t)-1 ) continue;
-      //if(catname.find(categ)==(size_t)-1 ) continue;     
-      if(catname!=categ) continue;     
+      //cout<<catname<<"   "<<mcat<<"   "<<categ<<"   "<<cname<<endl;
+      if(mcat==kMulti) {
+	if(itc->first==_kGlobal || catname.find(categ)==string::npos ) continue;
+	if(catname.find(categ)==string::npos ) continue;     
+      }
+      if(mcat==kMono)
+	if(catname!=categ) continue;     
 
       cat= getCategId(catname);
       int ic = -1;
@@ -804,7 +813,7 @@ AnaUtils::retrieveNumbers(string categ, bool mcat, string cname) {
       catIds.insert(catIds.begin(), itc->first );
     }
   }
-  else { //general
+  else { //general : one categ, several selection
     for(size_t ic=0;ic<_effNames[cat].size();ic++) { 
       cNames.push_back( _effNames[cat][ic] );
       catIds.push_back( cat );
@@ -822,7 +831,7 @@ AnaUtils::retrieveNumbers(string categ, bool mcat, string cname) {
     pair<string, vector<vector<float> > > p;
     vector<vector<float> > v(dsNames.size(),vector<float>(4,0));
 
-    if(mcat) {
+    if(mcat!=kGeneral) {
       size_t p0= _catNames[icat].find(categ);
       p.first = _catNames[icat].substr(p0+categ.size(), categ.size()-p0-1);
     }
@@ -834,6 +843,7 @@ AnaUtils::retrieveNumbers(string categ, bool mcat, string cname) {
     //to skip the simulation summary
     for(size_t id=0;id<dsNames.size();id++) { //datasets
       int ids = idxs[id];
+      //cout<<ids<<"   "<<dsNames[ids]<<"  "<<cN<<"   "<<_effMap[ ids ][ icat ].size()<<endl;
       
       { //simulation detail
         _itEIMap=_effMap[ ids ][ icat ].find( cN );
@@ -855,8 +865,10 @@ AnaUtils::retrieveNumbers(string categ, bool mcat, string cname) {
   }//cuts
  
   //protection against empty categories
-  if(mcat && onums.size()==0) {
+  // cout<<onums.size()<<"  ===>  "<<mcat<<endl;
+  if(mcat!=kMulti && onums.size()==0) {
     pair<string, vector<vector<float> > > p;
+    //vector<vector<float> > v(dsNames.size(),vector<float>(4,0));
     for(size_t id=0;id<dsNames.size();id++) { //datasets
       int ids = idxs[id];
     
@@ -876,7 +888,7 @@ AnaUtils::getDataCardLines(map<string,string>& lines, vector<string> dsNames, st
 			   string categ, string cname, int bin,
 			   map<string,vector<string> > intNuisPars) {
   
-  vector<pair<string, vector<vector<float> > > > numbers=retrieveNumbers(categ, true, cname);
+  vector<pair<string, vector<vector<float> > > > numbers=retrieveNumbers(categ, kMono, cname);
 
   // yield lines =================================================================
   float sumBkg=0;

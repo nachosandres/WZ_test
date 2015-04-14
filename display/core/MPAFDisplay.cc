@@ -50,9 +50,9 @@ MPAFDisplay::reset() {
 void 
 MPAFDisplay::drawStatistics(string categ, string cname){
 
-  bool mcat=false;
-  if(cname!="") mcat=true;
-
+  int mcat=AnaUtils::kGeneral;
+  if(cname!="") mcat=AnaUtils::kMulti;
+  
   vector< pair<string, vector<vector<float> > > > numbers = _au->retrieveNumbers(categ, mcat, cname);
 
   vector<string> dsNames = _dsNames;//anConf.getDSNames();
@@ -74,6 +74,7 @@ MPAFDisplay::setNumbers() {
   if(!_recompute) return;
 
   for(size_t id=0;id<_dsNames.size();id++) {
+    //cout<<" ----> "<<_dsNames[id]<<endl;
     _au->addDataset(_dsNames[id]);
   }
   
@@ -94,6 +95,8 @@ MPAFDisplay::setNumbers() {
     if(ctag.size()>4 && ctag.substr(ctag.size()-4) == ".dat")
       ctag.erase(ctag.size()-4,4);
 
+    //cout<<statFiles[i]<<"   "<<ctag<<"   "<<icat<<endl;
+      
     readStatFile( statFiles[i], ctag, icat);
   }
 
@@ -121,7 +124,11 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
     float yield, eyield;
     int gen;
     int ids;
+    int modIds;
+    string tmpCateg;
   
+    bool isGlobal=false;
+
     while(getline(fDb, line)) {
 	
       istringstream iss(line);
@@ -135,16 +142,23 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
       
       if(tks[0]=="categ") {
         categ="";
-        for(size_t i=1;i<tks.size();i++) //prevent from spaces in categ names
+	tmpCateg="";
+	for(size_t i=1;i<tks.size();i++) { //prevent from spaces in categ names
           categ +=tks[i];
+	  tmpCateg +=tks[i];
+	}
      
-        categ+=ctag;
+	if(ctag!="")
+	  categ+="_"+ctag;
+	//cout<<categ<<endl;
       
         if(categ!="global") {
           _au->addCategory(icat, categ);
+	  isGlobal=false;
         } 
         else {
           if(ctag=="") icat=0; //comes in last so do not mess the reading
+	  isGlobal=true;
         }
       }
       else if(tks[0]=="endcateg") { //fill the maps
@@ -160,19 +174,29 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
           cname += tks[i]+" ";
           
         sname = tks[n];
- 
+	
         Dataset* ds=anConf.findDS( sname );
+	if(tmpCateg.find("global_")!=string::npos) tmpCateg.erase(0,7);
+	string modName=sname+"_"+tmpCateg;
+	Dataset* modDs=anConf.findDS( modName );
         ids=-1;
+	modIds=-1;
 
-        if(ds==nullptr) continue;
+	//cout<<sname<<"  "<<categ<<"   "<<modName<<"   "<<modIds<<"   "<<modDs<<"   "<<tmpCateg<<"   "<<ctag<<endl;
 
-        for(size_t id=0;id<_dsNames.size();id++ ) {
-          if(_dsNames[id]==ds->getName() ) {
-            ids = id+1;//because MC is 0
-            break;
-          }
-        }
-     
+        if(ds==nullptr && modDs==nullptr) {
+	  if(ds==nullptr) continue;
+	}
+	
+	for(size_t id=0;id<_dsNames.size();id++ ) {
+	  if(ds!=nullptr && _dsNames[id]==ds->getName() ) {
+	      ids = id+1;//because MC is 0
+	  }
+	  if(modDs!=nullptr && _dsNames[id]==modDs->getName() ) {
+	    modIds = id+1;//because MC is 0
+	  }
+	}
+	
         float w = ds->getWeight(sname)*anConf.getLumi();
    
         yield  = atof( tks[n+1].c_str() ) *w ;
@@ -183,8 +207,15 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
         pair<string,string> p(ds->getName(), cname+sname+categ);
         if(fVal.find(p)==fVal.end() ) {
           fVal[p]=true;
-          _au->setEffFromStat(ids,cname,icat,yield,eyield,gen);
-        }
+	  if(ids!=-1)
+	    _au->setEffFromStat(ids,cname,icat,yield,eyield,gen);
+	  if(modIds!=-1) { //goes to global
+	    //cout<<modIds<<"  "<<cname<<"   "<<modDs->getName()<<"   "<<"global_"+ctag<<endl;
+	    int tmpcat=((ctag!="")?(_au->getCategId("global_"+ctag)):0);
+	    //cout<<" =========> "<<tmpcat<<"   "<<(ctag!="")<<"   "<<_au->getCategId("global_"+ctag)<<endl;
+	    _au->setEffFromStat(modIds,cname,tmpcat,yield,eyield,gen);
+	  }
+	}
 	// else
 	//   cout<<"already here: "<<cname+sname<<endl;
       

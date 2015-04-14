@@ -54,7 +54,7 @@ public:
   // static vector<TProfile*> convertAllProfileVarBin(vector<TGraph*> graphs2d, int n, int VarBin[],
   // 					   vector<string> names,string k,string opt);
   
-  static TGraphAsymmErrors* convertHistoToGraph(TH1* h, float datnorm=1, bool diff=false);
+  static TGraphAsymmErrors* convertHistoToGraph(TH1* h, float datnorm=1, bool diff=false, bool byPassPE=true);
 
   static TGraphAsymmErrors* ratioHistoToGraph(TH1* hd, TH1* hmc, string opt="nP");
 
