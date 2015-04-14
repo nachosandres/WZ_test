@@ -68,40 +68,32 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
     return: none
   */
 
-  string sname, stname;
+  string sname, stname, optCat="";
 	
-  // decode sfullname to get _isData and sname 
+  // decode sfullname to get _isData and sname , MM: HAS TO BE REWRITTEN!!!!!!
   if(sfullname.find(":") != (size_t) -1){
-    if(sfullname.find("data") != (size_t) -1)
-      _isData = true;
-    else
-      _isData = false;
 
-    size_t p = sfullname.find(":");
+    size_t p = sfullname.rfind(":");
     stname = sfullname.substr(p + 1, sfullname.size() - p - 1);
+
+    if(sfullname.find("data") != (size_t) -1) {
+      _isData = true;
+      size_t pp = sfullname.find(":");
+      if(pp!=p) { //means we look at a given category in data!
+	optCat = sfullname.substr(pp + 1, p-pp-1);
+      }
+    }
+    else {
+      _isData = false;
+      optCat=sfullname.substr(0, p);
+    }
+    
+    stname += "_"+optCat;
   }
   else {
     stname =  sfullname;
   }
-
   sname = stname;
-  //CH: this is a temporary fix on treatment of datasets with "fake" in the name
-  //if(stname.find("fake") != (size_t) -1) {
-  //  size_t p = stname.find("fake");
-  //  sname = stname.substr(0, p);
-  //}
-  //else if(stname.find("misId") != (size_t) -1) {
-  //  size_t p = stname.find("misId");
-  //  sname = stname.substr(0, p);
-  //}
-  //else if(stname.find("prompt") != (size_t) -1) {
-  //  size_t p = stname.find("prompt");
-  //  sname = stname.substr(0, p);
-  //}
-  //else {
-  //  sname = stname;
-  //}
-
   
   //protection against double loading in the same dataset
   for(size_t is=0;is<_samples.size();is++) {
@@ -162,7 +154,7 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
 	
   //Looking for the tree if not data-driven
   int nEvent = 0; //MM: not really needed anymore, kept for now
-  int nProcEvt = 0; //getNProcEvents(path, dir, objName, sname);
+  int nProcEvt = (hname=="")?0:getNProcEvents(path, dir, objName, hname);
 
   Sample s(sname, nEvent, nProcEvt, xSect, kFact, eqLumi);
   _samples.push_back(s);
@@ -178,7 +170,7 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
 	<<" gen) "<<" / w (/pb-1) = "<<s.getLumW()<<endl;
   }
   else { //reading histograms
-    loadHistos(path, dir, objName);
+    loadHistos(path, dir, objName, hname, optCat);
 	  
     cout<<" Adding "<<sname<<"  to "<<_name
 	<<"   :  nEvt "<<nEvent<<" ("<<nProcEvt
@@ -189,7 +181,7 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
 
 
 int
-Dataset::getNProcEvents(string path, string dir, string fileName, string sname) {
+Dataset::getNProcEvents(string path, string dir, string fileName, string hname) {
 
   string p= string(getenv ("MPAF"))+"/workdir";
   string NameF = p+"/"+dir+"/"+fileName+".root";
@@ -200,7 +192,7 @@ Dataset::getNProcEvents(string path, string dir, string fileName, string sname) 
   }
   TFile* file = TFile::Open( NameF.c_str() );
   
-  TH1* htmp = (TH1*)file->Get( ("nProcEvts/"+sname).c_str());
+  TH1* htmp = (TH1*)file->Get( hname.c_str() );
   
   int nProc=0;
   if(htmp) {
@@ -315,7 +307,7 @@ Dataset::loadTree(string path, string dir, string sname, string objName) {
 }
 
 void 
-Dataset::loadHistos(string path, string dir, string filename) {
+Dataset::loadHistos(string path, string dir, string filename, string hname, string optCat) {
   TFile* datafile(nullptr);
   
   string NameF = path+"/"+dir+"/"+filename+".root"; 
@@ -339,6 +331,12 @@ Dataset::loadHistos(string path, string dir, string filename) {
     string varName(obj->GetName());
     map<string, TH1*> tmp;
 
+    if(optCat!="") {
+      size_t op=varName.find(optCat);
+      if(op==string::npos) continue;
+      else varName.erase(op,optCat.size());
+    }
+
     TIter nextkeyD( ((TDirectory*)obj)->GetListOfKeys() );
     TKey *keyD;
     while (keyD = ((TKey*)nextkeyD()) ) {
@@ -354,7 +352,7 @@ Dataset::loadHistos(string path, string dir, string filename) {
 	if( sName!=_samples[is].getName() ) continue;
 	   
 	//histograms and not normalization file
-	if(varName=="nEvtProc") continue;
+	if(varName==hname) continue;
 	
 	if(_histos[ varName ].size()==0) { //initialization
 	  tmp[ sName ] = (TH1*)((TH1*)objD->Clone());

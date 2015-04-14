@@ -111,6 +111,8 @@ Display::reset() {
   _xmax = _xCoordSave[1];
   _gBin =  _binningSave;
 
+  _cNames.clear();
+
 }
 
 void
@@ -154,6 +156,8 @@ Display::softReset() {
   _leg=NULL;
   
   _hCoords.clear();
+
+  _cNames.clear();
 
 }
 
@@ -277,7 +281,7 @@ Display::preparePads() {
   
   //  float m=1.3;
 
-  size_t n_ = _nvars;
+  size_t n_ = max( (size_t)1,_nvars);
   float m=1.3-(n_-1)*.1; //other
   
   vector<TPad*> padhigh_;
@@ -340,7 +344,7 @@ Display::preparePadsWithRatio() {
 
   float m=1.3;
 
-  size_t n_ = _nvars;
+  size_t n_ = max((size_t)1,_nvars);
 
   vector<TPad*> padhigh_;
   vector<TPad*> padlow_;
@@ -657,26 +661,13 @@ Display::drawDistribution() {
           _hClones[i]->DrawCopy( opt.c_str() );
         }
         else {
-
-_hClones[i]->DrawCopy("text colz");
-cmsPrel();
-
-string superidoo = _hClones[i]->GetName();
-string naminger = "/shome/cheidegg/MPAF/workdir/plots/FakeRatio/png/" + superidoo + ".png";
-_c->SaveAs(naminger.c_str() );
-
-
-
-
-
-          //if(f) {
-          //  _hClones[i]->DrawCopy( "box" ); //"box"
-          //  _hClones[i]->DrawCopy( "box" ); //"box"
-          //  f=false;
-          //}
-          //else {
-          //  _hClones[i]->DrawCopy( opt.c_str() );
-          //}
+	  if(f) {
+	    _hClones[i]->DrawCopy( "box" ); //"box"
+	    f=false;
+	  }
+	  else {
+	    _hClones[i]->DrawCopy( opt.c_str() );
+	  }
         }
       }
     }
@@ -1367,6 +1358,7 @@ Display::drawDataMCRatio() {
   
   //The bidon histo
   TH1* emptyHisto=(TH1*)_hMC->Clone();
+  //if(_empty!=nullptr) emptyHisto=(TH1*)_empty->Clone();
   emptyHisto->Reset("ICEM");
 
   TGraphAsymmErrors* ratio = HistoUtils::ratioHistoToGraph( _hData, _hMC );
@@ -1484,6 +1476,10 @@ Display::drawDataMCRatio() {
   if(_rmLabel)  {
     ratio->GetYaxis()->SetLabelOffset(1000);
     emptyHisto->GetYaxis()->SetLabelOffset(1000);
+  }
+
+  for(size_t ib=0;ib<_cNames.size();ib++) {
+    emptyHisto->GetXaxis()->SetBinLabel(ib+1, _cNames[ib].c_str() );
   }
 
   emptyHisto->Draw();
@@ -1986,167 +1982,6 @@ Display::drawCumulativeHistos(const hObs* theObs ) {
 
 }
 
-
-string Display::fillUpBlank(string line, unsigned int length){
-
-
-  if(length<=line.size()) return line;
-
-  string fullline = line;
-  unsigned int sides = (length - line.size())%2 == 0 ? (length - line.size())/2 : (length - line.size() - 1)/2;
-
-  for(unsigned int i = 0; i < sides; ++i)
-    fullline = " " + fullline + " ";
-
-  if((length - line.size())%2 != 0)
-    fullline += " ";
-
-  return fullline;
-
-}
-
-
-string Display::strReplace(string str, string find, string replace){
-
-  size_t idx = 0;
-  while (true) {
-
-    idx = str.find(find, idx);
-    if (idx == string::npos) break;
-
-    str.replace(idx, find.size(), replace);
-
-    idx += find.size();
-  }
-
-  return str;
-}
-
-
-int 
-Display::findElement(vector<pair<string, unsigned int> > groups, string groupname){
-
-  for(unsigned int idx = 0; idx < groups.size(); ++idx){
-    if(groups[idx].first == groupname)
-      return idx;
-  } 
-  return -1;
-}
-
-string
-Display::findGroupName(string dsname) {
-
-  if     (dsname.find("DYJets")                 != string::npos) return "Z+Jets";
-  else if(dsname.find("TTJets")                 != string::npos) return "t#bar{t}";
-  else if(dsname.find("TTWJets")                != string::npos) return "rare";
-  else if(dsname.find("TTZJets")                != string::npos) return "rare";
-  else if(dsname.find("WJets")                  != string::npos) return "W+Jets";
-  else if(dsname.find("WZJets")                 != string::npos) return "rare";
-  else if(dsname.find("SMS-T1tttt_2J_mGl-1500") != string::npos) return "T1tttt (1.5/0.1 TeV)";
-  else if(dsname.find("SMS-T1tttt_2J_mGl-1200") != string::npos) return "T1tttt (1.2/0.8 TeV)";
-  else if(dsname.find("T1ttbbWW_mGo1300")       != string::npos) return "T1ttbbWW (1.3/0.3 TeV)";
-  else if(dsname.find("T1ttbbWW_mGo1000")       != string::npos) return "T1ttbbWW (1.0/0.7 TeV)";
-  else if(dsname.find("T5ttttDeg") != string::npos && dsname.find("mCh285") == string::npos) return "T5tttt deg. (1.0/0.3  TeV, 4-body decay)";
-  else if(dsname.find("T5ttttDeg") != string::npos && dsname.find("mCh285") != string::npos) return "T5tttt deg. (1.0/0.3  TeV, Chi +/-)";
-  else if(dsname.find("T6ttWW_mSbot650")        != string::npos) return "T6ttWW (650/150/50 GeV)";
-  else if(dsname.find("T6ttWW_mSbot600")        != string::npos) return "T6ttWW (600/425/50 GeV)";
-  else if(dsname.find("T5qqqqWW_mGo1200")       != string::npos) return "T5qqqqWW (1.2/0.8 TeV)";
-
-  return "none";
-}
-
-string
-Display::findDummySyst(string groupname) {
-
-  if     (groupname == "Z+Jets"  ) return "1.50";
-  else if(groupname == "t#bar{t}") return "1.50";
-  else if(groupname == "W+Jets"  ) return "1.50";
-  else if(groupname == "rare"    ) return "1.20";
-  else                             return "1.10";
-
-}
-
-string
-Display::writeRow(string text, unsigned int idx, unsigned int size){
-
-  if(idx >= size) return "";
-
-  string row = "";
-
-  for(unsigned int i = 0; i < size; ++i){
-    if(i == idx) row += text;
-    else row += "-";
-    row += " ";
-  }
-
-  return row;
-}
-
-
-void
-Display::makeDataCard(vector<pair<string,vector<vector<float> > > > vals,
-            vector<string> dsnames, string dirname) {
-
-  // first dimension of vals is not needed - only one category
-  
-  string bin1     = "1";
-  string obs      = "";
-  string bins     = "";
-  string procname = "";
-  string procid   = ""; 
-  string rate     = "";
-  string syst     = "";
-
-  // writing data to cache 
-  if(vals.size() > 0) {
-    for(size_t id=0;id<vals[0].second.size();id++) {
-
-      char is[10], vs[10];
-      sprintf(is, "%d", (int) id+1);
-      sprintf(vs, "%-.2f", vals[0].second[id][0]);
-  
-      bins     += fillUpBlank(bin1, dsnames[id].size()) + " ";
-      procname += dsnames[id] + " ";
-      procid   += fillUpBlank(is  , dsnames[id].size()) + " ";
-      rate     += fillUpBlank(vs  , dsnames[id].size()) + " ";
-  
-      if(id>0) 
-        syst   += dsnames[id] + "_dummy lnN " + writeRow(findDummySyst(dsnames[id]), id-1, dsnames.size()-1) + "\n";
-    }
-  }
-
-
-  string tfile = (string) getenv("MPAF") + "/display/templates/datacard.txt";
-  ifstream templ;
-  templ.open(tfile.c_str());
-  string text, line;
-
-  while(templ){
-    getline(templ, line);
-
-    line = strReplace(line, "BINS"        , bins    ); 
-    line = strReplace(line, "PROCESSNAMES", procname); 
-    line = strReplace(line, "PROCESSIDS"  , procid  ); 
-    line = strReplace(line, "RATES"       , rate    ); 
-    line = strReplace(line, "SYSTEMATICS" , syst    );
-
-    text += line + "\n";
-  }
-  templ.close();
-
-  tfile = (string) getenv("MPAF") + "/workdir/datacards/" + dirname + ".txt";
-  if ( access( tfile.c_str(), F_OK ) != -1 )
-    remove(tfile.c_str());
-
-  ofstream card;
-  card.open(tfile.c_str());
-  card << text;
-  card.close(); 
-
-
-}
-
-
 void
 Display::drawStatistics(vector<pair<string,vector<vector<float> > > > vals, 
 			vector<string> dsnames) {
@@ -2160,10 +1995,22 @@ Display::drawStatistics(vector<pair<string,vector<vector<float> > > > vals,
   
   if(!_showRatio) _pads = preparePads();
   else _pads = preparePadsWithRatio();
+
   _c->Draw();
 
+  //MM Fixme : temporary disabling of uncertainties
+  // uncertainties taken from stat fiesl for the moment, non optimal
+  systM mTmp;
+  vector<vector<systM> > tmp(1,vector<systM>(0,mTmp));
+  _systMUnc=tmp;
+  
+  //MM fixme
+  float xmaxTmp =  _xmax;
+  _xmax = _empty->GetXaxis()->GetXmax();
   plotDistribution( "1D", "m", 0 );
   
+  _xmax = xmaxTmp;
+
   _comSyst = true;
 }
 
@@ -2211,17 +2058,22 @@ Display::prepareStatistics( vector<pair<string,vector<vector<float> > > > vals,
 
   //now fill the plots
   for(size_t ic=0;ic<vals.size();ic++) {
-
+  
     for(size_t id=0;id<vals[ic].second.size();id++) {
 
       if(id==0) { //MC total
        	hMCt->SetBinContent( ic+1, vals[ic].second[id][0] );
        	hMCt->SetBinError( ic+1, vals[ic].second[id][1] );
        	mcUncert->SetPoint( ic, ic+0.5 , vals[ic].second[id][0] );
-       	mcUncert->SetPointError( ic, 0.25,0.25, vals[ic].second[id][2], vals[ic].second[id][3] );
+
+	float eyl2=pow(vals[ic].second[id][2],2) + ((_mcSyst)?pow(vals[ic].second[id][1],2):0);
+	float eyh2=pow(vals[ic].second[id][3],2) + ((_mcSyst)?pow(vals[ic].second[id][1],2):0);
+
+       	mcUncert->SetPointError( ic, 0.25,0.25, sqrt(eyl2), sqrt(eyh2) );
       }
       else if(id==idat) { //data
         hData->SetBinContent( ic+1, vals[ic].second[id][0] );
+	hData->SetBinError( ic+1, vals[ic].second[id][1] );	
       }
       else {
         if( !_sSignal && dsnames[id].find("sig") == (size_t)-1){
@@ -2246,7 +2098,7 @@ Display::prepareStatistics( vector<pair<string,vector<vector<float> > > > vals,
 							    _normOpts.find("dif")!=_normOpts.end());
   
 
-  TH1F* emptyH = (TH1F*)hData->Clone();
+  TH1F* emptyH = (TH1F*)hMCt->Clone();
   emptyH->Reset("ICEM");
   
   emptyH->SetFillColor(0);
@@ -2291,8 +2143,11 @@ Display::prepareStatistics( vector<pair<string,vector<vector<float> > > > vals,
   _hClones = hMC;
   _hMC = hMCt;
   _hData = hData;
+  _gData = gData;
   _mcUncert.push_back( mcUncert );
   
+  _cNames = cNames;
+
 }
 
 void
@@ -2833,7 +2688,8 @@ Display::printInteg(float x1, float x2, float y1, float y2) {
 
 //new CMS preliminary (thanks gautier..)
 
-void Display::cmsPrel() {
+void 
+Display::cmsPrel() {
   TLatex latex;
   
   float t = _pads[0][0]->GetTopMargin();

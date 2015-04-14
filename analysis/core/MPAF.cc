@@ -67,6 +67,8 @@ void MPAF::initialize(){
   _skim=false;
 
   _nEvtMax=-1;
+
+  _wfNames[AUtils::kGlobal] = "";
 }
 
 
@@ -97,6 +99,8 @@ void MPAF::analyze(){
 
   // define and book all outputs
   defineOutput();
+  //copy the histograms for the different workflows
+  addWorkflowHistos();
 
   // loop over given samples
   for(unsigned int i=0; i<_datasets.size(); ++i){
@@ -118,28 +122,52 @@ void MPAF::analyze(){
     unsigned int nEvts = _datasets[i]->getNEvents();
     if(_nEvtMax!=(size_t)-1) nEvts =  min(_nEvtMax+_nSkip,nEvts);
     
-    cout<<" Starting processing dataset : "<<_sampleName<<"  (running on "<<nEvts<<" events)"<<endl;
+    cout<<" Processing dataset : "<<_sampleName<<"  (running on "<<nEvts<<" events)"<<endl;
 
-	mucounter = 1;
     boost::progress_display show_progress( nEvts );
     for(_ie = _nSkip; _ie < nEvts; ++_ie) {
       ++show_progress;
       stw.Start();
-      //if(mucounter == 100) break;
-      //MM : preparation for uncertainty variation over one variable
-      // keeping line for future development
-      // _vc->applySystVar( _vc->_su->getSystInfos(_unc, _uDir) );
-
+      
+      _curWF = -100;//default workflow, all counters triggered 
+      _au->setCurrentWorkflow(_curWF);
+      
+      //reinitialization
       _weight = 1.;
+      _wBack = _weight;
+      _uncId = false;
+      _unc = "";//reinitialization
+      _au->setUncSrc("", SystUtils::kNone );
 
       // get tree entry, i.e. load branches
       _datasets[i]->getTree()->GetEntry(_ie);
 			
       // get event weight, PU reweight it if needed 
       modifyWeight();
-		
+      
       // do something at every entry	
       run();
+      //alternate workflows for uncertainty sources
+	for(size_t iu=0;iu<_uncSrcs.size();iu++) {
+	  //update the workflow
+	  _weight = _wBack;
+	  if(iu==0) _vc->nextEvent();
+	  else _vc->sameEvent();
+	  cout<<" starting : "<<iu<<"   "<<_uncSrcs[iu]<<"  "<<_uncSrcs.size()<<"   "<<_weight<<endl;
+	  _uncId = true;
+	  _unc = _uncSrcs[iu];
+	  _uDir = _uncDirs[iu];
+	  string dir = (_uDir==SystUtils::kUp)?"Up":"Do";
+	  //very ugly...
+	  _curWF = _au->getUncWorkflow("Unc"+_unc+dir);
+	  _au->setCurrentWorkflow(_curWF);
+	  _au->setUncSrc(_unc, _uDir );
+	  applySystVar( _vc->_su->getSystInfos(_unc, _uDir) );
+	  run();
+	  _vc->backPortAllVars();
+	  cout<<" bluou : "<<iu<<"   "<<_uncSrcs[iu]<<"  "<<_uncSrcs.size()<<"   "<<_weight<<endl;
+	  //reinitVars( _vc->_su->getSystInfos(_unc, _uDir).modVar );
+	}
 
       //destroy old Candidate pointers ======
       Candidate::reset();
@@ -171,59 +199,9 @@ void MPAF::analyze(){
   internalWriteOutput();
 
   _au->printNumbers();
+  _au->getYieldSysts("TTJets","ptsel");
 
 }
-
-
-//____________________________________________________________________________
-void MPAF::checkConfiguration(){
-
-  /*
-    checks if the given configuration obeys all rules, if all variables are 
-    given and if their values make at least some sense (i.e. if their values are 
-    within allowed limits), and returns error message and exists the code in case 
-    something is illegal
-    parameters: none
-    return: none
-  */
-
-  // RunOn, Mode and Verbose have been checked already or set to default value.
-  // Samples has been checked in the DataSamples class.
-
-  // check directories
-  //if(_inputPath.size()>0 && (access(_inputPath.c_str(), 0) != 0 || _inputPath.substr(_inputPath.size() - 1) != "/")) _verbose->errorAndExit(4);
-  //if(_outputPath.size()>0 && (access(_outputPath.c_str(), 0) != 0 || _outputPath.substr(_outputPath.size() - 1) != "/")) _verbose->errorAndExit(4);
-
-  // check write permission in output folder
-  //if(!Tools::checkDirWritePermission(_outputPath)) _verbose->ErrorAndExit(1);
-}
-
-
-//____________________________________________________________________________
-void MPAF::createOutputStructure(){
-  /*
-    creates the entire output structure in the local output folder
-    parameters: none
-    return: none
-  */
-
-  // Tools::execCmd("mkdir " + _outputPath + "MPAF");
-  
-  // _verbose->setLogFilePath(_outputPath + "MPAF/log.out");
-
-}
-
-
-//____________________________________________________________________________
-void MPAF::endExecution(){
-  /*
-    ends the execution, writes the log file
-    parameters: none
-    return: none
-  */
-
-}
-
 
 //____________________________________________________________________________
 void MPAF::loadConfigurationFile(std::string cfg){
@@ -263,6 +241,10 @@ void MPAF::loadConfigurationFile(std::string cfg){
     if(it->second.type==Parser::kTree) {
       tName = it->second.val;
     }
+    _hname="";
+    if(it->second.type==Parser::kHisto) {
+      _hname = it->second.val;
+    }
     
   }
 
@@ -291,9 +273,9 @@ void MPAF::loadConfigurationFile(std::string cfg){
     _datasets.push_back(new Dataset(dsName));
     
     if(!absdir)
-      _datasets.back()->addSample(it->second.val, _inputPath, dirName, tName, "", 1.0, 1.0, 1.0, 1.0);
+      _datasets.back()->addSample(it->second.val, _inputPath, dirName, tName, _hname, 1.0, 1.0, 1.0, 1.0);
     else
-      _datasets.back()->addSample(it->second.val, "://"+dirName, "", tName, "", 1.0, 1.0, 1.0, 1.0);
+      _datasets.back()->addSample(it->second.val, "://"+dirName, "", tName, _hname, 1.0, 1.0, 1.0, 1.0);
     
     _au->addDataset( dsName );
   }
@@ -461,17 +443,28 @@ void MPAF::fill(string var, float valx, float weight) {
     parameters: var, valx, weight
     return: none
   */
- 
-  //if(_unc=="")
-  _hm->fill( var, _inds, valx, weight );
-  //MM : kept for systematic uncertainty future developments
-  // else {
-  //   if(_uDir==SystUtils::kUp)
-  //     fillUnc(var,_unc,valx,weight,"Up");
-  //   if(_uDir==SystUtils::kDown)
-  //     fillUnc(var,_unc,valx,weight,"Do");
-  // }
+  //cout<<_uncId<<"   "<<_curWF<<"   "<<_wfNames[_curWF]<<endl;
+  if(!_uncId) { //central value
+   
+    if(_curWF!=-100) { //single workflow
+      _hm->fill( var+_wfNames[_curWF], _inds, valx, weight );
+    }
+    else { //multiple workflows
+      for(_itWF=_wfNames.begin(); _itWF!=_wfNames.end(); ++_itWF) {
+	_hm->fill( var+_itWF->second, _inds, valx, weight );
+      }
+    }
     
+  }
+  else {
+    if(_uDir==SystUtils::kUp)
+      _hm->fill( var, _unc, valx, weight,"Up");
+    //fillUnc(var,_unc,valx,weight,"Up");
+    if(_uDir==SystUtils::kDown)
+      _hm->fill( var, _unc, valx, weight,"Do");
+    //fillUnc(var,_unc,valx,weight,"Do");
+  }
+
 }
 
 
@@ -482,9 +475,15 @@ void MPAF::fill(string var, float valx, float valy, float weight) {
     parameters: var, valx, valy, weight
     return: none
   */
-
-  _hm->fill( var, _inds, valx, valy, weight );
-
+  
+  if(_curWF!=-100) { //single workflow
+    _hm->fill( var+_wfNames[_curWF], _inds, valx, valy, weight );
+  }
+  else { //multiple workflows
+    for(_itWF=_wfNames.begin(); _itWF!=_wfNames.end(); ++_itWF) {
+      _hm->fill( var+_itWF->second, _inds, valx, valy, weight );
+    }
+  }
 }
 
 
@@ -496,9 +495,16 @@ void MPAF::fillUnc(string var, string unc, float val, float weight, string dir) 
     return: 
   */
 
-  if(!_isData)
-    _hm->fill( var, unc, val, weight,dir);
+  if(_isData) return;
 
+  if(_curWF!=-100) { //single workflow
+    _hm->fill( var+_wfNames[_curWF], unc, val, weight,dir);
+  }
+  else { //multiple workflows
+    for(_itWF=_wfNames.begin(); _itWF!=_wfNames.end(); ++_itWF) {
+      _hm->fill( var+_itWF->second, unc, val, weight,dir);
+    }
+  }
 }
 
 
@@ -510,11 +516,15 @@ void MPAF::fillUnc(string var, string unc, float val, float weight, float wup, f
     return: 
   */
 
-  _hm->fill(var, _inds, val, weight );
+  fill(var, _inds, val, weight);
+
+    //_hm->fill(var, _inds, val, weight );
 
   if(!_isData ) {
-    _hm->fill( var, unc, val, wup, "Up");
-    _hm->fill( var, unc, val, wdo, "Do");
+    fillUnc( var, unc, val, wup, "Up");
+    fillUnc( var, unc, val, wup, "Do");
+    // _hm->fill( var, unc, val, wup, "Up");
+    // _hm->fill( var, unc, val, wdo, "Do");
   }
 }
 
@@ -536,11 +546,10 @@ float MPAF::getDBVal(string db, float v1, float v2, float v3, float v4, float v5
     return: 
   */
   
-  //if(_unc=="")
-  return _dbm->getDBValue( db, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 );
-  //MM : for future systematic uncertainty development
-  // else
-  //   return applySystDBVar( _vc->_su->getSystInfos(_unc, _uDir), db, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10);
+  if(!_uncId)
+    return _dbm->getDBValue( db, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 );
+  else
+    return applySystDBVar( _vc->_su->getSystInfos(_unc, _uDir), db, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10);
 
 }
 
@@ -595,8 +604,6 @@ bool MPAF::makeCut(bool decision, string cName, string type, int eCateg) {
     parameters: 
     return: 
   */
-  //MM FIXME, option stuff is ugly
-  //_SampleName
   return _au->makeCut(decision, _inds , cName, _weight, type, eCateg, false);
 
 }
@@ -609,18 +616,26 @@ void MPAF::counter(string cName, int eCateg) {
     parameters: 
     return: 
   */
-  //MM FIXME, option stuff is ugly+_SampleOption[_SampleName]
-  // _SampleName
   _au->makeCut(true, _inds , cName, _weight, "=", eCateg, false);
 
 }
 
+void 
+MPAF::setWorkflow(int wf) {
+  
+  // _itWF = _wfMap.find(wf);
+  // if(_itWF != _wfMap.end() ) {
+  //   _curWF = _itWF->second;
+  // }
+  // else {
+  //   cout<<"Warning, workflow "+wf+"not found, all workflows will be incremented"<<endl;
+  // }
+  _curWF = wf;
+  _au->setCurrentWorkflow(_curWF);
+}
 
 
 // skimming functions ======================================
-// void MPAF::modifySkimming() {
-// }
-
 void MPAF::initSkimming() {
   
   string opath = string(getenv ("MPAF"))+"/workdir/skims";
@@ -636,7 +651,7 @@ void MPAF::initSkimming() {
   _datasets[_inds]->getTree()->LoadTree(0);
   if(_fullSkim) {
     _skimTree = (TTree*)_datasets[_inds]->getTree()->CloneTree(0);
-    _hnSkim =new TH1I( "nEvtProc", "nEvtProc", 1, 0, 1);
+    _hnSkim =new TH1I( _hname.c_str(), _hname.c_str(), 1, 0, 1);
     _hnSkim->SetBinContent(1,_datasets[_inds]->getNProcEvent(0) );
   }
   else {
@@ -657,4 +672,141 @@ void MPAF::finalizeSkimming() {
     _hnSkim->Write();
   _oFile->Write();
   _oFile->Close();
+}
+
+// Workflow functions =======================================
+
+void
+MPAF::addWorkflow(int wfid, string wfName) {
+
+  _wfNames[wfid] = wfName;
+  _au->addWorkflow(wfid, wfName);
+} 
+
+void
+MPAF::addWorkflowHistos() {
+
+  if(_wfNames.size()==1) return;
+
+  vector<string> obss = _hm->getObservables(true);
+
+  for(unsigned int io=0;io<obss.size();io++) {
+    const hObs* obs = _hm->getHObs(obss[io]);
+    bool prof = obs->htype.find("P")!=string::npos;
+    bool is2D = obs->htype.find("2D")!=string::npos;
+
+    for(_itWF=_wfNames.begin(); _itWF!=_wfNames.end(); ++_itWF) {
+      if(_itWF->second=="") continue; //protection for global histo
+      _hm->addVariableFromTemplate( obs->name+_itWF->second, obs->hs[0], prof, is2D, obs->type );
+    }
+    //delete obs;
+  }
+
+}
+
+
+// systematic uncertainties functions =======================
+
+
+void
+MPAF::addWSystSource(string name, int dir, string type, float val) {
+  vector<string> t;
+  addSystSource(name, dir, type, t, val, true);
+}
+
+void
+MPAF::addWSystSource(string name, int dir, string type, string db, string hname) {
+  vector<string> t;
+  addSystSource(name, dir, type, t, db, hname, true);
+}
+
+void
+MPAF::addSystSource(string name, int dir, string type, vector<string> modVar,
+			     float val, bool wUnc) {
+
+  _au->addAutoWorkflow( "Unc"+name+"Up");
+  _au->addAutoWorkflow( "Unc"+name+"Do");
+  // addWorkflow(_wfNames.size(), "Unc"+name+"Up");
+  // addWorkflow(_wfNames.size(), "Unc"+name+"Do");
+  _uType[ name ] = wUnc;
+
+
+  //check the direction
+  if(dir!=SystUtils::kNone) {
+    _uncSrcs.push_back(name);
+    _uncDirs.push_back(dir);
+    _vc->_su->addSystSource(name, dir, type, modVar, val);
+  }
+  else {
+    //up variation
+    _uncSrcs.push_back(name);
+    _uncDirs.push_back(SystUtils::kUp);
+    _vc->_su->addSystSource(name, SystUtils::kUp, type, modVar, val);
+
+    //down variation
+    _uncSrcs.push_back(name);
+    _uncDirs.push_back(SystUtils::kDown);
+    _vc->_su->addSystSource(name, SystUtils::kDown, type, modVar, val);
+  }
+
+}
+
+void
+MPAF::addSystSource(string name, int dir, string type, vector<string> modVar,
+		    string db, string hname, bool wUnc) {
+  
+  _au->addAutoWorkflow( "Unc"+name+"Up");
+  _au->addAutoWorkflow( "Unc"+name+"Do");
+  _uType[ name ] = wUnc;
+
+  //check the direction
+  if(dir!=SystUtils::kNone) {
+    _uncSrcs.push_back(name);
+    _uncDirs.push_back(dir);
+    _vc->_su->addSystSource(name, dir, type, modVar, db, hname);
+  }
+  else {
+    //up variation
+    _uncSrcs.push_back(name);
+    _uncDirs.push_back(SystUtils::kUp);
+    _vc->_su->addSystSource(name, SystUtils::kUp, type, modVar, db, hname);
+    
+    //down variation
+    _uncSrcs.push_back(name);
+    _uncDirs.push_back(SystUtils::kDown);
+    _vc->_su->addSystSource(name, SystUtils::kDown, type, modVar, db, hname);
+  }
+
+}
+
+
+
+void
+MPAF::applySystVar(SystST s) {
+
+  //weight variation, MM: incomplete ===========================
+  // if(_uType[ _unc ]) {
+  //   if(s.val!=-100) {
+  //     //fixed variation
+  //     SystUtils::systOp<float>(_unc, _uDir, s.type, _weight,  s.val );
+  //   }  
+  //   else {
+  //     //db variation
+  //     SystUtils::systOp<float>(_unc, _uDir, s.type, _weight, s.db, s.vars);
+  //   }
+  //   return;
+  // }
+  
+  // variable variation =======================================
+  if(s.val!=-100) {
+    //fixed variation
+    for(size_t iv=0;iv<s.modVar.size();iv++) //loop over variables
+      _vc->applySystVar(_unc, _uDir, s.modVar[iv], s.val, s.type);
+  }
+  else {
+    //db variation
+    for(size_t iv=0;iv<s.modVar.size();iv++) //loop over variables
+      _vc->applySystVar(_unc, _uDir, s.modVar[iv], s.vars, s.db, s.type);
+  }
+
 }

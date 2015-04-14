@@ -497,7 +497,7 @@ HistoUtils::changeToDiffHisto(TH1*& h) {
 
 
 TGraphAsymmErrors*
-HistoUtils::convertHistoToGraph(TH1* h, float datNorm, bool diff) {
+HistoUtils::convertHistoToGraph(TH1* h, float datNorm, bool diff, bool byPassPE) {
 
   int Nn0=0;
   vector<double> vY;
@@ -515,29 +515,30 @@ HistoUtils::convertHistoToGraph(TH1* h, float datNorm, bool diff) {
     float w=diff?(1./h->GetBinWidth(ip)):1;
     float we=w;
 
-    if(h->GetBinErrorLow(ip)==h->GetBinErrorUp(ip) ) { //gaussian case
-      eYl = StatUtils::ErrorPL(Y);
-      eYh = StatUtils::ErrorPH(Y);
+    if(h->GetBinErrorLow(ip)==h->GetBinErrorUp(ip) && !byPassPE ) { //gaussian case
+	eYl = StatUtils::ErrorPL(Y);
+	eYh = StatUtils::ErrorPH(Y);
       
-      //check for potential internal histogram weights, dummy version ==============
-      // if(ip==1)
-      // 	cout<<sqrt(h->GetBinContent(ip))<<"   "<<h->GetBinError(ip)<<endl;
+	//check for potential internal histogram weights, dummy version ==============
+	// if(ip==1)
+	// 	cout<<sqrt(h->GetBinContent(ip))<<"   "<<h->GetBinError(ip)<<endl;
 
-      if(fabs(sqrt(h->GetBinContent(ip))-h->GetBinError(ip))/h->GetBinError(ip)>0.05) {
-	if(ip==1)
-	  cout<<" Treatment of weighted errors activated ====================== "<<endl;
-	float cor = h->GetBinError(ip)*h->GetBinError(ip)/h->GetBinContent(ip);
-	we *= sqrt(cor); //inverted farther
+	if(fabs(sqrt(h->GetBinContent(ip))-h->GetBinError(ip))/h->GetBinError(ip)>0.05) {
+	  if(ip==1)
+	    cout<<" Treatment of weighted errors activated ====================== "<<endl;
+	  float cor = h->GetBinError(ip)*h->GetBinError(ip)/h->GetBinContent(ip);
+	  we *= sqrt(cor); //inverted farther
+	}
+	//============================================================
+
+      } 
+      else { // poisson case
+	eYl = h->GetBinErrorLow(ip);
+	eYh = h->GetBinErrorUp(ip);
       }
-      //============================================================
-
-    } 
-    else { // poisson case
-      eYl = h->GetBinErrorLow(ip);
-      eYh = h->GetBinErrorUp(ip);
-    }
-   
-    //cout<<ip<<" ===> "<<Y<<" // "<<eYl<<" // "<<eYh<<" !! "<<datNorm<<" / "<<w<<endl;
+    
+    // cout<<ip<<" ===> "<<Y<<" // "<<eYl<<" // "<<eYh<<" !! "<<datNorm<<" / "<<we<<
+    //   "    "<<h->GetBinError(ip)<<"    "<<h->GetBinContent(ip)<<endl;
     if(Y!=0) {
       Nn0++;
       vX.push_back(X);
@@ -552,6 +553,8 @@ HistoUtils::convertHistoToGraph(TH1* h, float datNorm, bool diff) {
       vY.push_back(Y*datNorm*w);
       veY.push_back( eYl*datNorm*we );
       veY.push_back( eYh*datNorm*we );
+
+      //cout<<Y<<"  "<<eYl*datNorm*we<<"    "<<eYh*datNorm*we<<endl;
 	//}
     }
   }
@@ -590,7 +593,7 @@ HistoUtils::ratioHistoToGraph(TH1* hd, TH1* hmc, string opt) {
     else {
       eYld = hd->GetBinError(ip);
       eYhd = hd->GetBinError(ip);
-    }
+  }
 
     //Xm = hmc->GetBinCenter(ip);
     Ym = hmc->GetBinContent(ip);
@@ -598,9 +601,9 @@ HistoUtils::ratioHistoToGraph(TH1* hd, TH1* hmc, string opt) {
       eYlm = StatUtils::ErrorPL(Ym);
       eYhm = StatUtils::ErrorPH(Ym);
     }
-    else {
-      eYlm = hmc->GetBinError(ip);
-      eYhm = hmc->GetBinError(ip);
+    else { //FIXME : MC errors are supposed to go into the syst uncertainties
+      eYlm = 0;//hmc->GetBinError(ip);
+      eYhm = 0;//hmc->GetBinError(ip);
     }  
 
     if(Ym!=0) {
@@ -1067,7 +1070,7 @@ vector<float>
 HistoUtils::getXbinning(TH1* h ) {
   vector<float> bins;
   for(int ib=1;ib<h->GetNbinsX()+2;ib++) {
-    bins.push_back( h->GetBinLowEdge(ib) );
+    bins.push_back( h->GetXaxis()->GetBinLowEdge(ib) );
   }
   return bins;
 }

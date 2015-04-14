@@ -34,7 +34,6 @@ typedef std::map<std::string,std::pair<std::string,std::vector<std::vector<float
 typedef std::map<std::string,std::pair<std::string,std::vector<std::vector<float> > > >::iterator itFitM;
 typedef std::map<std::string,std::pair<std::string,std::vector<std::vector<float> > > >::const_iterator citFitM;
 
-//MM : to be reactivated later
 struct SystST{
 
    std::string type; //+ * %

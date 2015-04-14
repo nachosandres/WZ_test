@@ -39,6 +39,8 @@ Parser::parseLine(string line) {
     type=Parser::kSkip;
   if(tks[0]=="var")
     type=Parser::kVar;
+  if(tks[0]=="histo")
+    type=Parser::kHisto;
   if(tks[0]=="tree")
     type=Parser::kTree;
   if(tks[0]=="ds")

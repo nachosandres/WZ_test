@@ -52,8 +52,11 @@ MODULES    := $(subst /module.mk,,$(wildcard */module.mk))
 
 __dummy := $(shell ./genmak.sh $(MODULES))
 
-#all: lib pcm
+ifneq (,$(findstring v5,$(ROOTSYS)))
 all: lib
+else
+all: lib pcm
+endif
 #prog
 
 # the source files to compile (without suffix)

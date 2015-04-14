@@ -16,7 +16,7 @@ for sample in ${SAMPLES[@]}; do
   sed -i 's|LEPTONID|'$MVAS'|' cfg/tmpFiles/FakeRatioSkim_${ds}.cfg
   sed -i 's|SAMPLE|'$ds'|' cfg/tmpFiles/FakeRatioSkim_${ds}.cfg
 
-  #analysis -c $MPAF/cfg/tmpFiles/FakeRatioSkim_${ds}.cfg
-  qsub -q all.q -N MPAFjob -o $MPAF/workdir/logs/FakeRatio/FakeRatioSkim_${ds}.out -e $MPAF/workdir/logs/FakeRatio/FakeRatioSkim_${ds}.err $MPAF/scripts/submit.sh $MPAF/cfg/tmpFiles/FakeRatioSkim_${ds}.cfg
+  analysis -c $MPAF/cfg/tmpFiles/FakeRatioSkim_${ds}.cfg
+  #qsub -q all.q -N MPAFjob -o $MPAF/workdir/logs/FakeRatio/FakeRatioSkim_${ds}.out -e $MPAF/workdir/logs/FakeRatio/FakeRatioSkim_${ds}.err $MPAF/scripts/submit.sh $MPAF/cfg/tmpFiles/FakeRatioSkim_${ds}.cfg
 
 done
