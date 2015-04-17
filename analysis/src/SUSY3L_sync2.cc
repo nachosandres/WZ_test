@@ -423,7 +423,7 @@ bool SUSY3L_sync2::electronSelection(int elIdx){
     //makeCut(variable to cut on, cut value, direction of acception, name, 2nd cut value, counter)
     if(!makeCut<float>( _vc->get("LepGood_pt", elIdx) , pt_cut, ">"  , "pt selection"    , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_eta", elIdx)), eta_cut  , "<"  , "eta selection"   , 0    , kElId)) return false;
-    if(!makeCut<float>( std::abs(_vc->get("LepGood_eta", elIdx)), eta_veto_low, "[!]", "eta selection veto"   , eta_veto_high, kElId)) return false;
+    //if(!makeCut<float>( std::abs(_vc->get("LepGood_eta", elIdx)), eta_veto_low, "[!]", "eta selection veto"   , eta_veto_high, kElId)) return false;
     //if(!makeCut( pog_medium_pass, "POG 2012 medium wp", "=", kElId)) return false;
     
     //CHANGE for sync run 2 
@@ -441,22 +441,22 @@ bool SUSY3L_sync2::electronSelection(int elIdx){
     //removed after RA7 sync exercise
     //if(!makeCut<int>( _vc->get("LepGood_tightCharge", elIdx) , 1     , ">"  , "charge selection", 0    , kElId)) return false;
     
-    //boolian variable if electron comes from gamme conversion or not (true if not from conversion)
+    //boolian variable if electron comes from gamma conversion or not (true if not from conversion)
     bool not_conv = (_vc->get("LepGood_convVeto", elIdx)>0 && _vc->get("LepGood_lostHits", elIdx)==0);
     if(!makeCut( not_conv, "conversion rejection", "=", kElId)) return false;
 
     
     //reject electrons which are within a cone of delta R around a muon candidate (potentially final state radiation, bremsstrahlung)
-    bool muMatch = false;
-    for(int im=0; im<_nMus; ++im){
-        float dr = KineUtils::dR( _mus[im]->eta(), _vc->get("LepGood_eta", elIdx), _mus[im]->phi(), _vc->get("LepGood_phi", elIdx));
-        //_deltaR = dr;
-        //fill("deltaR_elmu" , _deltaR        , _weight);
-        if(dr<deltaR){
-            muMatch = true;
-            break;
-        }
-    }
+    //bool muMatch = false;
+    //for(int im=0; im<_nMus; ++im){
+    //    float dr = KineUtils::dR( _mus[im]->eta(), _vc->get("LepGood_eta", elIdx), _mus[im]->phi(), _vc->get("LepGood_phi", elIdx));
+    //    //_deltaR = dr;
+    //    //fill("deltaR_elmu" , _deltaR        , _weight);
+    //    if(dr<deltaR){
+    //        muMatch = true;
+    //        break;
+    //    }
+    //}
     //if(!makeCut( !muMatch, "dR selection (mu)", "=", kElId) ) return false;
 
     return true;
@@ -703,8 +703,8 @@ void SUSY3L_sync2::setBaselineRegion(){
         setCut("NBJets"             ,    1, ">=" )  ;     //number of b-tagged jets in event
         _ZMassWindow                  = 15.         ;     //width around Z mass to define on- or off-Z events
         _lowMllCut                    = 12.         ;     //low invariant mass cut for ossf leptoin pairs
-        setCut("HT"                 ,   60, ">=" )  ;     //sum of jet pT's
-        setCut("MET"                ,   40, ">=" )  ;     //missing transverse energy
+        setCut("HT"                 ,   60, ">"  )  ;     //sum of jet pT's
+        setCut("MET"                ,   40, ">"  )  ;     //missing transverse energy
     }
 
 }
@@ -1015,22 +1015,32 @@ bool SUSY3L_sync2::baseSelection(){
 
     //print event information before selection
    /* 
-    if(_vc->get("lumi") == 2989 && _vc->get("evt") == 98861){
+    if(_vc->get("lumi") ==  993 && _vc->get("evt") == 99260){
         cout << "--------------------------------------------------"<< endl; 
         cout << "event  " << _vc->get("lumi") << " " << _vc->get("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+        for(int i =0;i<_nEls;i++){
+            cout << _els[i]->pt()<<endl;
+            cout << _els[i]->eta()<<endl;
+            cout << _els[i]->phi()<<endl;
+            }
+    
     }
-  
-    if(_vc->get("lumi") == 2991 && _vc->get("evt") == 99034){
-        cout << "--------------------------------------------------"<< endl; 
-        cout << "event  " << _vc->get("lumi") << " " << _vc->get("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-    }
-  
-    if(_vc->get("lumi") == 2809 && _vc->get("evt") == 80890){
-        cout << "--------------------------------------------------"<< endl; 
-        cout << "event  " << _vc->get("lumi") << " " << _vc->get("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-    }
-
 */
+
+
+
+ /* 
+    if(_vc->get("lumi") == 4531 && _vc->get("evt") == 53003){
+        cout << "--------------------------------------------------"<< endl; 
+        cout << "event  " << _vc->get("lumi") << " " << _vc->get("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+    }
+  
+    if(_vc->get("lumi") == 4674 && _vc->get("evt") == 67311){
+        cout << "--------------------------------------------------"<< endl; 
+        cout << "event  " << _vc->get("lumi") << " " << _vc->get("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+    }
+*/
+
 
 
     /*   for(int i=0;i<3;i++){            
@@ -1075,9 +1085,9 @@ bool SUSY3L_sync2::baseSelection(){
     bool is_reconstructed_Z = ZEventSelectionLoop();
 
     //if(is_reconstructed_Z){
-        //fill("Zmass" , _Z->mass()        , _weight);
+    //fill("Zmass" , _Z->mass()        , _weight);
     //}
-    
+
     if(_pairmass == "off"){
         if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
     }
@@ -1381,7 +1391,7 @@ bool SUSY3L_sync2::electronMvaCut(int idx, int wp){
         return: true (if electron passes the wp), flase (else)
     */
 
-        int _elMvaIdWP[3][2];
+        float _elMvaIdWP[3][2];
         int kLoose = 0;
         int kTight = 1; 
         _elMvaIdWP[0][kLoose]=0.35; _elMvaIdWP[0][kTight]=0.73;
@@ -1389,11 +1399,11 @@ bool SUSY3L_sync2::electronMvaCut(int idx, int wp){
         _elMvaIdWP[2][kLoose]=-0.52; _elMvaIdWP[2][kTight]=0.05;
 
         int etaBin=-1;
-        if(std::abs(_vc->get("LepGood_eta", idx)) < 0.8) etaBin=0;
-        else if(std::abs(_vc->get("LepGood_eta", idx)) < 1.479) etaBin=1;
-        else if(std::abs(_vc->get("LepGood_eta", idx)) < 2.4) etaBin=2;
-        if(_vc->get("LepGood_mvaIdPhys14", idx) <  _elMvaIdWP[etaBin][wp]  ) return false;
-
+        if(std::abs(_vc->get("LepGood_eta", idx)) < 0.8){ etaBin=0 ;}
+        else if(std::abs(_vc->get("LepGood_eta", idx)) < 1.479) {etaBin=1;}
+        else if(std::abs(_vc->get("LepGood_eta", idx)) < 2.5) {etaBin=2;}
+        if(_vc->get("LepGood_mvaIdPhys14", idx) <  _elMvaIdWP[etaBin][wp]  ) {return false;}
+        
         return true;
 
 }
