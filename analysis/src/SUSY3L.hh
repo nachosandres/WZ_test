@@ -51,9 +51,8 @@ private:
     bool ZEventSelection();
     bool ZEventSelectionLoop();
     bool srSelection();
-
+    bool electronMvaCut(int, int);
     void fillEventPlots(std::string);
-
 
 
     float HT();

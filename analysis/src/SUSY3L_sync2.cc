@@ -601,29 +601,6 @@ bool SUSY3L_sync2::vetoMuonSelection(int muIdx){
 
 
 //____________________________________________________________________________
-bool SUSY3L_sync2::bJetSelection(int jetIdx){
-    /*
-        does the selection of  b-jets
-        parameters: jetIdx
-        return: true (if the jet is a b-jet), false (else)
-    */
-    
-    counter("BJetDenominator", kBJetId);
-
-    float btagCSV_cut = 0.814;
-
-    //b-jet needs to fulfill criteria for jets
-    if(!makeCut(goodJetSelection(jetIdx), "jet Id", "=", kBJetId) ) return false;
-    //cut on b-tagger parameter
-    if(!makeCut<float>(_vc->get("Jet_btagCSV", jetIdx), btagCSV_cut, ">", "csv btag selection", 0, kBJetId) ) return false;
-
-    return true;
-
-}
-
-
-
-//____________________________________________________________________________
 bool SUSY3L_sync2::goodJetSelection(int jetIdx){
     /*
         does the selection of good jets, i.e. minimum selection of jets 
@@ -677,6 +654,29 @@ bool SUSY3L_sync2::goodJetSelection(int jetIdx){
     if(!makeCut(!lepMatch,  "lepton cleaning", "=", kJetId) ) return false;
     
     return true;
+}
+
+
+
+//____________________________________________________________________________
+bool SUSY3L_sync2::bJetSelection(int jetIdx){
+    /*
+        does the selection of  b-jets
+        parameters: jetIdx
+        return: true (if the jet is a b-jet), false (else)
+    */
+    
+    counter("BJetDenominator", kBJetId);
+
+    float btagCSV_cut = 0.814;
+
+    //b-jet needs to fulfill criteria for jets
+    if(!makeCut(goodJetSelection(jetIdx), "jet Id", "=", kBJetId) ) return false;
+    //cut on b-tagger parameter
+    if(!makeCut<float>(_vc->get("Jet_btagCSV", jetIdx), btagCSV_cut, ">", "csv btag selection", 0, kBJetId) ) return false;
+
+    return true;
+
 }
 
 

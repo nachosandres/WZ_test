@@ -80,7 +80,9 @@ void SUSY3L::initialize(){
     _vc->registerVar("LepGood_hadronicOverEm"          );    //
     _vc->registerVar("LepGood_sigmaIEtaIEta"           );    //
     _vc->registerVar("LepGood_eInvMinusPInv"           );    //
-    /* 
+    _vc->registerVar("LepGood_mediumMuonId"            );    //mva medium wp muon identification
+    _vc->registerVar("LepGood_mvaIdPhys14"             );    //mva electron ID
+     
     _vc->registerVar("nTauGood"                        );    //number of taus in event
     _vc->registerVar("TauGood_pdgId"                   );    //identifier for taus (15)
     _vc->registerVar("TauGood_pt"                      );    //pT of tau
@@ -91,7 +93,7 @@ void SUSY3L::initialize(){
     _vc->registerVar("TauGood_idAntiE"                 );     //tau electron discriminator
     _vc->registerVar("TauGood_idDecayMode"             );     //
     _vc->registerVar("TauGood_isoCI3hit"               );     //
-    */
+    
     _vc->registerVar("nJet"                            );    //number of jets in the event
     _vc->registerVar("Jet_pt"                          );    //pT of each of the nJet jets
     _vc->registerVar("Jet_eta"                         );    //eta of each of the nJet jets
@@ -320,7 +322,7 @@ void SUSY3L::collectKinematicObjects(){
     _nEls = _els.size();
     //_nVEls = _vEls.size();
     
-    /*
+    
     // loop over all taus and apply selection
     for(int i = 0; i < _vc->get("nTauGood"); ++i){
         // check which of the taus have tau identifier 15 (actually not needed)
@@ -348,7 +350,7 @@ void SUSY3L::collectKinematicObjects(){
             }
         }
     }
-    */
+    
     //number of taus in the event
     _nTaus = _taus.size();
 
@@ -400,7 +402,7 @@ bool SUSY3L::electronSelection(int elIdx){
 
     //define cuts for electrons
     float pt_cut = 10.;
-    float eta_cut = 2.4;
+    float eta_cut = 2.5;
     float eta_veto_low = 1.4442;
     float eta_veto_high = 1.566;
     float isolation_cut = 0.15;
@@ -413,29 +415,36 @@ bool SUSY3L::electronSelection(int elIdx){
     //makeCut(variable to cut on, cut value, direction of acception, name, 2nd cut value, counter)
     if(!makeCut<float>( _vc->get("LepGood_pt", elIdx) , pt_cut, ">"  , "pt selection"    , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_eta", elIdx)), eta_cut  , "<"  , "eta selection"   , 0    , kElId)) return false;
-    if(!makeCut<float>( std::abs(_vc->get("LepGood_eta", elIdx)), eta_veto_low, "[!]", "eta selection veto"   , eta_veto_high, kElId)) return false;
-    if(!makeCut<int>( _vc->get("LepGood_eleCutIdCSA14_50ns_v1", elIdx) , 3     , ">=" , "POG CB WP-M Id " , 0    , kElId)) return false;
+    //removed after RA7 sync round 2
+    //if(!makeCut<float>( std::abs(_vc->get("LepGood_eta", elIdx)), eta_veto_low, "[!]", "eta selection veto"   , eta_veto_high, kElId)) return false;
+    //removed after RA7 sync round 2
+    //if(!makeCut<int>( _vc->get("LepGood_eleCutIdCSA14_50ns_v1", elIdx) , 3     , ">=" , "POG CB WP-M Id " , 0    , kElId)) return false;
+    //mva based electron ID
+    bool elTightMvaID = electronMvaCut(elIdx, 1);
+        if(!makeCut( elTightMvaID, "electron tight mva wp", "=", kElId)) return false;
     if(!makeCut<float>( _vc->get("LepGood_relIso03", elIdx) , isolation_cut   , "<"  , "isolation "      , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_dz", elIdx)), vertex_dz_cut   , "<"  , "dz selection"    , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_dxy", elIdx)), vertex_dxy_cut  , "<"  , "dxy selection"   , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_sip3d", elIdx)), sip3d_cut  , "<"  , "sip3d selection"   , 0    , kElId)) return false;
-    if(!makeCut<int>( _vc->get("LepGood_tightCharge", elIdx) , 1     , ">"  , "charge selection", 0    , kElId)) return false;
+    //removed after RA7 sync round 2
+    //if(!makeCut<int>( _vc->get("LepGood_tightCharge", elIdx) , 1     , ">"  , "charge selection", 0    , kElId)) return false;
     //boolian variable if electron comes from gamme conversion or not (true if not from conversion)
     bool not_conv = (_vc->get("LepGood_convVeto", elIdx)>0 && _vc->get("LepGood_lostHits", elIdx)==0);
     if(!makeCut( not_conv, "conversion rejection", "=", kElId)) return false;
     
+    //removed after RA7 sync round 2
     //reject electrons which are within a cone of delta R around a muon candidate (potentially final state radiation, bremsstrahlung)
-    bool muMatch = false;
-    for(int im=0; im<_nMus; ++im){
-        float dr = KineUtils::dR( _mus[im]->eta(), _vc->get("LepGood_eta", elIdx), _mus[im]->phi(), _vc->get("LepGood_phi", elIdx));
+    //bool muMatch = false;
+    //for(int im=0; im<_nMus; ++im){
+    //    float dr = KineUtils::dR( _mus[im]->eta(), _vc->get("LepGood_eta", elIdx), _mus[im]->phi(), _vc->get("LepGood_phi", elIdx));
         //_deltaR = dr;
         //fill("deltaR_elmu" , _deltaR        , _weight);
-        if(dr<deltaR){
-            muMatch = true;
-            break;
-        }
-    }
-    if(!makeCut( !muMatch, "dR selection (mu)", "=", kElId) ) return false;
+    //    if(dr<deltaR){
+    //        muMatch = true;
+    //        break;
+    //    }
+    //}
+    //if(!makeCut( !muMatch, "dR selection (mu)", "=", kElId) ) return false;
 
     return true;
 }
@@ -464,7 +473,10 @@ bool SUSY3L::muonSelection(int muIdx){
     if(!makeCut<float>( _vc->get("LepGood_pt", muIdx), pt_cut, ">", "pt selection"    , 0, kMuId)) return false;
     if(!makeCut<float>( std::abs( _vc->get("LepGood_eta", muIdx)), eta_cut, "<", "eta selection", 0, kMuId)) return false;
     if(!makeCut<float>( _vc->get("LepGood_relIso03", muIdx) , isolation_cut   , "<", "isolation "      , 0, kMuId)) return false;
-    if(!makeCut<int>( _vc->get("LepGood_tightId", muIdx) , 1     , "=", "POG Tight Id "   , 0, kMuId)) return false;
+    //removed after RA7 sync round 2
+    //if(!makeCut<int>( _vc->get("LepGood_tightId", muIdx) , 1     , "=", "POG Tight Id "   , 0, kMuId)) return false;
+    //mva based muon id, medium working point
+    if(!makeCut<float>( _vc->get("LepGood_mediumMuonId", muIdx) , 1  , "=", "mva medium muon id", 0, kMuId)) return false;
     if(!makeCut<float>(std::abs(_vc->get("LepGood_dz", muIdx)), vertex_dz_cut   , "<", "dz selection"    , 0, kMuId)) return false;
     if(!makeCut<float>(std::abs(_vc->get("LepGood_dxy", muIdx)), vertex_dxy_cut , "<", "dxy selection"   , 0, kMuId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_sip3d", muIdx)), sip3d_cut  , "<"  , "sip3d selection"   , 0    , kMuId)) return false;
@@ -1357,4 +1369,30 @@ float SUSY3L::M_T(float pt_lepton, float met, float phi_lepton, float phi_met){
         m_t = sqrt(2 * pt_lepton * met * (1 - cos(deltaPhi) ));
         return m_t;
 }
+
+//____________________________________________________________________________
+bool SUSY3L::electronMvaCut(int idx, int wp){
+    /*
+        decides whether ot not an electron passes the loose or tight mva wp
+        parameters: idx (electron identification number), wp (worling point 0 for loose, 1 for tight)
+        return: true (if electron passes the wp), flase (else)
+    */
+
+        float _elMvaIdWP[3][2];
+        int kLoose = 0;
+        int kTight = 1;
+        _elMvaIdWP[0][kLoose]=0.35; _elMvaIdWP[0][kTight]=0.73;
+        _elMvaIdWP[1][kLoose]=0.20; _elMvaIdWP[1][kTight]=0.57;
+        _elMvaIdWP[2][kLoose]=-0.52; _elMvaIdWP[2][kTight]=0.05;
+
+        int etaBin=-1;
+        if(std::abs(_vc->get("LepGood_eta", idx)) < 0.8){ etaBin=0 ;}
+        else if(std::abs(_vc->get("LepGood_eta", idx)) < 1.479) {etaBin=1;}
+        else if(std::abs(_vc->get("LepGood_eta", idx)) < 2.5) {etaBin=2;}
+        if(_vc->get("LepGood_mvaIdPhys14", idx) <  _elMvaIdWP[etaBin][wp]  ) {return false;}
+
+        return true;
+
+}
+
 

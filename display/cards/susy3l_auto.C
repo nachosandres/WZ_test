@@ -83,47 +83,47 @@
     map<string,float> LumisXS;
 
     //cross sections   
-    
+
+ 
     //Drell-Yan
-    LumisXS[ "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                       ] = 2829164 / (6024             );
-    LumisXS[ "DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola"     ] = 4054159 / ( 194.3   * 1.27  );
-    LumisXS[ "DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola"     ] = 4666496 / (  52.24  * 1.27  );
-    LumisXS[ "DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola"     ] = 4931372 / (   6.546 * 1.27  );
-    LumisXS[ "DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola"     ] = 4493574 / (   2.179 * 1.27  );
+    //LumisXS[ "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                       ] = 2829164 / (6024             );
+    LumisXS[ "DYJetsToLL_M50_HT100to200"                ] = 4054159 / ( 194.3   * 1.27  );
+    LumisXS[ "DYJetsToLL_M50_HT200to400"                ] = 4666496 / (  52.24  * 1.27  );
+    LumisXS[ "DYJetsToLL_M50_HT400to600"                ] = 4931372 / (   6.546 * 1.27  );
+    LumisXS[ "DYJetsToLL_M50_HT600toInf"                ] = 4493574 / (   2.179 * 1.27  );
 
     //Higgs->ZZ
-    LumisXS[ "GluGluToHToZZTo4L_M-125_13TeV-powheg-pythia6"                 ] =  204684 / (0.01212192       );  // cross-section: 43.92*2.76E-04
+    LumisXS[ "GGHZZ4L"                                  ] =  204684 / (0.01212192       );  // cross-section: 43.92*2.76E-04
     
     //signal
-    LumisXS[ "SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola" ] =  100322 / (0.0856418 * 1    );
-    LumisXS[ "SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola" ] =  105679 / (0.0141903 * 1    );
-    LumisXS[ "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"                    ] =   52499 / (0.3254    * 1    );
-    LumisXS[ "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280"                    ] =       0 / (1         * 1    );
+    LumisXS[ "SMS_T1tttt_2J_mGl1200_mLSP800"            ] =  100322 / (0.0856418 * 20.  );
+    LumisXS[ "SMS_T1tttt_2J_mGl1500_mLSP100"            ] =  105679 / (0.0141903 * 20.  );
+    LumisXS[ "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"] =   52499 / (0.3254    * 20.  );
+    LumisXS[ "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280"] =       0 / (1         * 1    );
     
-    LumisXS[ "TbarToLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"   ] =  250000 / (1.34784          );  // 4.16*0.108*3
-    LumisXS[ "TbarToLeptons_t-channel_Tune4C_CSA14_13TeV-aMCatNLO-tauola"   ] = 1999800 / (26.23428         );  // 80.97*0.108*3
-    LumisXS[ "Tbar_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"          ] =  971800 / (35.6             ); 
-    LumisXS[ "TtbarH_M-125_13TeV_amcatnlo-pythia8-tauola"                   ] =  199700 / (1         * 1    );
-    LumisXS[ "TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola"      ] =25446993 / (809.1            );
-    LumisXS[ "TtoLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ] =  500000 / (2.3328           );  // 7.20*0.108*3
-    LumisXS[ "TtoLeptons_t-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ] = 3991000 / (44.0802          );  // 136.05*0.108*3
-    LumisXS[ "T_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"             ] =  986100 / (35.6             );  // 35.6
+    LumisXS[ "TBarToLeptons_sch"                        ] =  250000 / (1.34784          );  // 4.16*0.108*3
+    LumisXS[ "TBarToLeptons_tch"                        ] = 1999800 / (26.23428         );  // 80.97*0.108*3
+    LumisXS[ "TBar_tWch"                                ] =  971800 / (35.6             ); 
+    LumisXS[ "TTH"                                      ] =  199700 / (1         * 1    );
+    LumisXS[ "TTJets"                                   ] =25446993 / (809.1            );
+    LumisXS[ "TToLeptons_sch"                           ] =  500000 / (2.3328           );  // 7.20*0.108*3
+    LumisXS[ "TToLeptons_tch"                           ] = 3991000 / (44.0802          );  // 136.05*0.108*3
+    LumisXS[ "T_tWch"                                   ] =  986100 / (35.6             );  // 35.6
    
     //TTV 
-    LumisXS[ "TTWJets_Tune4C_13TeV-madgraph-tauola"                         ] =  246521 / (0.6647           );
-    LumisXS[ "TTZJets_Tune4C_13TeV-madgraph-tauola"                         ] =  249275 / (0.8565           );
+    LumisXS[ "TTWJets"                                  ] =  246521 / (0.6647           );
+    LumisXS[ "TTZJets"                                  ] =  249275 / (0.8565           );
       
     //LumisXS[ "WJetsToLNu_13TeV-madgraph-pythia8-tauola"                    ] = 10017462 / (20508.9        ); 
-    LumisXS[ "WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola"          ] = 5262265  / (1817.0   * 1.23 );
-    LumisXS[ "WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola"          ] = 4936077  / ( 471.6   * 1.23 );
-    LumisXS[ "WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola"          ] = 4640594  / (  55.61  * 1.23 );
-    LumisXS[ "WJetsToLNu_HT-600toInf_Tune4C_13TeV-madgraph-tauola"          ] = 237484   / (  18.81  * 1.23 );
+    LumisXS[ "WJetsToLNu_HT100to200"                    ] = 5262265  / (1817.0   * 1.23 );
+    LumisXS[ "WJetsToLNu_HT200to400"                    ] = 4936077  / ( 471.6   * 1.23 );
+    LumisXS[ "WJetsToLNu_HT400to600"                    ] = 4640594  / (  55.61  * 1.23 );
+    LumisXS[ "WJetsToLNu_HT600toInf"                    ] = 237484   / (  18.81  * 1.23 );
 
     //Diboson
-    LumisXS[ "WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola"                    ] =   237484 / (2.29            );
-    LumisXS[ "ZZTo4L_Tune4C_13TeV-powheg-pythia8"                           ] =  1958600 / (0.3231          );  // cross-section 31.8*(3*0.0336)*(3*0.0336)
+    LumisXS[ "WZJetsTo3LNu"                             ] =   237484 / (2.29            );
+    LumisXS[ "ZZTo4L"                                   ] =  1958600 / (0.3231          );  // cross-section 31.8*(3*0.0336)*(3*0.0336)
     
-
 
     //via XSect
   
@@ -135,44 +135,47 @@
     // SDYJetsM50_HT600toInf_PU_S14_POSTLS170_skimamples **************************  samples
     //if( md.isInitStatus() ) {
     
-    md.anConf.addSample( "WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola"                    ,  "WZ+ZZ"              , kGreen    );
-    md.anConf.addSample( "ZZTo4L_Tune4C_13TeV-powheg-pythia8"                           ,  "WZ+ZZ"              , kGreen    );
+    md.anConf.addSample( "WZJetsTo3LNu"                     ,  "WZ+ZZ"              , kGreen    );
+    md.anConf.addSample( "ZZTo4L"                           ,  "WZ+ZZ"              , kGreen    );
 
-    md.anConf.addSample( "TTZJets_Tune4C_13TeV-madgraph-tauola"                         ,  "t#bar{t}Z"          , kBlue     );
+    md.anConf.addSample( "TTZJets"                          ,  "t#bar{t}Z"          , kBlue     );
 
-    md.anConf.addSample( "TTWJets_Tune4C_13TeV-madgraph-tauola"                         ,  "t#bar{t}W"          , kYellow   );
+    md.anConf.addSample( "TTWJets"                          ,  "t#bar{t}W"          , kYellow   );
     
-    md.anConf.addSample( "GluGluToHToZZTo4L_M-125_13TeV-powheg-pythia6"                 ,  "rare SM"            , kCyan     );
+    md.anConf.addSample( "GGHZZ4L"                          ,  "rare SM"            , kCyan     );
     
     //Drell-Yan
-    md.anConf.addSample( "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                       ,  "non-prompt e/#mu"    , kRed      );
-    //md.anConf.addSample( "DYJetsToLL_M-50_HT-100to200_Tune4C_13TeV-madgraph-tauola"     ,  "non-prompt e/#mu"    , kRed      );
-    //md.anConf.addSample( "DYJetsToLL_M-50_HT-200to400_Tune4C_13TeV-madgraph-tauola"     ,  "non-prompt e/#mu"    , kRed      );
-    //md.anConf.addSample( "DYJetsToLL_M-50_HT-400to600_Tune4C_13TeV-madgraph-tauola"     ,  "non-prompt e/#mu"    , kRed      );
-    //md.anConf.addSample( "DYJetsToLL_M-50_HT-600toInf_Tune4C_13TeV-madgraph-tauola"     ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                       ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "DYJetsToLL_M50_HT100to200"        ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "DYJetsToLL_M50_HT200to400"        ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "DYJetsToLL_M50_HT400to600"        ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "DYJetsToLL_M50_HT600toInf"        ,  "non-prompt e/#mu"    , kRed      );
     
     //t production
-    md.anConf.addSample( "TbarToLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"   ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "TbarToLeptons_t-channel_Tune4C_CSA14_13TeV-aMCatNLO-tauola"   ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "Tbar_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"          ,  "non-prompt e/#mu"    , kRed      );
-    //md.anConf.addSample( "TtbarH_M-125_13TeV_amcatnlo-pythia8-tauola"                   ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola"      ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "TtoLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "TtoLeptons_t-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola"      ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "T_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola"             ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "TBarToLeptons_sch"                ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "TBarToLeptons_tch"                ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "TBar_tWch"                        ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "TTH"                            ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "TTJets"                           ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "TToLeptons_sch"                   ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "TToLeptons_tch"                   ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "T_tWch"                           ,  "non-prompt e/#mu"    , kRed      );
     
     //W+Jets
-    md.anConf.addSample( "WJetsToLNu_HT-100to200_Tune4C_13TeV-madgraph-tauola"          ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "WJetsToLNu_HT-200to400_Tune4C_13TeV-madgraph-tauola"          ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "WJetsToLNu_HT-400to600_Tune4C_13TeV-madgraph-tauola"          ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "WJetsToLNu_HT100to200"            ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "WJetsToLNu_HT200to400"            ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "WJetsToLNu_HT400to600"            ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "WJetsToLNu_HT600toInf"            ,  "non-prompt e/#mu"    , kRed      );
     
     //signal
-    md.anConf.addSample( "SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola" ,  "T1tttt (800)" , kViolet-3 );
-    md.anConf.addSample( "SMS-T1tttt_2J_mGl-1500_mLSP-100_Tune4C_13TeV-madgraph-tauola" ,  "T1tttt (100)" , kViolet+3  );
-    md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"                    ,  "T5tttt (1000)" , kOrange-3 );
-    md.anConf.addSample( "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280"                    ,  "T5tttt (1300)" , kOrange+6 );
+    md.anConf.addSample( "SMS_T1tttt_2J_mGl1200_mLSP800"    ,  "T1tttt (800) * 20 sig" , kViolet-3 );
+    md.anConf.addSample( "SMS_T1tttt_2J_mGl1500_mLSP100"    ,  "T1tttt (100) #cdot 20 sig" , kViolet+3  );
+    md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"  ,  "T5tttt (1000) #cdot 20 sig" , kOrange-3 );
+    md.anConf.addSample( "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280"  ,  "T5tttt (1300) #cdot 20 sig" , kOrange+6 );
     // }
     //===============================================================
+
+
 
     //*********************************************************************²
     //Execution macro ******************************************************
