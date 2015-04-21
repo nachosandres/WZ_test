@@ -67,6 +67,11 @@ void SUSY3L::initialize(){
     _vc->registerVar("LepGood_phi"                     );    //phi of leptons
     _vc->registerVar("LepGood_charge"                  );    //charge of lepton +1 or -1
     _vc->registerVar("LepGood_relIso03"                );    //relative isolation of the lepton, cone dimensions?
+    _vc->registerVar("LepGood_miniRelIso"              );    //relIso with smaller cone?
+    _vc->registerVar("LepGood_jetPtRatio"              );    //pt lepton over pt aka4 jet (cone size?)
+    _vc->registerVar("LepGood_jetPtRel"                );    //
+    
+    
     _vc->registerVar("LepGood_dz"                      );    //difference to reconstructed primary vertex in z direction
     _vc->registerVar("LepGood_dxy"                     );    //difference to reconstructed primary vertex in xy plane
     _vc->registerVar("LepGood_sip3d"                   );    //similar observable as dxy, also vertex cut
@@ -337,7 +342,7 @@ void SUSY3L::collectKinematicObjects(){
                                                    1.777) );     //tau mass
                 _tauIdx.push_back(i);
             }
-            
+            /*
             else {
                 if(vetotauSelection(i)){
                     _vTaus.push_back( Candidate::create(_vc->get("TauGood_pt", i),
@@ -347,7 +352,7 @@ void SUSY3L::collectKinematicObjects(){
                                                         _vc->get("TauGood_charge", i),
                                                         1.777) );    //tau mass
                 }
-            }
+            }*/
         }
     }
     
@@ -405,7 +410,10 @@ bool SUSY3L::electronSelection(int elIdx){
     float eta_cut = 2.5;
     float eta_veto_low = 1.4442;
     float eta_veto_high = 1.566;
-    float isolation_cut = 0.15;
+    //float isolation_cut = 0.15;
+    float miniRelIso_cut = 0.05;
+    float ptRatio_cut = 0.725;
+    float ptRel_cut = 8.;
     float vertex_dz_cut = 0.1;      //in cm
     float vertex_dxy_cut = 0.05;    //in cm
     float sip3d_cut = 4;
@@ -422,7 +430,11 @@ bool SUSY3L::electronSelection(int elIdx){
     //mva based electron ID
     bool elTightMvaID = electronMvaCut(elIdx, 1);
         if(!makeCut( elTightMvaID, "electron tight mva wp", "=", kElId)) return false;
-    if(!makeCut<float>( _vc->get("LepGood_relIso03", elIdx) , isolation_cut   , "<"  , "isolation "      , 0    , kElId)) return false;
+    //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
+    bool isolated = ThreeVariableIsolation(elIdx, miniRelIso_cut, ptRatio_cut, ptRel_cut);
+        if(!makeCut( isolated, "isolation HT wp", "=", kElId)) return false;
+    //replaced by 3 varibale isolation
+    //if(!makeCut<float>( _vc->get("LepGood_relIso03", elIdx) , isolation_cut   , "<"  , "isolation "      , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_dz", elIdx)), vertex_dz_cut   , "<"  , "dz selection"    , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_dxy", elIdx)), vertex_dxy_cut  , "<"  , "dxy selection"   , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_sip3d", elIdx)), sip3d_cut  , "<"  , "sip3d selection"   , 0    , kElId)) return false;
@@ -464,7 +476,10 @@ bool SUSY3L::muonSelection(int muIdx){
     //define cut values
     float pt_cut = 10.;
     float eta_cut = 2.4;
-    float isolation_cut = 0.15;
+    //float isolation_cut = 0.15;
+    float miniRelIso_cut = 0.075;
+    float ptRatio_cut = 0.725;
+    float ptRel_cut = 7.;
     float vertex_dz_cut = 0.1;
     float vertex_dxy_cut = 0.05;
     float sip3d_cut = 4;
@@ -472,7 +487,11 @@ bool SUSY3L::muonSelection(int muIdx){
     //apply the cuts
     if(!makeCut<float>( _vc->get("LepGood_pt", muIdx), pt_cut, ">", "pt selection"    , 0, kMuId)) return false;
     if(!makeCut<float>( std::abs( _vc->get("LepGood_eta", muIdx)), eta_cut, "<", "eta selection", 0, kMuId)) return false;
-    if(!makeCut<float>( _vc->get("LepGood_relIso03", muIdx) , isolation_cut   , "<", "isolation "      , 0, kMuId)) return false;
+    //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
+    bool isolated = ThreeVariableIsolation(muIdx, miniRelIso_cut, ptRatio_cut, ptRel_cut);
+        if(!makeCut( isolated, "isolation VT wp", "=", kMuId)) return false;
+    //replaced by 3 varibale isolation
+    //if(!makeCut<float>( _vc->get("LepGood_relIso03", muIdx) , isolation_cut   , "<", "isolation "      , 0, kMuId)) return false;
     //removed after RA7 sync round 2
     //if(!makeCut<int>( _vc->get("LepGood_tightId", muIdx) , 1     , "=", "POG Tight Id "   , 0, kMuId)) return false;
     //mva based muon id, medium working point
@@ -1392,6 +1411,26 @@ bool SUSY3L::electronMvaCut(int idx, int wp){
         if(_vc->get("LepGood_mvaIdPhys14", idx) <  _elMvaIdWP[etaBin][wp]  ) {return false;}
 
         return true;
+
+}
+
+
+//____________________________________________________________________________
+bool SUSY3L::ThreeVariableIsolation(int idx, float miniRelIso_cut, float ptRatio_cut, float ptRel_cut){
+    /*
+        decides whether ot not a lepton is isolated according to the 3 varibale isolation requirement.
+        lepton needs to pass miniRelIso cut and (ptratio or ptrel cut)
+        parameters: idx (electron identification number), miniRelIso_cut, ptRatio_cut, ptRel_cut
+        return: true (if lepton is isolated), flase (else)
+    */
+
+       if(_vc->get("LepGood_miniRelIso",idx) < miniRelIso_cut){
+           if((_vc->get("LepGood_jetPtRatio") > ptRatio_cut) || (_vc->get("LepGood_jetPtRel") > ptRel_cut)){ 
+               return true;
+           }
+       }
+
+       return false;
 
 }
 

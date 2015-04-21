@@ -52,6 +52,7 @@ private:
     bool ZEventSelectionLoop();
     bool srSelection();
     bool electronMvaCut(int, int);
+    bool ThreeVariableIsolation(int, float, float, float);
     void fillEventPlots(std::string);
 
 

@@ -159,7 +159,7 @@ void SUSY3L_sync2::run(){
     //printout for RA7 synchronization
     int lumi = _vc->get("lumi");
     int evt = _vc->get("evt");
-    cout << "1" << " " << lumi << " " << evt << " " << _nMus << " " << _nEls << " " << _nTaus << " " << _nJets << " " << _nBJets << endl;
+    //cout << "1" << " " << lumi << " " << evt << " " << _nMus << " " << _nEls << " " << _nTaus << " " << _nJets << " " << _nBJets << endl;
 
     // initialization of signal region cuts, categorization of events passing the baseline 
     // selection into different signal regions, and filling of plots
@@ -257,6 +257,19 @@ void SUSY3L_sync2::collectKinematicObjects(){
     // loop over all nLepGood leptons in this event and select muons
     for(int i = 0; i < _vc->get("nLepGood"); ++i){
         // check which of the nLepGood leptons are muons, identifier 13
+        /*
+        //print event information before selection
+        if(_vc->get("lumi") ==  4557 && _vc->get("evt") == 55659){
+            cout << "--------------------------------------------------"<< endl; 
+            cout << _vc->get("LepGood_pt", i) <<endl;
+            cout << _vc->get("LepGood_eta", i) <<endl;
+            cout << _vc->get("LepGood_phi", i) <<endl;
+            cout << _vc->get("LepGood_pdgId", i) <<endl;
+            cout << _vc->get("LepGood_charge", i) <<endl;
+            }
+        */
+        
+        
         if(std::abs(_vc->get("LepGood_pdgId",i)) == 13){
             //differentiate muons for muon selecton and veto muon selection
             if(muonSelection(i)) {
@@ -1012,10 +1025,9 @@ bool SUSY3L_sync2::baseSelection(){
         parameters: none
         return: true (if event passes selection), false (else)
     */
-
+    /*
     //print event information before selection
-   /* 
-    if(_vc->get("lumi") ==  993 && _vc->get("evt") == 99260){
+    if(_vc->get("lumi") ==  178 && _vc->get("evt") == 17707){
         cout << "--------------------------------------------------"<< endl; 
         cout << "event  " << _vc->get("lumi") << " " << _vc->get("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
         for(int i =0;i<_nEls;i++){
@@ -1023,7 +1035,16 @@ bool SUSY3L_sync2::baseSelection(){
             cout << _els[i]->eta()<<endl;
             cout << _els[i]->phi()<<endl;
             }
+        cout << " muons " << endl;    
+        for(int i =0;i<_nMus;i++){
+            cout << _mus[i]->pt()<<endl;
+            cout << _mus[i]->eta()<<endl;
+            cout << _mus[i]->phi()<<endl;
+            float dr = KineUtils::dR( _mus[i]->eta(), _els[0]->eta(), _mus[i]->phi(), _els[0]->phi());
+            cout << "deltaR with electron " << dr << endl;
+            }
     
+
     }
 */
 
