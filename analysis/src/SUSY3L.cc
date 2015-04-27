@@ -163,14 +163,16 @@ void SUSY3L::run(){
     // event based observables in plots
     setBaselineRegion();
     if(!baseSelection()) return;	
+    //fillSkimTree();
     fillEventPlots("BR");
 
     // initialization of signal region cuts, categorization of events passing the baseline 
     // selection into different signal regions, and filling of plots
+    
     setSignalRegion();
     if(!srSelection()) return;	
     fillEventPlots("SR");
-
+   
 }
 
 
@@ -239,7 +241,7 @@ void SUSY3L::writeOutput(){
 
 //____________________________________________________________________________
 void SUSY3L::modifySkimming(){
-// if adding variables int he skimming tree is needed...
+// if adding variables to the skimmed tree is needed...
 
 }
 
@@ -411,9 +413,9 @@ bool SUSY3L::electronSelection(int elIdx){
     float eta_veto_low = 1.4442;
     float eta_veto_high = 1.566;
     //float isolation_cut = 0.15;
-    float miniRelIso_cut = 0.05;
+    float miniRelIso_cut = 0.075;
     float ptRatio_cut = 0.725;
-    float ptRel_cut = 8.;
+    float ptRel_cut = 7.;
     float vertex_dz_cut = 0.1;      //in cm
     float vertex_dxy_cut = 0.05;    //in cm
     float sip3d_cut = 4;
@@ -477,8 +479,8 @@ bool SUSY3L::muonSelection(int muIdx){
     float pt_cut = 10.;
     float eta_cut = 2.4;
     //float isolation_cut = 0.15;
-    float miniRelIso_cut = 0.075;
-    float ptRatio_cut = 0.725;
+    float miniRelIso_cut = 0.10;
+    float ptRatio_cut = 0.70;
     float ptRel_cut = 7.;
     float vertex_dz_cut = 0.1;
     float vertex_dxy_cut = 0.05;
@@ -1019,15 +1021,16 @@ bool SUSY3L::baseSelection(){
     //select events with certain lepton multiplicity of all flavor combinations
     if(!makeCut<int>( _nEls + _nMus, _valCutLepMultiplicityBR, _cTypeLepMultiplicityBR, "lepton multiplicity", _upValCutLepMultiplicityBR ) ) return false;
 
-    //require at least 1 of the leptons to have higher pT than original cut
-    bool has_hard_leg = hardLegSelection();
-    if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
-
     //require minimum number of jets
     if(!makeCut<int>( _nJets, _valCutNJetsBR, _cTypeNJetsBR, "jet multiplicity", _upValCutNJetsBR) ) return false;
 
     //require minimum number of b-tagged jets
     if(!makeCut<int>( _nBJets, _valCutNBJetsBR, _cTypeNBJetsBR, "b-jet multiplicity", _upValCutNBJetsBR) ) return false;
+    
+   /* 
+    //require at least 1 of the leptons to have higher pT than original cut
+    bool has_hard_leg = hardLegSelection();
+    if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
 
     //require minimum hadronic activity (sum of jet pT's)
     if(!makeCut<float>( _HT, _valCutHTBR, _cTypeHTBR, "hadronic activity", _upValCutHTBR) ) return false;
@@ -1053,7 +1056,7 @@ bool SUSY3L::baseSelection(){
     else if(_pairmass == "on"){
         if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
     }
-
+    */
     return true;
 }
 

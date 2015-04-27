@@ -257,18 +257,58 @@ void SUSY3L_sync2::collectKinematicObjects(){
     // loop over all nLepGood leptons in this event and select muons
     for(int i = 0; i < _vc->get("nLepGood"); ++i){
         // check which of the nLepGood leptons are muons, identifier 13
-        /*
+        
         //print event information before selection
-        if(_vc->get("lumi") ==  4557 && _vc->get("evt") == 55659){
-            cout << "--------------------------------------------------"<< endl; 
-            cout << _vc->get("LepGood_pt", i) <<endl;
-            cout << _vc->get("LepGood_eta", i) <<endl;
-            cout << _vc->get("LepGood_phi", i) <<endl;
-            cout << _vc->get("LepGood_pdgId", i) <<endl;
-            cout << _vc->get("LepGood_charge", i) <<endl;
-            }
+       /* 
+        if(_vc->get("lumi") == 3106  && _vc->get("evt") == 110551 ){cout << "FOUND 3106 110551" << endl;}
+        if(_vc->get("lumi") == 3325  && _vc->get("evt") == 132450 ){cout << "FOUND 3325 132450" << endl;}
+        if(_vc->get("lumi") == 3302  && _vc->get("evt") == 130143 ){cout << "FOUND 3302 130143" << endl;}
+        if(_vc->get("lumi") == 3580  && _vc->get("evt") == 157902 ){cout << "FOUND 3580 157902" << endl;}
+        if(_vc->get("lumi") == 4076  && _vc->get("evt") == 7592 ){cout << "FOUND 4076 7592" << endl;}
+        if(_vc->get("lumi") == 4288  && _vc->get("evt") == 28775 ){cout << "FOUND 4288 28775" << endl;}
+        if(_vc->get("lumi") == 1679  && _vc->get("evt") == 167809 ){cout << "FOUND 1679 167809" << endl;}
+        if(_vc->get("lumi") == 2321  && _vc->get("evt") == 32040 ){cout << "FOUND 2321 32040" << endl;}
+        if(_vc->get("lumi") == 1806  && _vc->get("evt") == 180529 ){cout << "FOUND 1806 180529" << endl;}
+        if(_vc->get("lumi") == 2241  && _vc->get("evt") == 24067 ){cout << "FOUND 2241 24067" << endl;}
+        if(_vc->get("lumi") == 2076  && _vc->get("evt") == 7531 ){cout << "FOUND 2076 7531" << endl;}
+        if(_vc->get("lumi") == 2174  && _vc->get("evt") == 17347 ){cout << "FOUND 2174 17347" << endl;}
+        if(_vc->get("lumi") == 2196  && _vc->get("evt") == 19518 ){cout << "FOUND 2196 19518" << endl;}
+        if(_vc->get("lumi") == 2445  && _vc->get("evt") == 44466 ){cout << "FOUND 2445 44466" << endl;}
+        if(_vc->get("lumi") == 2411  && _vc->get("evt") == 41079 ){cout << "FOUND 2411 41079" << endl;}
+        if(_vc->get("lumi") == 1724  && _vc->get("evt") == 172382 ){cout << "FOUND 1724 172382" << endl;}
+        if(_vc->get("lumi") == 1514  && _vc->get("evt") == 151364 ){cout << "FOUND 1514 151364" << endl;}
+        if(_vc->get("lumi") == 2685  && _vc->get("evt") == 68461 ){cout << "FOUND 2685 68461" << endl;}
+        if(_vc->get("lumi") == 4993  && _vc->get("evt") == 99216 ){cout << "FOUND 4993 99216" << endl;}
+        if(_vc->get("lumi") == 4173  && _vc->get("evt") == 17221 ){cout << "FOUND 4173 17221" << endl;}
+        if(_vc->get("lumi") == 68  && _vc->get("evt") == 6774 ){cout << "FOUND 68 6774" << endl;}
+        if(_vc->get("lumi") == 650  && _vc->get("evt") == 64961 ){cout << "FOUND 650 64961" << endl;}
+        if(_vc->get("lumi") == 372  && _vc->get("evt") == 37161 ){cout << "FOUND 372 37161" << endl;}
+        if(_vc->get("lumi") == 556  && _vc->get("evt") == 55543 ){cout << "FOUND 556 55543" << endl;}
+        if(_vc->get("lumi") == 666  && _vc->get("evt") == 66548 ){cout << "FOUND 666 66548" << endl;}
+        if(_vc->get("lumi") == 742  && _vc->get("evt") == 74108 ){cout << "FOUND 742 74108" << endl;}
+        if(_vc->get("lumi") == 848  && _vc->get("evt") == 84747 ){cout << "FOUND 848 84747" << endl;}
+        if(_vc->get("lumi") == 4780  && _vc->get("evt") == 77972 ){cout << "FOUND 4780 77972" << endl;}
+        if(_vc->get("lumi") == 4909  && _vc->get("evt") == 90862 ){cout << "FOUND 4909 90862" << endl;}
         */
         
+        
+        
+        if(_vc->get("lumi") == 3302 && _vc->get("evt") == 130143 ){
+            cout << "--------------------------------------------------"<< endl; 
+            cout << "pt " << _vc->get("LepGood_pt", i) <<endl;
+            cout << "eta " << _vc->get("LepGood_eta", i) <<endl;
+            cout << "phi " << _vc->get("LepGood_phi", i) <<endl;
+            cout << "pdgId " << _vc->get("LepGood_pdgId", i) <<endl;
+            cout << "charge " << _vc->get("LepGood_charge", i) <<endl;
+            cout << "relIso " << _vc->get("LepGood_relIso03", i) <<endl;
+            cout << "sip " << _vc->get("LepGood_sip3d", i) <<endl;
+            if(std::abs(_vc->get("LepGood_pdgId", i))==13){
+                cout << "muon id " << _vc->get("LepGood_mediumMuonId", i) <<endl;}
+            if(std::abs(_vc->get("LepGood_pdgId", i))==11){
+                cout << "el mva id " << _vc->get("LepGood_mvaIdPhys14", i) <<endl;
+                cout << "convVeto " << _vc->get("LepGood_convVeto", i) <<endl;
+                cout << "lost hits " << _vc->get("LepGood_lostHits", i) <<endl;}
+        } 
         
         if(std::abs(_vc->get("LepGood_pdgId",i)) == 13){
             //differentiate muons for muon selecton and veto muon selection
@@ -1025,9 +1065,9 @@ bool SUSY3L_sync2::baseSelection(){
         parameters: none
         return: true (if event passes selection), false (else)
     */
-    /*
+    
     //print event information before selection
-    if(_vc->get("lumi") ==  178 && _vc->get("evt") == 17707){
+    if(_vc->get("lumi") == 3302  && _vc->get("evt") == 130143){
         cout << "--------------------------------------------------"<< endl; 
         cout << "event  " << _vc->get("lumi") << " " << _vc->get("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
         for(int i =0;i<_nEls;i++){
@@ -1040,13 +1080,13 @@ bool SUSY3L_sync2::baseSelection(){
             cout << _mus[i]->pt()<<endl;
             cout << _mus[i]->eta()<<endl;
             cout << _mus[i]->phi()<<endl;
-            float dr = KineUtils::dR( _mus[i]->eta(), _els[0]->eta(), _mus[i]->phi(), _els[0]->phi());
-            cout << "deltaR with electron " << dr << endl;
+            //float dr = KineUtils::dR( _mus[i]->eta(), _els[0]->eta(), _mus[i]->phi(), _els[0]->phi());
+            //cout << "deltaR with electron " << dr << endl;
             }
     
 
     }
-*/
+
 
 
 
@@ -1095,7 +1135,7 @@ bool SUSY3L_sync2::baseSelection(){
 //    if(!makeCut<float>( _HT, _valCutHTBR, _cTypeHTBR, "hadronic activity", _upValCutHTBR) ) return false;
 
     //require minimum missing transvers energy (actually missing momentum)
-    if(!makeCut<float>( _met->pt(), _valCutMETBR, _cTypeMETBR, "missing transverse energy", _upValCutMETBR) ) return false;
+//    if(!makeCut<float>( _met->pt(), _valCutMETBR, _cTypeMETBR, "missing transverse energy", _upValCutMETBR) ) return false;
  
     //reject event if ossf lepton pair with low invariant mass is found
 //    bool has_low_mll = lowMllPair();
@@ -1103,18 +1143,18 @@ bool SUSY3L_sync2::baseSelection(){
 
     //select on or off-Z events according to specification in config file
     //bool is_reconstructed_Z = !ZEventSelection();
-    bool is_reconstructed_Z = ZEventSelectionLoop();
+//    bool is_reconstructed_Z = ZEventSelectionLoop();
 
     //if(is_reconstructed_Z){
     //fill("Zmass" , _Z->mass()        , _weight);
     //}
 
-    if(_pairmass == "off"){
-        if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
-    }
-    else if(_pairmass == "on"){
-        if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
-    }
+//    if(_pairmass == "off"){
+//        if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
+//    }
+//    else if(_pairmass == "on"){
+//        if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
+//    }
  
     return true;
 }

@@ -18,9 +18,9 @@ for sr in ${SRS[@]}; do
         sed -i 's|PAIRSTATE|'$pairstate'|'  cfg/tmpFiles/susy3l_${sregion}_${pairstate}.cfg
 
         #run locally
-        #analysis -c $MPAF/cfg/tmpFiles/susy3l_${sregion}_${pairstate}.cfg
+        analysis -c $MPAF/cfg/tmpFiles/susy3l_${sregion}_${pairstate}.cfg
         
         #submit jobs to batch
-        qsub -q all.q -N MPAFjob -o $MPAF/workdir/logs/susy3l/susy3l_${sregion}_${pairstate}.out -e $MPAF/workdir/logs/susy3l/susy3l_${sregion}_${pairstate}.err $MPAF/scripts/submit.sh $MPAF/cfg/tmpFiles/susy3l_${sregion}_${pairstate}.cfg
+        #qsub -q all.q -N MPAFjob -o $MPAF/workdir/logs/susy3l/susy3l_${sregion}_${pairstate}.out -e $MPAF/workdir/logs/susy3l/susy3l_${sregion}_${pairstate}.err $MPAF/scripts/submit.sh $MPAF/cfg/tmpFiles/susy3l_${sregion}_${pairstate}.cfg
     done
 done
