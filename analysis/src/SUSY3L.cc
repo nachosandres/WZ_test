@@ -169,9 +169,9 @@ void SUSY3L::run(){
     // initialization of signal region cuts, categorization of events passing the baseline 
     // selection into different signal regions, and filling of plots
     
-    setSignalRegion();
-    if(!srSelection()) return;	
-    fillEventPlots("SR");
+    //setSignalRegion();
+    //if(!srSelection()) return;	
+    //fillEventPlots("SR");
    
 }
 
@@ -434,7 +434,7 @@ bool SUSY3L::electronSelection(int elIdx){
         if(!makeCut( elTightMvaID, "electron tight mva wp", "=", kElId)) return false;
     //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
     bool isolated = ThreeVariableIsolation(elIdx, miniRelIso_cut, ptRatio_cut, ptRel_cut);
-        if(!makeCut( isolated, "isolation HT wp", "=", kElId)) return false;
+        if(!makeCut( isolated, "isolation VT wp", "=", kElId)) return false;
     //replaced by 3 varibale isolation
     //if(!makeCut<float>( _vc->get("LepGood_relIso03", elIdx) , isolation_cut   , "<"  , "isolation "      , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_dz", elIdx)), vertex_dz_cut   , "<"  , "dz selection"    , 0    , kElId)) return false;
@@ -491,7 +491,7 @@ bool SUSY3L::muonSelection(int muIdx){
     if(!makeCut<float>( std::abs( _vc->get("LepGood_eta", muIdx)), eta_cut, "<", "eta selection", 0, kMuId)) return false;
     //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
     bool isolated = ThreeVariableIsolation(muIdx, miniRelIso_cut, ptRatio_cut, ptRel_cut);
-        if(!makeCut( isolated, "isolation VT wp", "=", kMuId)) return false;
+        if(!makeCut( isolated, "isolation T wp", "=", kMuId)) return false;
     //replaced by 3 varibale isolation
     //if(!makeCut<float>( _vc->get("LepGood_relIso03", muIdx) , isolation_cut   , "<", "isolation "      , 0, kMuId)) return false;
     //removed after RA7 sync round 2
@@ -618,7 +618,7 @@ bool SUSY3L::goodJetSelection(int jetIdx){
     //define cut values
     float pt_cut = 30.;
     float eta_cut = 2.4;
-    float deltaR = 0.4;
+    float deltaR = 0.3;
 
     if(!makeCut<float>(_vc->get("Jet_pt", jetIdx)       , pt_cut, ">", "pt selection" , 0, kJetId) ) return false;
     if(!makeCut<float>(std::abs(_vc->get("Jet_eta", jetIdx)),  eta_cut, "<", "eta selection", 0, kJetId) ) return false;
