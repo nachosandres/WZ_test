@@ -64,7 +64,7 @@ public:
 	
   void addSample(std::string sfullname, std::string path, std::string dir, 
 		 std::string objName, std::string hname, float xSect,
-		 float kFact, float lumi, float eqLumi);
+		 float kFact, float lumi, float eqLumi, bool loadH=true);
 
 
   //access functions 
@@ -95,7 +95,7 @@ public:
   TTree* getTree() {return _chain;};
   int getNEvents() { return _chain->GetEntries(); };
 	
-  int getNProcEvent(int evt);
+  int getNProcEvents(int evt);
 	
   //void setNMax(size_t nmax);
 	
@@ -111,8 +111,7 @@ private:
   // float computeWeight(float nEvts, float xSect, float kFact,
   // 		      float lumi, float& eqLumi);
   
-  int getNProcEvents(string path, string dir, 
-   		     string sname, string hname);
+  int getNProcEvents(string path, string dir, string sname, string hname);
   
 
   ClassDef(Dataset,0)

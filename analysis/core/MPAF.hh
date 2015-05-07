@@ -70,7 +70,6 @@ protected:
 
   void startExecution(std::string);
   
-  void fillEventList();
   void resetKinematicObjects();
 
   // varclass functions

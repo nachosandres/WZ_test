@@ -23,8 +23,8 @@ private:
   string _dir;
   string _path;
   
-  string _treeName;
-  vector<string> _fileList;
+  string _rootFile;
+  vector<string> _statFileList;
   string _hname;
 
   vector<string> _samplenames;
@@ -69,12 +69,12 @@ public:
 		     map<string,float> Kfac,
 		     float l,bool useXS=true );
   void configureData(bool runfilter, int runnum,bool MCOnly);
-  void configureNames(string dir, string objName, string objList, string hName);
+  void configureNames(string dir, string objName, string objList);
 
   void loadXSDB(string dbname);
 
   string getDir() {return _dir;};
-  vector<string> getObjList() {return _fileList;};
+  vector<string> getObjList() {return _statFileList;};
   float getLumi() {return _lumi;};
   vector<string> getSampleNames() {return _samplenames;};
   vector<string> getDsNames() {return _dsnames;};
@@ -97,7 +97,7 @@ public:
   string findDSName(string channel);
   int findChan(string ds);
 
-  void addSample(string str, string sname, int col );
+  void addSample(string str, string sname, int col, bool loadH=true );
 
   bool passRunFilter(int run);
 

@@ -1,31 +1,19 @@
 MPAFDisplay md;
 
-void dataCardProd_FLAVVAL_SRVAL_ISOVAL_SIGNAME() {
-  // if(Recompute) {
-  //   MPAFDisplay md;
- 
-  //   //Bloody René Brun
-  //   bool * rtmp= const_cast<bool*> pr;
-  //   *rtmp = false;
-
-  // }
-  // else
-    md.refresh();
+void testDatacard() {
+  md.refresh();
 
 
   //general parameters ********************* general parameters
   string dir="FakeEstim";
-  string fileName="susy_FLAVVAL_SRVAL_ISOVAL"; // not needed for statistics
-  string fileList="susy_FLAVVAL_SRVAL_ISOVAL"; // put command line that gives all files as in a "ls" command
-  string hName=""; // not needed for statistics
+  string fileName="susyIso_all_hl_T"; // not needed for statistics but provides the normalization
+  string fileList="susyIso_all_hl_T"; // put command line that gives all files as in a "ls" command
 
   bool mcOnly = false;
   
-  //if(md.isInitStatus()) {
-    md.anConf.configureNames( dir, fileName, fileList, hName );
-    md.anConf.configureData(false, 0, mcOnly);
-    //}
-
+  md.anConf.configureNames( dir, fileName, fileList );
+  md.anConf.configureData(false, 0, mcOnly);
+  
   
   //Lumis( or XSections ) pb-1 & KFactors ************************************
   float lumi=10000; //pb-1 19470
@@ -33,31 +21,11 @@ void dataCardProd_FLAVVAL_SRVAL_ISOVAL_SIGNAME() {
 
   bool useXS=false;
 
+  md.anConf.loadXSDB("XSectionsPhys14.db");
+
   map<string,float> LumisXS;
 
-  LumisXS["SMS_T1tttt_2J_mGl1200_mLSP800"] = 100322/(0.0856418);
-  LumisXS["SMS_T1tttt_2J_mGl1500_mLSP100"] = 105679/(0.0141903);
-  LumisXS["T5ttttDeg_mGo1000_mStop300_mCh285_mChi280_dil"] = 75914/(0.325388);
-  LumisXS["T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"] = 52499/(0.325388);
-  //  LumisXS["T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"] = ;
-  LumisXS["TTH"] = 199700/0.5085;
-  LumisXS["TTJets"] = 25446993/809.1;
-  LumisXS["TTWJets"] = 246521/0.6647;
-  LumisXS["TTZJets"] = 249275/0.8565;
-  LumisXS["WJetsToLNu_HT100to200"] = 5262265/(1817.0*1.23);
-  LumisXS["WJetsToLNu_HT200to400"] = 4936077/(471.6*1.23);
-  LumisXS["WJetsToLNu_HT400to600"] = 4640594/(55.61*1.23);
-  LumisXS["WJetsToLNu_HT600toInf"] = 4581841/(18.81*1.23);
-  LumisXS["WZJetsTo3LNu"] = 237484/2.29;
-  LumisXS["DYJetsToLL_M50_HT100to200"] = 4054159/(194.3*1.27);
-  LumisXS["DYJetsToLL_M50_HT200to400"] = 4666496/(52.24*1.27);
-  LumisXS["DYJetsToLL_M50_HT400to600"] = 4931372/( 6.546*1.27);
-  LumisXS["DYJetsToLL_M50_HT600toInf"] = 4493574/( 2.179*1.27);
-
-
-
   //via XSect
-  
   map<string,float> KFactors;
   
 
@@ -82,12 +50,12 @@ void dataCardProd_FLAVVAL_SRVAL_ISOVAL_SIGNAME() {
   md.addDataCardBkgSample("TTZJets", "rare");
   md.addDataCardBkgSample("TTWJets", "rare");
   
-  md.addDataCardSigSample("SIGSNAME","SIGNAME");
+  md.addDataCardSigSample("SMS_T1tttt_2J_mGl1500_mLSP100","T1t415");
   
    
   md.addNuisanceParameter("fratio","fake","lnN","1.50");
   md.addNuisanceParameter("rNorm","rare","lnN","1.20");
-  md.addNuisanceParameter("sigNorm","SIGNAME","lnN","1.10");
+  md.addNuisanceParameter("sigNorm","T1t415","lnN","1.10");
 
 
   // }
@@ -98,14 +66,39 @@ void dataCardProd_FLAVVAL_SRVAL_ISOVAL_SIGNAME() {
   
   //plotting ================
   md.dp.setLumiAndEnergy( lumi, energy );
-  //md.dp.setNormalization( Norm );
-  
+   
   md.prepareDisplay();
+  
+  int nCateg=28; //47
+  vector<string> _categs(nCateg,"");
+ 
+  // string srs[66]={
+  // "SR1AL", "SR2AL", "SR3AL", "SR4AL", "SR1AH", "SR2AH", "SR3AH", "SR4AH", "SR5A", "SR6A",
+  // "SR7AL", "SR8AL", "SR9AL", "SR10AL", "SR7AH", "SR8AH", "SR9AH", "SR10AH", "SR11A", "SR12A",
+  // "SR13AL", "SR14AL", "SR15AL", "SR16AL", "SR13AH", "SR14AH", "SR15AH", "SR16AH", "SR17A", "SR18A",
+  //"SR19AL", "SR19AH", "SR20A",
+  // "SR1BL", "SR1BH", "SR2BL", "SR2BH",
+  // "SR3BL", "SR3BH", "SR4BL", "SR4BH",
+  // "SR5BL", "SR5BH", "SR6BL", "SR6BH",
+  // "SR7BL", "SR7BH", 
+  // };
 
-  //md.getStatistics();
-  
-  md.makeSingleDataCard("SIGNAME", "global", "SR b-jet multiplicity");
-  
+  string srs[28]={ 
+    "SR1A", "SR2A", "SR3A", "SR4A", "SR5A", "SR6A", 
+    "SR7A", "SR8A", "SR9A", "SR10A",  "SR11A", "SR12A",
+    "SR13A", "SR14A", "SR15A", "SR16A", "SR17A", "SR18A", 
+    "SR19A", "SR20A",
+    "SR1B", "SR2B", 
+    "SR3B", "SR4B",
+    "SR5B", "SR6B",
+    "SR7B", "SR8B" };
+
+
+  _categs.assign(srs, srs+nCateg);
+  for(size_t ic=0;ic< _categs.size();ic++) {
+    string cat=_categs[ic];
+    md.makeSingleDataCard("T1t415", "global_"+cat, "SR b-jet multiplicity", "susyIso_all_hl_T_"+cat+"_T1t415");
+  }
 
   gROOT->ProcessLine(".q");
 

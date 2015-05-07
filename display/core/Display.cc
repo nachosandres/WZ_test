@@ -662,6 +662,9 @@ Display::drawDistribution() {
         }
         else {
 	  if(f) {
+	    //fixme, this should not be needed....
+	    _hClones[i]->GetXaxis()->SetRangeUser( _xmin, _xmax );
+	    _hClones[i]->GetYaxis()->SetRangeUser( _ymin, _ymax );
 	    _hClones[i]->DrawCopy( "box" ); //"box"
 	    f=false;
 	  }
@@ -941,6 +944,10 @@ Display::prepareHistograms(const hObs* theobs) {
     _hClones[ih]->GetYaxis()->SetNdivisions(0,0,0);
     _hClones[ih]->GetYaxis()->SetNdivisions(0,0,0);
     
+    _hClonesNoStack[ih]->SetLineColor( _itCol->second );
+    _hClonesNoStack[ih]->SetFillColor( _itCol->second );
+    _hClonesNoStack[ih]->SetMarkerColor( _itCol->second );
+
     if( !_sSignal && nh.find("sig")!=(size_t)-1) {
       _hClones[ih]->SetFillStyle(0);
       _hClones[ih]->SetLineWidth(2); 
@@ -1081,6 +1088,11 @@ Display::prepareHistograms(const hObs* theobs) {
  
     for(size_t ih=0;ih<_hClones.size();ih++) {
       changeGeVToTeV( _hClones[ih], theobs->titleX, theobs->titleY,
+		      _xmin, _xmax, _ymin, _ymax, theobs->htype,
+		      xAxTeV, yAxTeV );
+    }
+    for(size_t ih=0;ih<_hClonesNoStack.size();ih++) {
+      changeGeVToTeV( _hClonesNoStack[ih], theobs->titleX, theobs->titleY,
 		      _xmin, _xmax, _ymin, _ymax, theobs->htype,
 		      xAxTeV, yAxTeV );
     }
@@ -1305,13 +1317,16 @@ Display::prepareHistograms(const hObs* theobs) {
   }
 
   _empty->GetYaxis()->SetNdivisions(_Ydiv[0],_Ydiv[1],_Ydiv[2]);
-  
+
   if(_showRatio)
     _empty->GetXaxis()->SetTitleOffset( 1.05 );
   else
     _empty->GetXaxis()->SetTitleOffset( 0.90 );
   _empty->GetXaxis()->SetTitleSize( 0.06 );
-  _empty->GetYaxis()->SetTitleOffset( 1.50 );
+  if(_ytitle.find("_")==string::npos)
+    _empty->GetYaxis()->SetTitleOffset( 1.50 ); //1.35 for _ text
+  else
+    _empty->GetYaxis()->SetTitleOffset( 1.35 ); //1.35 for _ text
   _empty->GetYaxis()->SetTitleSize( 0.06 );
   _empty->GetXaxis()->SetLabelOffset( 0.007 );
   _empty->GetXaxis()->SetLabelSize( 0.05 );
@@ -1320,8 +1335,9 @@ Display::prepareHistograms(const hObs* theobs) {
 
   
   // 2D histo
-  if(_is2D)
+  if(_is2D) {
     HistoUtils::copyStyle(_empty,_hClones[nsig],true);
+  }
 
   for(size_t ih=0;ih<_nhmc;ih++) {
     delete hTmps[ih];
@@ -1999,7 +2015,7 @@ Display::drawStatistics(vector<pair<string,vector<vector<float> > > > vals,
   _c->Draw();
 
   //MM Fixme : temporary disabling of uncertainties
-  // uncertainties taken from stat fiesl for the moment, non optimal
+  // uncertainties taken from stat files for the moment, non optimal
   systM mTmp;
   vector<vector<systM> > tmp(1,vector<systM>(0,mTmp));
   _systMUnc=tmp;
@@ -2168,7 +2184,7 @@ Display::configureDisplay(string YTitle, double rangeY[2],
   _xmax = rangeX[1];
 
   _userYScale=false;
-  if(_ymin != 0 && _ymax != _ymin )
+  if(_ymin != 0 || _ymax != _ymin )
     _userYScale=true;
 
   _xCoordSave[0] = _xmin;
@@ -2683,6 +2699,53 @@ Display::printInteg(float x1, float x2, float y1, float y2) {
       }
     }
   }
+  else { //is2D case
+ if(!_mcOnly && !_dOnly && _normOpts.find("norm")==_normOpts.end()) {
+      cout<<" Integral : data -> "
+	  << ((TH2F*)(_hData))->IntegralAndError(_hData->GetXaxis()->FindBin(x1), _hData->GetXaxis()->FindBin(x2),
+					       _hData->GetYaxis()->FindBin(y1), _hData->GetYaxis()->FindBin(y2), (errors.back()) );
+      cout<<" +- "<<errors.back()
+	  <<" // MC-> "
+	  <<((TH2F*)(_hMC))->IntegralAndError(_hMC->GetXaxis()->FindBin(x1), _hMC->GetXaxis()->FindBin(x2),
+				   _hMC->GetYaxis()->FindBin(y1), _hMC->GetYaxis()->FindBin(y2)
+				   , (errors[_nhmc+1]) );
+      cout<<" +- "<<errors[_nhmc+1]<<endl;
+    }
+    else if(_mcOnly && _hMC) {
+      cout<<" Integral : MC -> "<<((TH2F*)(_hMC))->IntegralAndError(_hMC->GetXaxis()->FindBin(x1), _hMC->GetXaxis()->FindBin(x2),
+							 _hMC->GetYaxis()->FindBin(y1), _hMC->GetYaxis()->FindBin(y2), errors[_nhmc+1]);
+      cout<<" +- "<<errors[_nhmc+1]<<endl;
+    }
+    else if(_dOnly) { 
+      cout<<" Integral : data -> "<<((TH2F*)(_hData))->IntegralAndError(_hData->GetXaxis()->FindBin(x1), _hData->GetXaxis()->FindBin(x2),
+							     _hData->GetYaxis()->FindBin(y1), _hData->GetYaxis()->FindBin(y2), errors.back());
+      cout<<" +- "<<errors.back()<<endl;
+    }
+ 
+    if(!_dOnly) {
+      float tmp=0;
+      double tmp2=0;
+      for(size_t ih=0;ih<_nhmc;ih++) {
+	if(_names[ih].find("sig")==(size_t)-1) {
+	  cout<<"\t"<<_names[ih]<<" : "
+	      <<((TH2F*)(_hClones[_nhmc-ih-1]))->IntegralAndError(_hClones[_nhmc-ih-1]->GetXaxis()->FindBin(x1),_hClones[_nhmc-ih-1]->GetXaxis()->FindBin(x2),
+						       _hClones[_nhmc-ih-1]->GetYaxis()->FindBin(y1),_hClones[_nhmc-ih-1]->GetYaxis()->FindBin(y2), errors[ih])-tmp;
+	  cout<<" +- "<<sqrt(errors[ih]*errors[ih]-tmp2*tmp2)<<endl;
+	  if(_normOpts.find("norm")==_normOpts.end() )
+	    tmp = ((TH2F*)(_hClones[_nhmc-ih-1]))->IntegralAndError(_hClones[_nhmc-ih-1]->GetXaxis()->FindBin(x1),_hClones[_nhmc-ih-1]->GetXaxis()->FindBin(x2),
+							 _hClones[_nhmc-ih-1]->GetYaxis()->FindBin(y1),_hClones[_nhmc-ih-1]->GetYaxis()->FindBin(y2), tmp2);
+	}
+	else {
+	  cout<<"\t"<<_names[ih]<<" : "
+	      <<((TH2F*)(_hClones[_nhmc-ih-1]))->IntegralAndError(_hClones[_nhmc-ih-1]->GetXaxis()->FindBin(x1),_hClones[_nhmc-ih-1]->GetXaxis()->FindBin(x2),
+								_hClones[_nhmc-ih-1]->GetYaxis()->FindBin(y1),_hClones[_nhmc-ih-1]->GetYaxis()->FindBin(y2), errors[ih]);
+	  cout<<" +- "<<errors[ih]<<endl;
+
+	}
+      }
+    }
+  }
+
 
 }
 
@@ -2771,6 +2834,19 @@ Display::addText(float x, float y, float s, string text) {
   t.SetName("addtext");
   t.DrawLatex(x,y,text.c_str() );
 
+}
+
+
+void
+Display::addLine(float x1, float y1, float x2, float y2, int style, int col, int size) {
+  _pads[0][0]->cd();
+
+  TLine* l=new TLine(x1,y1,x2,y2);
+  l->SetLineStyle(style);
+  l->SetLineColor(col);
+  l->SetLineWidth(size);
+  l->Draw("same");
+  
 }
 
 void
@@ -2976,6 +3052,9 @@ Display::graphVal(float x,int ih, int iobs) {
   
   float X = _pads[0][iobs]->PixeltoX( x*_wpad  );
   size_t bin = StatUtils::findBin<float>(X, _hCoords[ih][0] );
+  if(bin==(unsigned int)-1) bin=0; //means we are looking below a given graph
+  if(bin==_hCoords[ih][0].size()) bin=_hCoords[ih][0].size()-1;
+  //cout<<" --->   "<<bin<<"  "<<_hCoords[ih][1].size()<<"   "<<X<<"  "<<x<<" ==>  "<<ih<<endl;
   float yt=_logYScale?(log(_hCoords[ih][1][bin])/log(10)):_hCoords[ih][1][bin];
   float y = 1 - (_pads[0][iobs]->YtoPixel( yt ))/(float)_hpad;
 
