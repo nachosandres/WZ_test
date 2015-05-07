@@ -27,7 +27,6 @@ private:
   //============================
   bool noIsoSel();
   bool oneIsoSel();
-  bool genFake();
   float getProbAtLeastNIso(CandList fObjs, vector<unsigned int> idxs, int nIso);
   bool genMatchedMisCharge();
   bool genMatchedToFake(int id);
@@ -35,12 +34,6 @@ private:
 
   //============================
   bool electronMvaCut(int elIdx, int wp);
-  // bool electronCutId(int elIdx, float sip, bool mvatight);
-  // bool muonCutId(int muIdx, float sip);
-  // bool looseElectronSelection(int elIdx);
-  // bool looseMuonSelection(int muIdx);
-  // bool tightElectronSelection(int elIdx);
-  // bool tightMuonSelection(int muIdx);
   bool isMuSelected(int idx, int wp);
   bool isElSelected(int idx, int wp);
   bool lepMvaId(int idx, int wp);
@@ -49,8 +42,6 @@ private:
   bool goodJetSelection(int jetIdx);
   float HT();
   void retrieveObjects();
-  bool signalSelection();
-  bool ssEventSelection();
   bool alternateSSEventSelection(bool switchWF=true);
   bool mllVetoSelection();
   bool mllLMGVeto(Candidate* cand, Candidate* veto);
