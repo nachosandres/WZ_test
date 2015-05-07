@@ -30,8 +30,9 @@ Sample::~Sample() {
 
 void
 Sample::computeWeight() {
-
-  if(_eqLumi==-1) { //means that Xsection used for reweigthing instead of equivalentLumi
+  //means that Xsection used for reweigthing instead of equivalentLumi
+  // and means that the number of processed events is available
+  if(_eqLumi==-1 && _nProcEvents!=-1) {
     _eqLumi = _nProcEvents/_xSection;
   }
   

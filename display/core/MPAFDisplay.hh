@@ -114,7 +114,7 @@ public:
   void addDataCardSigSample(string sName, string dsName);
   void addNuisanceParameter(string npName, string dss, string scheme,  string vals) ;
   vector<string> getExternalNuisanceParameters(string sigName);
-  void makeSingleDataCard(string sigName, string categ, string cname);
+  void makeSingleDataCard(string sigName, string categ, string cname, string cardName);
 
 
 

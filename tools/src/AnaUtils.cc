@@ -373,7 +373,7 @@ AnaUtils::getYieldSysts(string ds, string lvl) {
 
 
 void 
-AnaUtils::saveNumbers(string anName, string conName) {
+AnaUtils::saveNumbers(string anName, string conName,  map<string, int> cnts) {
 
   // testing write permission on output directory
   cout << endl;
@@ -409,7 +409,7 @@ AnaUtils::saveNumbers(string anName, string conName) {
   vector<int> idxs;
   vector<string> dsNames = prepareDSNames(false, idxs);
  
-  // print global efficiencies at the end======================
+  // print global efficiencies at the beginning======================
   vector<int> catNames;
   bool hasGlobEff = false;
   for(map<int, vector<string> >::const_iterator it = _effNames.begin(); it != _effNames.end(); ++it) {
@@ -464,9 +464,9 @@ AnaUtils::saveNumbers(string anName, string conName) {
 	  else {
 	    if(itm -> second.sumw > 0.000001 ) { 
 	      ostringstream os, os2, os3;
-	      os  << fixed << setprecision(4) << itm -> second.sumw;
-	      os2 << fixed << setprecision(0) << itm -> second.N;
-	      os3 << fixed << setprecision(4) << sqrt(itm -> second.sumw2);
+	      os<< itm -> second.sumw; // fixed << setprecision(4)
+	      os2<< itm -> second.N; // fixed << setprecision(0) <<
+	      os3<< sqrt(itm -> second.sumw2); // fixed << setprecision(4) <<
 	      
 	      ofile << "\t" << os.str() << "\t" << os2.str() << "\t" << os3.str();
 	    }
@@ -484,6 +484,25 @@ AnaUtils::saveNumbers(string anName, string conName) {
 
     ofile << "endcateg\t" << _catNames[icat] << endl << endl;
   } // categories
+
+
+  //MM, gen event counters to be added for automatic normalization in yields/stats
+  string dsStr="dsCnts\t";
+  string dsCntStr="cnts\t";
+  map<string, int>::const_iterator it;
+  for(size_t id = 0; id < dsNames.size(); ++id) { //datasets
+    cout<<dsNames.size()<<"  "<<cnts.size()<<"   "<<dsNames[id]<<endl;
+    it = cnts.find( dsNames[id] );
+    if(it==cnts.end() ) continue;
+
+    ostringstream os; os<<it->second;
+    dsStr += dsNames[id]+"\t";
+    dsCntStr += os.str()+"\t";
+  }
+  
+  ofile<< dsStr <<endl;
+  ofile<< dsCntStr<<endl<<endl;
+
 
   ofile.close();
 }
@@ -797,14 +816,17 @@ AnaUtils::retrieveNumbers(string categ, int mcat, string cname) {
       cat= getCategId(catname);
       int ic = -1;
       for(size_t i=0;i<_effNames[cat].size();i++) {
+	//cout<<cname<<"   "<<itc->second[i]<<endl;
         if(itc->second[i].find(cname) != string::npos) {ic=i; break;}
       } 
 
+      //cout<<" ---> "<<_effNames[cat].size()<<"   "<<ic<<"   "<<endl;
+
       if(ic==-1) {
-        cout<<"Error, no such selection name : ["<<cname<<"] in categ "<<categ<<" ("<<catname<<"), please check name"<<endl;
+        cout<<"WARNING, no such selection name : ["<<cname<<"] in categ "<<categ<<" ("<<catname<<"), please check name"<<endl;
         return onums;
       }
-      
+   
       cNames.insert(cNames.begin(), _effNames[cat][ic] );
       catIds.insert(catIds.begin(), itc->first );
     }
@@ -883,6 +905,8 @@ AnaUtils::getDataCardLines(map<string,string>& lines, vector<string> dsNames, st
   
   vector<pair<string, vector<vector<float> > > > numbers=retrieveNumbers(categ, kMono, cname);
 
+  if(numbers.size()==0) return false; //case where no data are available
+
   // yield lines =================================================================
   float sumBkg=0;
   float sumSig=0;
@@ -900,8 +924,8 @@ AnaUtils::getDataCardLines(map<string,string>& lines, vector<string> dsNames, st
     ostringstream osB; osB<<bin;  
    
     if(dsNames[ids-1]!=sigName && dsNames[ids-1].find("sig")==string::npos) {
-      sumBkg+= (numbers[0].second[ids][0]==0);
-      
+      sumBkg+= (numbers[0].second[ids][0]);
+    
       binLine += osB.str()+"\t";
       ostringstream os;
       os<<((numbers[0].second[ids][0]==0)?0.0001:numbers[0].second[ids][0]);

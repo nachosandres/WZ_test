@@ -341,16 +341,6 @@ void phys14limits::defineOutput(){
 
 //____________________________________________________________________________
 void phys14limits::writeOutput(){
-  /*
-    writes all output of this class to the disk
-    paramters: none
-    return: none
-  */
-
-
-
-  _hm->saveHistos ("phys14limits", _cfgName);
-  _au->saveNumbers("phys14limits", _cfgName);
 
 }
 

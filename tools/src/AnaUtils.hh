@@ -161,7 +161,7 @@ public:
   //workflows
   void setWFEfficiencies(int ids, string cName, float w, bool acc);
 
-  void saveNumbers(string anName, string conName);
+  void saveNumbers(string anName, string conName, std::map<string, int> cnts);
   void printNumbers();
 
   void printTables(string categ="global");

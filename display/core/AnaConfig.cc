@@ -158,12 +158,12 @@ void AnaConfig::configureLumi(map<string,float> LumisXS, map<string,float> Kfac,
 }
 
 void 
-AnaConfig::configureNames(string dir, string treeName, string fileList, string hName) {
+AnaConfig::configureNames(string dir, string rootFile, string fileList) {
   _dir = dir;
-  _treeName = treeName;
+  _rootFile = rootFile;
   vector<string> filenames = listFiles((string)(getenv("MPAF")) + "/workdir/stats/" + dir + "/", fileList + ".dat");
-  _fileList = filenames;
-  _hname = hName;
+  _statFileList = filenames;
+  _hname = "nEvtProc";//hName;
 }
 
 
@@ -176,7 +176,7 @@ void AnaConfig::configureData(bool runfilter, int runnum,bool MCOnly ) {
 
 void
 AnaConfig::loadXSDB(string dbname) {
-  _dbm->loadDb("XSections",dbname);
+  _dbm->loadDb("Xsections",dbname);
 }
 
 void
@@ -186,7 +186,7 @@ AnaConfig::isHistoAnalysis() {
 
 
 void
-AnaConfig::addSample( string str, string sname, int col) {
+AnaConfig::addSample( string str, string sname, int col, bool loadH) {
   
   if( str.find("DD")!=string::npos ) {
     _ddCuts.push_back(str.substr(3, str.size()-3));
@@ -239,8 +239,8 @@ AnaConfig::addSample( string str, string sname, int col) {
      str.find("DD")!=(size_t)-1 ||
      (str.find("CS")!=(size_t)-1 && str.find("CSA14")==(size_t)-1) ) {
     
-    _datasets[ sname ]->addSample(str, _path, _dir, _treeName,
-				  _hname,0., 1., 1., 1.);
+    _datasets[ sname ]->addSample(str, _path, _dir, _rootFile,
+				  _hname,0., 1., 1., 1., loadH);
     _samplenames.push_back(str);
     _dsnames.push_back(sname);
  
@@ -261,7 +261,7 @@ AnaConfig::addSample( string str, string sname, int col) {
 
     _itXS=_xSecLumis.find(tmpStr);
     if(_itXS==_xSecLumis.end()) {
-      xSect =-1000; eqLumi=1.;
+      xSect =-1000; eqLumi=-1;
       
       //first, check if a Xsection DB is loaded
       if(_dbm->exists("Xsections"))
@@ -277,8 +277,8 @@ AnaConfig::addSample( string str, string sname, int col) {
       }
     }
     else {
-      if(_useXSect || _hname!="")
-	{eqLumi=-1; xSect =_itXS->second ;}
+      if(_useXSect)
+	{eqLumi=-1; xSect =_itXS->second;}
       else  
 	{eqLumi=_itXS->second; xSect =-1;}
     }
@@ -288,14 +288,14 @@ AnaConfig::addSample( string str, string sname, int col) {
       kFact = _itKF->second;
     }
 
-    _datasets[ sname ]->addSample(str, _path, _dir, _treeName,
-				  _hname, xSect, kFact, _lumi,
-				  eqLumi);
+    _datasets[ sname ]->addSample(str, _path, _dir, _rootFile,
+				  _hname+"/"+str, xSect, kFact, _lumi,
+				  eqLumi, loadH);
     _samplenames.push_back(str);
     _dsnames.push_back(sname);
   }
   else {
-    _datasets[ sname ]->addSample(str, "", "", "", "", 0, 0, 0, 0);
+    _datasets[ sname ]->addSample(str, "", "", "", "", 0, 0, 0, 0, loadH);
     _samplenames.push_back(str);
     _dsnames.push_back(sname);
   }

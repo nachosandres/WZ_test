@@ -120,7 +120,7 @@ public:
   systM findSysts(string var,string type);
 
 
-  void saveHistos(string anName, string conName);
+  void saveHistos(string anName, string conName, std::map<std::string, int> cnts);
 
   ClassDef(HistoManager,0)
 };

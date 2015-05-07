@@ -51,7 +51,7 @@ public :
     size_t bM=vals.size()-1;
     //cout<<v<<"   "<<bm<<"    "<<bM<<"     "<<vals[bm]<<"    "<<vals[bM]<<endl;
     if(v< vals[ bm ]) return -1;
-    if(v>= vals[ bM ]) return -1;
+    if(v>= vals[ bM ]) return vals.size();
     size_t n=0;
     while(!find) {
       if(v < vals[ bm+(bM-bm)/2 ] ) {
