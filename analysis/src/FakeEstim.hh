@@ -3,6 +3,8 @@
 
 #include "analysis/core/MPAF.hh"
 
+#include "analysis/modules/SusyModule.hh"
+
 class FakeEstim: public MPAF {
 
 public:
@@ -33,22 +35,10 @@ private:
   float getFR(Candidate* cand, int idx);
 
   //============================
-  bool electronMvaCut(int elIdx, int wp);
-  bool isMuSelected(int idx, int wp);
-  bool isElSelected(int idx, int wp);
-  bool lepMvaId(int idx, int wp);
-  bool passFakeId(int idx, bool isMu); 
-  bool isIsolated(int idx, int wp);
-  bool goodJetSelection(int jetIdx);
-  float HT();
   void retrieveObjects();
   bool alternateSSEventSelection(bool switchWF=true);
-  bool mllVetoSelection();
-  bool mllLMGVeto(Candidate* cand, Candidate* veto);
-  bool mllZVeto(Candidate* cand, Candidate* veto);
-
+ 
 //==============================
-  void defineLeptonWPS();
   void setSignalRegion();
   void setCut(string var, float valCut, string cType, float upValCut=0);
   
@@ -80,28 +70,10 @@ private:
 
 
   // enum {kLoose=0,kTight,kVTight,kHTight,kNWPs};
-  enum {kDenom=0,
-	kLoose,
-	kMedium,
-	kTight,
-	kVTight,
-	kHTight,
-	k60,
-	k70,
-	k75,
-	k775,
-	k80,
-	k825,
-	k85,
-	k875,
-	k90,
-	k925,
-	k95,
-	k975,
-	kNWPs};
+  
+  SusyModule* _susyMod;
 
 
-  enum {kMiniIso=0,kPtRatio,kPtRel};
   
   CandList _allLeps;
   CandList _looseLeps;
@@ -122,14 +94,7 @@ private:
   std::vector<unsigned int> _tmpLepIdx;
   std::vector<unsigned int> _lepsForFRIdx;
  
-  vector<float> _sipWP;
-  vector<vector<float> > _elMvaIdWP;
-  vector<float> _mvaIdLPtWP;
-  vector<float> _mvaIdHPtWP;
-  vector<float> _isoWP;
-  vector<float> _miniIsoWP;
-  vector<float> _ptRelWP;
-  vector<vector<float> > _multiIsoWP;
+ 
   
   unsigned int _nLooseLeps;
   unsigned int _nJets;

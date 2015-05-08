@@ -88,6 +88,8 @@ FakeEstim::initialize(){
   _vc->registerVar("nBJetMedium25"                );
   _vc->registerVar("nSoftBJetMedium25"            );
 
+  _susyMod = new SusyModule(_vc);
+  
 
   //extra input variables
   _lepflav = getCfgVarS("LEPFLAV");
@@ -98,30 +100,7 @@ FakeEstim::initialize(){
   _FR      = getCfgVarS("FR"     );
   _categorization = getCfgVarI("categorization");
  
-  _isoLvl=kTight;
-  _lepiso  = getCfgVarS("LEPISO" );
-  if( _lepiso=="D") _isoLvl=kDenom;
-  if( _lepiso=="L") _isoLvl=kLoose;
-  if( _lepiso=="M") _isoLvl=kMedium;
-  if( _lepiso=="T") _isoLvl=kTight;
-  if( _lepiso=="VT") _isoLvl=kVTight;
-  if( _lepiso=="HT") _isoLvl=kHTight;
-  if( _lepiso=="60") _isoLvl=k70;
-  if( _lepiso=="70") _isoLvl=k70;
-  if( _lepiso=="75") _isoLvl=k75;
-  if( _lepiso=="77") _isoLvl=k775;
-  if( _lepiso=="80") _isoLvl=k80;
-  if( _lepiso=="825") _isoLvl=k825;
-  if( _lepiso=="85") _isoLvl=k85;
-  if( _lepiso=="875") _isoLvl=k875;
-  if( _lepiso=="90") _isoLvl=k90;
-  if( _lepiso=="925") _isoLvl=k925;
-  if( _lepiso=="95") _isoLvl=k95;
-  if( _lepiso=="975") _isoLvl=k975;
-
-  _metCut =0;// getCfgVarF("METCUT");
-
-
+  
   if(_extScheme=="mIsoCor") {
     _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
     _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
@@ -162,7 +141,6 @@ FakeEstim::initialize(){
 
   //_au->addCategory(kSelId,"selection ID");
 
-  defineLeptonWPS();
   setSignalRegion();
 
 
@@ -200,51 +178,6 @@ FakeEstim::initialize(){
   for(size_t ic=0;ic< _categs.size();ic++) {
     addWorkflow( ic+1, _categs[ic] );
   }
-
-}
-
-void
-FakeEstim::defineLeptonWPS() {
-
-  _sipWP.resize(kNWPs);
-  _elMvaIdWP.resize(3);
-  _multiIsoWP.resize(3);
-  for(int i=0;i<3;++i) {
-    _elMvaIdWP[i].resize(kNWPs);
-    _multiIsoWP[i].resize(kNWPs);
-  }
-  
-  _mvaIdLPtWP.resize(kNWPs);
-  _mvaIdHPtWP.resize(kNWPs);
-  _isoWP.resize(kNWPs);
-  _miniIsoWP.resize(kNWPs);
-  _ptRelWP.resize(kNWPs);
-  
-  //sip ============================
-  _sipWP[kLoose]=10.0;  _sipWP[kTight]=4.0; 
-  
-  //el mva id ======================
-  _elMvaIdWP[0][kLoose]=0.35; _elMvaIdWP[0][kTight]=0.73;
-  _elMvaIdWP[1][kLoose]=0.20; _elMvaIdWP[1][kTight]=0.57;
-  _elMvaIdWP[2][kLoose]=-0.52; _elMvaIdWP[2][kTight]=0.05;
-
-  //multiIso =======================
-  _multiIsoWP[kMiniIso][kDenom]=0.4; _multiIsoWP[kPtRatio][kDenom]=0; _multiIsoWP[kPtRel][kDenom]=0;
-  _multiIsoWP[kMiniIso][kLoose]=0.22; _multiIsoWP[kPtRatio][kLoose]=0.63; _multiIsoWP[kPtRel][kLoose]=6; 
-  _multiIsoWP[kMiniIso][kMedium]=0.14; _multiIsoWP[kPtRatio][kMedium]=0.68; _multiIsoWP[kPtRel][kMedium]=6.7; 
-  _multiIsoWP[kMiniIso][kTight]=0.10; _multiIsoWP[kPtRatio][kTight]=0.70; _multiIsoWP[kPtRel][kTight]=7;
-  _multiIsoWP[kMiniIso][kVTight]=0.075; _multiIsoWP[kPtRatio][kVTight]=0.725; _multiIsoWP[kPtRel][kVTight]=7; 
-  _multiIsoWP[kMiniIso][kHTight]=0.05; _multiIsoWP[kPtRatio][kHTight]=0.725; _multiIsoWP[kPtRel][kHTight]=8; 
-  
-  _multiIsoWP[kMiniIso][k875]=0.05; _multiIsoWP[kPtRatio][k875]=0.74; _multiIsoWP[kPtRel][k875]=8;
-  _multiIsoWP[kMiniIso][k85]=0.05; _multiIsoWP[kPtRatio][k85]=0.76; _multiIsoWP[kPtRel][k85]=8;
-  _multiIsoWP[kMiniIso][k80]=0.05; _multiIsoWP[kPtRatio][k80]=0.8; _multiIsoWP[kPtRel][k80]=8;
-  _multiIsoWP[kMiniIso][k75]=0.05; _multiIsoWP[kPtRatio][k75]=0.81; _multiIsoWP[kPtRel][k75]=8.3;
-  _multiIsoWP[kMiniIso][k70]=0.05; _multiIsoWP[kPtRatio][k70]=0.82; _multiIsoWP[kPtRel][k70]=11.91;
-  
-  //alternate tests
-  _multiIsoWP[kMiniIso][k975]=0.15; _multiIsoWP[kPtRatio][k975]=0.65; _multiIsoWP[kPtRel][k975]=5;
-  _multiIsoWP[kMiniIso][k60]=0.03; _multiIsoWP[kPtRatio][k60]=0.74; _multiIsoWP[kPtRel][k60]=8;
 
 }
 
@@ -435,120 +368,6 @@ FakeEstim::getProbAtLeastNIso(CandList fObjs, vector<unsigned int> fObjIdx,
 }
 
 
-//=====================================================
-// lepton selection
-
-bool 
-FakeEstim::electronMvaCut(int idx, int wp){
-
-  int etaBin=-1;
-
-  if(std::abs(_vc->get("LepGood_eta", idx)) < 0.8) etaBin=0;
-  else if(std::abs(_vc->get("LepGood_eta", idx)) < 1.479) etaBin=1;
-  else if(std::abs(_vc->get("LepGood_eta", idx)) < 2.4) etaBin=2;
-  
-  if(_vc->get("LepGood_mvaIdPhys14", idx) <  _elMvaIdWP[etaBin][wp]  ) return false;
-    
-  return true;
-}
-
-bool
-FakeEstim::isMuSelected(int idx, int wp) {
-
-  int wpIso=kDenom;
-  int wpSIP=kTight;
-  
-  if( _vc->get("LepGood_pt" , idx)<10 ) return false;
-  if( std::abs(_vc->get("LepGood_eta" , idx))>2.4 ) return false;
-  
-  if( _vc->get("LepGood_mediumMuonId", idx)<=0 ) return false;
-  if( _vc->get("LepGood_tightCharge" , idx)<=1 ) return false;
- 
-  if(_vc->get("LepGood_sip3d", idx)>_sipWP[wpSIP]) return false;
-  if( std::abs(_vc->get("LepGood_dz", idx))>0.1 ) return false;
-  if( std::abs(_vc->get("LepGood_dxy", idx))>0.05 ) return false;
-  if( !isIsolated(idx, wpIso) ) return false;
-  
-  return true;
-}
-
-bool
-FakeEstim::isElSelected(int idx, int wp) {
-
-  int wpIso=kDenom;
-  int wpSIP=kTight;
- 
-  if(_vc->get("LepGood_pt", idx)<10.) return false;
-  if(std::abs(_vc->get("LepGood_eta", idx))>2.4) return false;
-  if(std::abs(_vc->get("LepGood_eta", idx))>1.4442 &&
-     std::abs(_vc->get("LepGood_eta", idx))<1.566) return false;
-  if(_vc->get("LepGood_tightCharge", idx)<=1) return false; 
-  if(_vc->get("LepGood_convVeto", idx)<0) return false;
-  if(_vc->get("LepGood_lostHits", idx)!=0) return false;
-
-  //always tight
-  if( !electronMvaCut(idx, kTight) ) return false;
-  if(_vc->get("LepGood_sip3d", idx)>_sipWP[wpSIP]) return false;
-  if( std::abs(_vc->get("LepGood_dz", idx))>0.1 ) return false;
-  if( std::abs(_vc->get("LepGood_dxy", idx))>0.05 ) return false;
-  if( !isIsolated(idx, wpIso) ) return false;
- 
-
-  // electron cleaning ==================
-  for(unsigned int il=0; il<_vc->get("nLepGood"); ++il){
-    float dr = KineUtils::dR(_vc->get("LepGood_eta", il), _vc->get("LepGood_eta", idx),
-                             _vc->get("LepGood_phi", il), _vc->get("LepGood_phi", idx));
-    if(std::abs(_vc->get("LepGood_pdgId"))==13 && dr<0.05 ) return false;
-  }
-
-  return true;
-}
-
-bool 
-FakeEstim::lepMvaId(int idx, int wp) {
-  
-  if(_vc->get("LepGood_pt", idx)>25)
-    return _vc->get("LepGood_mvaSusy",idx)>_mvaIdHPtWP[wp];
-  else
-    return _vc->get("LepGood_mvaSusy", idx)>_mvaIdLPtWP[wp];
-
-}
-
-
-bool 
-FakeEstim::isIsolated(int idx, int wp) {
- 
-    if( _vc->get("LepGood_miniRelIso", idx)<_multiIsoWP[kMiniIso][wp] &&
-	(_vc->get("LepGood_jetPtRatio", idx)>_multiIsoWP[kPtRatio][wp] ||
-	 _vc->get("LepGood_jetPtRel", idx)>_multiIsoWP[kPtRel][wp]) ) return true;
- 
-  return false;
-}
-
-bool
-FakeEstim::passFakeId(int idx, bool isMu) {
-  
-  if( !isIsolated(idx, _isoLvl ) ) return false;
-  return true;
-}
-
-
-bool 
-FakeEstim::goodJetSelection(int jetIdx){ 
-  if(_vc->get("Jet_pt", jetIdx)<40.0) return false;
-  return true;
-}
-
-float 
-FakeEstim::HT(){
-  float ht = 0;
-  for(unsigned int i=0; i<_nJets; ++i) 
-    ht += _jets[i]->pt();
-  
-  return ht;
-}
-
-
 //==================================================================================================
 void 
 FakeEstim::retrieveObjects(){
@@ -585,11 +404,11 @@ FakeEstim::retrieveObjects(){
 
     _allLeps.push_back( lepCand );
 
-    if( !(isMu?isMuSelected(i,kLoose):isElSelected(i,kLoose)) ) continue;
+    if( !(isMu?_susyMod->muIdSel(i):_susyMod->elIdSel(i)) ) continue;
     _looseLeps.push_back(lepCand);
     _looseLepsIdx.push_back(i);
       
-    if( !(isMu?isMuSelected(i,kTight):isElSelected(i,kTight)) ) continue;
+    if( !(isMu?_susyMod->muIdSel(i):_susyMod->elIdSel(i)) ) continue;
     _leptons.push_back(lepCand);
     _leptonsIdx.push_back(i);
 
@@ -598,7 +417,7 @@ FakeEstim::retrieveObjects(){
     fill("miniIso", _vc->get("LepGood_miniRelIso",i) );
     
 
-    if( !passFakeId(i, isMu) ) {//non fully identified leptons
+    if( ! _susyMod->multiIsoSel(i, isMu) ) {//non fully identified leptons
       _nonFullIdLeps.push_back(lepCand);
       _nonFullIdLepsIdx.push_back(i);
     }
@@ -612,7 +431,7 @@ FakeEstim::retrieveObjects(){
   _nLooseLeps=_looseLeps.size();
     
   for(int i = 0; i < _vc->get("nJet40"); ++i){
-    if(goodJetSelection(i)) {
+    if(_susyMod->jetSel(i)) {
       _jets.push_back( Candidate::create(_vc->get("Jet_pt", i),
 					 _vc->get("Jet_eta", i),
 					 _vc->get("Jet_phi", i) ) );
@@ -621,7 +440,7 @@ FakeEstim::retrieveObjects(){
 
   _nJets  = _jets.size();
 
-  _HT  = HT();
+  _HT  = _susyMod->HT( &(_jets) );
   _met = Candidate::create(_vc->get("met_pt"), _vc->get("met_phi") );
 
 }
@@ -637,8 +456,6 @@ FakeEstim::alternateSSEventSelection(bool switchWF) {
   int charge = 0;
   int flavor = 0;
   int flavortmp = 0;
-  int id = 0;
-  int idtmp = 0;
   bool isSS = false;
   _lep_idx1=-1;
   _lep_idx2=-1;
@@ -648,8 +465,6 @@ FakeEstim::alternateSSEventSelection(bool switchWF) {
   _nSelPair2Iso=0;
   _nSelPair1Iso=0;
   _nSelPair0Iso=0;
-
-  int id1,id2;
 
   //========================================================================
   //first fully identified leptons => signal
@@ -674,7 +489,7 @@ FakeEstim::alternateSSEventSelection(bool switchWF) {
       if(flavor>flavortmp) continue; // if the new pair has less muons skip.
 
       flavor = flavortmp;
-      id = idtmp;
+      
       _l1Cand = _fullIdLeps[il1];   _lep_idx1 = _tmpLepIdx[il1];
       _l2Cand = _fullIdLeps[il2];   _lep_idx2 = _tmpLepIdx[il2]; 
       isSS = true;
@@ -717,7 +532,7 @@ FakeEstim::alternateSSEventSelection(bool switchWF) {
       }
       
       flavor = flavortmp;
-      id = idtmp;
+      
       _l1Cand = _fullIdLeps[il1];   _lep_idx1 = _tmpLepIdx[il1];
       _l2Cand = _nonFullIdLeps[il2];   _lep_idx2 = _nonFullIdLepsIdx[il2]; 
     
@@ -763,7 +578,7 @@ FakeEstim::alternateSSEventSelection(bool switchWF) {
       }
 
       flavor = flavortmp;
-      id = idtmp;
+      
       _l1Cand = _nonFullIdLeps[il1];   _lep_idx1 = _nonFullIdLepsIdx[il1];
       _l2Cand = _nonFullIdLeps[il2];   _lep_idx2 = _nonFullIdLepsIdx[il2]; 
  
@@ -780,48 +595,6 @@ FakeEstim::alternateSSEventSelection(bool switchWF) {
   return false;
 }
 
-
-
-bool
-FakeEstim::mllVetoSelection(){
-  
-  for(unsigned int i = 0; i < _allLeps.size(); ++i) {
-    if(_l1Cand!=_allLeps[i] && mllZVeto(_l1Cand, _allLeps[i])) return false;
-    if(_l2Cand!=_allLeps[i] && mllZVeto(_l2Cand, _allLeps[i])) return false;
-    if(_l1Cand!=_allLeps[i] && mllLMGVeto(_l1Cand, _allLeps[i])) return false;
-    if(_l2Cand!=_allLeps[i] && mllLMGVeto(_l2Cand, _allLeps[i])) return false;
-  }
-  
-  return true;
-}
-
-bool 
-FakeEstim::mllLMGVeto(Candidate* cand, Candidate* veto){
-  
-  if((std::abs(veto->pdgId()) == 11 && veto->pt() < 7) || (std::abs(veto->pdgId()) == 13 && veto->pt() < 5)) return false;
-  float mll = Candidate::create(cand, veto)->mass();
-
-  if(mll <= 8.0) return true;
-  if(cand->charge()==veto->charge() ) return false;
-  if(mll <= 12.0) return true;
-
-  return false;
-}
-
-
-bool 
-FakeEstim::mllZVeto(Candidate* cand, Candidate* veto){
- 
-  if(cand->pt() < 10 || veto->pt() < 10) return false;
-  float mll = Candidate::create(cand, veto)->mass();
-  
-  if(cand->charge()==veto->charge() ) return false;
-  if(std::abs(cand->pdgId())==std::abs(veto->pdgId()) ) {
-    if(mll >= 76.0 && mll <= 106.0) return true;
-  }
-
-  return false;
-}
 
 
 //=====================================================================
@@ -1449,27 +1222,26 @@ FakeEstim::genMatchedMisCharge() {
 float 
 FakeEstim::getFR(Candidate* cand, int idx) {
   string db;
-  int wp=kTight;
+  int wp=SusyModule::kTight;
   
   if( std::abs(cand->pdgId())==13) db="AllMu";
   else  db="AllEl";
 
-  if(_lepiso == "multiIso") db+="T";
-  else if(_lepiso == "multiIsoHTight") {db+="VT"; wp=kVTight;}
-  else db="AllMuT";
+  //  if(_lepiso == "multiIso") db+="T";
+
 
   float ptVal=cand->pt();
-  if(_extScheme=="mIsoCor") {
-    ptVal = cand->pt()*(1+ max((float)0.,_vc->get("LepGood_miniRelIso",idx )-_multiIsoWP[kMiniIso][wp]));
-  }
-  if(_extScheme=="mIsoAlCor") {
-    ptVal = (_vc->get("LepGood_pTrel",idx)>_multiIsoWP[kPtRel][wp])?(cand->pt()*(1+ max((float)0.,_vc->get("LepGood_miniRelIso",idx )-_multiIsoWP[kMiniIso][wp]))):
-      (_vc->get("LepGood_jetPtRatio",idx)/cand->pt()*0.8 );
-  }
-  if(_extScheme=="mIsoPtJCor") {
-    ptVal = (_vc->get("LepGood_pTrel",idx)>_multiIsoWP[kPtRel][wp])?(cand->pt()*(1+ max((float)0.,_vc->get("LepGood_miniRelIso",idx )-_multiIsoWP[kMiniIso][wp]))):
-      ( max(cand->pt(), _vc->get("LepGood_jetPtRatio",idx)/cand->pt()*_multiIsoWP[kPtRatio][wp] ) );
-  }
+  // if(_extScheme=="mIsoCor") {
+  //   ptVal = cand->pt()*(1+ max((float)0.,_vc->get("LepGood_miniRelIso",idx )-_multiIsoWP[kMiniIso][wp]));
+  // }
+  // if(_extScheme=="mIsoAlCor") {
+  //   ptVal = (_vc->get("LepGood_pTrel",idx)>_multiIsoWP[kPtRel][wp])?(cand->pt()*(1+ max((float)0.,_vc->get("LepGood_miniRelIso",idx )-_multiIsoWP[kMiniIso][wp]))):
+  //     (_vc->get("LepGood_jetPtRatio",idx)/cand->pt()*0.8 );
+  // }
+  // if(_extScheme=="mIsoPtJCor") {
+  //   ptVal = (_vc->get("LepGood_pTrel",idx)>_multiIsoWP[kPtRel][wp])?(cand->pt()*(1+ max((float)0.,_vc->get("LepGood_miniRelIso",idx )-_multiIsoWP[kMiniIso][wp]))):
+  //     ( max(cand->pt(), _vc->get("LepGood_jetPtRatio",idx)/cand->pt()*_multiIsoWP[kPtRatio][wp] ) );
+  // }
 
   
   return _dbm->getDBValue(db, std::min( ptVal,(float)99.9),
