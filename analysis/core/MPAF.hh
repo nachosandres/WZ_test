@@ -64,14 +64,14 @@ public:
   MPAF(string cfg);
   virtual ~MPAF();
 
+  void analyze();
+
   // Protected Non-Template Methods
 
 protected:
 
   void startExecution(std::string);
   
-  void resetKinematicObjects();
-
   // varclass functions
   void fill(string var, float valx, float weight = 1.);
   void fill(string var, float valx, float valy, float weight);
@@ -149,11 +149,12 @@ private:
 
   void addWorkflowHistos();
 
-  void analyze();
+ 
 
   void applySystVar(SystST s);
-  float applySystDBVar(SystST s, string db, float v1, float v2, float v3, float v4,
-		       float v5,float v6,float v7,float v8,float v9, float v10);
+  //MM fixme
+  // float applySystDBVar(SystST s, string db, float v1, float v2, float v3, float v4,
+  // 		       float v5,float v6,float v7,float v8,float v9, float v10);
 
   // Protected Members
 
