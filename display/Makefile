@@ -53,11 +53,11 @@ MODULES    := $(subst /module.mk,,$(wildcard */module.mk))
 __dummy := $(shell ./genmak.sh $(MODULES))
 
 
-###ifneq (,$(findstring v5,$(ROOTSYS)))
-#all: lib
-#else
+ifneq (,$(findstring 5.3,$(ROOTSYS)))
+all: lib
+else
 all: lib pcm
-#endif
+endif
 
 # the source files to compile (without suffix)
 SRC        :=

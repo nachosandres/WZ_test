@@ -53,9 +53,10 @@ MODULES    := $(subst /module.mk,,$(wildcard */module.mk))
 __dummy := $(shell ./genmak.sh $(MODULES))
 
 
-ifneq (,$(findstring v5,$(ROOTSYS)))
+ifneq (,$(findstring 5.3,$(ROOTSYS)))
 all: lib
 else
+$(info $(ROOTSYS) )
 all: lib pcm
 endif
 #prog
