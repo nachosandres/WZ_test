@@ -492,9 +492,11 @@ float MPAF::getDBVal(string db, float v1, float v2, float v3, float v4, float v5
   
   if(!_uncId)
     return _dbm->getDBValue( db, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 );
+  //MM fixme
+  // else
+  //   return applySystDBVar( _vc->_su->getSystInfos(_unc, _uDir), db, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10);
   else
-    return applySystDBVar( _vc->_su->getSystInfos(_unc, _uDir), db, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10);
-
+    return 0;
 }
 
 
