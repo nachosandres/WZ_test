@@ -57,7 +57,7 @@ void Dataset::freeMemory() {
 
 
 //____________________________________________________________________________
-void Dataset::addSample(string sfullname, string path, string dir, string objName, string hname, float xSect, float kFact, float lumi, float eqLumi) {
+void Dataset::addSample(string sfullname, string path, string dir, string objName, string hname, float xSect, float kFact, float lumi, float eqLumi, bool loadH) {
   /*
     adds a sample to the dataset; the sample has a name encoded in sfullname,
     lies in the directory path/dir/, has a tree called objName or a histogram
@@ -154,12 +154,14 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
 	
   //Looking for the tree if not data-driven
   int nEvent = 0; //MM: not really needed anymore, kept for now
-  int nProcEvt = (hname=="")?0:getNProcEvents(path, dir, objName, hname);
-
+  string tmpPath=isTreeType()?("data/"+path):"root";
+  string tmpFName=isTreeType()?(sname):objName;
+  int nProcEvt = (hname=="")?-1:getNProcEvents(tmpPath, dir, tmpFName, hname);
+  
   Sample s(sname, nEvent, nProcEvt, xSect, kFact, eqLumi);
   _samples.push_back(s);
   _weights.push_back( s.getLumW() );
-
+  
 	
   //tree analysis 
   if(isTreeType()) {
@@ -169,9 +171,11 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
 	<<"   :  nEvt "<<_chain->GetEntries()<<" ("<<nProcEvt
 	<<" gen) "<<" / w (/pb-1) = "<<s.getLumW()<<endl;
   }
-  else { //reading histograms
-    loadHistos(path, dir, objName, hname, optCat);
-	  
+  else {
+    if(loadH) { //reading histograms only when needed (disabled for datacards)
+      loadHistos(path, dir, objName, hname, optCat);
+    }
+    
     cout<<" Adding "<<sname<<"  to "<<_name
 	<<"   :  nEvt "<<nEvent<<" ("<<nProcEvt
 	<<" gen) "<<" / w (/pb-1) = "<<s.getLumW()<<endl;
@@ -184,20 +188,21 @@ int
 Dataset::getNProcEvents(string path, string dir, string fileName, string hname) {
 
   string p= string(getenv ("MPAF"))+"/workdir";
-  string NameF = p+"/"+dir+"/"+fileName+".root";
+  string NameF = p+"/"+path+"/"+dir+"/"+fileName+".root";
   if(path.find(":")!=(size_t)-1) NameF=path+"/"+fileName+".root";
   if(dir.find("psi.ch")!=(size_t)-1)
     NameF="dcap://t3se01.psi.ch:22125/"+dir+"/"+fileName+".root";
+  
   TFile* file = TFile::Open( NameF.c_str() );
   
   TH1* htmp = (TH1*)file->Get( hname.c_str() );
   
-  int nProc=0;
+  int nProc=-1;
   if(htmp) {
     nProc = htmp->Integral(0,1001);
     delete htmp;
   }
-  else nProc = 0;
+  else nProc = -1;
 
   file->Close();
   delete file;
@@ -206,14 +211,16 @@ Dataset::getNProcEvents(string path, string dir, string fileName, string hname) 
 }
 
 int
-Dataset::getNProcEvent(int evt) {
-  
-  for(size_t iv=0;iv<_events.size();iv++) {
-    if(evt>=_events[iv].first && evt<_events[iv].second) {
-      return _nprocs[iv];
-    }
-  }
-  return 0;
+Dataset::getNProcEvents(int evt) {
+  //MM fixme, multiple sample handling not considered anymore, still useful?
+  return _samples[0].getNProcEvts();
+
+  // for(size_t iv=0;iv<_events.size();iv++) {
+  //   if(evt>=_events[iv].first && evt<_events[iv].second) {
+  //     return _samples[iv]->getNProcEvts();
+  //   }
+  // }
+  // return -1;
 
 }
 
@@ -348,7 +355,7 @@ Dataset::loadHistos(string path, string dir, string filename, string hname, stri
 	if( sName!=_samples[is].getName() ) continue;
 	   
 	//histograms and not normalization file
-	if(varName==hname) continue;
+	if(varName=="nEvtProc") continue;
 	
 	if(_histos[ varName ].size()==0) { //initialization
 	  tmp[ sName ] = (TH1*)((TH1*)objD->Clone());

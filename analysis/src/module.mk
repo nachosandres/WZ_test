@@ -11,4 +11,5 @@ FILES += SUSY3L_sync
 FILES += SUSY3L_sync2
 FILES += phys14limits
 FILES += FakeRatio
+FILES += FakeEstim
 FILES += UncertaintyTest

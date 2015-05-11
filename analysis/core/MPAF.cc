@@ -69,6 +69,8 @@ void MPAF::initialize(){
   _nEvtMax=-1;
 
   _wfNames[AUtils::kGlobal] = "";
+
+  _hname="";
 }
 
 
@@ -199,8 +201,7 @@ void MPAF::analyze(){
   internalWriteOutput();
 
   _au->printNumbers();
-  _au->getYieldSysts("TTJets","ptsel");
-
+  
 }
 
 //____________________________________________________________________________
@@ -241,7 +242,7 @@ void MPAF::loadConfigurationFile(std::string cfg){
     if(it->second.type==Parser::kTree) {
       tName = it->second.val;
     }
-    _hname="";
+   
     if(it->second.type==Parser::kHisto) {
       _hname = it->second.val;
     }
@@ -249,7 +250,6 @@ void MPAF::loadConfigurationFile(std::string cfg){
   }
 
   //datasets
-  
   for(MIPar::const_iterator it=_inputVars.begin(); 
       it!=_inputVars.end();it++) {
     
@@ -300,20 +300,6 @@ MPAF::getCfgVarF(string n) {
   return atof(getCfgVarS(n).c_str() );
 }
 
-// //_____________________________________________________________________________________
-// void MPAF::setAllModules(std::vector<std::string> all_modules){
-//   /*
-//     sets the list of all modules the daughter class inhabits, i.e. the list of all
-//     modules that could possibly be executed
-//     parameters: all_modules
-//     return: none 
-//   */
-
-//   _AllModules = all_modules;
-
-// }
-
-
 //____________________________________________________________________________
 void MPAF::setConfigName(std::string cfg){
   /*
@@ -361,43 +347,6 @@ void MPAF::startExecution(std::string cfg){
 ******************************************************************************
 *****************************************************************************/
 
-
-//____________________________________________________________________________
-//void MPAF::defineOutput(){
-  /*
-    placeholder for defining all outputs per class
-    parameters: none
-    return: none
-  */
-
-//}
-
-
-//____________________________________________________________________________
-void MPAF::fillEventList(){
-  /*
-    fills the event lists cache with a print-out about the current event
-    parameters: none
-    return: none
-  */
-
-  //std::string line = Form("%d\t%d\t%d", Run, Lumi, Event);
-  //std::cout << line << std::endl;
-
-}
-
-
-//____________________________________________________________________________
-//void MPAF::loadInput(){
-  /*
-    placeholder for loading input per class
-    parameters: none
-    return: none
-  */
-
-//}
-
-
 //____________________________________________________________________________
 void MPAF::run(){
   /*
@@ -409,22 +358,17 @@ void MPAF::run(){
 
 }
 
-
-//____________________________________________________________________________
-//void MPAF::writeOutput(){
-  /*
-    placeholder for writing the output per class
-    parameters: none
-    return: none
-  */
-
-//}
-
 void MPAF::internalWriteOutput() {
 
   writeOutput();
-  _hm->saveHistos (_className, _cfgName);
-  _au->saveNumbers(_className, _cfgName);
+
+  map<string, int> cnts;
+  for(int ids=0;ids<_datasets.size(); ++ids) {
+    cnts[ _datasets[ids]->getName() ] = _datasets[ids]->getNProcEvents(0);
+  }
+
+  _hm->saveHistos (_className, _cfgName, cnts);
+  _au->saveNumbers(_className, _cfgName, cnts);
 
 
 }
@@ -548,9 +492,11 @@ float MPAF::getDBVal(string db, float v1, float v2, float v3, float v4, float v5
   
   if(!_uncId)
     return _dbm->getDBValue( db, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 );
+  //MM fixme
+  // else
+  //   return applySystDBVar( _vc->_su->getSystInfos(_unc, _uDir), db, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10);
   else
-    return applySystDBVar( _vc->_su->getSystInfos(_unc, _uDir), db, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10);
-
+    return 0;
 }
 
 
@@ -647,12 +593,12 @@ void MPAF::initSkimming() {
   else
     fclose( test );
 
-  _oFile = new TFile( (opath+"/"+_sampleName+"_skim.root").c_str(),"RECREATE");
+  _oFile = new TFile( (opath+"/"+_sampleName+".root").c_str(),"RECREATE");
   _datasets[_inds]->getTree()->LoadTree(0);
   if(_fullSkim) {
     _skimTree = (TTree*)_datasets[_inds]->getTree()->CloneTree(0);
     _hnSkim =new TH1I( _hname.c_str(), _hname.c_str(), 1, 0, 1);
-    _hnSkim->SetBinContent(1,_datasets[_inds]->getNProcEvent(0) );
+    _hnSkim->SetBinContent(1,_datasets[_inds]->getNProcEvents(0) );
   }
   else {
     TString name = _datasets[_inds]->getTree()->GetName();

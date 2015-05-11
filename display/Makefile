@@ -29,7 +29,7 @@ BINDIR     := $(MPAFDisplay)/bin
 SOLIBDIR   := $(MPAFDisplay)/lib
 PCMDIR     := $(MPAFDisplay)/lib
 SOLIB      := $(SOLIBDIR)/lib$(PKGNAME).$(DLLSUFFIX)
-PCM	   := $(PKGNAME)_dict_src_rdict.pcm
+PCM	   := $(PKGNAME)_dict_core_rdict.pcm
 
 __dummy := $(shell mkdir -p $(OBJDIR) $(DEPDIR) $(BINDIR) $(SOLIBDIR))
 
@@ -53,7 +53,7 @@ MODULES    := $(subst /module.mk,,$(wildcard */module.mk))
 __dummy := $(shell ./genmak.sh $(MODULES))
 
 
-ifneq (,$(findstring v5,$(ROOTSYS)))
+ifneq (,$(findstring 5.3,$(ROOTSYS)))
 all: lib
 else
 all: lib pcm

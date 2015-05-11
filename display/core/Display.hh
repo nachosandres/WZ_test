@@ -242,6 +242,7 @@ public:
   void drawDetailSystematics(bool cumul);
 
   void addText(float x, float y, float s, string text);
+  void addLine(float x1, float y1, float x2, float y2, int style, int col, int size);
   
   void getIntegral(float x1, float x2, float y1=0, float y2=1000000);
   void printInteg(float x1, float x2, float y1, float y2);
