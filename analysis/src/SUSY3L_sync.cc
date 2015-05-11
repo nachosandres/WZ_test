@@ -225,8 +225,8 @@ void SUSY3L_sync::writeOutput(){
         return: none
     */
 
-    _hm -> saveHistos("SUSY3L_sync", _cfgName);
-    _au -> saveNumbers("SUSY3L_sync", _cfgName);
+    //_hm -> saveHistos("SUSY3L_sync", _cfgName);
+    //_au -> saveNumbers("SUSY3L_sync", _cfgName);
 
 }
 

@@ -233,8 +233,8 @@ void SUSY3L::writeOutput(){
         return: none
     */
 
-    _hm -> saveHistos("SUSY3L", _cfgName);
-    _au -> saveNumbers("SUSY3L", _cfgName);
+    //_hm -> saveHistos("SUSY3L", _cfgName);
+    //_au -> saveNumbers("SUSY3L", _cfgName);
 
 }
 
@@ -618,7 +618,7 @@ bool SUSY3L::goodJetSelection(int jetIdx){
     //define cut values
     float pt_cut = 30.;
     float eta_cut = 2.4;
-    float deltaR = 0.3;
+    float deltaR = 0.4;
 
     if(!makeCut<float>(_vc->get("Jet_pt", jetIdx)       , pt_cut, ">", "pt selection" , 0, kJetId) ) return false;
     if(!makeCut<float>(std::abs(_vc->get("Jet_eta", jetIdx)),  eta_cut, "<", "eta selection", 0, kJetId) ) return false;

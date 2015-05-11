@@ -137,12 +137,6 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
  
       if(tks.size()==0 || line == "") continue; 
       
-      //counters FIXME, done with rootfile for the moment
-       if(tks[0]=="dsCnts" || tks[1]=="cnts" ) {
-	 continue;
-       }
-
-
       if(tks[0]=="categ") {
         categ="";
 	tmpCateg="";
@@ -206,15 +200,16 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
         pair<string,string> p(ds->getName(), cname+sname+categ);
         if(fVal.find(p)==fVal.end() ) {
           fVal[p]=true;
-	  if(ids!=-1) {
+	  if(ids!=-1)
 	    _au->setEffFromStat(ids,cname,icat,yield,eyield,gen);
-	  }
 	  if(modIds!=-1) { //goes to global
 	    int tmpcat=((ctag!="")?(_au->getCategId("global_"+ctag)):0);
 	    _au->setEffFromStat(modIds,cname,tmpcat,yield,eyield,gen);
 	  }
 	}
-
+	// else
+	//   cout<<"already here: "<<cname+sname<<endl;
+      
       }
 	
     }
@@ -573,14 +568,14 @@ void
 MPAFDisplay::addDataCardBkgSample(string sName, string dsName) {
   
   _isSigDs[dsName]=false;
-  anConf.addSample(sName, dsName, 0, false);
+  anConf.addSample(sName, dsName, 0);
 }
 
 void
 MPAFDisplay::addDataCardSigSample(string sName, string dsName) {
   
   _isSigDs[dsName]=true;
-  anConf.addSample(sName, dsName, 0, false);
+  anConf.addSample(sName, dsName, 0);
 }
 
 void
@@ -668,7 +663,7 @@ MPAFDisplay::getExternalNuisanceParameters(string sigName) {
 
 
 void
-MPAFDisplay::makeSingleDataCard(string sigName, string categ, string cname, string cardName) {
+MPAFDisplay::makeSingleDataCard(string sigName, string categ, string cname) {
   
   map<string,string> lines;
   bool isValidCard = _au->getDataCardLines(lines, _dsNames, sigName, categ, cname, 1, _nuisPars);
@@ -688,7 +683,7 @@ MPAFDisplay::makeSingleDataCard(string sigName, string categ, string cname, stri
   //int nNuis=_nuisPars.size();
   
   string dirname_ = (string)(getenv("MPAF"))+"/workdir/datacards/";
-  ofstream card( dirname_+cardName+".txt", ios::out | ios::trunc );
+  ofstream card( dirname_+"test.txt", ios::out | ios::trunc );
   
   card<<"imax 1 number of channels"<<endl; 
   card<<"jmax "+osB.str()+" number of backgrounds"<<endl; 
