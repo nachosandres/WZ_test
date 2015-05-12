@@ -105,7 +105,7 @@ public:
 public:
   
   AnaUtils();
-  ~AnaUtils();
+  virtual ~AnaUtils();
 
   void setUncSrc(string uncSrc, int dir) {
     _uncSrc=uncSrc;

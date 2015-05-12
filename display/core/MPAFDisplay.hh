@@ -74,8 +74,8 @@ private:
 public:
 
   MPAFDisplay();
-  ~MPAFDisplay();
-
+  virtual ~MPAFDisplay();
+  
   //void unlockStatus();
 
   void refresh();

@@ -34,7 +34,7 @@ public:
   Sample(string name, int n, int nProcEvt, 
 	 float xSect, float kfact, float eqLumi);
 
-  ~Sample();
+  virtual ~Sample();
 
   void setName(string N){ _name=N;};
   void setNEvts(int n){ _nEvents=n;};

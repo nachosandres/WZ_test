@@ -134,7 +134,6 @@ ${OBJDIR}/%.$(OBJSUFFIX) : %.cpp ${DEPDIR}/%.$(DEPSUFFIX)
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
 
 ${OBJDIR}/%.$(OBJSUFFIX) : %.cc ${DEPDIR}/%.$(DEPSUFFIX)
-	@echo "file ===================================> $<"
 	@echo "Compiling $<"
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
 
@@ -169,7 +168,6 @@ ${DEPDIR}/%.$(DEPSUFFIX): %.C
 
 # .bin building rules
 ${OBJDIR}/%.bin: ${OBJDIR}/%.$(OBJSUFFIX) | $(SOLIB)
-	@echo "test=============================================================================="
 	@echo "Making bin $@"
 	$(CXX) $(CXXFLAGS)  $^ -o $@ $(LIBS) -L$(SOLIBDIR) -l$(PKGNAME)
 #	$(CXX) $(CXXFLAGS) $(LIBS) -L$(SOLIBDIR) -l$(PKGNAME) $^ -o $@

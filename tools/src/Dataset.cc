@@ -324,7 +324,7 @@ Dataset::loadHistos(string path, string dir, string filename, string hname, stri
   //scan the file to retrieve the histograms
   TIter nextkey(datafile->GetListOfKeys());
   TKey *key;
-  while (key = ((TKey*)nextkey()) ) {
+  while ((key = ((TKey*)nextkey()))) {
     TObject* obj = key->ReadObj(); 
     if( obj==nullptr ) continue;
       
@@ -342,7 +342,7 @@ Dataset::loadHistos(string path, string dir, string filename, string hname, stri
 
     TIter nextkeyD( ((TDirectory*)obj)->GetListOfKeys() );
     TKey *keyD;
-    while (keyD = ((TKey*)nextkeyD()) ) {
+    while ((keyD = ((TKey*)nextkeyD()))) {
       TObject* objD = keyD->ReadObj(); 
       if( objD==nullptr ) continue;
       

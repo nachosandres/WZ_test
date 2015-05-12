@@ -125,7 +125,6 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
     string tmpCateg;
   
     bool isGlobal=false;
-
     while(getline(fDb, line)) {
 	
       istringstream iss(line);
@@ -153,7 +152,7 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
      
 	if(ctag!="")
 	  categ+="_"+ctag;
-      
+     
         if(categ!="global") {
           _au->addCategory(icat, categ);
 	  isGlobal=false;
