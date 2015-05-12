@@ -19,20 +19,31 @@ SusyModule::defineLeptonWPS() {
   _sipWP.resize(kNWPs);
   _elMvaIdWP.resize(3);
   _multiIsoWP.resize(3);
+  _ptWP.resize(2);
   for(int i=0;i<3;++i) {
     _elMvaIdWP[i].resize(kNWPs);
     _multiIsoWP[i].resize(kNWPs);
+    if(i!=2) _ptWP[i].resize(kNWPs);
   }
   
-  //sip & IP ============================
+  //conv rej ====================
+  _cLostHitWP[kLoose]=1; 
+  _cLostHitWP[kTight]=0; 
+
+  //pt ============================
+  _ptWP[kEl][kLoose]=7;  _ptWP[kMu][kLoose]=5;
+  _ptWP[kEl][kTight]=10;  _ptWP[kMu][kTight]=10;
+
+  //sip & IP ======================
   _sipWP[kLoose]=1000.0; 
   _sipWP[kTight]=4.0; 
   
-  _dxyWP[kLoose]=0.5; //mm
-  _dzWP[kLoose]=1; //mm
+  _dxyWP[kLoose]=0.05; //cm
+  _dxyWP[kTight]=0.05; //cm
+  
+  _dzWP[kLoose]=0.1; //cm
+  _dzWP[kTight]=0.1; //cm
 
-  _dxyWP[kTight]=0.5; //mm
-  _dzWP[kTight]=1; //mm
 
   //el mva id ======================
   _elMvaIdWP[kEBC][kLoose]=-0.11;
@@ -80,20 +91,21 @@ SusyModule::elMvaSel(int idx, int wp) const {
 
 
 bool
-SusyModule::muIdSel(int idx) const {
+SusyModule::muIdSel(int idx, int wp) const {
 
   int wpIso=kDenom;
-  int wpSIP=kTight;
   
-  if( _vc->get("LepGood_pt" , idx)<10 ) return false;
+  if( _vc->get("LepGood_pt" , idx)<_ptWP[kMu][wp] ) return false;
   if( std::abs(_vc->get("LepGood_eta" , idx))>2.4 ) return false;
   
   if( _vc->get("LepGood_mediumMuonId", idx)<=0 ) return false;
-  if( _vc->get("LepGood_tightCharge" , idx)<=1 ) return false;
+
+  if(wp!=kLoose)
+    if( _vc->get("LepGood_tightCharge" , idx)<=1 ) return false;
  
-  if(_vc->get("LepGood_sip3d", idx)>_sipWP[wpSIP]) return false;
-  if( std::abs(_vc->get("LepGood_dz", idx))>0.1 ) return false;
-  if( std::abs(_vc->get("LepGood_dxy", idx))>0.05 ) return false;
+  if(_vc->get("LepGood_sip3d", idx)>_sipWP[wp]) return false;
+  if( std::abs(_vc->get("LepGood_dz", idx))>_dzWP[wp] ) return false;
+  if( std::abs(_vc->get("LepGood_dxy", idx))>_dxyWP[wp] ) return false;
   if( !multiIsoSel(idx, wpIso) ) return false;
   
   return true;
@@ -101,24 +113,26 @@ SusyModule::muIdSel(int idx) const {
 
 
 bool
-SusyModule::elIdSel(int idx) const {
+SusyModule::elIdSel(int idx, int wp) const {
 
   int wpIso=kDenom;
-  int wpSIP=kTight;
- 
-  if(_vc->get("LepGood_pt", idx)<10.) return false;
+  
+  if(_vc->get("LepGood_pt", idx)<_ptWP[kEl][wp] ) return false;
   if(std::abs(_vc->get("LepGood_eta", idx))>2.4) return false;
   if(std::abs(_vc->get("LepGood_eta", idx))>1.4442 &&
      std::abs(_vc->get("LepGood_eta", idx))<1.566) return false;
-  if(_vc->get("LepGood_tightCharge", idx)<=1) return false; 
-  if(_vc->get("LepGood_convVeto", idx)<0) return false;
+
+  if(_vc->get("LepGood_convVeto", idx)<=_cLostHitWP[wp]) return false;
   if(_vc->get("LepGood_lostHits", idx)!=0) return false;
 
+  if(wp!=kLoose)
+    if(_vc->get("LepGood_tightCharge", idx)<=1) return false; 
+
   //always tight
-  if( !elMvaSel(idx, kTight) ) return false;
-  if(_vc->get("LepGood_sip3d", idx)>_sipWP[wpSIP]) return false;
-  if( std::abs(_vc->get("LepGood_dz", idx))>0.1 ) return false;
-  if( std::abs(_vc->get("LepGood_dxy", idx))>0.05 ) return false;
+  if( !elMvaSel(idx, wp) ) return false;
+  if(_vc->get("LepGood_sip3d", idx)>_sipWP[wp]) return false;
+  if( std::abs(_vc->get("LepGood_dz", idx))>_dzWP[wp] ) return false;
+  if( std::abs(_vc->get("LepGood_dxy", idx))>_dxyWP[wp] ) return false;
   if( !multiIsoSel(idx, wpIso) ) return false;
  
 
@@ -134,7 +148,7 @@ SusyModule::elIdSel(int idx) const {
 
 //===========================================================
 bool
-SusyModule::jetSel(int jetIdx) const {
+SusyModule::jetSel( int jetIdx) const {
   
   if(_vc->get("Jet_pt", jetIdx)<40.0) return false;
   return true;
@@ -169,7 +183,6 @@ SusyModule::mllVetoSelection(const Candidate* l1, const Candidate* l2,
 bool 
 SusyModule::mllLMGVeto(const Candidate* cand, const Candidate* veto) const {
   
-  if((std::abs(veto->pdgId()) == 11 && veto->pt() < 7) || (std::abs(veto->pdgId()) == 13 && veto->pt() < 5)) return false;
   float mll = Candidate::create(cand, veto)->mass();
 
   if(mll <= 8.0) return true;
@@ -183,7 +196,7 @@ SusyModule::mllLMGVeto(const Candidate* cand, const Candidate* veto) const {
 bool 
 SusyModule::mllZVeto(const Candidate* cand, const Candidate* veto) const {
  
-  if(cand->pt() < 10 || veto->pt() < 10) return false;
+  if(veto->pt() < 10) return false;
   float mll = Candidate::create(cand, veto)->mass();
   
   if(cand->charge()==veto->charge() ) return false;

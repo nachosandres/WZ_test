@@ -14,8 +14,8 @@ public:
 
   
   bool elMvaSel(int elIdx, int wp) const;
-  bool muIdSel(int idx) const;
-  bool elIdSel(int idx) const;
+  bool muIdSel(int idx, int wp) const;
+  bool elIdSel(int idx, int wp) const;
   bool multiIsoSel(int idx, int wp) const;
   bool jetSel(int jetIdx) const;
   float HT(const CandList* jets);
@@ -34,6 +34,8 @@ public:
 
   enum {kMiniIso=0,kPtRatio,kPtRel};
   enum {kEBC=0,kEBF,kEE};
+  enum {kEl=0,kMu};
+
   
 
 private:
@@ -42,15 +44,17 @@ private:
   //const
   VarClass* _vc;
 
-  vector<float> _sipWP;
+  vector<float> _cLostHitWP;
   vector<float> _dxyWP;
   vector<float> _dzWP;
-  vector<vector<float> > _elMvaIdWP;
   vector<float> _isoWP;
   vector<float> _miniIsoWP;
   vector<float> _ptRelWP;
-  vector<vector<float> > _multiIsoWP;
+  vector<float> _sipWP;
 
+  vector<vector<float> > _elMvaIdWP;
+  vector<vector<float> > _multiIsoWP;
+  vector<vector<float> > _ptWP;
 
 };
 

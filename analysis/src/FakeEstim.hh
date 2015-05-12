@@ -38,9 +38,10 @@ private:
   void retrieveObjects();
   bool alternateSSEventSelection(bool switchWF=true);
  
-//==============================
-  void setSignalRegion();
-  void setCut(string var, float valCut, string cType, float upValCut=0);
+  //==============================
+  void setSignalRegions();
+  void setSelLine(string str);
+  //void setCut(string var, float valCut, string cType, float upValCut=0);
   
   //=============================
   //advanced fast selection
@@ -53,28 +54,30 @@ private:
   //counter categories, 0 is ALWAYS global (even if not specified later
   //enum {kGlobal=0,kLowMETMT,kGenFake,kGenMisCharge,kOneIso,kNoIso, kSelId};
   enum {kGlobal=0,
-	kSR1A,kSR2A,kSR3A,kSR4A,kSR7A,kSR8A,kSR9A,kSR10A,
-	kSR13A,kSR14A,kSR15A,kSR16A,
-	kSR1B,
-	kSR3B,
-	kSR5B,
-	kSR1AL,kSR2AL,kSR3AL,kSR4AL,kSR1AH,kSR2AH,kSR3AH,kSR4AH,kSR5A,kSR6A,
-	kSR7AL,kSR8AL,kSR9AL,kSR10AL,kSR7AH,kSR8AH,kSR9AH,kSR10AH,kSR11A,kSR12A,
-	kSR13AL,kSR14AL,kSR15AL,kSR16AL,kSR13AH,kSR14AH,kSR15AH,kSR16AH,kSR17A,kSR18A,
-	kSR19AL,kSR19AH,kSR20A,
-	kSR1BL,kSR1BH,kSR2B,kSR2BL,kSR2BH,
-	kSR3BL,kSR3BH,kSR4B,kSR4BL,kSR4BH,
-	kSR5BL,kSR5BH,kSR6B,kSR6BL,kSR6BH,
-	kSR7BL,kSR7BH,kSR8B,
+	kSR1A, kSR2A, kSR3A, kSR4A, kSR5A, kSR6A, kSR7A, kSR8A,
+	kSR9A, kSR10A, kSR11A, kSR12A, kSR13A, kSR14A, kSR15A, kSR16A,
+	kSR17A, kSR18A, kSR19A, kSR20A, kSR21A, kSR22A, kSR23A, kSR24A,
+	kSR25A, kSR26A, kSR27A, kSR28A, kSR29A, kSR30A, kSR31A, kSR32A,
+
+	// kSR1B, kSR2B, kSR3B, kSR4B, kSR5B, kSR6B, kSR7B, kSR8B,
+	// kSR9B, kSR10B, kSR11B, kSR12B, kSR13B, kSR14B, kSR15B, kSR16B,
+	// kSR17B, kSR18B, kSR19B, kSR20B, kSR21B, kSR22B, kSR23B, kSR24B,
+	// kSR25B, kSR26B,
+
+	// kSR1C, kSR2C, kSR3C, kSR4C, kSR5C, kSR6C, kSR7C, kSR8C,
+    
+	kBR0H,// kBR0M, kBR0L,
+	// kBR10H, kBR10M, kBR10L,
+	// kBR20H, kBR20M, kBR20L,
+	// kBR30H, kBR30M, kBR30L,
+
 	kOneIso,kNoIso, kSelId};
 
 
   // enum {kLoose=0,kTight,kVTight,kHTight,kNWPs};
   
   SusyModule* _susyMod;
-
-
-  
+ 
   CandList _allLeps;
   CandList _looseLeps;
   CandList _leptons;
@@ -84,9 +87,20 @@ private:
   CandList _jets;
 
   Candidate* _met;
-
-  float _mTmin;
   
+  std::map<std::string,float*> _val;
+  float _nBJets;
+  float _mTmin;
+  float _metPt;
+  float _nJets;
+  float _HT;
+  
+  //MM ugly
+  std::map<std::string, std::vector<std::vector<std::vector<std::string> > > > _sels;
+
+
+
+
   std::vector<unsigned int> _looseLepsIdx;
   std::vector<unsigned int> _leptonsIdx;
   std::vector<unsigned int> _nonFullIdLepsIdx;
@@ -97,35 +111,7 @@ private:
  
   
   unsigned int _nLooseLeps;
-  unsigned int _nJets;
-
-  float _valCutHTSR;
-  float _valCutMETSR;
-  float _valCutMTSR;
-  float _valCutNJetsSR;
-  float _valCutNBJetsSR;
-
-  float _valCutNJetsCond;
-  float _valCutMETCond;
-
-  std::string _cTypeHTSR;
-  std::string _cTypeMETSR;
-  std::string _cTypeMTSR;
-  std::string _cTypeNJetsSR;
-  std::string _cTypeNBJetsSR;
-
-  std::string _cTypeNJetsCond;
-  std::string _cTypeMETCond;
-
-  float _upValCutHTSR;
-  float _upValCutMETSR;
-  float _upValCutMTSR;
-  float _upValCutNJetsSR;
-  float _upValCutNBJetsSR;
-
-  float _upValCutNJetsCond;
-  float _upValCutMETCond;
-
+ 
 
   int _nIso;
   int _nSelPair2Iso;
@@ -137,23 +123,12 @@ private:
   int _lep_idx1;
   int _lep_idx2; 
  
-  float _HT;
 
-
-  string _btag;
-  string _fakes;
   string _lepflav;
-  string _lepId;
-  string _lepiso;
   string _leppt;
   string _leptl;
-  string _extScheme;
   string _SR;
   string _FR;
-
-  float _metCut;
-  int _isoLvl;
-
 
   int _fakeEl;
   int _fakeMu;
