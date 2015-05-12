@@ -1222,7 +1222,7 @@ FakeEstim::genMatchedMisCharge() {
 float 
 FakeEstim::getFR(Candidate* cand, int idx) {
   string db;
-  int wp=SusyModule::kTight;
+  //  int wp=SusyModule::kTight;
   
   if( std::abs(cand->pdgId())==13) db="AllMu";
   else  db="AllEl";

@@ -181,7 +181,7 @@ private:
 public:
 
   Display();
-  ~Display();
+  virtual ~Display();
 
   void reset();
   void softReset();

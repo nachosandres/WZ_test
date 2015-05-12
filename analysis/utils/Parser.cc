@@ -21,7 +21,7 @@ Parser::parseLine(string line) {
   inPar ip;  
   ip.type=Parser::kNone;
   if(tks.size()==0 || tks[0].substr(0,1)=="#" ) return ip;
-
+  
   int type=Parser::kNone;
   if(tks[0]=="dir")
     type=Parser::kDir;
@@ -76,8 +76,8 @@ Parser::parseLine(string line) {
   ip.val = val;
   ip.opts = opts;
 
-  if(type!=Parser::kNone)
-    return ip;
+  //  if(type!=Parser::kNone)
+  return ip;
 }
 
 

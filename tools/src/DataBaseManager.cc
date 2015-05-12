@@ -242,7 +242,7 @@ DataBaseManager::readDbHisto(string key, string dbName, string hname) {
     }  
   }
   else {
-    double x,y,ex;
+    double x(0.),y(0.),ex(0.);
     for(int i=0;i<((TGraph*)obj)->GetN();i++) {
       ((TGraph*)obj)->GetPoint(i,x,y);
       ex = ((TGraph*)obj)->GetErrorXlow(i);

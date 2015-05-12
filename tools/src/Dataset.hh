@@ -53,7 +53,7 @@ public:
   Dataset(std::string name);
   Dataset(std::string name, int color);
 	
-  ~Dataset();
+  virtual ~Dataset();
 	
   void freeMemory();
 

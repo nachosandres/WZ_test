@@ -199,7 +199,7 @@ private:
     
     typename map<int, vector<T>* >::const_iterator it = cmap.find(mvar);
 	
-    int as = sizeof(imap[mvar])/sizeof(imap[mvar][0]);
+    unsigned int as = sizeof(imap[mvar])/sizeof(imap[mvar][0]);
 
     if( it == cmap.end() ) {   // variable not yet registered in the backup map
       cmap[mvar] = new vector<T>;

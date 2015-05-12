@@ -1409,7 +1409,7 @@ Display::drawDataMCRatio() {
   }
 
   //if systematics exists, draw them!
-  bool isTeV = _xtitle.find("TeV")!=(size_t)-1;
+  //  bool isTeV = _xtitle.find("TeV")!=(size_t)-1;
  
   vector<TPolyLine*> sysBand;
   if(_addSyst) {

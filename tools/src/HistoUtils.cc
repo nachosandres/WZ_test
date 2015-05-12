@@ -640,7 +640,7 @@ HistoUtils::residualGraph(TH1* hd, TH1* hmc, string opt) {
   
   for(int ip=0;ip<hd->GetNbinsX()+2;ip++) {
     double Yd,Xd,eYld,eYhd;
-    double Ym, eYlm=0, eYhm=0; //Xm,
+    double Ym;//, eYlm=0, eYhm=0; //Xm,
 
     Xd = hd->GetBinCenter(ip);
     Yd = hd->GetBinContent(ip);

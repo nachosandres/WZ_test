@@ -363,7 +363,7 @@ void MPAF::internalWriteOutput() {
   writeOutput();
 
   map<string, int> cnts;
-  for(int ids=0;ids<_datasets.size(); ++ids) {
+  for(unsigned int ids=0;ids<_datasets.size(); ++ids) {
     cnts[ _datasets[ids]->getName() ] = _datasets[ids]->getNProcEvents(0);
   }
 
