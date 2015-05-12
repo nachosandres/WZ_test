@@ -160,7 +160,7 @@
     md.anConf.addSample( "TBarToLeptons_sch_skim"                ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TBarToLeptons_tch_skim"                ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TBar_tWch_skim"                        ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "TTH_skim"                            ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "TTH_skim"                              ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TTJets_skim"                           ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TToLeptons_sch_skim"                   ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TToLeptons_tch_skim"                   ,  "non-prompt e/#mu"    , kRed      );
