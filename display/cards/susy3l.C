@@ -15,14 +15,14 @@
 
     //general parameters ********************* general parameters
     string dir="SUSY3L";
-    string fileName="template3L_skimmed"; //was treeName in LUNE susy_cut_lowpt
-    string fileList="template3L_skimmed"; //CH: since AnaConfig needs a fileName to open, we need to put the data files into a different variable
+    string fileName="template3L"; //was treeName in LUNE susy_cut_lowpt
+    string fileList="template3L"; //CH: since AnaConfig needs a fileName to open, we need to put the data files into a different variable
     string hName="";
 
     bool mcOnly = false;
   
     //if(md.isInitStatus()) {
-    md.anConf.configureNames( dir, fileName, fileList, hName );
+    md.anConf.configureNames( dir, fileName, fileList );
     md.anConf.configureData(false, 0, mcOnly);
     //}
   

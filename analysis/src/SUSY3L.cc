@@ -414,9 +414,9 @@ bool SUSY3L::electronSelection(int elIdx){
     float eta_veto_low = 1.4442;
     float eta_veto_high = 1.566;
     //float isolation_cut = 0.15;
-    float miniRelIso_cut = 0.075;
-    float ptRatio_cut = 0.725;
-    float ptRel_cut = 7.;
+    float miniRelIso_cut = 0.14;    //medium wp
+    float ptRatio_cut = 0.68;
+    float ptRel_cut = 6.7;
     float vertex_dz_cut = 0.1;      //in cm
     float vertex_dxy_cut = 0.05;    //in cm
     float sip3d_cut = 4;
@@ -480,9 +480,9 @@ bool SUSY3L::muonSelection(int muIdx){
     float pt_cut = 10.;
     float eta_cut = 2.4;
     //float isolation_cut = 0.15;
-    float miniRelIso_cut = 0.10;
-    float ptRatio_cut = 0.70;
-    float ptRel_cut = 7.;
+    float miniRelIso_cut = 0.22;
+    float ptRatio_cut = 0.63;
+    float ptRel_cut = 6.;
     float vertex_dz_cut = 0.1;
     float vertex_dxy_cut = 0.05;
     float sip3d_cut = 4;

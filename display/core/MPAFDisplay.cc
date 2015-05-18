@@ -166,8 +166,8 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
  
         size_t n=tks.size()-4;
         cname="";
-        for(size_t i=0;i<n;i++)
-          cname += tks[i]+" ";
+        for(size_t i=0;i<n;i++){
+          cname += tks[i]+" ";}
           
         sname = tks[n];
 	

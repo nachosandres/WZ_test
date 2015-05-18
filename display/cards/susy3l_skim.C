@@ -22,7 +22,7 @@
     bool mcOnly = false;
   
     //if(md.isInitStatus()) {
-    md.anConf.configureNames( dir, fileName, fileList, hName );
+    md.anConf.configureNames( dir, fileName, fileList );//, hName );
     md.anConf.configureData(false, 0, mcOnly);
     //}
   
@@ -30,9 +30,9 @@
     //string obs[6]={"","","","","",""};
     //md.dp.setObservables("Zmass");
     //md.dp.setObservables("deltaR_elmu");
-    //md.dp.setObservables("BR_NJets");
+    md.dp.setObservables("BR_NJets");
     //md.dp.setObservables("BR_NBJets");
-    md.dp.setObservables("BR_HT");
+    //md.dp.setObservables("BR_HT");
     //md.dp.setObservables("BR_MET");
     //md.dp.setObservables("SR_NJets");
     //md.dp.setObservables("SR_NBJets");
@@ -42,10 +42,10 @@
 
     //Binning & title ************************* Binning & titre
     string yTitle="number of events";
-    int binning=50;
+    int binning=1;
     int addBinBkg=1; //BinB = binning*AddBin
     double rangeY[2]={0,0};
-    double rangeX[2]={0,800};
+    double rangeX[2]={0,8};
     int xDiv[3]={8,6,0};
     int yDiv[3]={6,6,0}; //Nlabel /  sous-Div /ssdiv
     bool logYScale=false;
@@ -146,17 +146,17 @@
     md.anConf.addSample( "TTZJets_skim"                          ,  "t#bar{t}Z"          , kBlue     );
 
     md.anConf.addSample( "TTWJets_skim"                          ,  "t#bar{t}W"          , kYellow   );
-  
+
     md.anConf.addSample( "GGHZZ4L_skim"                          ,  "rare SM"            , kCyan     );
-  
-    //Drell-Yan
-    //md.anConf.addSample( "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                       ,  "non-prompt e/#mu"    , kRed      );
+
+  //Drell-Yan
+  //md.anConf.addSample( "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                       ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "DYJetsToLL_M50_HT100to200_skim"        ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "DYJetsToLL_M50_HT200to400_skim"        ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "DYJetsToLL_M50_HT400to600_skim"        ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "DYJetsToLL_M50_HT600toInf_skim"        ,  "non-prompt e/#mu"    , kRed      );
-  
-    //t production
+
+  //t production
     md.anConf.addSample( "TBarToLeptons_sch_skim"                ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TBarToLeptons_tch_skim"                ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TBar_tWch_skim"                        ,  "non-prompt e/#mu"    , kRed      );
@@ -165,18 +165,18 @@
     md.anConf.addSample( "TToLeptons_sch_skim"                   ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TToLeptons_tch_skim"                   ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "T_tWch_skim"                           ,  "non-prompt e/#mu"    , kRed      );
-  
-    //W+Jets
+
+  //W+Jets
     md.anConf.addSample( "WJetsToLNu_HT100to200_skim"            ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "WJetsToLNu_HT200to400_skim"            ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "WJetsToLNu_HT400to600_skim"            ,  "non-prompt e/#mu"    , kRed      );
+//    md.anConf.addSample( "WJetsToLNu_HT400to600_skim"            ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "WJetsToLNu_HT600toInf_skim"            ,  "non-prompt e/#mu"    , kRed      );
-  
-    //signal
+
+  //signal
     md.anConf.addSample( "SMS_T1tttt_2J_mGl1200_mLSP800_skim"    ,  "T1tttt (800) * 20 sig" , kViolet-3 );
-    //md.anConf.addSample( "SMS_T1tttt_2J_mGl1500_mLSP100_skim"  ,  "T1tttt (100) #cdot 20 sig" , kViolet+3  );
-    md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280_skim"  ,  "T5tttt (1000) * 20 sig" , kOrange-3 );
-    //md.anConf.addSample( "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280_skim"  ,  "T5tttt (1300) #cdot 20 sig" , kOrange+6 );
+  //md.anConf.addSample( "SMS_T1tttt_2J_mGl1500_mLSP100_skim"  ,  "T1tttt (100) #cdot 20 sig" , kViolet+3  );
+//    md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280_skim"  ,  "T5tttt (1000) * 20 sig" , kOrange-3 );
+  //md.anConf.addSample( "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280_skim"  ,  "T5tttt (1300) #cdot 20 sig" , kOrange+6 );
     // }
     //===============================================================
 
@@ -197,12 +197,12 @@
 			 yDiv, binning, addBinBkg, overFlowBin,
 			 underFlowBin, showDMCRatio, showGrid, 
 			 stacking, addSystematics, mcStatSyst,
-			 markerSize, lineWidth,summedSignal, 
-			 mcOnly,cmsPrel, uncDet);
+			 markerSize, lineWidth,summedSignal,
+             mcOnly,cmsPrel, uncDet);
     md.prepareDisplay();
     md.doPlot();
     //md.doStatisticsPlot();
     md.savePlot("SUSY3L");
     // md.dp.addText(xt,yt,st,addText);
-
+ 
 }
