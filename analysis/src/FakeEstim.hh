@@ -48,12 +48,15 @@ private:
   bool testRegion();
   void categorize();
 
+  bool passCERNSelection();
+  bool goodLepton(int idx, int pdgId);
 
 private: 
 
   //counter categories, 0 is ALWAYS global (even if not specified later
   //enum {kGlobal=0,kLowMETMT,kGenFake,kGenMisCharge,kOneIso,kNoIso, kSelId};
   enum {kGlobal=0,
+	
 	kSR1A, kSR2A, kSR3A, kSR4A, kSR5A, kSR6A, kSR7A, kSR8A,
 	kSR9A, kSR10A, kSR11A, kSR12A, kSR13A, kSR14A, kSR15A, kSR16A,
 	kSR17A, kSR18A, kSR19A, kSR20A, kSR21A, kSR22A, kSR23A, kSR24A,
@@ -66,10 +69,10 @@ private:
 
 	// kSR1C, kSR2C, kSR3C, kSR4C, kSR5C, kSR6C, kSR7C, kSR8C,
     
-	kBR0H,// kBR0M, kBR0L,
-	// kBR10H, kBR10M, kBR10L,
-	// kBR20H, kBR20M, kBR20L,
-	// kBR30H, kBR30M, kBR30L,
+	kBR0H, kBR0M, kBR0L,
+	kBR10H, kBR10M, kBR10L,
+	kBR20H, kBR20M, kBR20L,
+	kBR30H, kBR30M, kBR30L,
 
 	kOneIso,kNoIso, kSelId};
 
@@ -120,8 +123,8 @@ private:
 
   Candidate * _l1Cand;
   Candidate * _l2Cand;
-  int _lep_idx1;
-  int _lep_idx2; 
+  int _idxL1;
+  int _idxL2; 
  
 
   string _lepflav;

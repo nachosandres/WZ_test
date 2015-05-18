@@ -125,7 +125,7 @@ void MPAF::analyze(){
     if(_nEvtMax!=(size_t)-1) nEvts =  min(_nEvtMax+_nSkip,nEvts);
     
     cout<<" Processing dataset : "<<_sampleName<<"  (running on "<<nEvts<<" events)"<<endl;
-
+    
     boost::progress_display show_progress( nEvts );
     for(_ie = _nSkip; _ie < nEvts; ++_ie) {
       ++show_progress;
@@ -155,7 +155,7 @@ void MPAF::analyze(){
 	  _weight = _wBack;
 	  if(iu==0) _vc->nextEvent();
 	  else _vc->sameEvent();
-	  cout<<" starting : "<<iu<<"   "<<_uncSrcs[iu]<<"  "<<_uncSrcs.size()<<"   "<<_weight<<endl;
+	  //cout<<" starting : "<<iu<<"   "<<_uncSrcs[iu]<<"  "<<_uncSrcs.size()<<"   "<<_weight<<endl;
 	  _uncId = true;
 	  _unc = _uncSrcs[iu];
 	  _uDir = _uncDirs[iu];
@@ -167,7 +167,7 @@ void MPAF::analyze(){
 	  applySystVar( _vc->_su->getSystInfos(_unc, _uDir) );
 	  run();
 	  _vc->backPortAllVars();
-	  cout<<" bluou : "<<iu<<"   "<<_uncSrcs[iu]<<"  "<<_uncSrcs.size()<<"   "<<_weight<<endl;
+	  //cout<<" bluou : "<<iu<<"   "<<_uncSrcs[iu]<<"  "<<_uncSrcs.size()<<"   "<<_weight<<endl;
 	  //reinitVars( _vc->_su->getSystInfos(_unc, _uDir).modVar );
 	}
 

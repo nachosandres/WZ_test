@@ -236,9 +236,16 @@ private:
     else if(type=="[!]") {
       accept = !(value >= valcut && value <= seccut );
     }
+    else if(type=="[![") {
+      accept = !(value >= valcut && value < seccut );
+    }
+    else if(type=="]!]") {
+      accept = !(value > valcut && value <= seccut );
+    }
     else if(type=="]![") {
       accept = !(value > valcut && value < seccut );
     }
+
     else {
       accept =false; //cout<<" Warning cut :"<<type<<":"<<" for selection "<<cName<<endl;
     }  
