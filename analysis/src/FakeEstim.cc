@@ -1,6 +1,8 @@
 #include "analysis/src/FakeEstim.hh"
 
 #include <algorithm>
+#include <sstream>
+#include <iostream>
 
 FakeEstim::FakeEstim(std::string cfg){
   
@@ -88,34 +90,37 @@ FakeEstim::initialize(){
   _vc->registerVar("nBJetMedium25"                );
   _vc->registerVar("nSoftBJetMedium25"            );
 
+  //minitree variables
+  _vc->registerVar("iL1T_Mini" );
+  _vc->registerVar("iL2T_Mini" );
+  _vc->registerVar("nLepGood10_Mini" );
+  _vc->registerVar("mZ1cut10TL_Mini" );
+  _vc->registerVar("minMllAFOSTL_Mini" );
+  _vc->registerVar("minMllAFASTL_Mini" );
+  _vc->registerVar("nJet40_Mini" );
+  _vc->registerVar("htJet40j_Mini" );
+  // _vc->registerVar("_Mini" );
+  _vc->registerVar("nBJetMedium25_Mini" );
+
+
   _susyMod = new SusyModule(_vc);
   
-
-  //extra input variables
-  _lepflav = getCfgVarS("LEPFLAV");
-  _lepId   = getCfgVarS("LEPID"  );
-  _leppt   = getCfgVarS("LEPPT"  );
-  _extScheme  = getCfgVarS("FRSCHEME");
-  _SR      = getCfgVarS("SR"     );
-  _FR      = getCfgVarS("FR"     );
-  _categorization = getCfgVarI("categorization");
- 
   
-  if(_extScheme=="mIsoCor") {
+  if(_FR=="mIsoCor") {
     _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
     _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
     
     _dbm->loadDb("AllMuT","v3/FakeRatio_all_cut_mixisoT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoT_none_iso_all_all");
     _dbm->loadDb("AllMuVT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
   }
-  else if(_extScheme=="mIsoAlCor") {
+  else if(_FR=="mIsoAlCor") {
     _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
     _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
     
     _dbm->loadDb("AllMuT","v3/FakeRatio_all_cut_mixisoT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoT_none_iso_all_all");
     _dbm->loadDb("AllMuVT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
   }
-  else if(_extScheme=="mIsoptJCor") {
+  else if(_FR=="mIsoptJCor") {
     _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
     _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
     
@@ -141,8 +146,6 @@ FakeEstim::initialize(){
 
   //_au->addCategory(kSelId,"selection ID");
 
-  setSignalRegion();
-
 
   _fakeEl=0;
   _fakeMu=0;
@@ -151,33 +154,46 @@ FakeEstim::initialize(){
   _nCharge=0;
   _nOther=0;
 
-  int nCateg=28; //47
+  int nCateg=44; //78
   _categs.resize(nCateg);
-  string srs[28]={ 
-    "SR1A", "SR2A", "SR3A", "SR4A", "SR5A", "SR6A", 
-    "SR7A", "SR8A", "SR9A", "SR10A", "SR11A", "SR12A",
-    "SR13A", "SR14A", "SR15A", "SR16A", "SR17A", "SR18A", 
-    "SR19A", "SR20A",
-    "SR1B", "SR2B",
-    "SR3B", "SR4B",
-    "SR5B", "SR6B",
-    "SR7B", "SR8B"
+  string srs[44]={ 
 
-    // "SR1AL", "SR2AL", "SR3AL", "SR4AL", "SR1AH", "SR2AH", "SR3AH", "SR4AH", "SR5A", "SR6A",
-    // "SR7AL", "SR8AL", "SR9AL", "SR10AL", "SR7AH", "SR8AH", "SR9AH", "SR10AH", "SR11A", "SR12A",
-    // "SR13AL", "SR14AL", "SR15AL", "SR16AL", "SR13AH", "SR14AH", "SR15AH", "SR16AH", "SR17A", "SR18A",
-    //"SR19AL", "SR19AH", "SR20A",
-    // "SR1BL", "SR1BH", "SR2BL", "SR2BH",
-    // "SR3BL", "SR3BH", "SR4BL", "SR4BH",
-    // "SR5BL", "SR5BH", "SR6BL", "SR6BH",
-    // "SR7BL", "SR7BH",
-    // "SR8B"
-    };
+    "SR1A", "SR2A", "SR3A", "SR4A", "SR5A", "SR6A", "SR7A", "SR8A",
+    "SR9A", "SR10A", "SR11A", "SR12A", "SR13A", "SR14A", "SR15A", "SR16A",
+    "SR17A", "SR18A", "SR19A", "SR20A", "SR21A", "SR22A", "SR23A", "SR24A",
+    "SR25A", "SR26A", "SR27A", "SR28A", "SR29A", "SR30A", "SR31A", "SR32A",
+
+    // "SR1B", "SR2B", "SR3B", "SR4B", "SR5B", "SR6B", "SR7B", "SR8B",
+    // "SR9B", "SR10B", "SR11B", "SR12B", "SR13B", "SR14B", "SR15B", "SR16B",
+    // "SR17B", "SR18B", "SR19B", "SR20B", "SR21B", "SR22B", "SR23B", "SR24B",
+    // "SR25B","SR26B"
+
+    // "SR1C", "SR2C", "SR3C", "SR4C", "SR5C", "SR6C", "SR7C", "SR8C",
+
+    "BR0H", "BR0M", "BR0L",
+    "BR10H", "BR10M", "BR10L",
+    "BR20H", "BR20M", "BR20L",
+    "BR30H", "BR30M", "BR30L",
+ 
+  };
   _categs.assign(srs, srs+nCateg);
 
   for(size_t ic=0;ic< _categs.size();ic++) {
+    _SR = _categs[ic];
+    setSignalRegions();
     addWorkflow( ic+1, _categs[ic] );
   }
+
+
+
+  //extra input variables
+  _lepflav = getCfgVarS("LEPFLAV");
+  _leppt   = getCfgVarS("LEPPT"  );
+  _SR      = getCfgVarS("SR"     );
+  _FR      = getCfgVarS("FR"     );
+  _categorization = getCfgVarI("categorization");
+ 
+
 
 }
 
@@ -234,10 +250,6 @@ FakeEstim::defineOutput() {
 void
 FakeEstim::writeOutput() {
  
-  cout<< " fake electrons: "<<_fakeEl<<" fake muons: "<<_fakeMu<<endl;
-  cout<<" dFake: "<<_nDFake<<" sFake: "<<_nSFake<<" charge: "<<_nCharge
-      <<" other: "<<_nOther<<endl;
- 
 }
 
 
@@ -249,56 +261,67 @@ FakeEstim::run() {
   counter("denominator");
  
   // triggers  
-  if(_isData && !makeCut<int>(_vc->get("HLT_DoubleMu"), 1, "=", "HLT DoubleMu") ) return;	
-  if(_isData && !makeCut<int>(_vc->get("HLT_DoubleEl"), 1, "=", "HLT DoubleEl") ) return;	
-  if(_isData && !makeCut<int>(_vc->get("HLT_MuEG")    , 1, "=", "HLT MuEG"    ) ) return;	
+  // if(_isData && !makeCut<int>(_vc->get("HLT_DoubleMu"), 1, "=", "HLT DoubleMu") ) return;	
+  // if(_isData && !makeCut<int>(_vc->get("HLT_DoubleEl"), 1, "=", "HLT DoubleEl") ) return;	
+  // if(_isData && !makeCut<int>(_vc->get("HLT_MuEG")    , 1, "=", "HLT MuEG"    ) ) return;
   
-  // lepton multiplicity
-  if(!makeCut( _leptons.size()>=2, "lepMult" ) ) return;
+  if(true) {
+
+    if(!makeCut( _vc->get("nLepGood10_Mini")>=2, "lepMult" ) ) return;
+
+    if(!makeCut( _vc->get("LepGood_charge", _idxL1)*_vc->get("LepGood_charge", _idxL2)>0, "same sign" ) ) return;
+
+    //lepton ID
+    bool l1mu= abs(_l1Cand->pdgId())==13;
+    bool l2mu= abs(_l2Cand->pdgId())==13;
+    
+    if(!makeCut( goodLepton(_idxL1, _l1Cand->pdgId() ), "first lepton" ) ) return;
+    if(!makeCut( goodLepton(_idxL2, _l2Cand->pdgId() ), "second lepton" ) ) return;
+    
+    if(!makeCut<float>( _vc->get("mZ1cut10TL_Mini"), 76 , "]![", "Z veto",  106 ) ) return;
+    if(!makeCut<float>( _vc->get("minMllAFOSTL_Mini"), 0 , "]!]", "g veto OS", 12) ) return;
+    if(!makeCut<float>( _vc->get("minMllAFASTL_Mini"), 8 , ">", "g veto AS" ) ) return;
   
-  // selecting best same-sign pair 
-  bool is_ss_event = alternateSSEventSelection(false);//ssEventSelection();
-  if(!makeCut( is_ss_event , "same-sign selection", "=") ) return;
+  }
+  else {
+    if( !passCERNSelection() ) return;
+  }
 
   fillSkimTree();
 
+  //default cuts for baseline
+  if(_HT<80) return;
+  if( (_HT<500 && _metPt < 30) ) return;
+  if(_nJets<2) return;
 
-  //MET and MT
-  _mTmin=min( Candidate::create(_l1Cand, _met)->mass(),
-		   Candidate::create(_l2Cand, _met)->mass() );
-
+ 
   fill("MET", _met->pt() );
   fill("MTmin", _mTmin );
   fill("METVsMT", _met->pt(), _mTmin );
   
-
+  if (_leppt=="hh" && _l1Cand->pt()<25.) return;
+  if (_leppt=="hh" && _l2Cand->pt()<25.) return;
+  if (_leppt=="hl" && (_l1Cand->pt()<25. && _l2Cand->pt()<25.) ) return;
+  if (_leppt=="hl" && (_l1Cand->pt()>25. && _l2Cand->pt()>25.) ) return;
+  if (_leppt=="ll" && _l1Cand->pt()>25.) return;
+  if (_leppt=="ll" && _l2Cand->pt()>25.) return;
+  
+  int flavortmp = std::abs(_l1Cand->pdgId())+std::abs( _l2Cand->pdgId());
+  if(_lepflav=="mm"  && flavortmp!=26 ) return;
+  if(_lepflav=="ee"  && flavortmp!=22 ) return;
+  if( (_lepflav=="em" || _lepflav=="me")  && flavortmp!=24 ) return;
+  
   counter("change of weigth");
   
   if(_categorization) {
     categorize();
     counter("region splitting");
   }
+  else {
+    if(!testRegion() ) return;
+  }
 
-
-  // signal selection ======================================
-  if(!makeCut<float>( _mTmin, _valCutMTSR, _cTypeMTSR, "SRHTSel", _upValCutMTSR) ) return;
-  if(!makeCut<float>( _HT, _valCutHTSR, _cTypeHTSR, "SRHTSel", _upValCutHTSR) ) return;
-
-  bool jetMeanCond=_au->simpleCut((float)_nJets, _valCutNJetsSR, _cTypeNJetsSR, _upValCutNJetsSR );
-  bool jetSpecCond=_au->simpleCut((float)_nJets, _valCutNJetsCond, _cTypeNJetsCond, _upValCutNJetsCond );
- 
-  if(!makeCut( jetMeanCond || jetSpecCond, "SRJetSel" ) ) return;
-
-  bool metMeanCond=_au->simpleCut(_met->pt(), _valCutMETSR, _cTypeMETSR, _upValCutMETSR );
-  bool metSpecCond=_au->simpleCut(_met->pt(), _valCutMETCond, _cTypeMETCond, _upValCutMETCond );
-
-  if(!makeCut( (metMeanCond&&jetMeanCond) || (metSpecCond&&jetSpecCond), "SRMETSel" ) ) return;
-     
-  if(!makeCut<int>(_vc->get(_btag), _valCutNBJetsSR, _cTypeNBJetsSR, "SR b-jet multiplicity", _upValCutNBJetsSR) ) return;
- 
-  
-
-
+  counter("selected");
 
   fill("NSelPair2Iso", _nSelPair2Iso );
   fill("NSelPair1Iso", _nSelPair1Iso );
@@ -308,6 +331,29 @@ FakeEstim::run() {
   fill("NIso",_fullIdLeps.size() );
   fill("NNonIso",_nonFullIdLeps.size() );
   
+  if( getCurrentWorkflow()==0) return; //getCurrentWorkflow()==100 ||
+
+
+  int run=_vc->get("run");
+  int lumi=_vc->get("lumi");
+  int event=_vc->get("evt");
+  int nLep = _vc->get("nLepGood10_Mini");
+  int id1 = _l1Cand->pdgId();
+  double pt1 = _l1Cand->pt();
+  int id2 = _l2Cand->pdgId();
+  double pt2 = _l2Cand->pt();
+  int njet = _nJets;
+  int nbjet = _nBJets;
+  double met = _met->pt();
+  double HT = _HT;
+  int sr = ((getCurrentWorkflow()<kBR0H)?(getCurrentWorkflow()):(0));
+  
+  // cout << Form("%1d %9d %12d\t%2d\t%+2d %5.1f\t%+2d %5.1f\t%d\t%2d\t%5.1f\t%6.1f\t%2d",
+  // 	       run, lumi, event, nLep,
+  // 	       id1, pt1, id2, pt2,
+  // 	       njet, nbjet, met, HT,
+  // 	       sr ) << endl;
+
 }
 
 bool
@@ -390,58 +436,85 @@ FakeEstim::retrieveObjects(){
   _tmpLepIdx.clear();
 
   //========================
-  bool isMu = false;
-  for(int i=0; i<_vc->get("nLepGood"); ++i){
+  // bool isMu = false;
+  // for(int i=0; i<_vc->get("nLepGood"); ++i){
 
-    isMu=std::abs(_vc->get("LepGood_pdgId", i))==13;
+  //   isMu=std::abs(_vc->get("LepGood_pdgId", i))==13;
     
-    Candidate* lepCand= Candidate::create(_vc->get("LepGood_pt",i),
-					  _vc->get("LepGood_eta",i),
-					  _vc->get("LepGood_phi",i),
-					  _vc->get("LepGood_pdgId",i),
-					  _vc->get("LepGood_charge",i),
-					  isMu?0.105:0.0005);
+  //   Candidate* lepCand= Candidate::create(_vc->get("LepGood_pt",i),
+  // 					  _vc->get("LepGood_eta",i),
+  // 					  _vc->get("LepGood_phi",i),
+  // 					  _vc->get("LepGood_pdgId",i),
+  // 					  _vc->get("LepGood_charge",i),
+  // 					  isMu?0.105:0.0005);
 
-    _allLeps.push_back( lepCand );
+  //   _allLeps.push_back( lepCand );
 
-    if( !(isMu?_susyMod->muIdSel(i):_susyMod->elIdSel(i)) ) continue;
-    _looseLeps.push_back(lepCand);
-    _looseLepsIdx.push_back(i);
+  //   if( !(isMu?_susyMod->muIdSel(i, SusyModule::kLoose):_susyMod->elIdSel(i, SusyModule::kLoose)) ) continue;
+  //   _looseLeps.push_back(lepCand);
+  //   _looseLepsIdx.push_back(i);
       
-    if( !(isMu?_susyMod->muIdSel(i):_susyMod->elIdSel(i)) ) continue;
-    _leptons.push_back(lepCand);
-    _leptonsIdx.push_back(i);
+  //   if( !(isMu?_susyMod->muIdSel(i, SusyModule::kTight):_susyMod->elIdSel(i, SusyModule::kTight)) ) continue;
+  //   _leptons.push_back(lepCand);
+  //   _leptonsIdx.push_back(i);
 
-    fill("jetPtRatio", _vc->get("LepGood_jetPtRatio",i) );
-    fill("jetPtRel", _vc->get("LepGood_jetPtRel",i) );
-    fill("miniIso", _vc->get("LepGood_miniRelIso",i) );
+  //   fill("jetPtRatio", _vc->get("LepGood_jetPtRatio",i) );
+  //   fill("jetPtRel", _vc->get("LepGood_jetPtRel",i) );
+  //   fill("miniIso", _vc->get("LepGood_miniRelIso",i) );
     
 
-    if( ! _susyMod->multiIsoSel(i, isMu) ) {//non fully identified leptons
-      _nonFullIdLeps.push_back(lepCand);
-      _nonFullIdLepsIdx.push_back(i);
-    }
-    else {
-      _fullIdLeps.push_back(lepCand);
-      _tmpLepIdx.push_back(i);
-    }
+  //   if( ! _susyMod->multiIsoSel(i, isMu?SusyModule::kMedium:SusyModule::kTight) ) {//non fully identified leptons
+  //     _nonFullIdLeps.push_back(lepCand);
+  //     _nonFullIdLepsIdx.push_back(i);
+  //   }
+  //   else {
+  //     _fullIdLeps.push_back(lepCand);
+  //     _tmpLepIdx.push_back(i);
+  //   }
 
-  }
+  // }
+
+  _idxL1 = _vc->get("iL1T_Mini");
+  _idxL2 = _vc->get("iL2T_Mini");
+
+  bool isMu=std::abs(_vc->get("LepGood_pdgId", _idxL1))==13;
+  _l1Cand = Candidate::create(_vc->get("LepGood_pt", _idxL1),
+			      _vc->get("LepGood_eta", _idxL1),
+			      _vc->get("LepGood_phi", _idxL1),
+			      _vc->get("LepGood_pdgId", _idxL1),
+			      _vc->get("LepGood_charge", _idxL1),
+			      isMu?0.105:0.0005);
+  
+  isMu=std::abs(_vc->get("LepGood_pdgId", _idxL2))==13;
+  _l2Cand = Candidate::create(_vc->get("LepGood_pt", _idxL2),
+			      _vc->get("LepGood_eta",_idxL2),
+			      _vc->get("LepGood_phi",_idxL2),
+			      _vc->get("LepGood_pdgId",_idxL2),
+			      _vc->get("LepGood_charge",_idxL2),
+			      isMu?0.105:0.0005);
 
   _nLooseLeps=_looseLeps.size();
     
-  for(int i = 0; i < _vc->get("nJet40"); ++i){
-    if(_susyMod->jetSel(i)) {
-      _jets.push_back( Candidate::create(_vc->get("Jet_pt", i),
-					 _vc->get("Jet_eta", i),
-					 _vc->get("Jet_phi", i) ) );
-    }
-  }
+  // for(int i = 0; i < _vc->get("nJet40"); ++i){
+  //   if(_susyMod->jetSel(i)) {
+  //     _jets.push_back( Candidate::create(_vc->get("Jet_pt", i),
+  // 					 _vc->get("Jet_eta", i),
+  // 					 _vc->get("Jet_phi", i) ) );
+  //   }
+  // }
 
-  _nJets  = _jets.size();
+  _nJets  = _vc->get("nJet40_Mini");//_jets.size();
+  _nBJets = _vc->get("nBJetMedium25_Mini");
 
-  _HT  = _susyMod->HT( &(_jets) );
+ 
+
+  _HT  = _vc->get("htJet40j_Mini");//_susyMod->HT( &(_jets) );
   _met = Candidate::create(_vc->get("met_pt"), _vc->get("met_phi") );
+  _metPt = _met->pt();
+
+  //MET and MT
+  _mTmin=min( Candidate::create(_l1Cand, _met)->mass(),
+	      Candidate::create(_l2Cand, _met)->mass() );
 
 }
 
@@ -457,8 +530,8 @@ FakeEstim::alternateSSEventSelection(bool switchWF) {
   int flavor = 0;
   int flavortmp = 0;
   bool isSS = false;
-  _lep_idx1=-1;
-  _lep_idx2=-1;
+  _idxL1=-1;
+  _idxL2=-1;
 
   _nIso=-1;
   int nOSPairs=0;
@@ -471,12 +544,12 @@ FakeEstim::alternateSSEventSelection(bool switchWF) {
   for(unsigned int il1 = 0; il1 < _fullIdLeps.size(); ++il1){
     for(unsigned int il2 = il1+1; il2 < _fullIdLeps.size(); ++il2){
 
-      if (_leppt=="hh" && _fullIdLeps[il1]->pt()<25.) continue;
-      if (_leppt=="hh" && _fullIdLeps[il2]->pt()<25.) continue;
-      if (_leppt=="hl" && (_leptons[il1]->pt()>25. && _leptons[il2]->pt()>25.) ) continue;
-      if (_leppt=="hl" && (_leptons[il1]->pt()<25. && _leptons[il2]->pt()<25.) ) continue;
-      if (_leppt=="ll" && _fullIdLeps[il1]->pt()>25.) continue;
-      if (_leppt=="ll" && _fullIdLeps[il2]->pt()>25.) continue;
+      // if (_leppt=="hh" && _fullIdLeps[il1]->pt()<25.) continue;
+      // if (_leppt=="hh" && _fullIdLeps[il2]->pt()<25.) continue;
+      // if (_leppt=="hl" && (_leptons[il1]->pt()>25. && _leptons[il2]->pt()>25.) ) continue;
+      // if (_leppt=="hl" && (_leptons[il1]->pt()<25. && _leptons[il2]->pt()<25.) ) continue;
+      // if (_leppt=="ll" && _fullIdLeps[il1]->pt()>25.) continue;
+      // if (_leppt=="ll" && _fullIdLeps[il2]->pt()>25.) continue;
 
       charge = _fullIdLeps[il1]->charge()*_fullIdLeps[il2]->charge();
       if(charge<0) continue; // if the pair is OS skip
@@ -486,12 +559,12 @@ FakeEstim::alternateSSEventSelection(bool switchWF) {
       if(_lepflav=="mm" && flavortmp!=26 ) continue;
       if(_lepflav=="ee" && flavortmp!=22 ) continue;
       if( (_lepflav=="em" || _lepflav=="me") && flavortmp!=24 ) continue;
-      if(flavor>flavortmp) continue; // if the new pair has less muons skip.
+      //if(flavor>flavortmp) continue; // if the new pair has less muons skip.
 
       flavor = flavortmp;
       
-      _l1Cand = _fullIdLeps[il1];   _lep_idx1 = _tmpLepIdx[il1];
-      _l2Cand = _fullIdLeps[il2];   _lep_idx2 = _tmpLepIdx[il2]; 
+      _l1Cand = _fullIdLeps[il1];   _idxL1 = _tmpLepIdx[il1];
+      _l2Cand = _fullIdLeps[il2];   _idxL2 = _tmpLepIdx[il2]; 
       isSS = true;
       _nSelPair2Iso++;
     }
@@ -509,12 +582,12 @@ FakeEstim::alternateSSEventSelection(bool switchWF) {
   for(unsigned int il1 = 0; il1 < _fullIdLeps.size(); ++il1){
     for(unsigned int il2 = 0; il2 < _nonFullIdLeps.size(); ++il2){
       
-      if (_leppt=="hh" && _fullIdLeps[il1]->pt()<25.) continue;
-      if (_leppt=="hh" && _nonFullIdLeps[il2]->pt()<25.) continue;
-      if (_leppt=="hl" && !(_fullIdLeps[il1]->pt()<25. && _nonFullIdLeps[il2]->pt()>25.) ) continue;
-      if (_leppt=="hl" && !(_fullIdLeps[il1]->pt()>25. && _nonFullIdLeps[il2]->pt()<25.) ) continue;
-      if (_leppt=="ll" && _fullIdLeps[il1]->pt()>25.) continue;
-      if (_leppt=="ll" && _nonFullIdLeps[il2]->pt()>25.) continue;
+      // if (_leppt=="hh" && _fullIdLeps[il1]->pt()<25.) continue;
+      // if (_leppt=="hh" && _nonFullIdLeps[il2]->pt()<25.) continue;
+      // if (_leppt=="hl" && !(_fullIdLeps[il1]->pt()<25. && _nonFullIdLeps[il2]->pt()>25.) ) continue;
+      // if (_leppt=="hl" && !(_fullIdLeps[il1]->pt()>25. && _nonFullIdLeps[il2]->pt()<25.) ) continue;
+      // if (_leppt=="ll" && _fullIdLeps[il1]->pt()>25.) continue;
+      // if (_leppt=="ll" && _nonFullIdLeps[il2]->pt()>25.) continue;
 
       if(!genMatchedToFake(_nonFullIdLepsIdx[il2]) && !genMatchedToFake(_tmpLepIdx[il1]) ) continue;
 
@@ -533,8 +606,8 @@ FakeEstim::alternateSSEventSelection(bool switchWF) {
       
       flavor = flavortmp;
       
-      _l1Cand = _fullIdLeps[il1];   _lep_idx1 = _tmpLepIdx[il1];
-      _l2Cand = _nonFullIdLeps[il2];   _lep_idx2 = _nonFullIdLepsIdx[il2]; 
+      _l1Cand = _fullIdLeps[il1];   _idxL1 = _tmpLepIdx[il1];
+      _l2Cand = _nonFullIdLeps[il2];   _idxL2 = _nonFullIdLepsIdx[il2]; 
     
       isSS = true;
       _nSelPair1Iso++;
@@ -552,12 +625,12 @@ FakeEstim::alternateSSEventSelection(bool switchWF) {
   for(unsigned int il1 = 0; il1 < _nonFullIdLeps.size(); ++il1){
     for(unsigned int il2 = il1+1; il2 < _nonFullIdLeps.size(); ++il2){
 
-      if (_leppt=="hh" && _nonFullIdLeps[il1]->pt()<25.) continue;
-      if (_leppt=="hh" && _nonFullIdLeps[il2]->pt()<25.) continue;
-      if (_leppt=="hl" && !(_nonFullIdLeps[il1]->pt()<25 && _nonFullIdLeps[il2]->pt()>25) ) continue;
-      if (_leppt=="hl" && !(_nonFullIdLeps[il1]->pt()>25 && _nonFullIdLeps[il2]->pt()<25) ) continue;
-      if (_leppt=="ll" && _nonFullIdLeps[il1]->pt()>25.) continue;
-      if (_leppt=="ll" && _nonFullIdLeps[il2]->pt()>25.) continue;
+      // if (_leppt=="hh" && _nonFullIdLeps[il1]->pt()<25.) continue;
+      // if (_leppt=="hh" && _nonFullIdLeps[il2]->pt()<25.) continue;
+      // if (_leppt=="hl" && !(_nonFullIdLeps[il1]->pt()<25 && _nonFullIdLeps[il2]->pt()>25) ) continue;
+      // if (_leppt=="hl" && !(_nonFullIdLeps[il1]->pt()>25 && _nonFullIdLeps[il2]->pt()<25) ) continue;
+      // if (_leppt=="ll" && _nonFullIdLeps[il1]->pt()>25.) continue;
+      // if (_leppt=="ll" && _nonFullIdLeps[il2]->pt()>25.) continue;
 
       charge = _nonFullIdLeps[il1]->charge()*_nonFullIdLeps[il2]->charge();
       if(charge<0) continue; // if the pair is OS skip
@@ -579,8 +652,8 @@ FakeEstim::alternateSSEventSelection(bool switchWF) {
 
       flavor = flavortmp;
       
-      _l1Cand = _nonFullIdLeps[il1];   _lep_idx1 = _nonFullIdLepsIdx[il1];
-      _l2Cand = _nonFullIdLeps[il2];   _lep_idx2 = _nonFullIdLepsIdx[il2]; 
+      _l1Cand = _nonFullIdLeps[il1];   _idxL1 = _nonFullIdLepsIdx[il1];
+      _l2Cand = _nonFullIdLeps[il2];   _idxL2 = _nonFullIdLepsIdx[il2]; 
  
       isSS = true;
       _nSelPair0Iso++;
@@ -601,587 +674,350 @@ FakeEstim::alternateSSEventSelection(bool switchWF) {
 // signal region selection
 
 void 
-FakeEstim::setSignalRegion() {
+FakeEstim::setSignalRegions() {
+    
+  //objects ===========================================
+  _val["NB"]  = &(_nBJets);
+  _val["MT"]  = &(_mTmin);
+  _val["MET"] = &(_metPt);
+  _val["NJ"]  = &(_nJets);
+  _val["HT"]  = &(_HT);
+
+  //HH-regions =============================================================
+  //0b-jet =================================================================
   
-   _btag = "nBJetMedium25";
-  
-  setCut("NJetCond", -1 ,"<" );
-  setCut("METCond", -100 ,"<" );
-  
-  //0 b-jet ===============================================
   if( _SR== "SR1A" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    0, "=" );
+    setSelLine("LL:=:hh|NB:=:0|MT:<:120|MET:[]:50:200|NJ:[]:2:4|HT:<:300");
   }
   else if( _SR== "SR2A" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    0, "=" );
+    setSelLine("LL:=:hh|NB:=:0|MT:<:120|MET:[]:50:200|NJ:[]:2:4|HT:[]:300:1600");
   }
   else if( _SR== "SR3A" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    0, "=" );
+    setSelLine("LL:=:hh|NB:=:0|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:<:300");
+    setSelLine("LL:=:hh|NB:=:0|MT:<:120|MET:[]:200:500|NJ:>=:2|HT:<:300");
+    setSelLine("LL:=:hh|NB:=:0|MT:>=:120|MET:50:[]:500|NJ:>=:2|HT:<:300");
   }
   else if( _SR== "SR4A" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    0, "=" );
-  }
-  else if( _SR== "SR1AL" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    0, "=" );
-  }
-  else if( _SR== "SR2AL" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    0, "=" );
-  }
-  else if( _SR== "SR3AL" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    0, "=" );
-  }
-  else if( _SR== "SR4AL" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    0, "=" );
-  }
-  else if( _SR== "SR1AH" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    0, "=" );
-  }
-  else if( _SR== "SR2AH" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    0, "=" );
-  }
-  else if( _SR== "SR3AH" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    0, "=" );
-  }
-  else if( _SR== "SR4AH" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    0, "=" );
+    setSelLine("LL:=:hh|NB:=:0|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:[]:300:1600");
   }
   else if( _SR== "SR5A" ) {
-    setCut("HTSR"     ,  300, ">" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     , -100, ">" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    0, "=" );
+    setSelLine("LL:=:hh|NB:=:0|MT:<:120|MET:[]:200:500|NJ:[]:2:4|HT:[]:300:1600");
   }
   else if( _SR== "SR6A" ) {
-    setCut("HTSR"     ,  300, ">" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     , -100, ">" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    0, "=" );
+    setSelLine("LL:=:hh|NB:=:0|MT:<:120|MET:[]:200:500|NJ:>=:5|HT:[]:300:1600");
   }
-
-
-  //1 b-jet ===============================================
-  if( _SR== "SR7A" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    1, "=" );
+  else if( _SR== "SR7A" ) {
+    setSelLine("LL:=:hh|NB:=:0|MT:>=:120|MET:[]:50:200|NJ:[]:2:4|HT:[]:300:1600");
   }
   else if( _SR== "SR8A" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    1, "=" );
+    setSelLine("LL:=:hh|NB:=:0|MT:>=:120|MET:[]:50:200|NJ:>=:5|HT:[]:300:1600");
+    setSelLine("LL:=:hh|NB:=:0|MT:>=:120|MET:[]:200:500|NJ:>=:2|HT:[]:300:1600");
   }
+
+ //1b-jet =================================================================
   else if( _SR== "SR9A" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    1, "=" );
+    setSelLine("LL:=:hh|NB:=:1|MT:<:120|MET:[]:50:200|NJ:[]:2:4|HT:<:300");
   }
   else if( _SR== "SR10A" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    1, "=" );
-  }
-  if( _SR== "SR7AL" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    1, "=" );
-  }
-  else if( _SR== "SR8AL" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    1, "=" );
-  }
-  else if( _SR== "SR9AL" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    1, "=" );
-  }
-  else if( _SR== "SR10AL" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    1, "=" );
-  }
-  else if( _SR== "SR7AH" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    1, "=" );
-  }
-  else if( _SR== "SR8AH" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    1, "=" );
-  }
-  else if( _SR== "SR9AH" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    1, "=" );
-  }
-  else if( _SR== "SR10AH" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    1, "=" );
+    setSelLine("LL:=:hh|NB:=:1|MT:<:120|MET:[]:50:200|NJ:[]:2:4|HT:[]:300:1600");
   }
   else if( _SR== "SR11A" ) {
-    setCut("HTSR"     ,  300, ">" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     , -100, ">" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    1, "=" );
+    setSelLine("LL:=:hh|NB:=:1|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:<:300");
+    setSelLine("LL:=:hh|NB:=:1|MT:<:120|MET:[]:200:500|NJ:>=:2|HT:<:300");
+    setSelLine("LL:=:hh|NB:=:1|MT:>=:120|MET:50:[]:500|NJ:>=:2|HT:<:300");
   }
   else if( _SR== "SR12A" ) {
-    setCut("HTSR"     ,  300, ">" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     , -100, ">" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    1, "=" );
+    setSelLine("LL:=:hh|NB:=:1|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:[]:300:1600");
   }
-
-
-  //2 b-jet ===============================================
- if( _SR== "SR13A" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    2, "=" );
+  else if( _SR== "SR13A" ) {
+    setSelLine("LL:=:hh|NB:=:1|MT:<:120|MET:[]:200:500|NJ:[]:2:4|HT:[]:300:1600");
   }
   else if( _SR== "SR14A" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    2, "=" );
+    setSelLine("LL:=:hh|NB:=:1|MT:<:120|MET:[]:200:500|NJ:>=:5|HT:[]:300:1600");
   }
   else if( _SR== "SR15A" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    2, "=" );
+    setSelLine("LL:=:hh|NB:=:1|MT:>=:120|MET:[]:50:200|NJ:[]:2:4|HT:[]:300:1600");
   }
   else if( _SR== "SR16A" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    2, "=" );
+    setSelLine("LL:=:hh|NB:=:1|MT:>=:120|MET:[]:50:200|NJ:>=:5|HT:[]:300:1600");
+    setSelLine("LL:=:hh|NB:=:1|MT:>=:120|MET:[]:200:500|NJ:>=:2|HT:[]:300:1600");
   }
-  if( _SR== "SR13AL" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    2, "=" );
-  }
-  else if( _SR== "SR14AL" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    2, "=" );
-  }
-  else if( _SR== "SR15AL" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    2, "=" );
-  }
-  else if( _SR== "SR16AL" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    2, "=" );
-  }
-  else if( _SR== "SR13AH" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    2, "=" );
-  }
-  else if( _SR== "SR14AH" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    2, "=" );
-  }
-  else if( _SR== "SR15AH" ) {
-    setCut("HTSR"     ,  300, "[]", 500 );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    2, "=" );
-  }
-  else if( _SR== "SR16AH" ) {
-    setCut("HTSR"     ,  500, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    2, "=" );
-  }
-  else if( _SR== "SR17A" ) {
-    setCut("HTSR"     ,  300, ">" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     , -100, ">" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    2, "=" );
+  
+  //2b-jet =================================================================
+ else if( _SR== "SR17A" ) {
+    setSelLine("LL:=:hh|NB:=:2|MT:<:120|MET:[]:50:200|NJ:[]:2:4|HT:<:300");
   }
   else if( _SR== "SR18A" ) {
-    setCut("HTSR"     ,  300, ">" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     , -100, ">" );
-    setCut("NJetsSR"  ,    5, ">=");
-    setCut("NBJetsSR" ,    2, "=" );
+    setSelLine("LL:=:hh|NB:=:2|MT:<:120|MET:[]:50:200|NJ:[]:2:4|HT:[]:300:1600");
   }
-
-  //3-bjets ================================================================
- else if( _SR== "SR19A" ) {
-    setCut("HTSR"     ,  300, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    2, ">=");
-    setCut("NBJetsSR" ,    3, ">=" ); 
-  }
-  else if( _SR== "SR19AL" ) {
-    setCut("HTSR"     ,  300, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    2, ">=");
-    setCut("NBJetsSR" ,    3, ">=" ); 
-  }
-  else if( _SR== "SR19AH" ) {
-    setCut("HTSR"     ,  300, ">" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    2, ">=");
-    setCut("NBJetsSR" ,    3, ">=" );
+  else if( _SR== "SR19A" ) {
+    setSelLine("LL:=:hh|NB:=:2|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:<:300");
+    setSelLine("LL:=:hh|NB:=:2|MT:<:120|MET:[]:200:500|NJ:>=:2|HT:<:300");
+    setSelLine("LL:=:hh|NB:=:2|MT:>=:120|MET:50:[]:500|NJ:>=:2|HT:<:300");
   }
   else if( _SR== "SR20A" ) {
-    setCut("HTSR"     ,  300, ">" );
-    setCut("METSR"    ,   200, ">" );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    2, ">=");
-    setCut("NBJetsSR" ,    3, ">=" );
+    setSelLine("LL:=:hh|NB:=:2|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:[]:300:1600");
+  }
+  else if( _SR== "SR21A" ) {
+    setSelLine("LL:=:hh|NB:=:2|MT:<:120|MET:[]:200:500|NJ:[]:2:4|HT:[]:300:1600");
+  }
+  else if( _SR== "SR22A" ) {
+    setSelLine("LL:=:hh|NB:=:2|MT:<:120|MET:[]:200:500|NJ:>=:5|HT:[]:300:1600");
+  }
+  else if( _SR== "SR23A" ) {
+    setSelLine("LL:=:hh|NB:=:2|MT:>=:120|MET:[]:50:200|NJ:[]:2:4|HT:[]:300:1600");
+  }
+  else if( _SR== "SR24A" ) {
+    setSelLine("LL:=:hh|NB:=:2|MT:>=:120|MET:[]:50:200|NJ:>=:5|HT:[]:300:1600");
+    setSelLine("LL:=:hh|NB:=:2|MT:>=:120|MET:[]:200:500|NJ:>=:2|HT:[]:300:1600");
+  }
+  
+  //3b-jet =================================================================
+  else if( _SR== "SR25A" ) {
+    setSelLine("LL:=:hh|NB:>=:3|MT:<:120|MET:[]:50:200|NJ:>=:2|HT:<:300");
+  }
+  else if( _SR== "SR26A" ) {
+    setSelLine("LL:=:hh|NB:>=:3|MT:<:120|MET:[]:50:200|NJ:>=:2|HT:[]:300:1600");
+  }
+  else if( _SR== "SR27A" ) {
+    setSelLine("LL:=:hh|NB:>=:3|MT:<:120|MET:[]:200:500|NJ:>=:2|HT:<:300");
+  }
+  else if( _SR== "SR28A" ) {
+    setSelLine("LL:=:hh|NB:>=:3|MT:<:120|MET:[]:200:500|NJ:>=:2|HT:[]:300:1600");
+  }
+  else if( _SR== "SR29A" ) {
+    setSelLine("LL:=:hh|NB:>=:3|MT:>=:120|MET:[]:50:500|NJ:>=:2|HT:<:300");
+  }
+  else if( _SR== "SR30A" ) {
+    setSelLine("LL:=:hh|NB:>=:3|MT:>=:120|MET:[]:50:500|NJ:>=:2|HT:[]:300:1600");
+  }
+  
+  //inclusive H-MET ==========================================================
+  else if( _SR== "SR31A" ) {
+    setSelLine("LL:=:hh|MET:>=:500|NJ:>=:2|HT:>=:300");
   }
 
-  //=========================================================================================
-  // low HT regions =========================================================================
-  //=========================================================================================
+  //inclusive H-HT ==========================================================
+  else if( _SR== "SR32A" ) {
+    setSelLine("LL:=:hh|MET:[]:50:500|NJ:>=:2|HT:>=:1600");
+  }
 
-  //0 bjet =================================================
+  
+  //HL-regions =============================================================
+  //0b-jet =================================================================
   else if( _SR== "SR1B" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    0, "=" ); 
-  }
-  else if( _SR== "SR1BL" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    0, "=" ); 
-  }
-  else if( _SR== "SR1BH" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    0, "=" ); 
+    setSelLine("LL:=:hl|NB:=:0|MT:<:120|MET:[]:50:200|NJ:[]:2:4|HT:<:300");
   }
   else if( _SR== "SR2B" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    2, "[]", 4);
-    setCut("NBJetsSR" ,    0, "=" ); 
-   
-    setCut("NJetCond" , 5 ,">=" );
-    setCut("METCond"  , 50 ,">" );
+    setSelLine("LL:=:hl|NB:=:0|MT:<:120|MET:[]:50:200|NJ:[]:2:4|HT:[]:300:1600");
   }
-  else if( _SR== "SR2BL" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    2, "[]", 4);
-    setCut("NBJetsSR" ,    0, "=" ); 
-  
-    setCut("NJetCond" , 5 ,">=" );
-    setCut("METCond"  , 50 ,">" );
-  }
-  else if( _SR== "SR2BH" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    2, "[]", 4);
-    setCut("NBJetsSR" ,    0, "=" ); 
-  
-    setCut("NJetCond" , 5 ,">=" );
-    setCut("METCond"  , 50 ,">" );
-  }
-
-
- //1 bjet =================================================
   else if( _SR== "SR3B" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    1, "=" ); 
-  }
-  else if( _SR== "SR3BL" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    1, "=" ); 
-  }
-  else if( _SR== "SR3BH" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    1, "=" ); 
+    setSelLine("LL:=:hl|NB:=:0|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:<:300");
+    setSelLine("LL:=:hl|NB:=:0|MT:<:120|MET:[]:200:500|NJ:>=:2|HT:<:300");
   }
   else if( _SR== "SR4B" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    2, "[]", 4);
-    setCut("NBJetsSR" ,    1, "=" ); 
-   
-    setCut("NJetCond" , 5 ,">=" );
-    setCut("METCond"  , 50 ,">" );
+    setSelLine("LL:=:hl|NB:=:0|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:[]:300:1600");
   }
-  else if( _SR== "SR4BL" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    2, "[]", 4);
-    setCut("NBJetsSR" ,    1, "=" ); 
-  
-    setCut("NJetCond" , 5 ,">=" );
-    setCut("METCond"  , 50 ,">" );
-  }
-  else if( _SR== "SR4BH" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    2, "[]", 4);
-    setCut("NBJetsSR" ,    1, "=" ); 
-  
-    setCut("NJetCond" , 5 ,">=" );
-    setCut("METCond"  , 50 ,">" );
-  }
-
-
- //2 bjet =================================================
   else if( _SR== "SR5B" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    2, "=" ); 
-  }
-  else if( _SR== "SR5BL" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    2, "=" ); 
-  }
-  else if( _SR== "SR5BH" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    2, "[]",4);
-    setCut("NBJetsSR" ,    2, "=" ); 
+    setSelLine("LL:=:hl|NB:=:0|MT:<:120|MET:[]:200:500|NJ:[]:2:4|HT:[]:300:1600");
   }
   else if( _SR== "SR6B" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    2, "[]", 4);
-    setCut("NBJetsSR" ,    2, "=" ); 
-   
-    setCut("NJetCond" , 5 ,">=" );
-    setCut("METCond"  , 50 ,">" );
+    setSelLine("LL:=:hl|NB:=:0|MT:<:120|MET:[]:200:500|NJ:>=:5|HT:[]:300:1600");
   }
-  else if( _SR== "SR6BL" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    2, "[]", 4);
-    setCut("NBJetsSR" ,    2, "=" ); 
   
-    setCut("NJetCond" , 5 ,">=" );
-    setCut("METCond"  , 50 ,">" );
-  }
-  else if( _SR== "SR6BH" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    2, "[]", 4);
-    setCut("NBJetsSR" ,    2, "=" ); 
-  
-    setCut("NJetCond" , 5 ,">=" );
-    setCut("METCond"  , 50 ,">" );
-  }
-
- //3+ bjet =================================================
-  else if( _SR== "SR7B" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  -100, ">" );
-    setCut("NJetsSR"  ,    2, ">=");
-    setCut("NBJetsSR" ,    3, ">=" ); 
-  }
-  else if( _SR== "SR7BL" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, "<" );
-    setCut("NJetsSR"  ,    2, ">=");
-    setCut("NBJetsSR" ,    3, ">=" ); 
-  }
-  else if( _SR== "SR7BH" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,   50, "[]",200 );
-    setCut("MTSR"     ,  120, ">" );
-    setCut("NJetsSR"  ,    2, ">=");
-    setCut("NBJetsSR" ,    3, ">=" ); 
+  //1b-jet =================================================================
+ else if( _SR== "SR7B" ) {
+    setSelLine("LL:=:hl|NB:=:1|MT:<:120|MET:[]:50:200|NJ:[]:2:4|HT:<:300");
   }
   else if( _SR== "SR8B" ) {
-    setCut("HTSR"     ,  300, "<" );
-    setCut("METSR"    ,  200, ">" );
-    setCut("MTSR"     ,  120, ">=" );
-    setCut("NJetsSR"  ,    2, ">=");
-    setCut("NBJetsSR" ,    3, ">=" ); 
+    setSelLine("LL:=:hl|NB:=:1|MT:<:120|MET:[]:50:200|NJ:[]:2:4|HT:[]:300:1600");
   }
+  else if( _SR== "SR9B" ) {
+    setSelLine("LL:=:hl|NB:=:1|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:<:300");
+    setSelLine("LL:=:hl|NB:=:1|MT:<:120|MET:[]:200:500|NJ:>=:2|HT:<:300");
+  }
+  else if( _SR== "SR10B" ) {
+    setSelLine("LL:=:hl|NB:=:1|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:[]:300:1600");
+  }
+  else if( _SR== "SR11B" ) {
+    setSelLine("LL:=:hl|NB:=:1|MT:<:120|MET:[]:200:500|NJ:[]:2:4|HT:[]:300:1600");
+  }
+  else if( _SR== "SR12B" ) {
+    setSelLine("LL:=:hl|NB:=:1|MT:<:120|MET:[]:200:500|NJ:>=:5|HT:[]:300:1600");
+  }
+  
+  //2b-jet =================================================================
+  else if( _SR== "SR13B" ) {
+    setSelLine("LL:=:hl|NB:=:2|MT:<:120|MET:[]:50:200|NJ:[]:2:4|HT:<:300");
+  }
+  else if( _SR== "SR14B" ) {
+    setSelLine("LL:=:hl|NB:=:2|MT:<:120|MET:[]:50:200|NJ:[]:2:4|HT:[]:300:1600");
+  }
+  else if( _SR== "SR15B" ) {
+    setSelLine("LL:=:hl|NB:=:2|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:<:300");
+    setSelLine("LL:=:hl|NB:=:2|MT:<:120|MET:[]:200:500|NJ:>=:2|HT:<:300");
+  }
+  else if( _SR== "SR16B" ) {
+    setSelLine("LL:=:hl|NB:=:2|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:[]:300:1600");
+  }
+  else if( _SR== "SR17B" ) {
+    setSelLine("LL:=:hl|NB:=:2|MT:<:120|MET:[]:200:500|NJ:[]:2:4|HT:[]:300:1600");
+  }
+  else if( _SR== "SR18B" ) {
+    setSelLine("LL:=:hl|NB:=:2|MT:<:120|MET:[]:200:500|NJ:>=:5|HT:[]:300:1600");
+  }
+
+  //3+b-jet =================================================================
+  else if( _SR== "SR19B" ) {
+    setSelLine("LL:=:hl|NB:>=:3|MT:<:120|MET:[]:50:200|NJ:>=:2|HT:<:300");
+  }
+  else if( _SR== "SR20B" ) {
+    setSelLine("LL:=:hl|NB:>=:3|MT:<:120|MET:[]:50:200|NJ:>=:2|HT:[]:300:1600");
+  }
+  else if( _SR== "SR21B" ) {
+    setSelLine("LL:=:hl|NB:>=:3|MT:<:120|MET:[]:200:500|NJ:>=:2|HT:<:300");
+  }
+  else if( _SR== "SR22B" ) {
+    setSelLine("LL:=:hl|NB:>=:3|MT:<:120|MET:[]:200:500|NJ:>=:2|HT:[]:300:1600");
+  }
+
+  //inclusive H-MT =============================================================
+  else if( _SR== "SR23B" ) {
+    setSelLine("LL:=:hl|MT:>=:120|MET:[]:50:500|NJ:>=:2|HT:<:300");
+  }
+  else if( _SR== "SR24B" ) {
+    setSelLine("LL:=:hl|MT:>=:120|MET:[]:50:500|NJ:>=:2|HT:[]:300:1600");
+  }
+  
+  //inclusive H-MET ==========================================================
+  else if( _SR== "SR25B" ) {
+    setSelLine("LL:=:hl|MET:>=:500|NJ:>=:2|HT:>=:300");
+  }
+  
+  //inclusive H-HT ==========================================================
+  else if( _SR== "SR26B" ) {
+    setSelLine("LL:=:hl|MET:[]:50:500|NJ:>=:2|HT:>=:1600");
+  }
+
+
+  //LL-regions =============================================================
+  else if( _SR== "SR1C" ) {
+    setSelLine("LL:=:ll|NB:=:0|MT:<:120|MET:[]:50:200|NJ:>=:2|HT:>:300");
+  }
+  else if( _SR== "SR2C" ) {
+    setSelLine("LL:=:ll|NB:=:0|MT:<:120|MET:>:200|NJ:>=:2|HT:>:300");
+  }
+  else if( _SR== "SR3C" ) {
+    setSelLine("LL:=:ll|NB:=:1|MT:<:120|MET:[]:50:200|NJ:>=:2|HT:>:300");
+  }
+  else if( _SR== "SR4C" ) {
+    setSelLine("LL:=:ll|NB:=:1|MT:<:120|MET:>:200|NJ:>=:2|HT:>:300");
+  }
+  else if( _SR== "SR5C" ) {
+    setSelLine("LL:=:ll|NB:=:2|MT:<:120|MET:[]:50:200|NJ:>=:2|HT:>:300");
+  }
+  else if( _SR== "SR6C" ) {
+    setSelLine("LL:=:ll|NB:=:2|MT:<:120|MET:>:200|NJ:>=:2|HT:>:300");
+  }
+ else if( _SR== "SR7C" ) {
+    setSelLine("LL:=:ll|NB:>=:3|MT:<:120|MET:>=:50|NJ:>=:2|HT:>:300");
+  }
+  else if( _SR== "SR8C" ) {
+    setSelLine("LL:=:ll|MT:>=:120|MET:>=:50|NJ:>=:2|HT:>:300");
+  }
+
+
+
+  //baselines =============================================================
+  //so stupid.....
+  else if( _SR== "BR0H" ) {
+    setSelLine("LL:=:hh|NB:>=:0|MET:>:30|NJ:>=:2|HT:<:500");
+    setSelLine("LL:=:hh|NB:>=:0|NJ:>=:2|HT:>=:500");
+  }
+  else if( _SR== "BR0M" ) {
+    setSelLine("LL:=:hl|NB:>=:0|MET:>:30|NJ:>=:2|HT:<:500");
+    setSelLine("LL:=:hl|NB:>=:0|NJ:>=:2|HT:>=:500");
+  }
+  else if( _SR== "BR0L" ) {
+    setSelLine("LL:=:ll|NB:>=:0|MET:>:30|NJ:>=:2|HT:<:500");
+    setSelLine("LL:=:ll|NB:>=:0|NJ:>=:2|HT:>=:500");
+  }
+
+ else if( _SR== "BR10H" ) {
+    setSelLine("LL:=:hh|NB:=:1|MET:>:30|NJ:>=:2|HT:<:500");
+    setSelLine("LL:=:hh|NB:=:1|NJ:>=:2|HT:>=:500");
+  }
+  else if( _SR== "BR10M" ) {
+    setSelLine("LL:=:hl|NB:=:1|MET:>:30|NJ:>=:2|HT:<:500");
+    setSelLine("LL:=:hl|NB:=:1|NJ:>=:2|HT:>=:500");
+  }
+  else if( _SR== "BR10L" ) {
+    setSelLine("LL:=:ll|NB:=:1|MET:>:30|NJ:>=:2|HT:<:500");
+    setSelLine("LL:=:ll|NB:=:1|NJ:>=:2|HT:>=:500");
+  }
+
+  else if( _SR== "BR20H" ) {
+    setSelLine("LL:=:hh|NB:=:2|MET:>:30|NJ:>=:2|HT:<:500");
+    setSelLine("LL:=:hh|NB:=:2|NJ:>=:2|HT:>=:500");
+  }
+  else if( _SR== "BR20M" ) {
+    setSelLine("LL:=:hl|NB:=:2|MET:>:30|NJ:>=:2|HT:<:500");
+    setSelLine("LL:=:hl|NB:=:2|NJ:>=:2|HT:>=:500");
+  }
+  else if( _SR== "BR20L" ) {
+    setSelLine("LL:=:ll|NB:=:2|MET:>:30|NJ:>=:2|HT:<:500");
+    setSelLine("LL:=:ll|NB:=:2|NJ:>=:2|HT:>=:500");
+  }
+
+ else if( _SR== "BR30H" ) {
+    setSelLine("LL:=:hh|NB:>=:3|MET:>:30|NJ:>=:2|HT:<:500");
+    setSelLine("LL:=:hh|NB:>=:3|NJ:>=:2|HT:>=:500");
+  }
+  else if( _SR== "BR30M" ) {
+    setSelLine("LL:=:hl|NB:>=:3|MET:>:30|NJ:>=:2|HT:<:500");
+    setSelLine("LL:=:hl|NB:>=:3|NJ:>=:2|HT:>=:500");
+  }
+  else if( _SR== "BR30L" ) {
+    setSelLine("LL:=:ll|NB:>=:3|MET:>:30|NJ:>=:2|HT:<:500");
+    setSelLine("LL:=:ll|NB:>=:3|NJ:>=:2|HT:>=:500");
+  }
+
+
 
 
 }
 
+void
+FakeEstim::setSelLine(string str) {
 
-void 
-FakeEstim::setCut(string var, float valCut, 
-		  string cType, float upValCut) {
+  //MM could be done in a better way
 
-  if(var == "HTSR") {
-    _valCutHTSR   = valCut;
-    _cTypeHTSR    = cType;
-    _upValCutHTSR = upValCut;
-  }
-  else if(var == "METSR") {
-    _valCutMETSR   = valCut;
-    _cTypeMETSR    = cType;
-    _upValCutMETSR = upValCut;
-  }
-  else if(var == "MTSR") {
-    _valCutMTSR   = valCut;
-    _cTypeMTSR    = cType;
-    _upValCutMTSR = upValCut;
-  }
-  else if(var == "NJetsSR") {
-    _valCutNJetsSR   = valCut;
-    _cTypeNJetsSR    = cType;
-    _upValCutNJetsSR = upValCut;
-  } 
-  else if(var == "NBJetsSR") {
-    _valCutNBJetsSR   = valCut;
-    _cTypeNBJetsSR    = cType;
-    _upValCutNBJetsSR = upValCut;
-  } 
+  //parsing full selection into variable selections
+  stringstream ss(str);
+  string item;
+  string tk;
+  
+  vector<vector<string> > sel;
+  while (std::getline(ss, item, '|')) {
+    
+    vector<string> vars(4,"");
+    stringstream sssel( item );
+  
+    int n=0;
+    while (std::getline(sssel, tk, ':')) {
+      vars[n]= (tk);
+      n++;
+    }
 
-  else if(var == "NJetCond") {
-    _valCutNJetsCond   = valCut;
-    _cTypeNJetsCond    = cType;
-    _upValCutNJetsCond = upValCut;
-  }
-  else if(var == "METCond") {
-    _valCutMETCond   = valCut;
-    _cTypeMETCond    = cType;
-    _upValCutMETCond = upValCut;
+    if(vars.size()==3)
+      vars.push_back("");
+
+    sel.push_back(vars);
   }
 
-       
+  _sels[_SR].push_back( sel );
 }
+
 
 //================================================
 bool 
@@ -1202,12 +1038,12 @@ FakeEstim::genMatchedMisCharge() {
   
   for(int ig=0;ig<nGenL;++ig) {
     
-    if(pdgId1==0 && KineUtils::dR(_vc->get("LepGood_eta",_lep_idx1), _vc->get("GenPart_eta", ig),
-		     _vc->get("LepGood_phi",_lep_idx1), _vc->get("GenPart_phi", ig))<0.05) { 
+    if(pdgId1==0 && KineUtils::dR(_vc->get("LepGood_eta",_idxL1), _vc->get("GenPart_eta", ig),
+		     _vc->get("LepGood_phi",_idxL1), _vc->get("GenPart_phi", ig))<0.05) { 
       pdgId1 = _vc->get("GenPart_pdgId",ig);
     }
-    if(pdgId2==0 &&KineUtils::dR(_vc->get("LepGood_eta",_lep_idx2), _vc->get("GenPart_eta", ig),
-		     _vc->get("LepGood_phi",_lep_idx2), _vc->get("GenPart_phi", ig))<0.05) { 
+    if(pdgId2==0 &&KineUtils::dR(_vc->get("LepGood_eta",_idxL2), _vc->get("GenPart_eta", ig),
+		     _vc->get("LepGood_phi",_idxL2), _vc->get("GenPart_phi", ig))<0.05) { 
       pdgId2 = _vc->get("GenPart_pdgId",ig);
     }
     
@@ -1256,34 +1092,136 @@ FakeEstim::getFR(Candidate* cand, int idx) {
 bool
 FakeEstim::testRegion() {
 
-  if(!_au->simpleCut( _mTmin, _valCutMTSR, _cTypeMTSR, _upValCutMTSR) ) return false;
-  if(!_au->simpleCut( _HT, _valCutHTSR, _cTypeHTSR,_upValCutHTSR) ) return false;
+  bool passSel=true;
 
-  bool jetMeanCond=_au->simpleCut((float)_nJets, _valCutNJetsSR, _cTypeNJetsSR, _upValCutNJetsSR );
-  bool jetSpecCond=_au->simpleCut((float)_nJets, _valCutNJetsCond, _cTypeNJetsCond, _upValCutNJetsCond );
-  if(!( jetMeanCond || jetSpecCond ) ) return false;
+  for(size_t is=0;is<_sels[_SR].size();is++) {
+    passSel=true;
+    for(size_t ii=0;ii<_sels[_SR][is].size();ii++) {
+    
+      if(_sels[_SR][is][ii][0]=="LL") { //lepton pt scheme, specific case 
+	if(_sels[_SR][is][ii][2]=="hh" && 
+	   (_l1Cand->pt()<25 || _l2Cand->pt()<25) ) {passSel=false;break;}
+	if(_sels[_SR][is][ii][2]=="hl" &&
+	   ( (_l1Cand->pt()<25 && _l2Cand->pt()<25) ||
+	     (_l1Cand->pt()>=25 && _l2Cand->pt()>=25) ) ) {passSel=false;break;}
+	if(_sels[_SR][is][ii][2]=="ll" && 
+	   (_l1Cand->pt()>=25 || _l2Cand->pt()>=25) ) {passSel=false;break;}
+      
+      }
+      else { //all other selections
+	bool dec=(_au->simpleCut<float>( (*(_val[_sels[_SR][is][ii][0] ])) , atof(_sels[_SR][is][ii][2].c_str() ), _sels[_SR][is][ii][1], atof(_sels[_SR][is][ii][3].c_str()) ));
+	if(!_au->simpleCut<float>( (*(_val[_sels[_SR][is][ii][0] ])) , atof(_sels[_SR][is][ii][2].c_str() ),
+				   _sels[_SR][is][ii][1], atof(_sels[_SR][is][ii][3].c_str()) ) ) 
+	  {passSel=false;break;}
+      }
+      
+    }
+    if(passSel) return true;
+  }
 
-  bool metMeanCond=_au->simpleCut(_met->pt(), _valCutMETSR, _cTypeMETSR, _upValCutMETSR );
-  bool metSpecCond=_au->simpleCut(_met->pt(), _valCutMETCond, _cTypeMETCond, _upValCutMETCond );
-
-  if(!( (metMeanCond&&jetMeanCond) || (metSpecCond&&jetSpecCond) ) ) return false;
-     
-  if(!_au->simpleCut(_vc->get(_btag), _valCutNBJetsSR, _cTypeNBJetsSR, _upValCutNBJetsSR) ) return false;
-
-  return true;
+  return false;
 }
-
 
 
 void
 FakeEstim::categorize() {
   
-  int offSet=1;
+  int offset=1;
   string categ="";
   for(size_t ic=0;ic< _categs.size();ic++) {
     _SR = _categs[ic];
-    setSignalRegion();
-    if(testRegion() ) {setWorkflow(ic+offSet); return;}
+    if(testRegion() ) {setWorkflow(ic+offset); return;}
   }
   setWorkflow(kGlobal);
+}
+
+
+bool 
+FakeEstim::goodLepton(int idx, int pdgId) {
+
+  if(abs(pdgId)==13) {//mu case
+    if(!_susyMod->muIdSel(idx, SusyModule::kTight) ) return false;
+    if(!_susyMod->multiIsoSel(idx, SusyModule::kMedium) ) return false;
+  }
+  else {
+    if(!_susyMod->elIdSel(idx, SusyModule::kTight) ) return false;
+    if(!_susyMod->multiIsoSel(idx, SusyModule::kTight) ) return false;
+  }
+
+  return true;
+
+}
+
+
+
+bool
+FakeEstim::passCERNSelection() {
+
+  if(!makeCut( _vc->get("nLepGood10_Mini"), "CERN lepmult" ) ) return false;
+  if(!makeCut<float>( _vc->get("mZ1cut10TL_Mini"), 76 , "]![", "CERN Z veto",  106 ) ) return false;
+  if(!makeCut<float>( _vc->get("minMllAFOSTL_Mini"), 0 , "]!]", "CERN g veto OS", 12) ) return false;
+  if(!makeCut<float>( _vc->get("minMllAFASTL_Mini"), 8 , ">", "CERN g veto AS" ) ) return false;
+     
+// > = 2 good leptons: nLepGood10 >= 2
+// minMllAS8:  minMllAFAS > 8
+// minMllOS12: minMllAFOS <= 0 || minMllAFOS > 12
+// zveto3l:    mZ1 < 76 || mZ1 > 106
+
+     if(!makeCut( abs(_l1Cand->pdgId()) > 0 && abs(_l2Cand->pdgId()) > 0, "pdgId") ) return false;
+     if(!makeCut( _l1Cand->charge()*_l2Cand->charge()>0, "charge") ) return false;
+     if(!makeCut( _l1Cand->pt()>25 && _l2Cand->pt()>25, "pt") ) return false;
+     
+     cout<<_l1Cand->pdgId()<<"  "<<_l2Cand->pdgId()<<"  "<<SusyModule::kMedium<<"  "<<SusyModule::kTight<<endl;
+
+     int wp1 = SusyModule::kMedium;//((abs(_l1Cand->pdgId())==13)?(SusyModule::kMedium):SusyModule::kTight);
+     int wp2 = SusyModule::kMedium;//((abs(_l2Cand->pdgId())==13)?(SusyModule::kMedium):SusyModule::kTight);
+     if(abs(_l1Cand->pdgId())==13) wp1 = SusyModule::kTight;
+     if(abs(_l2Cand->pdgId())==13) wp2 = SusyModule::kTight;
+
+
+     // cout<<wp1<<"  "<<wp2<<"   "<<_idxL1<<"  "<<_idxL2<<"   "<< _susyMod->multiIsoSel(_idxL1, wp1 )
+     // 	 <<"   "<<_susyMod->multiIsoSel(_idxL2, wp2 )<<endl;
+
+     if(!makeCut( _susyMod->multiIsoSel(_idxL1, wp1 ), "iso1") ) return false;
+     if(!makeCut( _susyMod->multiIsoSel(_idxL2, wp2 ), "iso2") ) return false;
+
+     bool id= _vc->get("LepGood_mediumMuonId", _idxL1)>0 && 
+              _vc->get("LepGood_mediumMuonId", _idxL2)>0;
+
+     if(!makeCut(id, "id") ) return false;
+
+     bool elId= ( _vc->get("LepGood_mvaIdPhys14",_idxL1) >=0.73+(0.57-0.73)*(abs(_l1Cand->eta())>0.8)+(+0.05-0.57)*(abs(_l1Cand->eta())>1.479) || abs(_l1Cand->pdgId()) == 13) && 
+     ( _vc->get("LepGood_mvaIdPhys14",_idxL2) >=0.73+(0.57-0.73)*(abs(_l2Cand->eta())>0.8)+(+0.05-0.57)*(abs(_l2Cand->eta())>1.479) || abs(_l2Cand->pdgId()) == 13); 
+
+     cout<<_vc->get("LepGood_mvaIdPhys14",_idxL1)<<"   "<<_l1Cand->eta()<<"   "<<_vc->get("LepGood_mvaIdPhys14",_idxL2)<<"   "<<_l2Cand->eta()<<endl;
+
+     if(!makeCut(elId, "elId") ) return false;
+
+// exclusive:  nLepGood10 == 2
+// anyll: abs(LepGood1_pdgId) > 0 && abs(LepGood2_pdgId) > 0
+// same-sign: LepGood1_charge*LepGood2_charge > 0
+// lep1_pt25: LepGood1_pt > 25 
+// lep2_pt25: LepGood2_pt > 25 
+// lep iso: multiIso_multiWP(LepGood1_pdgId,LepGood1_pt,LepGood1_eta,LepGood1_miniRelIso,LepGood1_jetPtRatio,LepGood1_jetPtRel,2) > 0 && 
+//          multiIso_multiWP(LepGood2_pdgId,LepGood2_pt,LepGood2_eta,LepGood2_miniRelIso,LepGood2_jetPtRatio,LepGood2_jetPtRel,2) > 0
+//lep mu id: LepGood1_mediumMuonId > 0 && LepGood2_mediumMuonId > 0 
+// lep el id: ( LepGood1_mvaIdPhys14 >=0.73+(0.57-0.73)*(abs(LepGood1_eta)>0.8)+(+0.05-0.57)*(abs(LepGood1_eta)>1.479) || abs(LepGood1_pdgId) == 13) && 
+//            ( LepGood2_mvaIdPhys14 >=0.73+(0.57-0.73)*(abs(LepGood2_eta)>0.8)+(+0.05-0.57)*(abs(LepGood2_eta)>1.479) || abs(LepGood2_pdgId) == 13) 
+
+     cout<<_idxL1<<"  "<<_idxL2<<"   "<<_vc->get("LepGood_sip3d",_idxL1)<<"   "<<_vc->get("LepGood_sip3d",_idxL2)<<endl;
+
+     if(!makeCut( max(_vc->get("LepGood_sip3d",_idxL1),_vc->get("LepGood_sip3d",_idxL2)) < 4, "sip") ) return false;
+
+     bool conv= (abs(_l1Cand->pdgId())==13 || (_vc->get("LepGood_convVeto",_idxL1) && _vc->get("LepGood_lostHits",_idxL1) == 0)) &&
+                (abs(_l2Cand->pdgId())==13 || (_vc->get("LepGood_convVeto",_idxL2) && _vc->get("LepGood_lostHits",_idxL2) == 0));
+
+     if(!makeCut(  conv, "conversion") ) return false;
+
+     bool charge= (_vc->get("LepGood_tightCharge",_idxL1)> (abs(_l1Cand->pdgId())==11)) &&
+		   (_vc->get("LepGood_tightCharge",_idxL2)> (abs(_l2Cand->pdgId())==11));
+
+     if(!makeCut(  charge, "tight charge") ) return false;
+     
+  return true;
+
 }
