@@ -687,7 +687,8 @@ MPAFDisplay::makeSingleDataCard(string sigName, string categ, string cname, stri
   ofstream card( (dirname_+cardName+".txt").c_str(), ios::out | ios::trunc );
   
   card<<"imax 1 number of channels"<<endl; 
-  card<<"jmax "+osB.str()+" number of backgrounds"<<endl; 
+  //card<<"jmax "+osB.str()+" number of backgrounds"<<endl; 
+  card<<"jmax * number of backgrounds"<<endl; 
   card<<"kmax * number of nuisance parameters"<<endl; 
   card<<"---------------------------"<<endl; 
   card<<"bin\t1"<<endl;
