@@ -293,8 +293,12 @@ unsigned int VarClass::getSize(string name) {
    return 0;
 }
 void VarClass::buildFriendTree(TTree* tree, bool bypass){ 
-  TObjLink *lnk = tree->GetListOfFriends()->FirstLink();
   
+  TObjLink *lnk(0);
+  if (tree->GetListOfFriends()) {
+    lnk = tree->GetListOfFriends()->FirstLink();
+  }
+
   while (lnk) {
     TTree *ft = (TTree*) tree->GetFriend(lnk->GetObject()->GetName());
 
