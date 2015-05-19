@@ -308,6 +308,7 @@ public:
   unsigned int getSize(string name);
 	
   void buildTree(TTree* tree, bool bypass);
+  void buildFriendTree(TTree* tree, bool bypass);
   void registerBranch(TTree* tree, string name, string type, EDataType t, int len);
 	
   //systematic ucnertainty propagation     ============

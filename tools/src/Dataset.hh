@@ -40,7 +40,7 @@ private:
   bool _isGhost;
 	
   int _dsContentType;
-
+  std::vector<std::string> _friends;
 
 public:
 
@@ -66,6 +66,7 @@ public:
 		 std::string objName, std::string hname, float xSect,
 		 float kFact, float lumi, float eqLumi, bool loadH=true);
 
+  void addFriend(std::string friendname);
 
   //access functions 
   std::string getName(){ return _name;};
