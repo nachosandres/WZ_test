@@ -666,6 +666,7 @@ void
 MPAFDisplay::makeSingleDataCard(string sigName, string categ, string cname, string cardName) {
   
   map<string,string> lines;
+
   bool isValidCard = _au->getDataCardLines(lines, _dsNames, sigName, categ, cname, 1, _nuisPars);
 
   if(!isValidCard) { 

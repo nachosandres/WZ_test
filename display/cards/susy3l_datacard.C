@@ -6,8 +6,8 @@ void susy3l_datacard() {
 
     //general parameters ********************* general parameters
     string dir="SUSY3L";
-    string fileName="template3L_skimmed"; // not needed for statistics but provides the normalization
-    string fileList="template3L_skimmed"; // put command line that gives all files as in a "ls" command
+    string fileName="susy3l_SR00_off"; // not needed for statistics but provides the normalization
+    string fileList="susy3l_SR00_off"; // put command line that gives all files as in a "ls" command
 
     bool mcOnly = false;
   
@@ -34,49 +34,51 @@ void susy3l_datacard() {
     //===============================================================
 
     //top    
-    md.addDataCardBkgSample("TBarToLeptons_sch_skim", "fake");
-    md.addDataCardBkgSample("TBarToLeptons_tch_skim", "fake");
-    md.addDataCardBkgSample("TBar_tWch_skim", "fake");
-    md.addDataCardBkgSample("TTJets_skim", "fake");
-    md.addDataCardBkgSample("TToLeptons_sch_skim", "fake");
-    md.addDataCardBkgSample("TToLeptons_tch_skim", "fake");
-    md.addDataCardBkgSample("T_tWch_skim", "fake");
+    md.addDataCardBkgSample("TBarToLeptons_sch", "fake");
+    md.addDataCardBkgSample("TBarToLeptons_tch", "fake");
+    md.addDataCardBkgSample("TBar_tWch", "fake");
+    md.addDataCardBkgSample("TTJets", "fake");
+    md.addDataCardBkgSample("TToLeptons_sch", "fake");
+    md.addDataCardBkgSample("TToLeptons_tch", "fake");
+    md.addDataCardBkgSample("T_tWch", "fake");
     
 
     //W+Jets
-    md.addDataCardBkgSample("WJetsToLNu_HT100to200_skim", "fake");
-    md.addDataCardBkgSample("WJetsToLNu_HT200to400_skim", "fake");
-    //md.addDataCardBkgSample("WJetsToLNu_HT400to600_skim", "fake");
-    md.addDataCardBkgSample("WJetsToLNu_HT600toInf_skim", "fake");
+    md.addDataCardBkgSample("WJetsToLNu_HT100to200", "fake");
+    md.addDataCardBkgSample("WJetsToLNu_HT200to400", "fake");
+    //md.addDataCardBkgSample("WJetsToLNu_HT400to600", "fake");
+    md.addDataCardBkgSample("WJetsToLNu_HT600toInf", "fake");
 
     //Drell-Yan
-    md.addDataCardBkgSample("DYJetsToLL_M50_HT100to200_skim", "fake");
-    md.addDataCardBkgSample("DYJetsToLL_M50_HT200to400_skim", "fake");
-    md.addDataCardBkgSample("DYJetsToLL_M50_HT400to600_skim", "fake");
-    md.addDataCardBkgSample("DYJetsToLL_M50_HT600toInf_skim", "fake");
+    md.addDataCardBkgSample("DYJetsToLL_M50_HT100to200", "fake");
+    md.addDataCardBkgSample("DYJetsToLL_M50_HT200to400", "fake");
+    md.addDataCardBkgSample("DYJetsToLL_M50_HT400to600", "fake");
+    md.addDataCardBkgSample("DYJetsToLL_M50_HT600toInf", "fake");
 
     //di-boson
-    md.addDataCardBkgSample("WZJetsTo3LNu_skim", "diboson");
-    md.addDataCardBkgSample("ZZTo4L_skim", "diboson");
+    md.addDataCardBkgSample("WZJetsTo3LNu", "diboson");
+    md.addDataCardBkgSample("ZZTo4L", "diboson");
     
     //TTV
-    md.addDataCardBkgSample("TTZJets_skim", "ttZ");
-    md.addDataCardBkgSample("TTWJets_skim", "ttW");
+    md.addDataCardBkgSample("TTZJets", "ttZ");
+    md.addDataCardBkgSample("TTWJets", "ttW");
 
     //rare
-    md.addDataCardBkgSample("TTH_skim", "rare");
-    md.addDataCardBkgSample("GGHZZ4L_skim", "rare");
+    md.addDataCardBkgSample("TTH", "rare");
+    //md.addDataCardBkgSample("GGHZZ4L", "rare");
 
     //signal
-    //md.addDataCardSigSample("SMS_T1tttt_2J_mGl1200_mLSP800_skim","T1t412");
-    md.addDataCardSigSample("SMS_T1tttt_2J_mGl1500_mLSP100_skim","T1t415");
-    //md.addDataCardSigSample("T5ttttDeg_mGo1000_mStop300_mCh285_mChi280_skim","T5t410");
-    //md.addDataCardSigSample("T5ttttDeg_mGo1300_mStop300_mCh285_mChi280_skim","T5t413");
+    md.addDataCardSigSample("SMS_T1tttt_2J_mGl1200_mLSP800","T1t412");
+    //md.addDataCardSigSample("SMS_T1tttt_2J_mGl1500_mLSP100","T1t415");
+    //md.addDataCardSigSample("T5ttttDeg_mGo1000_mStop300_mCh285_mChi280_dil","T5t410dil");
+    //md.addDataCardSigSample("T5ttttDeg_mGo1000_mStop300_mCh285_mChi280","T5t410");
+    //md.addDataCardSigSample("T5qqqqWWDeg_mGo1000_mCh315_mChi300_dilep", "T5q410");
+    //md.addDataCardSigSample("T5qqqqWW_mGo1200_mCh1000_mChi800_dilep", "T5q412");
   
    
     md.addNuisanceParameter("fratio","fake","lnN","1.50");
     md.addNuisanceParameter("rNorm","rare","lnN","1.20");
-    md.addNuisanceParameter("sigNorm","T1t415","lnN","1.10");
+    md.addNuisanceParameter("sigNorm","T1t412","lnN","1.10");
 
 
     // }
@@ -114,14 +116,14 @@ void susy3l_datacard() {
     //    "SR7B", "SR8B" };
 
     string srs[1]={ 
-        "SR00_on" };
+        "SR00_off" };
 
 
     _categs.assign(srs, srs+nCateg);
-    
+
     for(size_t ic=0;ic< _categs.size();ic++) {
         string cat=_categs[ic];
-        md.makeSingleDataCard("T1t415", "global_"+cat, "SR MET selection", "susy3l_"+cat+"_T1t415");
+        md.makeSingleDataCard("T1t412", "global_"+cat, "SR MET selection", "susy3l_"+cat+"_T1t412");
     }
 
     gROOT->ProcessLine(".q");

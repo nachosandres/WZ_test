@@ -904,7 +904,6 @@ AnaUtils::getDataCardLines(map<string,string>& lines, vector<string> dsNames, st
 			   map<string,vector<string> > intNuisPars) {
   
   vector<pair<string, vector<vector<float> > > > numbers=retrieveNumbers(categ, kMono, cname);
-
   if(numbers.size()==0) return false; //case where no data are available
 
   // yield lines =================================================================

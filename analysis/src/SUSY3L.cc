@@ -169,9 +169,9 @@ void SUSY3L::run(){
     // initialization of signal region cuts, categorization of events passing the baseline 
     // selection into different signal regions, and filling of plots
     
-    //setSignalRegion();
-    //if(!srSelection()) return;	
-    //fillEventPlots("SR");
+    setSignalRegion();
+    if(!srSelection()) return;	
+    fillEventPlots("SR");
    
 }
 
@@ -414,9 +414,11 @@ bool SUSY3L::electronSelection(int elIdx){
     float eta_veto_low = 1.4442;
     float eta_veto_high = 1.566;
     //float isolation_cut = 0.15;
-    float miniRelIso_cut = 0.14;    //medium wp
-    float ptRatio_cut = 0.68;
-    float ptRel_cut = 6.7;
+    //float miniRelIso_cut = 0.22; float ptRatio_cut = 0.63; float ptRel_cut = 6.; //loose wp
+    //float miniRelIso_cut = 0.14; float ptRatio_cut = 0.68; float ptRel_cut = 6.7; //medium wp
+    float miniRelIso_cut = 0.10; float ptRatio_cut = 0.70; float ptRel_cut = 7.; //tight wp
+    //float miniRelIso_cut = 0.075; float ptRatio_cut = 0.725; float ptRel_cut = 7.; //very tight wp
+    //float miniRelIso_cut = 0.05; float ptRatio_cut = 0.725; float ptRel_cut = 8.; //hyper tight wp
     float vertex_dz_cut = 0.1;      //in cm
     float vertex_dxy_cut = 0.05;    //in cm
     float sip3d_cut = 4;
@@ -480,9 +482,11 @@ bool SUSY3L::muonSelection(int muIdx){
     float pt_cut = 10.;
     float eta_cut = 2.4;
     //float isolation_cut = 0.15;
-    float miniRelIso_cut = 0.22;
-    float ptRatio_cut = 0.63;
-    float ptRel_cut = 6.;
+    //float miniRelIso_cut = 0.22; float ptRatio_cut = 0.63; float ptRel_cut = 6.; //loose wp
+    float miniRelIso_cut = 0.14; float ptRatio_cut = 0.68; float ptRel_cut = 6.7; //medium wp
+    //float miniRelIso_cut = 0.10; float ptRatio_cut = 0.70; float ptRel_cut = 7.; //tight wp
+    //float miniRelIso_cut = 0.075; float ptRatio_cut = 0.725; float ptRel_cut = 7.; //very tight wp
+    //float miniRelIso_cut = 0.05; float ptRatio_cut = 0.725; float ptRel_cut = 8.; //hyper tight wp
     float vertex_dz_cut = 0.1;
     float vertex_dxy_cut = 0.05;
     float sip3d_cut = 4;
@@ -1028,7 +1032,7 @@ bool SUSY3L::baseSelection(){
     //require minimum number of b-tagged jets
     if(!makeCut<int>( _nBJets, _valCutNBJetsBR, _cTypeNBJetsBR, "b-jet multiplicity", _upValCutNBJetsBR) ) return false;
     
-   /* 
+    
     //require at least 1 of the leptons to have higher pT than original cut
     bool has_hard_leg = hardLegSelection();
     if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
@@ -1042,7 +1046,7 @@ bool SUSY3L::baseSelection(){
     //reject event if ossf lepton pair with low invariant mass is found
     bool has_low_mll = lowMllPair();
     if(!makeCut( !has_low_mll , "low mll rejection", "=") ) return false;
-
+    
     //select on or off-Z events according to specification in config file
     //bool is_reconstructed_Z = !ZEventSelection();
     bool is_reconstructed_Z = ZEventSelectionLoop();
@@ -1057,7 +1061,7 @@ bool SUSY3L::baseSelection(){
     else if(_pairmass == "on"){
         if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
     }
-    */
+    
     return true;
 }
 

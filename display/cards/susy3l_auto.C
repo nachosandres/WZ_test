@@ -1,4 +1,7 @@
+
 {
+
+
     if(Recompute) {
         MPAFDisplay md;
  
@@ -6,7 +9,8 @@
         *rtmp = false;
 
     }
-    else md.refresh();
+    else 
+    md.refresh();
 
     //general parameters ********************* general parameters
     string dir="SUSY3L";    // directory in workdir/stats
@@ -17,7 +21,7 @@
     bool mcOnly = false;
   
     //if(md.isInitStatus()) {
-    md.anConf.configureNames( dir, fileName, fileList, hName );
+    md.anConf.configureNames( dir, fileName, fileList);
     md.anConf.configureData(false, 0, mcOnly);
     //}
   
@@ -104,7 +108,7 @@
     LumisXS[ "TBarToLeptons_sch"                        ] =  250000 / (1.34784          );  // 4.16*0.108*3
     LumisXS[ "TBarToLeptons_tch"                        ] = 1999800 / (26.23428         );  // 80.97*0.108*3
     LumisXS[ "TBar_tWch"                                ] =  971800 / (35.6             ); 
-    LumisXS[ "TTH"                                      ] =  199700 / (1         * 1    );
+    LumisXS[ "TTH"                                      ] =  199700 / (0.5085           );
     LumisXS[ "TTJets"                                   ] =25446993 / (809.1            );
     LumisXS[ "TToLeptons_sch"                           ] =  500000 / (2.3328           );  // 7.20*0.108*3
     LumisXS[ "TToLeptons_tch"                           ] = 3991000 / (44.0802          );  // 136.05*0.108*3
@@ -142,7 +146,7 @@
 
     md.anConf.addSample( "TTWJets"                          ,  "t#bar{t}W"          , kYellow   );
     
-    md.anConf.addSample( "GGHZZ4L"                          ,  "rare SM"            , kCyan     );
+    //md.anConf.addSample( "GGHZZ4L"                          ,  "rare SM"            , kCyan     );
     
     //Drell-Yan
     //md.anConf.addSample( "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                       ,  "non-prompt e/#mu"    , kRed      );
@@ -155,7 +159,7 @@
     md.anConf.addSample( "TBarToLeptons_sch"                ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TBarToLeptons_tch"                ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TBar_tWch"                        ,  "non-prompt e/#mu"    , kRed      );
-    //md.anConf.addSample( "TTH"                            ,  "non-prompt e/#mu"    , kRed      );
+    md.anConf.addSample( "TTH"                            ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TTJets"                           ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TToLeptons_sch"                   ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TToLeptons_tch"                   ,  "non-prompt e/#mu"    , kRed      );
@@ -164,14 +168,14 @@
     //W+Jets
     md.anConf.addSample( "WJetsToLNu_HT100to200"            ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "WJetsToLNu_HT200to400"            ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "WJetsToLNu_HT400to600"            ,  "non-prompt e/#mu"    , kRed      );
+    //md.anConf.addSample( "WJetsToLNu_HT400to600"            ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "WJetsToLNu_HT600toInf"            ,  "non-prompt e/#mu"    , kRed      );
     
     //signal
     md.anConf.addSample( "SMS_T1tttt_2J_mGl1200_mLSP800"    ,  "T1tttt (800) * 20 sig" , kViolet-3 );
-    md.anConf.addSample( "SMS_T1tttt_2J_mGl1500_mLSP100"    ,  "T1tttt (100) #cdot 20 sig" , kViolet+3  );
-    md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"  ,  "T5tttt (1000) #cdot 20 sig" , kOrange-3 );
-    md.anConf.addSample( "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280"  ,  "T5tttt (1300) #cdot 20 sig" , kOrange+6 );
+    //md.anConf.addSample( "SMS_T1tttt_2J_mGl1500_mLSP100"    ,  "T1tttt (100) #cdot 20 sig" , kViolet+3  );
+    //md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"  ,  "T5tttt (1000) #cdot 20 sig" , kOrange-3 );
+    //md.anConf.addSample( "T5ttttDeg_mGo1300_mStop300_mCh285_mChi280"  ,  "T5tttt (1300) #cdot 20 sig" , kOrange+6 );
     // }
     //===============================================================
 
