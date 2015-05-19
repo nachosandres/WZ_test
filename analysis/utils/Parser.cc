@@ -45,6 +45,8 @@ Parser::parseLine(string line) {
     type=Parser::kTree;
   if(tks[0]=="ds")
     type=Parser::kDS;
+  if(tks[0]=="ft")
+    type=Parser::kFT;
 
   string val = tks[1];
 
@@ -57,7 +59,7 @@ Parser::parseLine(string line) {
   pair<int, string> p(type, val);
   
   string id=tks[0];
-  if(type==Parser::kVar || type==Parser::kDS)
+  if(type==Parser::kVar || type==Parser::kDS || type==Parser::kFT)
     id = val;
   if(type==Parser::kDS) {
     for(size_t i=0;i<opts.size();i++) {

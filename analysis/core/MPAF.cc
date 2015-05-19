@@ -111,10 +111,11 @@ void MPAF::analyze(){
     _sampleName = _datasets[i]->getName();
     _inds = i;
     _isData = _datasets[i]->isPPcolDataset();
-		
+    
     _vc->reset();
     _vc->buildTree( _datasets[i]->getTree() , _skim&&_fullSkim );
-		
+    _vc->buildFriendTree( _datasets[i]->getTree() , _skim&&_fullSkim );
+    
     //prepare skimmed file and tree
     if(_skim) {
       initSkimming();
@@ -215,6 +216,7 @@ void MPAF::loadConfigurationFile(std::string cfg){
   _inputVars = Parser::parseFile(cfg);
 
   string tName;
+  vector<string> _friends;
 
   for(MIPar::const_iterator it=_inputVars.begin(); 
       it!=_inputVars.end();it++) {
@@ -242,9 +244,11 @@ void MPAF::loadConfigurationFile(std::string cfg){
     if(it->second.type==Parser::kTree) {
       tName = it->second.val;
     }
-   
     if(it->second.type==Parser::kHisto) {
       _hname = it->second.val;
+    }
+    if(it->second.type==Parser::kFT){
+      _friends.push_back(it->second.val);
     }
     
   }
@@ -268,10 +272,17 @@ void MPAF::loadConfigurationFile(std::string cfg){
           dirName=opts[i].substr(7, opts[i].size()-7 );
           absdir=true;
         }
+	if(opts[i].substr(0,3)=="ft:"){
+	  _friends.push_back(opts[i].substr(3, opts[i].size()-3 ));
+	} 
       }
     }
     _datasets.push_back(new Dataset(dsName));
     
+    for (size_t ft=0; ft<_friends.size();ft++) {
+      _datasets.back()->addFriend(_friends[ft].c_str()); 
+    }
+
     if(!absdir)
       _datasets.back()->addSample(it->second.val, _inputPath, dirName, tName, _hname, 1.0, 1.0, 1.0, 1.0);
     else

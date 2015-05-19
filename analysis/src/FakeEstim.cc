@@ -29,7 +29,6 @@ FakeEstim::initialize(){
   _vc->registerVar("HLT_DoubleMu"                 );
   _vc->registerVar("nVert"                        );
   _vc->registerVar("nTrueInt"                     );
-  _vc->registerVar("nTrueInt"                     );
   _vc->registerVar("nBJetPt40Medium"              );
   _vc->registerVar("puWeight"                     );
   _vc->registerVar("genWeight"                    );
@@ -76,7 +75,6 @@ FakeEstim::initialize(){
   _vc->registerVar("minMllAFOS"                   );
   _vc->registerVar("mZ1"                          );
   _vc->registerVar("nLepGood10"                   );
-
  
   //generator informations
   _vc->registerVar("nGenPart"                     );
@@ -99,41 +97,39 @@ FakeEstim::initialize(){
   _vc->registerVar("minMllAFASTL_Mini" );
   _vc->registerVar("nJet40_Mini" );
   _vc->registerVar("htJet40j_Mini" );
-  // _vc->registerVar("_Mini" );
   _vc->registerVar("nBJetMedium25_Mini" );
-
-
+  
   _susyMod = new SusyModule(_vc);
   
   
-  if(_FR=="mIsoCor") {
-    _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-    _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
-    
-    _dbm->loadDb("AllMuT","v3/FakeRatio_all_cut_mixisoT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoT_none_iso_all_all");
-    _dbm->loadDb("AllMuVT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-  }
-  else if(_FR=="mIsoAlCor") {
-    _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-    _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
-    
-    _dbm->loadDb("AllMuT","v3/FakeRatio_all_cut_mixisoT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoT_none_iso_all_all");
-    _dbm->loadDb("AllMuVT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-  }
-  else if(_FR=="mIsoptJCor") {
-    _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-    _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
-    
-    _dbm->loadDb("AllMuT","v3/FakeRatio_all_cut_mixisoT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoT_none_iso_all_all");
-    _dbm->loadDb("AllMuVT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-  }
-  else { //default pt one
-    _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-    _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
-    
-    _dbm->loadDb("AllMuT","v3/FakeRatio_all_cut_mixisoT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoT_none_iso_all_all");
-    _dbm->loadDb("AllMuVT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-  }
+//  if(_FR=="mIsoCor") {
+//    _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
+//    _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
+//    
+//    _dbm->loadDb("AllMuT","v3/FakeRatio_all_cut_mixisoT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoT_none_iso_all_all");
+//    _dbm->loadDb("AllMuVT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
+//  }
+//  else if(_FR=="mIsoAlCor") {
+//    _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
+//    _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
+//    
+//    _dbm->loadDb("AllMuT","v3/FakeRatio_all_cut_mixisoT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoT_none_iso_all_all");
+//    _dbm->loadDb("AllMuVT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
+//  }
+//  else if(_FR=="mIsoptJCor") {
+//    _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
+//    _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
+//    
+//    _dbm->loadDb("AllMuT","v3/FakeRatio_all_cut_mixisoT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoT_none_iso_all_all");
+//    _dbm->loadDb("AllMuVT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
+//  }
+//  else { //default pt one
+//    _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
+//    _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
+//    
+//    _dbm->loadDb("AllMuT","v3/FakeRatio_all_cut_mixisoT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoT_none_iso_all_all");
+//    _dbm->loadDb("AllMuVT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
+//  }
 
 
   //additional workflow
@@ -167,9 +163,9 @@ FakeEstim::initialize(){
     // "SR9B", "SR10B", "SR11B", "SR12B", "SR13B", "SR14B", "SR15B", "SR16B",
     // "SR17B", "SR18B", "SR19B", "SR20B", "SR21B", "SR22B", "SR23B", "SR24B",
     // "SR25B","SR26B"
-
+    
     // "SR1C", "SR2C", "SR3C", "SR4C", "SR5C", "SR6C", "SR7C", "SR8C",
-
+ 
     "BR0H", "BR0M", "BR0L",
     "BR10H", "BR10M", "BR10L",
     "BR20H", "BR20M", "BR20L",
@@ -334,19 +330,19 @@ FakeEstim::run() {
   if( getCurrentWorkflow()==0) return; //getCurrentWorkflow()==100 ||
 
 
-  int run=_vc->get("run");
-  int lumi=_vc->get("lumi");
-  int event=_vc->get("evt");
-  int nLep = _vc->get("nLepGood10_Mini");
-  int id1 = _l1Cand->pdgId();
-  double pt1 = _l1Cand->pt();
-  int id2 = _l2Cand->pdgId();
-  double pt2 = _l2Cand->pt();
-  int njet = _nJets;
-  int nbjet = _nBJets;
-  double met = _met->pt();
-  double HT = _HT;
-  int sr = ((getCurrentWorkflow()<kBR0H)?(getCurrentWorkflow()):(0));
+//  int run=_vc->get("run");
+//  int lumi=_vc->get("lumi");
+//  int event=_vc->get("evt");
+//  int nLep = _vc->get("nLepGood10_Mini");
+//  int id1 = _l1Cand->pdgId();
+//  double pt1 = _l1Cand->pt();
+//  int id2 = _l2Cand->pdgId();
+//  double pt2 = _l2Cand->pt();
+//  int njet = _nJets;
+//  int nbjet = _nBJets;
+//  double met = _met->pt();
+//  double HT = _HT;
+//  int sr = ((getCurrentWorkflow()<kBR0H)?(getCurrentWorkflow()):(0));
   
   // cout << Form("%1d %9d %12d\t%2d\t%+2d %5.1f\t%+2d %5.1f\t%d\t%2d\t%5.1f\t%6.1f\t%2d",
   // 	       run, lumi, event, nLep,

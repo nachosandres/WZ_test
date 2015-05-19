@@ -183,6 +183,10 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
 
 }
 
+void
+Dataset::addFriend(string friendname){
+  _friends.push_back(friendname);
+}
 
 int
 Dataset::getNProcEvents(string path, string dir, string fileName, string hname) {
@@ -292,6 +296,13 @@ Dataset::loadTree(string path, string dir, string sname, string objName) {
  
   if(tmptree != nullptr ) {
     _chain->Add( (NameF+"/"+objName).c_str() ); 
+
+    // adding friend-trees
+    for (size_t ft=0; ft<_friends.size(); ft++){
+      string NameFr = p+"/data/"+dir+"/"+_friends[ft]+"/evVarFriend_"+sname+".root";
+      string name = _friends[ft]+" = sf/t";
+      _chain->AddFriend((name).c_str(),(NameFr).c_str());
+    } 
     //nEvent = tmptree->GetEntries();
   }
   else

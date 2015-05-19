@@ -73,7 +73,7 @@ void VarClass::reset() {
   varmVF.clear();
   varmVB.clear();
   varmVS.clear();
-
+  
 
   for(itAI=varmAI.begin();itAI!=varmAI.end();itAI++) {
     int i = itAI->first;
@@ -292,7 +292,71 @@ unsigned int VarClass::getSize(string name) {
 
    return 0;
 }
+void VarClass::buildFriendTree(TTree* tree, bool bypass){ 
+  TObjLink *lnk = tree->GetListOfFriends()->FirstLink();
+  
+  while (lnk) {
+    TTree *ft = (TTree*) tree->GetFriend(lnk->GetObject()->GetName());
 
+    TObjArray* branches =  ft -> GetListOfBranches();
+    string name;
+    
+    EDataType t;
+    TClass* cc;
+    string type;
+    
+    //for arrays
+    TObjArray *leaves = ft->GetListOfLeaves();
+    TLeaf *leaf;
+    TLeaf *leafcount;
+    int len;
+    
+    for(int ib = 0; ib < branches -> GetEntries(); ++ib) {
+      len = -1;
+      type = "";
+      t = (EDataType) -1;
+
+      name = (string)( ((*branches)[ib]) -> GetName());
+      ((TBranchSTL*)((*branches)[ib])) -> GetExpectedType(cc,t);	
+      
+      //determine if it is array
+      leaf = (TLeaf*)leaves->UncheckedAt(ib);
+      leafcount =leaf->GetLeafCount();
+      
+      // vector or container 
+      if( t == -1 )
+	type = (string)(cc -> GetName());
+      
+      if(leafcount) {
+	len = leafcount->GetMaximum();
+      }
+	
+      // failed to find the type of the variable automatically
+      // if( type == "" ) {
+      //   map<string,std::pair<string, int> >::const_iterator it = _varTypes.find( name );
+      //   if( it != _varTypes.end() ) {
+      // 	type = it -> second.first;
+      // 	t = (EDataType)(it -> second.second);
+      // 	//cout << " manual " << type << "  " << t << endl;
+      //   }
+      // }
+      
+      // by default, status disabled
+      if( !bypass )
+	tree -> SetBranchStatus( name.c_str() , 0);
+      
+      // variable to be registered	
+      if( isUsefulVar(name) ) {
+	// enable status
+	tree -> SetBranchStatus( name.c_str() , 1);
+	
+	// register branch
+	registerBranch(tree, name, type, t, len );
+      }
+    }
+    lnk = lnk->Next(); 
+  }
+}
 //____________________________________________________________________________
 void VarClass::buildTree(TTree* tree, bool bypass) {
   /*
