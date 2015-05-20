@@ -53,6 +53,7 @@ void SUSY3L_sync2::initialize(){
     */
 
     // define variables using _vc varibale class
+    // _vc->registerVar("name"           , "type");
     _vc->registerVar("lumi"                            );    //lumi section number
     _vc->registerVar("evt"                             );    //event number
     
@@ -64,6 +65,11 @@ void SUSY3L_sync2::initialize(){
     _vc->registerVar("LepGood_phi"                     );    //phi of leptons
     _vc->registerVar("LepGood_charge"                  );    //charge of lepton +1 or -1
     _vc->registerVar("LepGood_relIso03"                );    //relative isolation of the lepton, cone dimensions?
+    _vc->registerVar("LepGood_miniRelIso"              );    //relIso with smaller cone?
+    _vc->registerVar("LepGood_jetPtRatio"              );    //pt lepton over pt aka4 jet (cone size?)
+    _vc->registerVar("LepGood_jetPtRel"                );    //
+    
+    
     _vc->registerVar("LepGood_dz"                      );    //difference to reconstructed primary vertex in z direction
     _vc->registerVar("LepGood_dxy"                     );    //difference to reconstructed primary vertex in xy plane
     _vc->registerVar("LepGood_sip3d"                   );    //similar observable as dxy, also vertex cut
@@ -79,7 +85,7 @@ void SUSY3L_sync2::initialize(){
     _vc->registerVar("LepGood_eInvMinusPInv"           );    //
     _vc->registerVar("LepGood_mediumMuonId"            );    //mva medium wp muon identification
     _vc->registerVar("LepGood_mvaIdPhys14"             );    //mva electron ID
-    
+     
     _vc->registerVar("nTauGood"                        );    //number of taus in event
     _vc->registerVar("TauGood_pdgId"                   );    //identifier for taus (15)
     _vc->registerVar("TauGood_pt"                      );    //pT of tau
@@ -90,7 +96,7 @@ void SUSY3L_sync2::initialize(){
     _vc->registerVar("TauGood_idAntiE"                 );     //tau electron discriminator
     _vc->registerVar("TauGood_idDecayMode"             );     //
     _vc->registerVar("TauGood_isoCI3hit"               );     //
-
+    
     _vc->registerVar("nJet"                            );    //number of jets in the event
     _vc->registerVar("Jet_pt"                          );    //pT of each of the nJet jets
     _vc->registerVar("Jet_eta"                         );    //eta of each of the nJet jets
@@ -116,6 +122,7 @@ void SUSY3L_sync2::initialize(){
                  
     //config file input variables
     _pairmass = getCfgVarS("pairMass");
+    _selectTaus = getCfgVarS("selectTaus");
     _BR = getCfgVarS("baselineRegion");
     _SR = getCfgVarS("signalRegion");
 
@@ -149,6 +156,9 @@ void SUSY3L_sync2::run(){
     // increment event counter, used as denominator for yield calculation
     counter("denominator");
 
+    //initialize multiIso working points
+    setMultiIsoWP();
+
     // do the minimal selection and collect kinematic variables for events passing it
     collectKinematicObjects();
 
@@ -156,18 +166,19 @@ void SUSY3L_sync2::run(){
     // event based observables in plots
     setBaselineRegion();
     if(!baseSelection()) return;	
+    //fillSkimTree();
     fillEventPlots("BR");
 
     //printout for RA7 synchronization
-    int lumi = _vc->get("lumi");
-    int evt = _vc->get("evt");
-    cout << "1" << " " << lumi << " " << evt << " " << _nMus << " " << _nEls << " " << _nTaus << " " << _nJets << " " << _nBJets << endl;
+    //int lumi = _vc->get("lumi");
+    //int evt = _vc->get("evt");
+    //cout << "1" << " " << lumi << " " << evt << " " << _nMus << " " << _nEls << " " << _nTaus << " " << _nJets << " " << _nBJets << endl;
 
     // initialization of signal region cuts, categorization of events passing the baseline 
     // selection into different signal regions, and filling of plots
-//    setSignalRegion();
-//    if(!srSelection()) return;	
-//    fillEventPlots("SR");
+    //setSignalRegion();
+    //if(!srSelection()) return;	
+    //fillEventPlots("SR");
 
 }
 
@@ -237,7 +248,7 @@ void SUSY3L_sync2::writeOutput(){
 
 //____________________________________________________________________________
 void SUSY3L_sync2::modifySkimming(){
-// if adding variables int he skimming tree is needed...
+// if adding variables to the skimmed tree is needed...
 
 }
 
@@ -371,10 +382,10 @@ void SUSY3L_sync2::collectKinematicObjects(){
                                                         _vc->get("TauGood_charge", i),
                                                         1.777) );    //tau mass
                 }
-            }
-            */
+            }*/
         }
     }
+    
     //number of taus in the event
     _nTaus = _taus.size();
     //_vTaus = _taus.size();
@@ -414,8 +425,10 @@ void SUSY3L_sync2::collectKinematicObjects(){
                                                 _vc->get("Jet_phi", i)));
         }
     }
-    //number of b-jets in event
+
+    //number of (b-)jets in the event
     _nBJets = _bJets.size();
+    _nJets = _jets.size();
    
     //compute sum of jet pT's 
     _HT = HT();
@@ -423,20 +436,13 @@ void SUSY3L_sync2::collectKinematicObjects(){
     //create met candidate for every event
     _met = Candidate::create(_vc->get("met_pt"), _vc->get("met_phi") );
 
-
-
 }
-
-
-
-
-
 
 
 //____________________________________________________________________________
 bool SUSY3L_sync2::electronSelection(int elIdx){
     /*
-        does the selection of electrons
+        selection of electrons
         parameters: elIdx
         return: true (if the electron is accepted as an electron), false (else)
     */
@@ -449,40 +455,48 @@ bool SUSY3L_sync2::electronSelection(int elIdx){
     float eta_cut = 2.5;
     float eta_veto_low = 1.4442;
     float eta_veto_high = 1.566;
-    float isolation_cut = 0.15;
+    //float isolation_cut = 0.15;
     float vertex_dz_cut = 0.1;      //in cm
     float vertex_dxy_cut = 0.05;    //in cm
     float sip3d_cut = 4;
     float deltaR = 0.1;
     float barrel_eta = 1.479;
     
+    //multiIso working points
+    int kLoose = 0;
+    int kMedium = 1;
+    int kTight = 2;
+    int kVeryTight = 3;
+    int kHyperTight = 4;
+ 
     //apply the cuts
     //makeCut(variable to cut on, cut value, direction of acception, name, 2nd cut value, counter)
     if(!makeCut<float>( _vc->get("LepGood_pt", elIdx) , pt_cut, ">"  , "pt selection"    , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_eta", elIdx)), eta_cut  , "<"  , "eta selection"   , 0    , kElId)) return false;
+    //removed after RA7 sync round 2
     //if(!makeCut<float>( std::abs(_vc->get("LepGood_eta", elIdx)), eta_veto_low, "[!]", "eta selection veto"   , eta_veto_high, kElId)) return false;
-    //if(!makeCut( pog_medium_pass, "POG 2012 medium wp", "=", kElId)) return false;
-    
-    //CHANGE for sync run 2 
-    //if(!makeCut<int>( _vc->get("LepGood_tightId", elIdx) , 1     , ">", "POG Tight Id "   , 0, kElId)) return false;
+    //removed after RA7 sync round 2
+    //if(!makeCut<int>( _vc->get("LepGood_eleCutIdCSA14_50ns_v1", elIdx) , 3     , ">=" , "POG CB WP-M Id " , 0    , kElId)) return false;
+    //mva based electron ID
     bool elTightMvaID = electronMvaCut(elIdx, 1);
-    if(!makeCut( elTightMvaID, "electron tight mva wp", "=", kElId)) return false;
-   
-    
-    //if(!makeCut<int>( _vc->get("LepGood_eleCutIdCSA14_50ns_v1", elIdx) , 3     , ">=" , "POG CB WP-M Id " , 0    , kElId)) return false; // replaced by manual impl. of POG 2012 medium WP
-    if(!makeCut<float>( _vc->get("LepGood_relIso03", elIdx) , isolation_cut   , "<"  , "isolation "      , 0    , kElId)) return false;
+        if(!makeCut( elTightMvaID, "electron tight mva wp", "=", kElId)) return false;
+    //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
+    int wp = kMedium;
+    bool isolated = multiIsolation(elIdx, _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2]);
+        if(!makeCut( isolated, "initial multiIso selection", "=", kElId)) return false;
+    //replaced by 3 varibale isolation
+    //if(!makeCut<float>( _vc->get("LepGood_relIso03", elIdx) , isolation_cut   , "<"  , "isolation "      , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_dz", elIdx)), vertex_dz_cut   , "<"  , "dz selection"    , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_dxy", elIdx)), vertex_dxy_cut  , "<"  , "dxy selection"   , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_sip3d", elIdx)), sip3d_cut  , "<"  , "sip3d selection"   , 0    , kElId)) return false;
-    
-    //removed after RA7 sync exercise
+    //removed after RA7 sync round 2
     //if(!makeCut<int>( _vc->get("LepGood_tightCharge", elIdx) , 1     , ">"  , "charge selection", 0    , kElId)) return false;
     
     //boolian variable if electron comes from gamma conversion or not (true if not from conversion)
     bool not_conv = (_vc->get("LepGood_convVeto", elIdx)>0 && _vc->get("LepGood_lostHits", elIdx)==0);
     if(!makeCut( not_conv, "conversion rejection", "=", kElId)) return false;
-
     
+    //removed after RA7 sync round 2
     //reject electrons which are within a cone of delta R around a muon candidate (potentially final state radiation, bremsstrahlung)
     //bool muMatch = false;
     //for(int im=0; im<_nMus; ++im){
@@ -503,7 +517,7 @@ bool SUSY3L_sync2::electronSelection(int elIdx){
 //____________________________________________________________________________
 bool SUSY3L_sync2::muonSelection(int muIdx){
     /*
-        does the selection of muons
+        selection of muons
         parameters: muIdx
         return: true (if the muon is accepted as a muon), false (else)
     */
@@ -514,20 +528,31 @@ bool SUSY3L_sync2::muonSelection(int muIdx){
     //define cut values
     float pt_cut = 10.;
     float eta_cut = 2.4;
-    float isolation_cut = 0.15;
+    //float isolation_cut = 0.15;
     float vertex_dz_cut = 0.1;
     float vertex_dxy_cut = 0.05;
     float sip3d_cut = 4;
-    
+   
+    //multiIso working points
+    int kLoose = 0;
+    int kMedium = 1;
+    int kTight = 2;
+    int kVeryTight = 3;
+    int kHyperTight = 4;
+ 
     //apply the cuts
     if(!makeCut<float>( _vc->get("LepGood_pt", muIdx), pt_cut, ">", "pt selection"    , 0, kMuId)) return false;
     if(!makeCut<float>( std::abs( _vc->get("LepGood_eta", muIdx)), eta_cut, "<", "eta selection", 0, kMuId)) return false;
-    if(!makeCut<float>( _vc->get("LepGood_relIso03", muIdx) , isolation_cut   , "<", "isolation "      , 0, kMuId)) return false;
-    
-    //CHANGE
-    if(!makeCut<float>( _vc->get("LepGood_mediumMuonId", muIdx) , 1  , "=", "mva medium muon id", 0, kMuId)) return false;
+    //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
+    int wp = kLoose;
+    bool isolated = multiIsolation(muIdx, _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2]);
+        if(!makeCut( isolated, "initial multiIso selection", "=", kMuId)) return false;
+    //replaced by 3 varibale isolation
+    //if(!makeCut<float>( _vc->get("LepGood_relIso03", muIdx) , isolation_cut   , "<", "isolation "      , 0, kMuId)) return false;
+    //removed after RA7 sync round 2
     //if(!makeCut<int>( _vc->get("LepGood_tightId", muIdx) , 1     , "=", "POG Tight Id "   , 0, kMuId)) return false;
-    
+    //mva based muon id, medium working point
+    if(!makeCut<float>( _vc->get("LepGood_mediumMuonId", muIdx) , 1  , "=", "mva medium muon id", 0, kMuId)) return false;
     if(!makeCut<float>(std::abs(_vc->get("LepGood_dz", muIdx)), vertex_dz_cut   , "<", "dz selection"    , 0, kMuId)) return false;
     if(!makeCut<float>(std::abs(_vc->get("LepGood_dxy", muIdx)), vertex_dxy_cut , "<", "dxy selection"   , 0, kMuId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_sip3d", muIdx)), sip3d_cut  , "<"  , "sip3d selection"   , 0    , kMuId)) return false;
@@ -539,7 +564,7 @@ bool SUSY3L_sync2::muonSelection(int muIdx){
 //____________________________________________________________________________
 bool SUSY3L_sync2::tauSelection(int tauIdx){
     /*
-        does the selection of taus
+        selection of taus
         parameters: tauIdx
         return: true (if the lepton is identified as (hadronic) tau), false (else)
     */
@@ -580,6 +605,7 @@ bool SUSY3L_sync2::tauSelection(int tauIdx){
         }
     }
     if(!makeCut(!lepMatch,  "lepton cleaning", "=", kTauId) ) return false;
+    
     return true;
 }
 
@@ -587,7 +613,7 @@ bool SUSY3L_sync2::tauSelection(int tauIdx){
 //____________________________________________________________________________
 bool SUSY3L_sync2::vetoElectronSelection(int elIdx){
     /*
-        does the selection of veto electrons
+        selection of veto electrons
         parameters: elIdx
         return: true (if the electron is a veto electron), false (else)
     */
@@ -616,7 +642,7 @@ bool SUSY3L_sync2::vetoElectronSelection(int elIdx){
 //____________________________________________________________________________
 bool SUSY3L_sync2::vetoMuonSelection(int muIdx){
     /*
-        does the selection of veto muons
+        selection of veto muons
         parameters: muIdx     
         return: true (if the muon is a veto muon), false (else)
     */
@@ -635,12 +661,10 @@ bool SUSY3L_sync2::vetoMuonSelection(int muIdx){
     return true;
 }
 
-
-
 //____________________________________________________________________________
 bool SUSY3L_sync2::goodJetSelection(int jetIdx){
     /*
-        does the selection of good jets, i.e. minimum selection of jets 
+        selection of jets
         parameters: jetIdx
         return: true (if the jet is good), false (else)
     */
@@ -723,6 +747,25 @@ bool SUSY3L_sync2::bJetSelection(int jetIdx){
 * ** KINEMATIC REGION DEFINITIONS                                             **
 * ******************************************************************************
 * *****************************************************************************/
+
+//____________________________________________________________________________
+void SUSY3L_sync2::setMultiIsoWP(){
+    /*
+        sets the cuts multiiso working point
+        parameters: none
+        return: none
+    */
+ 
+    //multiIso working points
+    //float _multiIsoWP[5][3];
+    _multiIsoWP[0][0]=0.22;  _multiIsoWP[0][1]=0.63;  _multiIsoWP[0][2]=6.; //loose
+    _multiIsoWP[1][0]=0.14;  _multiIsoWP[1][1]=0.68;  _multiIsoWP[1][2]=6.7;//medium
+    _multiIsoWP[2][0]=0.10;  _multiIsoWP[2][1]=0.70;  _multiIsoWP[2][2]=7.; //tight
+    _multiIsoWP[3][0]=0.075; _multiIsoWP[3][1]=0.725; _multiIsoWP[3][2]=7.; //very tight
+    _multiIsoWP[4][0]=0.05;  _multiIsoWP[4][1]=0.725; _multiIsoWP[4][2]=8.; //hyper tight
+
+}
+
 
 //____________________________________________________________________________
 void SUSY3L_sync2::setBaselineRegion(){
@@ -1104,48 +1147,109 @@ bool SUSY3L_sync2::baseSelection(){
     
  
     //select events with certain lepton multiplicity of all flavor combinations
+    //leptons are ultra-loose in multiiso
     if(!makeCut<int>( _nEls + _nMus, _valCutLepMultiplicityBR, _cTypeLepMultiplicityBR, "lepton multiplicity", _upValCutLepMultiplicityBR ) ) return false;
 
-    //require at least 1 of the leptons to have higher pT than original cut
-//    bool has_hard_leg = hardLegSelection();
-//    if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
+    //require at least two of the leptons to be tighter in multiiso
+    //bool has_two_tighter_leptons = checkMultiIso();
+    //if(!makeCut( has_two_tighter_leptons , "multiIso tightening", "=") ) return false;
 
     //require minimum number of jets
-//    if(!makeCut<int>( _nJets, _valCutNJetsBR, _cTypeNJetsBR, "jet multiplicity", _upValCutNJetsBR) ) return false;
+    if(!makeCut<int>( _nJets, _valCutNJetsBR, _cTypeNJetsBR, "jet multiplicity", _upValCutNJetsBR) ) return false;
 
     //require minimum number of b-tagged jets
-//    if(!makeCut<int>( _nBJets, _valCutNBJetsBR, _cTypeNBJetsBR, "b-jet multiplicity", _upValCutNBJetsBR) ) return false;
+    if(!makeCut<int>( _nBJets, _valCutNBJetsBR, _cTypeNBJetsBR, "b-jet multiplicity", _upValCutNBJetsBR) ) return false;
+    
+    
+    //require at least 1 of the leptons to have higher pT than original cut
+    //bool has_hard_leg = hardLegSelection();
+    //if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
 
     //require minimum hadronic activity (sum of jet pT's)
-//    if(!makeCut<float>( _HT, _valCutHTBR, _cTypeHTBR, "hadronic activity", _upValCutHTBR) ) return false;
+    //if(!makeCut<float>( _HT, _valCutHTBR, _cTypeHTBR, "hadronic activity", _upValCutHTBR) ) return false;
 
     //require minimum missing transvers energy (actually missing momentum)
     if(!makeCut<float>( _met->pt(), _valCutMETBR, _cTypeMETBR, "missing transverse energy", _upValCutMETBR) ) return false;
- 
-    //reject event if ossf lepton pair with low invariant mass is found
-//    bool has_low_mll = lowMllPair();
-//    if(!makeCut( !has_low_mll , "low mll rejection", "=") ) return false;
 
+    //reject event if ossf lepton pair with low invariant mass is found
+    //bool has_low_mll = lowMllPair();
+    //if(!makeCut( !has_low_mll , "low mll rejection", "=") ) return false;
+    
     //select on or off-Z events according to specification in config file
     //bool is_reconstructed_Z = !ZEventSelection();
     bool is_reconstructed_Z = ZEventSelectionLoop();
 
     //if(is_reconstructed_Z){
-    //fill("Zmass" , _Z->mass()        , _weight);
+    //    fill("Zmass" , _Z->mass()        , _weight);
     //}
-
+    
     if(_pairmass == "off"){
         if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
     }
     else if(_pairmass == "on"){
         if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
     }
- 
+    
     return true;
 }
 
 //____________________________________________________________________________
-bool SUSY3L_sync2::hardLegSelection(){
+bool SUSY3L::checkMultiIso(){
+    /*
+        Checks if at least two of the selected leptons (ultra-loose in multiIso) 
+        are tigther in multiIso, where tighter can be different wp for muons and 
+        electrons  
+        return: true (if the event has 2 leptons which are tighter in multiIso)
+        , false (else)
+    */
+
+    //number of leptons fulfilling the tightened multiIso wp
+    int tighter_leptons = 0;
+
+    //multiIso working points
+    int kLoose = 0;
+    int kMedium = 1;
+    int kTight = 2;
+    int kVeryTight = 3;
+    int kHyperTight = 4;
+    int wp = -1;
+   
+    
+    //check electrons
+    //multiIso working point
+    wp = kTight;
+    //_elIdx is vector of electron positions in LepGood vector
+    for(int ie=0; ie<_nEls; ++ie){
+        if(multiIsolation(_elIdx[ie], _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2])){
+            tighter_leptons += 1;
+        }
+    }
+
+    //check muons
+    //multiIso working point
+    wp = kMedium;
+    //_muIdx is vector of electron positions in LepGood vector
+    for(int im=0; im<_nMus; ++im){
+        if(multiIsolation(_muIdx[im], _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2])){
+            tighter_leptons += 1;
+        }
+    }
+
+    if(tighter_leptons>=2){
+        return true;
+    }
+
+    return false;
+}
+
+
+
+
+
+
+
+//____________________________________________________________________________
+bool SUSY3L::hardLegSelection(){
     /*
         Checks if the selected event with at least 3 leptons has at least one lepton 
         fullfilling a harsher pT cut 
@@ -1162,6 +1266,12 @@ bool SUSY3L_sync2::hardLegSelection(){
         if(_mus[im]->pt()>_pt_cut_hard_leg) return true;
     }
 
+    //check if one of the taus fullfils hard pt cut
+    //for(int it=0; it<_nTaus; ++it){
+    //    if(_taus[it]->pt()>_pt_cut_hard_leg) return true;
+    //}
+
+
     return false;
 }
 
@@ -1176,7 +1286,7 @@ bool SUSY3L_sync2::lowMllPair(){
     for(int ie1=0; ie1 < _nEls; ie1++) {
         for(int ie2 = ie1; ie2 < _nEls; ie2++) {
             //continue if not an ossf pair
-            if(_vc->get("LepGood_pdgId", ie1) != - _vc->get("LepGood_pdgId", ie2) ) continue;
+            if( _els[ie1]->pdgId() != - _els[ie2]->pdgId()) continue;
             //return true if low mass pair is found
             float mll = Candidate::create(_els[ie1], _els[ie2])->mass();
             if(mll < _lowMllCut) return true;
@@ -1187,15 +1297,66 @@ bool SUSY3L_sync2::lowMllPair(){
     for(int im1=0; im1 < _nMus; im1++) {
         for(int im2 = im1; im2 < _nMus; im2++) {
             //continue if not an ossf pair
-            if(_vc->get("LepGood_pdgId", im1) != - _vc->get("LepGood_pdgId", im2) ) continue;
+            if( _mus[im1]->pdgId() != - _mus[im2]->pdgId()) continue;
             //return true if low mass pair is found
             float mll = Candidate::create(_mus[im1], _mus[im2])->mass();
             if(mll < _lowMllCut) return true;
+           }
+        }
+ 
+    //loop over all possible combination of two taus
+    //for(int it1=0; it1 < _nTaus; it1++) {
+    //    for(int it2 = it1; it2 < _nTaus; it2++) {
+    //        //continue if not an ossf pair
+    //        if(_vc->get("LepGood_pdgId", it1) != - _vc->get("LepGood_pdgId", it2) ) continue;
+    //        //return true if low mass pair is found
+    //       float mll = Candidate::create(_taus[it1], _taus[it2])->mass();
+    //        if(mll < _lowMllCut) return true;
+    //       }
+    //    }
+ 
+    return false;
+}
+
+
+//____________________________________________________________________________
+//bool SUSY3L::ZEventSelection(){
+    /*
+        Checks if there is a same-flavor opposite-charge pair with an invariant 
+        mass around the Z mass among the 3 leptons. Faster than ZEventSelectionLoop 
+        but no Z candidate extraction, just immediate rejection of event
+        return: true (if a Z can not be reconstructed from 2 leptons), false (else)
+    */
+/*    
+    //TODO: modify for more than 3 leptons
+    //count reconstructed Z bosons
+    counter("denominator", conZEvents);
+
+    //Z mass
+    float Zmass = 91.1876;
+
+    //three electrons
+    if(_nEls == 3){
+        if(_els[0]->charge() != _els[1]->charge()){
+            float mll = Candidate::create(_els[0], _els[1])->mass();
+            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
+        }
+        if(_els[0]->charge() != _els[2]->charge()){
+            float mll = Candidate::create(_els[0], _els[2])->mass();
+            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
+        }
+        if(_els[1]->charge() != _els[2]->charge()){
+            float mll = Candidate::create(_els[1], _els[2])->mass();
+            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
+            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
         }
     }
      
     return false;
 }
+*/
 
 //____________________________________________________________________________
 bool SUSY3L_sync2::ZEventSelectionLoop(){
@@ -1265,8 +1426,8 @@ bool SUSY3L_sync2::ZEventSelectionLoop(){
                 phi_3rdLeg = _mus[0]->phi();
             }
         }
-    }     
-
+    }
+    
     if(el_Zcand == true){
         //calculate transverse mass of 3rd lepton and met
         mt = M_T(pt_3rdLeg, _vc->get("met_pt"), phi_3rdLeg, _vc->get("met_phi"));
@@ -1318,7 +1479,7 @@ bool SUSY3L_sync2::ZEventSelectionLoop(){
             }        
         }
     }
-      
+
     if(mu_Zcand == true){
         //calculate transverse mass of 3rd lepton and met
         mt = M_T(pt_3rdLeg, _vc->get("met_pt"), phi_3rdLeg, _vc->get("met_phi"));
@@ -1332,7 +1493,6 @@ bool SUSY3L_sync2::ZEventSelectionLoop(){
     }
     
     return Zevent;
-
 }
 
 
@@ -1428,7 +1588,6 @@ float SUSY3L_sync2::M_T(float pt_lepton, float met, float phi_lepton, float phi_
         return m_t;
 }
 
-
 //____________________________________________________________________________
 bool SUSY3L_sync2::electronMvaCut(int idx, int wp){
     /*
@@ -1439,9 +1598,9 @@ bool SUSY3L_sync2::electronMvaCut(int idx, int wp){
 
         float _elMvaIdWP[3][2];
         int kLoose = 0;
-        int kTight = 1; 
-        _elMvaIdWP[0][kLoose]=0.35; _elMvaIdWP[0][kTight]=0.73;
-        _elMvaIdWP[1][kLoose]=0.20; _elMvaIdWP[1][kTight]=0.57;
+        int kTight = 1;
+        _elMvaIdWP[0][kLoose]=0.35;  _elMvaIdWP[0][kTight]=0.73;
+        _elMvaIdWP[1][kLoose]=0.20;  _elMvaIdWP[1][kTight]=0.57;
         _elMvaIdWP[2][kLoose]=-0.52; _elMvaIdWP[2][kTight]=0.05;
 
         int etaBin=-1;
@@ -1449,16 +1608,29 @@ bool SUSY3L_sync2::electronMvaCut(int idx, int wp){
         else if(std::abs(_vc->get("LepGood_eta", idx)) < 1.479) {etaBin=1;}
         else if(std::abs(_vc->get("LepGood_eta", idx)) < 2.5) {etaBin=2;}
         if(_vc->get("LepGood_mvaIdPhys14", idx) <  _elMvaIdWP[etaBin][wp]  ) {return false;}
-        
+
         return true;
 
 }
 
 
+//____________________________________________________________________________
+bool SUSY3L::multiIsolation(int idx, float miniRelIso_cut, float ptRatio_cut, float ptRel_cut){
+    /*
+        decides whether or not a lepton is isolated according to the 3 varibale isolation requirement.
+        lepton needs to pass miniRelIso cut and (ptratio or ptrel cut)
+        parameters: idx (possition of lepton in LepGood vector), miniRelIso_cut, ptRatio_cut, ptRel_cut
+        return: true (if lepton is isolated), flase (else)
+    */
 
+       if(_vc->get("LepGood_miniRelIso",idx) < miniRelIso_cut){
+           if((_vc->get("LepGood_jetPtRatio",idx) > ptRatio_cut) || (_vc->get("LepGood_jetPtRel",idx) > ptRel_cut)){ 
+               return true;
+           }
+       }
 
+       return false;
 
-
-
+}
 
 

@@ -221,7 +221,7 @@ void SUSY3L::loadInput(){
     */
 
 
-    // define function in MPAD for loading histograms, text files, histograms from database 
+    // define function in MPAF for loading histograms, text files, histograms from database 
 }
 
 
@@ -332,8 +332,7 @@ void SUSY3L::collectKinematicObjects(){
     //number of electrons in the event
     _nEls = _els.size();
     //_nVEls = _vEls.size();
-    
-    
+
     // loop over all taus and apply selection
     for(int i = 0; i < _vc->get("nTauGood"); ++i){
         // check which of the taus have tau identifier 15 (actually not needed)
@@ -364,6 +363,8 @@ void SUSY3L::collectKinematicObjects(){
     
     //number of taus in the event
     _nTaus = _taus.size();
+    //_vTaus = _taus.size();
+
 
     // loop over all jets of the event
     for(int i = 0; i < _vc->get("nJet"); ++i){
@@ -451,7 +452,8 @@ bool SUSY3L::electronSelection(int elIdx){
     if(!makeCut<float>( std::abs(_vc->get("LepGood_sip3d", elIdx)), sip3d_cut  , "<"  , "sip3d selection"   , 0    , kElId)) return false;
     //removed after RA7 sync round 2
     //if(!makeCut<int>( _vc->get("LepGood_tightCharge", elIdx) , 1     , ">"  , "charge selection", 0    , kElId)) return false;
-    //boolian variable if electron comes from gamme conversion or not (true if not from conversion)
+    
+    //boolian variable if electron comes from gamma conversion or not (true if not from conversion)
     bool not_conv = (_vc->get("LepGood_convVeto", elIdx)>0 && _vc->get("LepGood_lostHits", elIdx)==0);
     if(!makeCut( not_conv, "conversion rejection", "=", kElId)) return false;
     
@@ -460,8 +462,8 @@ bool SUSY3L::electronSelection(int elIdx){
     //bool muMatch = false;
     //for(int im=0; im<_nMus; ++im){
     //    float dr = KineUtils::dR( _mus[im]->eta(), _vc->get("LepGood_eta", elIdx), _mus[im]->phi(), _vc->get("LepGood_phi", elIdx));
-        //_deltaR = dr;
-        //fill("deltaR_elmu" , _deltaR        , _weight);
+    //    //_deltaR = dr;
+    //    //fill("deltaR_elmu" , _deltaR        , _weight);
     //    if(dr<deltaR){
     //        muMatch = true;
     //        break;
@@ -649,7 +651,7 @@ bool SUSY3L::goodJetSelection(int jetIdx){
             break;
         }
     }
-    
+
     //loop over all muon candidates
     for(int im=0; im<_nMus; ++im){
         //calculate delta R, input eta1, eta2, phi1, phi2
@@ -1702,7 +1704,6 @@ bool SUSY3L::baseSelection(){
     return true;
 }
 
-
 //____________________________________________________________________________
 bool SUSY3L::checkMultiIso(){
     /*
@@ -1930,10 +1931,9 @@ bool SUSY3L::ZEventSelectionLoop(){
     }
     
     if(el_Zcand == true){
-            //calculate transverse mass of 3rd lepton and met
+        //calculate transverse mass of 3rd lepton and met
         mt = M_T(pt_3rdLeg, _vc->get("met_pt"), phi_3rdLeg, _vc->get("met_phi"));
         //accept event if Z candidate exists and mt critirion is fulfilled
-                    
         if( (mt > _M_T_3rdLep_MET_cut) && (std::abs(_Z->mass()-Zmass) < _ZMassWindow)){
             Zevent = true;
         }
@@ -1954,6 +1954,7 @@ bool SUSY3L::ZEventSelectionLoop(){
             if((std::abs(Ztmp->mass()-Zmass) < _ZMassWindow) && (std::abs(Ztmp->mass()-Zmass)<diff) ) {
                 _Z = Ztmp;
                 diff = std::abs(_Z->mass()-Zmass);
+                mu_Zcand = true;
             }
             else{
                 continue;
@@ -1985,7 +1986,6 @@ bool SUSY3L::ZEventSelectionLoop(){
         //calculate transverse mass of 3rd lepton and met
         mt = M_T(pt_3rdLeg, _vc->get("met_pt"), phi_3rdLeg, _vc->get("met_phi"));
         //accept event if Z candidate exists and mt critirion is fulfilled
-        
         if( (mt > _M_T_3rdLep_MET_cut) && (std::abs(_Z->mass()-Zmass) < _ZMassWindow)){
             Zevent = true;
         }
@@ -1993,7 +1993,7 @@ bool SUSY3L::ZEventSelectionLoop(){
         pt_3rdLeg = 0.;
         phi_3rdLeg = 0.;
     }
-       
+    
     return Zevent;
 }
 

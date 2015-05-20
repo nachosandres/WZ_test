@@ -58,6 +58,7 @@ private:
     void fillEventPlots(std::string);
 
 
+
     float HT();
     float M_T(float, float, float, float);
     float DeltaPhi(float, float);
@@ -71,6 +72,7 @@ private:
 
     //counter categories, 0 is ALWAYS global (even if not specified later)
     enum {kGlobal=0, kElId, kElVeto, kMuId, kMuVeto, kTauId, kTauVeto, kJetId, kBJetId, conZEvents};
+
     //cut variables
     float _valCutLepMultiplicityBR;
     float _pt_cut_hard_leg;
@@ -118,6 +120,7 @@ private:
     int _nMus;
     int _nVMus;
     int _nTaus;
+    int _nVTaus;
     int _nJets;
     int _nBJets;
 
@@ -127,6 +130,7 @@ private:
     CandList _mus;
     CandList _vMus;
     CandList _taus;
+    CandList _vTaus;
     CandList _jets;
     CandList _bJets;
     Candidate* _met;
