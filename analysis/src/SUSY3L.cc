@@ -1636,7 +1636,7 @@ bool SUSY3L::baseSelection(){
     //require minimum number of b-tagged jets
     if(!makeCut<int>( _nBJets, _valCutNBJetsBR, _cTypeNBJetsBR, "b-jet multiplicity", _upValCutNBJetsBR) ) return false;
     
-    
+   /* 
     //require at least 1 of the leptons to have higher pT than original cut
     bool has_hard_leg = hardLegSelection();
     if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
@@ -1665,7 +1665,7 @@ bool SUSY3L::baseSelection(){
     else if(_pairmass == "on"){
         if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
     }
-    
+    */
     return true;
 }
 

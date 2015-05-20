@@ -26,7 +26,7 @@
     md.anConf.configureData(false, 0, mcOnly);
     //}
  
-    string obs ="ht";
+    string obs ="njets";
     if(obs == "njets"){
         md.dp.setObservables("BR_NJets");
         int binning=1;
