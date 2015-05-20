@@ -98,6 +98,7 @@
 
     //Higgs->ZZ
     LumisXS[ "GGHZZ4L"                                  ] =  204684 / (0.01212192       );  // cross-section: 43.92*2.76E-04
+    LumisXS[ "TTH"                                      ] =  199700 / (1         * 1    );
     
     //signal
     LumisXS[ "SMS_T1tttt_2J_mGl1200_mLSP800"            ] =  100322 / (0.0856418 * 20.  );
@@ -108,7 +109,6 @@
     LumisXS[ "TBarToLeptons_sch"                        ] =  250000 / (1.34784          );  // 4.16*0.108*3
     LumisXS[ "TBarToLeptons_tch"                        ] = 1999800 / (26.23428         );  // 80.97*0.108*3
     LumisXS[ "TBar_tWch"                                ] =  971800 / (35.6             ); 
-    LumisXS[ "TTH"                                      ] =  199700 / (1         * 1    );
     LumisXS[ "TTJets"                                   ] =25446993 / (809.1            );
     LumisXS[ "TToLeptons_sch"                           ] =  500000 / (2.3328           );  // 7.20*0.108*3
     LumisXS[ "TToLeptons_tch"                           ] = 3991000 / (44.0802          );  // 136.05*0.108*3

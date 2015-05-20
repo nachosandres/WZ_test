@@ -171,6 +171,7 @@
     md.anConf.addSample( "TTWJets"                          ,  "t#bar{t}W"          , kYellow   );
 
     //md.anConf.addSample( "GGHZZ4L"                          ,  "rare SM"            , kCyan     );
+    md.anConf.addSample( "TTH"                              ,  "rare SM"             , kCyan      );
 
   //Drell-Yan
     md.anConf.addSample( "DYJetsToLL_M50_HT100to200"        ,  "non-prompt e/#mu"    , kRed      );
@@ -182,7 +183,6 @@
     md.anConf.addSample( "TBarToLeptons_sch"                ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TBarToLeptons_tch"                ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TBar_tWch"                        ,  "non-prompt e/#mu"    , kRed      );
-    md.anConf.addSample( "TTH"                              ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TTJets"                           ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TToLeptons_sch"                   ,  "non-prompt e/#mu"    , kRed      );
     md.anConf.addSample( "TToLeptons_tch"                   ,  "non-prompt e/#mu"    , kRed      );

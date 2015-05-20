@@ -156,6 +156,9 @@ void SUSY3L::run(){
     // increment event counter, used as denominator for yield calculation
     counter("denominator");
 
+    //initialize multiIso working points
+    setMultiIsoWP();
+
     // do the minimal selection and collect kinematic variables for events passing it
     collectKinematicObjects();
 
@@ -414,16 +417,18 @@ bool SUSY3L::electronSelection(int elIdx){
     float eta_veto_low = 1.4442;
     float eta_veto_high = 1.566;
     //float isolation_cut = 0.15;
-    //float miniRelIso_cut = 0.22; float ptRatio_cut = 0.63; float ptRel_cut = 6.; //loose wp
-    //float miniRelIso_cut = 0.14; float ptRatio_cut = 0.68; float ptRel_cut = 6.7; //medium wp
-    float miniRelIso_cut = 0.10; float ptRatio_cut = 0.70; float ptRel_cut = 7.; //tight wp
-    //float miniRelIso_cut = 0.075; float ptRatio_cut = 0.725; float ptRel_cut = 7.; //very tight wp
-    //float miniRelIso_cut = 0.05; float ptRatio_cut = 0.725; float ptRel_cut = 8.; //hyper tight wp
     float vertex_dz_cut = 0.1;      //in cm
     float vertex_dxy_cut = 0.05;    //in cm
     float sip3d_cut = 4;
     float deltaR = 0.1;
-   
+    
+    //multiIso working points
+    int kLoose = 0;
+    int kMedium = 1;
+    int kTight = 2;
+    int kVeryTight = 3;
+    int kHyperTight = 4;
+ 
     //apply the cuts
     //makeCut(variable to cut on, cut value, direction of acception, name, 2nd cut value, counter)
     if(!makeCut<float>( _vc->get("LepGood_pt", elIdx) , pt_cut, ">"  , "pt selection"    , 0    , kElId)) return false;
@@ -436,8 +441,9 @@ bool SUSY3L::electronSelection(int elIdx){
     bool elTightMvaID = electronMvaCut(elIdx, 1);
         if(!makeCut( elTightMvaID, "electron tight mva wp", "=", kElId)) return false;
     //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
-    bool isolated = ThreeVariableIsolation(elIdx, miniRelIso_cut, ptRatio_cut, ptRel_cut);
-        if(!makeCut( isolated, "isolation VT wp", "=", kElId)) return false;
+    int wp = kMedium;
+    bool isolated = multiIsolation(elIdx, _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2]);
+        if(!makeCut( isolated, "initial multiIso selection", "=", kElId)) return false;
     //replaced by 3 varibale isolation
     //if(!makeCut<float>( _vc->get("LepGood_relIso03", elIdx) , isolation_cut   , "<"  , "isolation "      , 0    , kElId)) return false;
     if(!makeCut<float>( std::abs(_vc->get("LepGood_dz", elIdx)), vertex_dz_cut   , "<"  , "dz selection"    , 0    , kElId)) return false;
@@ -482,21 +488,24 @@ bool SUSY3L::muonSelection(int muIdx){
     float pt_cut = 10.;
     float eta_cut = 2.4;
     //float isolation_cut = 0.15;
-    //float miniRelIso_cut = 0.22; float ptRatio_cut = 0.63; float ptRel_cut = 6.; //loose wp
-    float miniRelIso_cut = 0.14; float ptRatio_cut = 0.68; float ptRel_cut = 6.7; //medium wp
-    //float miniRelIso_cut = 0.10; float ptRatio_cut = 0.70; float ptRel_cut = 7.; //tight wp
-    //float miniRelIso_cut = 0.075; float ptRatio_cut = 0.725; float ptRel_cut = 7.; //very tight wp
-    //float miniRelIso_cut = 0.05; float ptRatio_cut = 0.725; float ptRel_cut = 8.; //hyper tight wp
     float vertex_dz_cut = 0.1;
     float vertex_dxy_cut = 0.05;
     float sip3d_cut = 4;
-    
+   
+    //multiIso working points
+    int kLoose = 0;
+    int kMedium = 1;
+    int kTight = 2;
+    int kVeryTight = 3;
+    int kHyperTight = 4;
+ 
     //apply the cuts
     if(!makeCut<float>( _vc->get("LepGood_pt", muIdx), pt_cut, ">", "pt selection"    , 0, kMuId)) return false;
     if(!makeCut<float>( std::abs( _vc->get("LepGood_eta", muIdx)), eta_cut, "<", "eta selection", 0, kMuId)) return false;
     //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
-    bool isolated = ThreeVariableIsolation(muIdx, miniRelIso_cut, ptRatio_cut, ptRel_cut);
-        if(!makeCut( isolated, "isolation T wp", "=", kMuId)) return false;
+    int wp = kLoose;
+    bool isolated = multiIsolation(muIdx, _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2]);
+        if(!makeCut( isolated, "initial multiIso selection", "=", kMuId)) return false;
     //replaced by 3 varibale isolation
     //if(!makeCut<float>( _vc->get("LepGood_relIso03", muIdx) , isolation_cut   , "<", "isolation "      , 0, kMuId)) return false;
     //removed after RA7 sync round 2
@@ -696,6 +705,25 @@ bool SUSY3L::bJetSelection(int jetIdx){
 * ** KINEMATIC REGION DEFINITIONS                                             **
 * ******************************************************************************
 * *****************************************************************************/
+
+//____________________________________________________________________________
+void SUSY3L::setMultiIsoWP(){
+    /*
+        sets the cuts multiiso working point
+        parameters: none
+        return: none
+    */
+ 
+    //multiIso working points
+    //float _multiIsoWP[5][3];
+    _multiIsoWP[0][0]=0.22;  _multiIsoWP[0][1]=0.63;  _multiIsoWP[0][2]=6.; //loose
+    _multiIsoWP[1][0]=0.14;  _multiIsoWP[1][1]=0.68;  _multiIsoWP[1][2]=6.7;//medium
+    _multiIsoWP[2][0]=0.10;  _multiIsoWP[2][1]=0.70;  _multiIsoWP[2][2]=7.; //tight
+    _multiIsoWP[3][0]=0.075; _multiIsoWP[3][1]=0.725; _multiIsoWP[3][2]=7.; //very tight
+    _multiIsoWP[4][0]=0.05;  _multiIsoWP[4][1]=0.725; _multiIsoWP[4][2]=8.; //hyper tight
+
+}
+
 
 //____________________________________________________________________________
 void SUSY3L::setBaselineRegion(){
@@ -1628,7 +1656,12 @@ bool SUSY3L::baseSelection(){
     */
     
     //select events with certain lepton multiplicity of all flavor combinations
+    //leptons are ultra-loose in multiiso
     if(!makeCut<int>( _nEls + _nMus, _valCutLepMultiplicityBR, _cTypeLepMultiplicityBR, "lepton multiplicity", _upValCutLepMultiplicityBR ) ) return false;
+
+    //require at least two of the leptons to be tighter in multiiso
+    //bool has_two_tighter_leptons = checkMultiIso();
+    //if(!makeCut( has_two_tighter_leptons , "multiIso tightening", "=") ) return false;
 
     //require minimum number of jets
     if(!makeCut<int>( _nJets, _valCutNJetsBR, _cTypeNJetsBR, "jet multiplicity", _upValCutNJetsBR) ) return false;
@@ -1636,7 +1669,7 @@ bool SUSY3L::baseSelection(){
     //require minimum number of b-tagged jets
     if(!makeCut<int>( _nBJets, _valCutNBJetsBR, _cTypeNBJetsBR, "b-jet multiplicity", _upValCutNBJetsBR) ) return false;
     
-   /* 
+    
     //require at least 1 of the leptons to have higher pT than original cut
     bool has_hard_leg = hardLegSelection();
     if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
@@ -1665,9 +1698,65 @@ bool SUSY3L::baseSelection(){
     else if(_pairmass == "on"){
         if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
     }
-    */
+    
     return true;
 }
+
+
+//____________________________________________________________________________
+bool SUSY3L::checkMultiIso(){
+    /*
+        Checks if at least two of the selected leptons (ultra-loose in multiIso) 
+        are tigther in multiIso, where tighter can be different wp for muons and 
+        electrons  
+        return: true (if the event has 2 leptons which are tighter in multiIso)
+        , false (else)
+    */
+
+    //number of leptons fulfilling the tightened multiIso wp
+    int tighter_leptons = 0;
+
+    //multiIso working points
+    int kLoose = 0;
+    int kMedium = 1;
+    int kTight = 2;
+    int kVeryTight = 3;
+    int kHyperTight = 4;
+    int wp = -1;
+   
+    
+    //check electrons
+    //multiIso working point
+    wp = kTight;
+    //_elIdx is vector of electron positions in LepGood vector
+    for(int ie=0; ie<_nEls; ++ie){
+        if(multiIsolation(_elIdx[ie], _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2])){
+            tighter_leptons += 1;
+        }
+    }
+
+    //check muons
+    //multiIso working point
+    wp = kMedium;
+    //_muIdx is vector of electron positions in LepGood vector
+    for(int im=0; im<_nMus; ++im){
+        if(multiIsolation(_muIdx[im], _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2])){
+            tighter_leptons += 1;
+        }
+    }
+
+    if(tighter_leptons>=2){
+        return true;
+    }
+
+    return false;
+}
+
+
+
+
+
+
 
 //____________________________________________________________________________
 bool SUSY3L::hardLegSelection(){
@@ -1707,7 +1796,7 @@ bool SUSY3L::lowMllPair(){
     for(int ie1=0; ie1 < _nEls; ie1++) {
         for(int ie2 = ie1; ie2 < _nEls; ie2++) {
             //continue if not an ossf pair
-            if(_vc->get("LepGood_pdgId", ie1) != - _vc->get("LepGood_pdgId", ie2) ) continue;
+            if( _els[ie1]->pdgId() != - _els[ie2]->pdgId()) continue;
             //return true if low mass pair is found
             float mll = Candidate::create(_els[ie1], _els[ie2])->mass();
             if(mll < _lowMllCut) return true;
@@ -1718,7 +1807,7 @@ bool SUSY3L::lowMllPair(){
     for(int im1=0; im1 < _nMus; im1++) {
         for(int im2 = im1; im2 < _nMus; im2++) {
             //continue if not an ossf pair
-            if(_vc->get("LepGood_pdgId", im1) != - _vc->get("LepGood_pdgId", im2) ) continue;
+            if( _mus[im1]->pdgId() != - _mus[im2]->pdgId()) continue;
             //return true if low mass pair is found
             float mll = Candidate::create(_mus[im1], _mus[im2])->mass();
             if(mll < _lowMllCut) return true;
@@ -2012,8 +2101,8 @@ bool SUSY3L::electronMvaCut(int idx, int wp){
         float _elMvaIdWP[3][2];
         int kLoose = 0;
         int kTight = 1;
-        _elMvaIdWP[0][kLoose]=0.35; _elMvaIdWP[0][kTight]=0.73;
-        _elMvaIdWP[1][kLoose]=0.20; _elMvaIdWP[1][kTight]=0.57;
+        _elMvaIdWP[0][kLoose]=0.35;  _elMvaIdWP[0][kTight]=0.73;
+        _elMvaIdWP[1][kLoose]=0.20;  _elMvaIdWP[1][kTight]=0.57;
         _elMvaIdWP[2][kLoose]=-0.52; _elMvaIdWP[2][kTight]=0.05;
 
         int etaBin=-1;
@@ -2028,16 +2117,16 @@ bool SUSY3L::electronMvaCut(int idx, int wp){
 
 
 //____________________________________________________________________________
-bool SUSY3L::ThreeVariableIsolation(int idx, float miniRelIso_cut, float ptRatio_cut, float ptRel_cut){
+bool SUSY3L::multiIsolation(int idx, float miniRelIso_cut, float ptRatio_cut, float ptRel_cut){
     /*
-        decides whether ot not a lepton is isolated according to the 3 varibale isolation requirement.
+        decides whether or not a lepton is isolated according to the 3 varibale isolation requirement.
         lepton needs to pass miniRelIso cut and (ptratio or ptrel cut)
-        parameters: idx (electron identification number), miniRelIso_cut, ptRatio_cut, ptRel_cut
+        parameters: idx (possition of lepton in LepGood vector), miniRelIso_cut, ptRatio_cut, ptRel_cut
         return: true (if lepton is isolated), flase (else)
     */
 
        if(_vc->get("LepGood_miniRelIso",idx) < miniRelIso_cut){
-           if((_vc->get("LepGood_jetPtRatio") > ptRatio_cut) || (_vc->get("LepGood_jetPtRel") > ptRel_cut)){ 
+           if((_vc->get("LepGood_jetPtRatio",idx) > ptRatio_cut) || (_vc->get("LepGood_jetPtRel",idx) > ptRel_cut)){ 
                return true;
            }
        }

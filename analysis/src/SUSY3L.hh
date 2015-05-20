@@ -33,6 +33,7 @@ private:
 
     void modifySkimming();
 
+    void setMultiIsoWP();
     void collectKinematicObjects();
     bool electronSelection(int);
     bool muonSelection(int);
@@ -47,12 +48,13 @@ private:
     void setSignalRegion();
     void setCut(std::string, float, std::string, float = 0);
     bool hardLegSelection();
+    bool checkMultiIso();
     bool lowMllPair();
     bool ZEventSelection();
     bool ZEventSelectionLoop();
     bool srSelection();
     bool electronMvaCut(int, int);
-    bool ThreeVariableIsolation(int, float, float, float);
+    bool multiIsolation(int, float, float, float);
     void fillEventPlots(std::string);
 
 
@@ -73,6 +75,7 @@ private:
     float _valCutLepMultiplicityBR;
     float _pt_cut_hard_leg;
     float _M_T_3rdLep_MET_cut;
+    float _multiIsoWP[5][3];
     float _valCutNJetsBR;
     float _valCutNBJetsBR;
     float _ZMassWindow;
@@ -131,6 +134,7 @@ private:
 
     float _HT;
     float _deltaR;
+  
     
 };
 
