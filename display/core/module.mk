@@ -1,6 +1,6 @@
 #Source files to compile
 FILES += AnaConfig
-FILES += Display
+FILES += DisplayClass
 FILES += MPAFDisplay
 FILES += Renorm
 

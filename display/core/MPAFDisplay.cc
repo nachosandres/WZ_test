@@ -72,7 +72,7 @@ MPAFDisplay::getStatistics(string categ) {
 void 
 MPAFDisplay::setNumbers() {
   if(!_recompute) return;
-
+  
   for(size_t id=0;id<_dsNames.size();id++) {
     _au->addDataset(_dsNames[id]);
   }
@@ -83,7 +83,7 @@ MPAFDisplay::setNumbers() {
   size_t bh = 0;
   
   int icat=1; //0 for global
-
+  
   for(int i=(int)(statFiles.size())-1; i>=0; i--) {
     
     if(statFiles.size()>1 && i!=0)
@@ -93,7 +93,7 @@ MPAFDisplay::setNumbers() {
 
     if(ctag.size()>4 && ctag.substr(ctag.size()-4) == ".dat")
       ctag.erase(ctag.size()-4,4);
-      
+    
     readStatFile( statFiles[i], ctag, icat);
   }
 
@@ -110,7 +110,7 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
   ifstream fDb( ndb.c_str(), ios::in );
 
   map<pair<string,string>, bool > fVal;
-
+  
   if(fDb)  {
     string line;
     
@@ -168,12 +168,12 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
       else if(tks[0]=="selection") continue;
  
       else {
- 
+	
         size_t n=tks.size()-4;
         cname="";
         for(size_t i=0;i<n;i++)
           cname += tks[i]+" ";
-          
+	
         sname = tks[n];
 	
         Dataset* ds=anConf.findDS( sname );
@@ -230,9 +230,9 @@ MPAFDisplay::readStatFile(string filename, string ctag, int& icat) {
 void
 MPAFDisplay::prepareDisplay(){
 
-  configure();
-  dp.setLumi( anConf.getLumi() );
-  setNumbers();
+  cout << "configure" << endl;  configure();
+  cout << "setLumi" << endl; dp.setLumi( anConf.getLumi() );
+  cout << "setNumbers" << endl; setNumbers();
 
 }
 
