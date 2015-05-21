@@ -12,7 +12,7 @@
 
 
 #include "display/core/AnaConfig.hh"
-#include "display/core/Display.hh"
+#include "display/core/DisplayClass.hh"
 #include "tools/src/AnaUtils.hh"
 #include "tools/src/Dataset.hh"
 #include "tools/src/DataBaseManager.hh"
@@ -53,7 +53,7 @@ public:
 
   AnaConfig anConf;
 
-  Display dp;
+  DisplayClass dp;
 
   //===== functions ====
 

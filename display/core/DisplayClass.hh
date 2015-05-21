@@ -42,7 +42,7 @@
 
 using namespace std;
 
-class Display {
+class DisplayClass {
 
 private:
 
@@ -180,8 +180,8 @@ private:
 
 public:
 
-  Display();
-  virtual ~Display();
+  DisplayClass();
+  virtual ~DisplayClass();
 
   void reset();
   void softReset();
@@ -302,7 +302,7 @@ private:
   void graphConstraint(size_t ih, int iobs, float& xd, float& xu, float& yd,
 		       float& yu,float& f, float dx, float dy);
 
-  ClassDef(Display,0)  
+  ClassDef(DisplayClass,0)  
 
 };
 
