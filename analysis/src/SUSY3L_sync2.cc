@@ -122,7 +122,6 @@ void SUSY3L_sync2::initialize(){
                  
     //config file input variables
     _pairmass = getCfgVarS("pairMass");
-    _selectTaus = getCfgVarS("selectTaus");
     _BR = getCfgVarS("baselineRegion");
     _SR = getCfgVarS("signalRegion");
 
@@ -170,9 +169,9 @@ void SUSY3L_sync2::run(){
     fillEventPlots("BR");
 
     //printout for RA7 synchronization
-    //int lumi = _vc->get("lumi");
-    //int evt = _vc->get("evt");
-    //cout << "1" << " " << lumi << " " << evt << " " << _nMus << " " << _nEls << " " << _nTaus << " " << _nJets << " " << _nBJets << endl;
+    int lumi = _vc->get("lumi");
+    int evt = _vc->get("evt");
+    cout << "1" << " " << lumi << " " << evt << " " << _nMus << " " << _nEls << " " << _nTaus << " " << _nJets << " " << _nBJets << endl;
 
     // initialization of signal region cuts, categorization of events passing the baseline 
     // selection into different signal regions, and filling of plots
@@ -455,7 +454,7 @@ bool SUSY3L_sync2::electronSelection(int elIdx){
     float eta_cut = 2.5;
     float eta_veto_low = 1.4442;
     float eta_veto_high = 1.566;
-    //float isolation_cut = 0.15;
+    float isolation_cut = 0.15;
     float vertex_dz_cut = 0.1;      //in cm
     float vertex_dxy_cut = 0.05;    //in cm
     float sip3d_cut = 4;
@@ -482,6 +481,9 @@ bool SUSY3L_sync2::electronSelection(int elIdx){
         if(!makeCut( elTightMvaID, "electron tight mva wp", "=", kElId)) return false;
     //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
     int wp = kMedium;
+    //if(_vc->get("lumi") == 2811  && _vc->get("evt") == 81007){
+    //    cout << "electron idx " << elIdx << " with pt " <<  _vc->get("LepGood_pt", elIdx) << endl;
+    //}
     bool isolated = multiIsolation(elIdx, _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2]);
         if(!makeCut( isolated, "initial multiIso selection", "=", kElId)) return false;
     //replaced by 3 varibale isolation
@@ -528,7 +530,7 @@ bool SUSY3L_sync2::muonSelection(int muIdx){
     //define cut values
     float pt_cut = 10.;
     float eta_cut = 2.4;
-    //float isolation_cut = 0.15;
+    float isolation_cut = 0.15;
     float vertex_dz_cut = 0.1;
     float vertex_dxy_cut = 0.05;
     float sip3d_cut = 4;
@@ -545,6 +547,9 @@ bool SUSY3L_sync2::muonSelection(int muIdx){
     if(!makeCut<float>( std::abs( _vc->get("LepGood_eta", muIdx)), eta_cut, "<", "eta selection", 0, kMuId)) return false;
     //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
     int wp = kLoose;
+    //if(_vc->get("lumi") == 2811  && _vc->get("evt") == 81007){
+    //    cout << "muon idx " << muIdx << " with pt " <<  _vc->get("LepGood_pt", muIdx) << endl;
+    //}
     bool isolated = multiIsolation(muIdx, _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2]);
         if(!makeCut( isolated, "initial multiIso selection", "=", kMuId)) return false;
     //replaced by 3 varibale isolation
@@ -1094,8 +1099,8 @@ bool SUSY3L_sync2::baseSelection(){
     */
     
     //print event information before selection
-    /*
-    if(_vc->get("lumi") == 12  && _vc->get("evt") == 1111){
+   /* 
+    if(_vc->get("lumi") == 2811  && _vc->get("evt") == 81007){
         cout << "--------------------------------------------------"<< endl; 
         cout << "event  " << _vc->get("lumi") << " " << _vc->get("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
         for(int i =0;i<_nEls;i++){
@@ -1155,10 +1160,10 @@ bool SUSY3L_sync2::baseSelection(){
     //if(!makeCut( has_two_tighter_leptons , "multiIso tightening", "=") ) return false;
 
     //require minimum number of jets
-    if(!makeCut<int>( _nJets, _valCutNJetsBR, _cTypeNJetsBR, "jet multiplicity", _upValCutNJetsBR) ) return false;
+    //if(!makeCut<int>( _nJets, _valCutNJetsBR, _cTypeNJetsBR, "jet multiplicity", _upValCutNJetsBR) ) return false;
 
     //require minimum number of b-tagged jets
-    if(!makeCut<int>( _nBJets, _valCutNBJetsBR, _cTypeNBJetsBR, "b-jet multiplicity", _upValCutNBJetsBR) ) return false;
+    //if(!makeCut<int>( _nBJets, _valCutNBJetsBR, _cTypeNBJetsBR, "b-jet multiplicity", _upValCutNBJetsBR) ) return false;
     
     
     //require at least 1 of the leptons to have higher pT than original cut
@@ -1194,7 +1199,7 @@ bool SUSY3L_sync2::baseSelection(){
 }
 
 //____________________________________________________________________________
-bool SUSY3L::checkMultiIso(){
+bool SUSY3L_sync2::checkMultiIso(){
     /*
         Checks if at least two of the selected leptons (ultra-loose in multiIso) 
         are tigther in multiIso, where tighter can be different wp for muons and 
@@ -1249,7 +1254,7 @@ bool SUSY3L::checkMultiIso(){
 
 
 //____________________________________________________________________________
-bool SUSY3L::hardLegSelection(){
+bool SUSY3L_sync2::hardLegSelection(){
     /*
         Checks if the selected event with at least 3 leptons has at least one lepton 
         fullfilling a harsher pT cut 
@@ -1615,19 +1620,30 @@ bool SUSY3L_sync2::electronMvaCut(int idx, int wp){
 
 
 //____________________________________________________________________________
-bool SUSY3L::multiIsolation(int idx, float miniRelIso_cut, float ptRatio_cut, float ptRel_cut){
+bool SUSY3L_sync2::multiIsolation(int idx, float miniRelIso_cut, float ptRatio_cut, float ptRel_cut){
     /*
         decides whether or not a lepton is isolated according to the 3 varibale isolation requirement.
         lepton needs to pass miniRelIso cut and (ptratio or ptrel cut)
         parameters: idx (possition of lepton in LepGood vector), miniRelIso_cut, ptRatio_cut, ptRel_cut
         return: true (if lepton is isolated), flase (else)
     */
+       /*
+       if(_vc->get("lumi") == 2811  && _vc->get("evt") == 81007){
+           cout << idx << " miniIso " << _vc->get("LepGood_miniRelIso",idx) << endl;
+           cout << idx << " ptratio " << _vc->get("LepGood_jetPtRatio",idx) << endl;
+           cout << idx << " ptrel "   << _vc->get("LepGood_jetPtRel",idx) << endl;
+       }
+        */
 
        if(_vc->get("LepGood_miniRelIso",idx) < miniRelIso_cut){
            if((_vc->get("LepGood_jetPtRatio",idx) > ptRatio_cut) || (_vc->get("LepGood_jetPtRel",idx) > ptRel_cut)){ 
                return true;
            }
        }
+
+
+
+
 
        return false;
 
