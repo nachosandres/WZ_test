@@ -31,6 +31,52 @@
     md.anConf.configureNames( dir, fileName, fileList);
     md.anConf.configureData(false, 0, mcOnly);
  
+
+    //observables **********************
+    //string obs[6]={"","","","","",""};
+    //md.dp.setObservables("Zmass");
+    //md.dp.setObservables("deltaR_elmu");
+    //md.dp.setObservables("BR_NJets");
+    //md.dp.setObservables("BR_NBJets");
+    //md.dp.setObservables("BR_HT");
+    //md.dp.setObservables("BR_MET");
+    //md.dp.setObservables("SR_NJets");
+    //md.dp.setObservables("SR_NBJets");
+    //md.dp.setObservables("SR_HT");
+    //md.dp.setObservables("SR_MET");
+
+    //Binning & title ************************* Binning & titre
+    string yTitle="number of events";
+    int binning=1;
+    int addBinBkg=1; //BinB = binning*AddBin
+    double rangeY[2]={0,0};
+    double rangeX[2]={0,7};
+    int xDiv[3]={8,6,0};
+    int yDiv[3]={6,6,0}; //Nlabel /  sous-Div /ssdiv
+    bool logYScale=false;
+    bool overFlowBin=true;
+    bool underFlowBin=false;
+    bool showDMCRatio=true;
+    bool showGrid=false;
+    float markerSize=0.8;
+    float lineWidth=2;
+
+    bool summedSignal=false;
+    bool stacking=true;
+
+    bool cmsPrel=true;
+
+    float xt=0.68;
+    float yt=0.48;
+    float st=0.039;
+    string addText="";
+
+    //string autoBinFile="susybinninghigh";
+    //md.dp.loadAutoBinning(autoBinFile);
+
+
+
+
     //Systematic uncertainties ********************************
     bool addSystematics=true;
   
@@ -112,6 +158,15 @@
     //plotting ================
     md.dp.setLumiAndEnergy( lumi, energy );
     md.dp.setNormalization( Norm );
+    md.dp.configureDisplay(yTitle, rangeY, rangeX, logYScale, xDiv,
+             yDiv, binning, addBinBkg, overFlowBin,
+             underFlowBin, showDMCRatio, showGrid,
+             stacking, addSystematics, mcStatSyst,
+             markerSize, lineWidth,summedSignal,
+             mcOnly,cmsPrel, uncDet);
+
+
+
     md.prepareDisplay();
     md.doPlot();
 

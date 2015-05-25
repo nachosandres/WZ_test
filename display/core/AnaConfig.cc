@@ -187,7 +187,7 @@ AnaConfig::isHistoAnalysis() {
 
 void
 AnaConfig::addSample( string str, string sname, int col, bool loadH) {
-  
+ 
   if( str.find("DD")!=string::npos ) {
     _ddCuts.push_back(str.substr(3, str.size()-3));
     //sname+="DD";
