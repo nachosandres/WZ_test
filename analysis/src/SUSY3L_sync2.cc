@@ -273,8 +273,8 @@ void SUSY3L_sync2::collectKinematicObjects(){
         //print event information before selection
        
         
-        /*        
-        if(_vc->get("lumi") == 12 && _vc->get("evt") == 1111 ){
+            /*    
+        if(_vc->get("lumi") == 4613 && _vc->get("evt") == 61208 ){
             cout << "--------------------------------------------------"<< endl; 
             cout << "pt " << _vc->get("LepGood_pt", i) <<endl;
             cout << "eta " << _vc->get("LepGood_eta", i) <<endl;
@@ -283,6 +283,9 @@ void SUSY3L_sync2::collectKinematicObjects(){
             cout << "charge " << _vc->get("LepGood_charge", i) <<endl;
             cout << "relIso " << _vc->get("LepGood_relIso03", i) <<endl;
             cout << "sip " << _vc->get("LepGood_sip3d", i) <<endl;
+            cout << "miniIso " << _vc->get("LepGood_miniRelIso", i) <<endl;
+            cout << "ptrel " << _vc->get("LepGood_jetPtRel", i) <<endl;
+            cout << "ptratio " << _vc->get("LepGood_jetPtRatio", i) <<endl;
             if(std::abs(_vc->get("LepGood_pdgId", i))==13){
                 cout << "muon id " << _vc->get("LepGood_mediumMuonId", i) <<endl;}
             if(std::abs(_vc->get("LepGood_pdgId", i))==11){
@@ -481,9 +484,9 @@ bool SUSY3L_sync2::electronSelection(int elIdx){
         if(!makeCut( elTightMvaID, "electron tight mva wp", "=", kElId)) return false;
     //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
     int wp = kMedium;
-    if(_vc->get("lumi") == 2964  && _vc->get("evt") == 96357){
-        cout << "electron idx " << elIdx << " with pt " <<  _vc->get("LepGood_pt", elIdx) << endl;
-    }
+    //if(_vc->get("lumi") == 2865  && _vc->get("evt") == 86491){
+    //    cout << "electron idx " << elIdx << " with pt " <<  _vc->get("LepGood_pt", elIdx) << endl;
+    //}
     bool isolated = multiIsolation(elIdx, _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2]);
         if(!makeCut( isolated, "initial multiIso selection", "=", kElId)) return false;
     //replaced by 3 varibale isolation
@@ -547,9 +550,9 @@ bool SUSY3L_sync2::muonSelection(int muIdx){
     if(!makeCut<float>( std::abs( _vc->get("LepGood_eta", muIdx)), eta_cut, "<", "eta selection", 0, kMuId)) return false;
     //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
     int wp = kLoose;
-    if(_vc->get("lumi") == 2964  && _vc->get("evt") == 96357){
-        cout << "muon idx " << muIdx << " with pt " <<  _vc->get("LepGood_pt", muIdx) << endl;
-    }
+    //if(_vc->get("lumi") == 2865  && _vc->get("evt") == 86491){
+    //    cout << "muon idx " << muIdx << " with pt " <<  _vc->get("LepGood_pt", muIdx) << endl;
+    //}
     bool isolated = multiIsolation(muIdx, _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2]);
         if(!makeCut( isolated, "initial multiIso selection", "=", kMuId)) return false;
     //replaced by 3 varibale isolation
@@ -1099,8 +1102,8 @@ bool SUSY3L_sync2::baseSelection(){
     */
     
     //print event information before selection
-    
-    if(_vc->get("lumi") == 2964  && _vc->get("evt") == 96357){
+   /* 
+    if(_vc->get("lumi") == 4613  && _vc->get("evt") == 61208){
         cout << "--------------------------------------------------"<< endl; 
         cout << "event  " << _vc->get("lumi") << " " << _vc->get("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
         for(int i =0;i<_nEls;i++){
@@ -1119,7 +1122,7 @@ bool SUSY3L_sync2::baseSelection(){
     
 
     }
-    
+    */
 
 
 
@@ -1181,7 +1184,6 @@ bool SUSY3L_sync2::baseSelection(){
     //if(!makeCut( !has_low_mll , "low mll rejection", "=") ) return false;
     
     //select on or off-Z events according to specification in config file
-    //bool is_reconstructed_Z = !ZEventSelection();
     bool is_reconstructed_Z = ZEventSelectionLoop();
 
     //if(is_reconstructed_Z){
@@ -1325,76 +1327,32 @@ bool SUSY3L_sync2::lowMllPair(){
 
 
 //____________________________________________________________________________
-//bool SUSY3L::ZEventSelection(){
-    /*
-        Checks if there is a same-flavor opposite-charge pair with an invariant 
-        mass around the Z mass among the 3 leptons. Faster than ZEventSelectionLoop 
-        but no Z candidate extraction, just immediate rejection of event
-        return: true (if a Z can not be reconstructed from 2 leptons), false (else)
-    */
-/*    
-    //TODO: modify for more than 3 leptons
-    //count reconstructed Z bosons
-    counter("denominator", conZEvents);
-
-    //Z mass
-    float Zmass = 91.1876;
-
-    //three electrons
-    if(_nEls == 3){
-        if(_els[0]->charge() != _els[1]->charge()){
-            float mll = Candidate::create(_els[0], _els[1])->mass();
-            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
-        }
-        if(_els[0]->charge() != _els[2]->charge()){
-            float mll = Candidate::create(_els[0], _els[2])->mass();
-            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
-        }
-        if(_els[1]->charge() != _els[2]->charge()){
-            float mll = Candidate::create(_els[1], _els[2])->mass();
-            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
-        }
-    }
-     
-    return false;
-}
-*/
-
-//____________________________________________________________________________
 bool SUSY3L_sync2::ZEventSelectionLoop(){
     /*
         Checks if there is a same-flavor opposite-charge lepton pair with an invariant 
         mass around the Z mass. The ossf pair with an invariant mass closest to the 
         Z mass is added as Z candidate. Additionally a requirement on the transverse mass
-        of the 3rd lepton and the met is checked
+        of the any of the other leptons and the met is checked
         return: true (if a Z can be reconstructed from 2 leptons and tranverse mass 
         requirement is fulfilled), false (else)
     */
-    
+
     //count reconstructed Z bosons
     counter("denominator", conZEvents);
 
     //Z mass
-    float Zmass = 91.;//1876;
+    float Zmass = 91.;//.1876;
     float diff = 1000000;
     bool Zevent = false;
-    float pt_3rdLeg = 0;
-    float phi_3rdLeg = 0;
+    float pt_other = 0;
+    float phi_other = 0;
     float mt = 0;
-   /* 
-    if(_vc->get("lumi") == 4378 && _vc->get("evt") == 37750){
-        cout << "mu0: " << _mus[0]->pdgId() << " " << _mus[0]->pt()<< " "  << _mus[0]->eta() <<" "  << _mus[0]->phi() << endl;
-        cout << "mu1: " << _mus[1]->pdgId() << " " << _mus[1]->pt()<< " "  << _mus[1]->eta() <<" "  << _mus[1]->phi() << endl;
-        cout << "mu2: " << _mus[2]->pdgId() << " " << _mus[2]->pt()<< " "  << _mus[2]->eta() <<" "  << _mus[2]->phi() << endl;
-        cout << "met pt and phi: " << _vc->get("met_pt") << " " <<  _vc->get("met_phi") << endl;
-        cout << "----------------------" << endl;
-    } 
-    */
-    
-    bool el_Zcand = false; 
+    int ie1_save = -1;
+    int ie2_save = -1;
+    int im1_save = -1;
+    int im2_save = -1;
+
+    bool el_Zcand = false;
     //loop over all possible combination of two electrons
     for(int ie1=0; ie1 < _nEls; ie1++){
         for(int ie2 = ie1; ie2 < _nEls; ie2++) {
@@ -1407,42 +1365,51 @@ bool SUSY3L_sync2::ZEventSelectionLoop(){
                 _Z = Ztmp;
                 diff = std::abs(_Z->mass()-Zmass);
                 el_Zcand = true;
+                ie1_save = ie1;
+                ie2_save = ie2;
             }
             else{
                 continue;
             }
-            //measure pt and phi of 3rd lepton
-            if(_nEls == 3){
-                if(ie1+ie2 == 1){
-                    pt_3rdLeg = _els[2]->pt();
-                    phi_3rdLeg = _els[2]->phi();
-                }
-                if(ie1+ie2 == 2){
-                    pt_3rdLeg = _els[1]->pt();
-                    phi_3rdLeg = _els[1]->phi();
-                }
-                if(ie1+ie2 == 3){
-                    pt_3rdLeg = _els[0]->pt();
-                    phi_3rdLeg = _els[0]->phi();
-                }                 
-            }
-            if(_nMus == 1){
-                pt_3rdLeg = _mus[0]->pt();
-                phi_3rdLeg = _mus[0]->phi();
-            }
         }
     }
-    
+    //if(_vc->get("lumi") == 4613 && _vc->get("evt") == 61208){
+    //    cout << "el_Zcand " << el_Zcand << endl;
+    //}
+            
+    //check MT requirement if there is a Z candidate with electrons
     if(el_Zcand == true){
-        //calculate transverse mass of 3rd lepton and met
-        mt = M_T(pt_3rdLeg, _vc->get("met_pt"), phi_3rdLeg, _vc->get("met_phi"));
-        //accept event if Z candidate exists and mt critirion is fulfilled
-        if( (mt > _M_T_3rdLep_MET_cut) && (std::abs(_Z->mass()-Zmass) < _ZMassWindow)){
-            Zevent = true;
+        //loop other all electrons which are not part of the ossf pair
+        for(int ie=0; ie < _nEls; ie++){
+            if(ie == ie1_save || ie == ie2_save){
+                continue;
+            }
+            pt_other = _els[ie]->pt();
+            phi_other = _els[ie]->phi();
+            //calculate transverse mass of other lepton and met
+            mt = M_T(pt_other, _vc->get("met_pt"), phi_other, _vc->get("met_phi"));
+            //accept event if Z candidate exists and mt critirion is fulfilled
+            if(mt > _M_T_3rdLep_MET_cut){
+               return true;
+            }
+            mt = 0.;
+            pt_other = 0.;
+            phi_other = 0.;
         }
-        mt = 0.;
-        pt_3rdLeg = 0.;
-        phi_3rdLeg = 0.;
+        //loop over all muons
+        for(int im=0; im < _nMus; im++){
+            pt_other = _mus[im]->pt();
+            phi_other = _mus[im]->phi();
+            //calculate transverse mass of other lepton and met
+            mt = M_T(pt_other, _vc->get("met_pt"), phi_other, _vc->get("met_phi"));
+            //accept event if Z candidate exists and mt critirion is fulfilled
+            if(mt > _M_T_3rdLep_MET_cut){
+               return true;
+            }
+            mt = 0.;
+            pt_other = 0.;
+            phi_other = 0.;
+        }
     }
 
     bool mu_Zcand = false;
@@ -1453,53 +1420,75 @@ bool SUSY3L_sync2::ZEventSelectionLoop(){
             if( _mus[im1]->pdgId() != - _mus[im2]->pdgId()) continue;
             //create new Z candidate
             Candidate* Ztmp = Candidate::create(_mus[im1], _mus[im2]);
+            //if(_vc->get("lumi") == 4613 && _vc->get("evt") == 61208){
+            //    cout << "mass " << Ztmp->mass() << endl;
+            //    cout << "diff " << diff << endl;
+            //    cout << std::abs(Ztmp->mass()-Zmass) << " " << std::abs(Ztmp->mass()-Zmass) << endl;
+            //}
             //keep Z candidate if smallest difference to Z mass
             if((std::abs(Ztmp->mass()-Zmass) < _ZMassWindow) && (std::abs(Ztmp->mass()-Zmass)<diff) ) {
                 _Z = Ztmp;
+                //if(_vc->get("lumi") == 4613 && _vc->get("evt") == 61208){
+                //    cout << "in loop" << endl;
+                //}
                 diff = std::abs(_Z->mass()-Zmass);
                 mu_Zcand = true;
+                im1_save = im1;
+                im2_save = im2;
             }
             else{
                 continue;
             }
-            
-            //measure pt and phi of 3rd lepton
-            if(_nMus == 3){
-                if(im1+im2 == 1){
-                    pt_3rdLeg = _mus[2]->pt();
-                    phi_3rdLeg = _mus[2]->phi();
-                }
-                if(im1+im2 == 2){
-                    pt_3rdLeg = _mus[1]->pt();
-                    phi_3rdLeg = _mus[1]->phi();
-                }
-                if(im1+im2 == 3){
-                    pt_3rdLeg = _mus[0]->pt();
-                    phi_3rdLeg = _mus[0]->phi();
-                }                 
-            }
-            if(_nEls == 1){
-                pt_3rdLeg = _els[0]->pt();
-                phi_3rdLeg = _els[0]->phi();
-            }        
         }
     }
-
+ 
+    //if(_vc->get("lumi") == 4613 && _vc->get("evt") == 61208){
+    //    cout << "mu_Zcand " << mu_Zcand << endl;
+    //}
+       
+    //check MT requirement if there is a Z candidate with electrons
     if(mu_Zcand == true){
-        //calculate transverse mass of 3rd lepton and met
-        mt = M_T(pt_3rdLeg, _vc->get("met_pt"), phi_3rdLeg, _vc->get("met_phi"));
-        //accept event if Z candidate exists and mt critirion is fulfilled
-        if( (mt > _M_T_3rdLep_MET_cut) && (std::abs(_Z->mass()-Zmass) < _ZMassWindow)){
-            Zevent = true;
+        //loop over all muons which are not part of the ossf pair
+        for(int im=0; im < _nMus; im++){
+            if(im == im1_save || im == im2_save){
+                continue;
+            }
+            pt_other = _mus[im]->pt();
+            phi_other = _mus[im]->phi();
+            //calculate transverse mass of other lepton and met
+            mt = M_T(pt_other, _vc->get("met_pt"), phi_other, _vc->get("met_phi"));
+            //if(_vc->get("lumi") == 4613 && _vc->get("evt") == 61208){
+            //    cout << "mt " << mt << "for muon " << im << endl;
+            //    cout <<  pt_other << " " <<  _vc->get("met_pt") << " " << phi_other << " " <<  _vc->get("met_phi") << endl;
+            //}
+ 
+
+            //accept event if Z candidate exists and mt critirion is fulfilled
+            if(mt > _M_T_3rdLep_MET_cut){
+               return true;
+            }
+            mt = 0.;
+            pt_other = 0.;
+            phi_other = 0.;
         }
-        mt = 0.;
-        pt_3rdLeg = 0.;
-        phi_3rdLeg = 0.;
+        //loop over all electrons to check MT requirement
+        for(int ie=0; ie < _nEls; ie++){
+            pt_other = _els[ie]->pt();
+            phi_other = _els[ie]->phi();
+            //calculate transverse mass of other lepton and met
+            mt = M_T(pt_other, _vc->get("met_pt"), phi_other, _vc->get("met_phi"));
+            //accept event if Z candidate exists and mt critirion is fulfilled
+            if(mt > _M_T_3rdLep_MET_cut){
+               return true;
+            }
+            mt = 0.;
+            pt_other = 0.;
+            phi_other = 0.;
+        }
     }
     
-    return Zevent;
+    return false;
 }
-
 
 //____________________________________________________________________________
 bool SUSY3L_sync2::srSelection(){
@@ -1627,13 +1616,13 @@ bool SUSY3L_sync2::multiIsolation(int idx, float miniRelIso_cut, float ptRatio_c
         parameters: idx (possition of lepton in LepGood vector), miniRelIso_cut, ptRatio_cut, ptRel_cut
         return: true (if lepton is isolated), flase (else)
     */
-           
-       if(_vc->get("lumi") == 2964  && _vc->get("evt") == 96357){
+          /* 
+       if(_vc->get("lumi") == 2865  && _vc->get("evt") == 86491){
            cout << idx << " miniIso " << _vc->get("LepGood_miniRelIso",idx) << endl;
            cout << idx << " ptratio " << _vc->get("LepGood_jetPtRatio",idx) << endl;
            cout << idx << " ptrel "   << _vc->get("LepGood_jetPtRel",idx) << endl;
        }
-        
+        */
 
        if(_vc->get("LepGood_miniRelIso",idx) < miniRelIso_cut){
            if((_vc->get("LepGood_jetPtRatio",idx) > ptRatio_cut) || (_vc->get("LepGood_jetPtRel",idx) > ptRel_cut)){ 
