@@ -13,7 +13,6 @@
 #include "analysis/src/SUSY3L.hh"
 
 
-
 /*****************************************************************************
 ******************************************************************************
 ** CLASS MEMBERS FOR RUNNING THE CODE                                       **
@@ -172,9 +171,9 @@ void SUSY3L::run(){
     // initialization of signal region cuts, categorization of events passing the baseline 
     // selection into different signal regions, and filling of plots
     
-    //setSignalRegion();
-    //if(!srSelection()) return;	
-    //fillEventPlots("SR");
+    setSignalRegion();
+    if(!srSelection()) return;	
+    fillEventPlots("SR");
    
 }
 
@@ -208,7 +207,11 @@ void SUSY3L::defineOutput(){
 
     //additional observables
     _hm->addVariable("Zmass"        ,  150,   0.0,  150.0, "Z candidate mass [GeV]"         );
-    _hm->addVariable("deltaR_elmu"  ,  500,   0.0,  10.0, "delta R between el and mu"         );
+    _hm->addVariable("deltaR_elmu"  ,  500,   0.0,  10.0, "delta R between el and mu"       );
+    _hm->addVariable("el_multiplicity"  ,  10,   0.0,  10.0, "electron multiplicity"         );
+    _hm->addVariable("mu_multiplicity"  ,  10,   0.0,  10.0, "muon multiplicity"         );
+    _hm->addVariable("tau_multiplicity"  ,  10,   0.0,  10.0, "tau multiplicity"         );
+    _hm->addVariable("lep_multiplicity"  ,  10,   0.0,  10.0, "lepton multiplicity"         );
 }
 
 
@@ -1662,6 +1665,12 @@ bool SUSY3L::baseSelection(){
     //leptons are ultra-loose in multiiso
     if(!makeCut<int>( _nEls + _nMus + _nTaus, _valCutLepMultiplicityBR, _cTypeLepMultiplicityBR, "lepton multiplicity", _upValCutLepMultiplicityBR ) ) return false;
 
+    //fill custom plot lepton multiplicity
+    fill("el_multiplicity" , _nEls , _weight);
+    fill("mu_multiplicity" , _nMus , _weight);
+    fill("tau_multiplicity" , _nTaus , _weight);
+    fill("lep_multiplicity" , _nEls + _nMus + _nTaus , _weight);
+    
     //require at least two of the leptons to be tighter in multiiso
     //bool has_two_tighter_leptons = checkMultiIso();
     //if(!makeCut( has_two_tighter_leptons , "multiIso tightening", "=") ) return false;
@@ -1724,7 +1733,6 @@ bool SUSY3L::checkMultiIso(){
     int kVeryTight = 3;
     int kHyperTight = 4;
     int wp = -1;
-   
     
     //check electrons
     //multiIso working point
@@ -1752,11 +1760,6 @@ bool SUSY3L::checkMultiIso(){
 
     return false;
 }
-
-
-
-
-
 
 
 //____________________________________________________________________________
@@ -1811,46 +1814,6 @@ bool SUSY3L::lowMllPair(){
  
     return false;
 }
-
-
-//____________________________________________________________________________
-//bool SUSY3L::ZEventSelection(){
-    /*
-        Checks if there is a same-flavor opposite-charge pair with an invariant 
-        mass around the Z mass among the 3 leptons. Faster than ZEventSelectionLoop 
-        but no Z candidate extraction, just immediate rejection of event
-        return: true (if a Z can not be reconstructed from 2 leptons), false (else)
-    */
-/*    
-    //TODO: modify for more than 3 leptons
-    //count reconstructed Z bosons
-    counter("denominator", conZEvents);
-
-    //Z mass
-    float Zmass = 91.1876;
-
-    //three electrons
-    if(_nEls == 3){
-        if(_els[0]->charge() != _els[1]->charge()){
-            float mll = Candidate::create(_els[0], _els[1])->mass();
-            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
-        }
-        if(_els[0]->charge() != _els[2]->charge()){
-            float mll = Candidate::create(_els[0], _els[2])->mass();
-            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
-        }
-        if(_els[1]->charge() != _els[2]->charge()){
-            float mll = Candidate::create(_els[1], _els[2])->mass();
-            //if(!makeCut<float>(mll, _lowMllCut, "<", "low mll veto", 0, conZEvents) ) return true;  
-            if(!makeCut<float>(mll, Zmass - _ZMassWindow, "<", "mll Z veto", Zmass + _ZMassWindow, conZEvents) ) return false;
-        }
-    }
-     
-    return false;
-}
-*/
 
 //____________________________________________________________________________
 bool SUSY3L::ZEventSelectionLoop(){

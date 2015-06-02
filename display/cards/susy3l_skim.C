@@ -26,7 +26,7 @@
     md.anConf.configureData(false, 0, mcOnly);
     //}
  
-    string obs ="ht";
+    string obs ="tau";
     if(obs == "njets"){
         md.dp.setObservables("BR_NJets");
         int binning=1;
@@ -47,8 +47,28 @@
         int binning=50;
         double rangeX[2]={0,800};
     }
-
-  
+    if(obs == "lep"){
+        md.dp.setObservables("lep_multiplicity");
+        int binning=1;
+        double rangeX[2]={0,7};
+    }
+    if(obs == "el"){
+        md.dp.setObservables("el_multiplicity");
+        int binning=1;
+        double rangeX[2]={0,7};
+    }
+    if(obs == "mu"){
+        md.dp.setObservables("mu_multiplicity");
+        int binning=1;
+        double rangeX[2]={0,7};
+    } 
+    if(obs == "tau"){
+        md.dp.setObservables("tau_multiplicity");
+        int binning=1;
+        double rangeX[2]={0,7};
+    }
+    
+    
     //observables **********************
     //string obs[6]={"","","","","",""};
     //md.dp.setObservables("Zmass");
@@ -71,7 +91,7 @@
     //double rangeX[2]={0,7};
     int xDiv[3]={8,6,0};
     int yDiv[3]={6,6,0}; //Nlabel /  sous-Div /ssdiv
-    bool logYScale=false;
+    bool logYScale=true;
     bool overFlowBin=true;
     bool underFlowBin=false;
     bool showDMCRatio=true;
