@@ -124,9 +124,33 @@ AnaConfig::findDSName(string channel) {
 }
 
 
+string 
+AnaConfig::findDSName(string channel, string crName) {
+
+  map<string, Dataset* >::const_iterator itDs;
+  for(itDs=_datasets.begin(); itDs!=_datasets.end();itDs++) {
+    if(itDs->second->hasSample(channel)!=-1 && itDs->second->getSample(channel)->getCR()==crName )
+      return itDs->first;
+  }
+  
+  return "";  
+}
+
+
 Dataset* 
 AnaConfig::findDS(string channel) {
   string dsName = findDSName(channel);
+  //cout<<" =-> "<<dsName<<"  !"<<getDataset(dsName)->getSample(channel)->getCR()<<"!"<<endl;
+  if(dsName!="") // && getDataset(dsName)->getSample(channel)->getCR()==""
+    return getDataset(dsName);
+  else
+    return nullptr;
+}
+
+
+Dataset* 
+AnaConfig::findDS(string channel, string crName) {
+  string dsName = findDSName(channel, crName);
   if(dsName!="")
     return getDataset(dsName);
   else
@@ -184,39 +208,54 @@ AnaConfig::isHistoAnalysis() {
   _skiptree=true;
 }
 
+SampleId
+AnaConfig::parseSampleId(string str) {
+  SampleId sId;
+  sId.norm = -1;
+  sId.dd = false;
+  sId.cr = "";
+  sId.name = "";
+
+  string tmpStr=str;
+  //normalization ======
+  size_t pn=str.find("=");
+  if(pn!=string::npos) {
+    sId.norm = atof( str.substr(pn+1, str.size()-pn-1).c_str() );
+    tmpStr=str.substr(0, pn);
+  }
+
+  //data-driven ========
+  size_t pd=tmpStr.find("data:");
+  if(pd!=string::npos) {
+    sId.dd = true;
+    tmpStr=tmpStr.substr(5, tmpStr.size()-5);
+  }
+
+  //control region =====
+  size_t pc=tmpStr.find(":");
+  if(pc!=string::npos) {
+    sId.cr = tmpStr.substr(0, pc);
+    tmpStr=tmpStr.substr(pc+1, tmpStr.size()-pc-1);
+  }
+  
+  //sample name ========
+  sId.name=tmpStr;
+
+  //cout<<sId.norm<<"  "<<sId.dd<<"  "<<sId.cr<<"  "<<sId.name<<endl;
+
+  return sId;
+}
 
 void
 AnaConfig::addSample( string str, string sname, int col, bool loadH) {
   
-  if( str.find("DD")!=string::npos ) {
-    _ddCuts.push_back(str.substr(3, str.size()-3));
-    //sname+="DD";
-  }
-  
-  if( str.find("CS")!=string::npos && str.find("CSA14")==string::npos){
-    //parse the line
-    size_t p0=str.find(" ");
-    size_t p1=str.find(" ",p0+1);
-    
-    float norm;
-    string name;
-    if(p0!=string::npos && p1!=string::npos) {
-      norm=atof( (str.substr(p0,p1-p0)).c_str() );
-      name=str.substr(p1+1,str.size()-p1-1);
-    }
-    else {
-      norm=0;
-      name=str.substr(p0+1,str.size()-p0-1);
-    }
+  //parse the sample name
+  SampleId sId=parseSampleId(str);
 
-    _csData.push_back( pair<string, float>(name,norm) );
+  if( sId.cr!="" ) {
+    _csData.push_back( pair<string, float>(sId.name,sId.norm) );
   }
   
-  // if( str.find("ghost")!=(size_t)-1 ){
-  //   //parse the line
-  //   //size_t p0=str.find(" ");
-  //   //  str=str.substr(p0+1,str.size()-p0-1) ;
-  // }
   
   _itDs=_datasets.find(sname);
   
@@ -224,24 +263,13 @@ AnaConfig::addSample( string str, string sname, int col, bool loadH) {
     Dataset* ds=new Dataset(sname,col);
     _datasets[ sname ] = ds;
     _numDS[ _numDS.size() ] = sname;
-    //_datasets[ sname ]->setNMax(_testNMax);
-    //_datasets[ sname ]->isHistoAnalysis(_skiptree);
   }
   
-  // for(_itDs=_datasets.begin();_itDs!=_datasets.end();_itDs++)
-  //   cout<<_itDs->first<<"   "<<_itDs->second->getName()<<endl;
-  // for(_itNDS=_numDS.begin();_itNDS!=_numDS.end();_itNDS++)
-  //   cout<<_itNDS->first<<"   "<<_itNDS->second<<endl;
-  
- 
-
-  if(sname=="data" || sname=="Data" || 
-     str.find("DD")!=(size_t)-1 ||
-     (str.find("CS")!=(size_t)-1 && str.find("CSA14")==(size_t)-1) ) {
+  if(sname=="data" || sname=="Data" || sId.dd ) {
     
-    _datasets[ sname ]->addSample(str, _path, _dir, _rootFile,
-				  _hname,0., 1., 1., 1., loadH);
-    _samplenames.push_back(str);
+    _datasets[ sname ]->addSample(sId, _path, _dir, _rootFile,
+				  _hname+"/"+sId.name,0., 1., 1., 1., loadH);
+    //_samplenames.push_back(str);
     _dsnames.push_back(sname);
  
     return;
@@ -249,28 +277,23 @@ AnaConfig::addSample( string str, string sname, int col, bool loadH) {
  
  
   //histogram analysis
-  if(!_skiptree){
+  if(!_skiptree) {
 
     //find xSect/kFact/eqLumi
     float xSect=1.,kFact=1.,eqLumi=1.;
-    string tmpStr=str;
-    if(str.find("ghost")!=(size_t)-1) {
-      size_t p0=str.find(" ");
-      tmpStr=str.substr(p0+1,str.size()-p0-1) ;
-    }
-
-    _itXS=_xSecLumis.find(tmpStr);
+   
+    _itXS=_xSecLumis.find(sId.name);
     if(_itXS==_xSecLumis.end()) {
       xSect =-1000; eqLumi=-1;
       
       //first, check if a Xsection DB is loaded
       if(_dbm->exists("Xsections"))
-	xSect = _dbm->getDBValue("Xsections", tmpStr);
+	xSect = _dbm->getDBValue("Xsections", sId.name);
       
       if(xSect==-1000) { //nothing found in DB
 	cout<<" Be careful, no specified "
 	    <<(string)((_useXSect)?" cross section":" equivalent luminosity")
-	    <<" for "<<tmpStr<<" , 1 by default *****======== "<<endl;
+	    <<" for "<<sId.name<<" , 1 by default *****======== "<<endl;
     
 	//FIXME, set weight to 1 by compensating with the lumi
 	xSect =1.; eqLumi=1.;
@@ -283,20 +306,20 @@ AnaConfig::addSample( string str, string sname, int col, bool loadH) {
 	{eqLumi=_itXS->second; xSect =-1;}
     }
   
-    _itKF=_kFactors.find(tmpStr);
+    _itKF=_kFactors.find(sId.name);
     if(_itKF!=_kFactors.end() ) {
       kFact = _itKF->second;
     }
 
-    _datasets[ sname ]->addSample(str, _path, _dir, _rootFile,
-				  _hname+"/"+str, xSect, kFact, _lumi,
+    _datasets[ sname ]->addSample(sId, _path, _dir, _rootFile,
+				  _hname+"/"+sId.name, xSect, kFact, _lumi,
 				  eqLumi, loadH);
-    _samplenames.push_back(str);
+    //_samplenames.push_back(sId.name);
     _dsnames.push_back(sname);
   }
   else {
-    _datasets[ sname ]->addSample(str, "", "", "", "", 0, 0, 0, 0, loadH);
-    _samplenames.push_back(str);
+    _datasets[ sname ]->addSample(sId, "", "", "", "", 0, 0, 0, 0, loadH);
+    //_samplenames.push_back(str);
     _dsnames.push_back(sname);
   }
   

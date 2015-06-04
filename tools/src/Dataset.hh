@@ -15,6 +15,7 @@
 #include "TKey.h"
 
 #include "tools/src/Sample.hh"
+#include "tools/src/Format.cc"
 
 class Dataset {
 
@@ -42,6 +43,9 @@ private:
   int _dsContentType;
   std::vector<std::string> _friends;
 
+  // std::map<std::string, std::string> _crSamples;
+  // std::map<std::string, bool> _isNormSamples;
+
 public:
 
   enum {
@@ -62,20 +66,20 @@ public:
   void setName(std::string name){ _name=name;};
   void setColor(int ncol){ _color=ncol;};
 	
-  void addSample(std::string sfullname, std::string path, std::string dir, 
+  void addSample(SampleId sId, std::string path, std::string dir, 
 		 std::string objName, std::string hname, float xSect,
 		 float kFact, float lumi, float eqLumi, bool loadH=true);
 
   void addFriend(std::string friendname);
 
   //access functions 
-  std::string getName(){ return _name;};
+  std::string getName() const { return _name;};
   int getColor(){ return _color;};
 	
   bool isDataset(std::string name){return _name==name;};
   bool isPPcolDataset(){ return _isData;};
 
-  int hasSample(string sname);
+  int hasSample(string sname) const;
 	
   bool isTreeType() { return _dsContentType==kTree;};
   bool isHistoType() { return _dsContentType==kHisto;};
@@ -85,13 +89,16 @@ public:
   int csCode(){return _isFromCS;};
 	
   bool isGhost(){return _isGhost;};
-	
+
+  // std::string crSample(std::string sname){return _crSamples[sname];};
+  // bool isNormSample(std:: string sname) {return _isNormSamples[sname];};
+
   //std::string findProcess(int event);
 	
   //float findWeight(int event);
 	
-  float getWeight(int is) {return _samples[is].getLumW(); };
-  float getWeight(string sname);
+  float getWeight(int is) const {return _samples[is].getLumW(); };
+  float getWeight(string sname) const;
 	
   TTree* getTree() {return _chain;};
   int getNEvents() { return _chain->GetEntries(); };
@@ -103,6 +110,10 @@ public:
   std::vector<std::string> getSamples();
   std::vector<std::string> getObservables();
   TH1* getHisto( std::string varName, std::string sName);
+
+
+  const Sample* getSample(string sname) const;
+  
 
 private:
 

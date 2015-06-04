@@ -63,6 +63,8 @@ void MPAF::initialize(){
   _dbm = new DataBaseManager();
   _au  = new AnaUtils();
   
+  _vc->_su->init(_dbm);
+
   _fullSkim=true;
   _skim=false;
 
@@ -132,8 +134,7 @@ void MPAF::analyze(){
       ++show_progress;
       stw.Start();
       
-      _curWF = -100;//default workflow, all counters triggered 
-      _au->setCurrentWorkflow(_curWF);
+     
       
       //reinitialization
       _weight = 1.;
@@ -141,6 +142,8 @@ void MPAF::analyze(){
       _uncId = false;
       _unc = "";//reinitialization
       _au->setUncSrc("", SystUtils::kNone );
+      _curWF = -100;//default workflow, all counters triggered 
+      _au->setCurrentWorkflow(_curWF);
 
       // get tree entry, i.e. load branches
       _datasets[i]->getTree()->GetEntry(_ie);
@@ -153,6 +156,7 @@ void MPAF::analyze(){
       //alternate workflows for uncertainty sources
 	for(size_t iu=0;iu<_uncSrcs.size();iu++) {
 	  //update the workflow
+	  _curWF = -100;
 	  _weight = _wBack;
 	  if(iu==0) _vc->nextEvent();
 	  else _vc->sameEvent();
@@ -162,7 +166,9 @@ void MPAF::analyze(){
 	  _uDir = _uncDirs[iu];
 	  string dir = (_uDir==SystUtils::kUp)?"Up":"Do";
 	  //very ugly...
-	  _curWF = _au->getUncWorkflow("Unc"+_unc+dir);
+	  // _curWF = _au->getUncWorkflow("Unc"+_unc+dir);
+	  //_offsetWF=_au->getUncWorkflow("Unc"+_unc+dir);
+	  //cout<<" aqui "<<_offsetWF<<"   "<<_curWF<<endl;
 	  _au->setCurrentWorkflow(_curWF);
 	  _au->setUncSrc(_unc, _uDir );
 	  applySystVar( _vc->_su->getSystInfos(_unc, _uDir) );
@@ -279,14 +285,20 @@ void MPAF::loadConfigurationFile(std::string cfg){
     }
     _datasets.push_back(new Dataset(dsName));
     
+    SampleId sId;
+    sId.name = it->second.val;
+    sId.cr = "";
+    sId.dd =false;
+    sId.norm = -1; 
+    
     for (size_t ft=0; ft<_friends.size();ft++) {
       _datasets.back()->addFriend(_friends[ft].c_str()); 
     }
 
     if(!absdir)
-      _datasets.back()->addSample(it->second.val, _inputPath, dirName, tName, _hname, 1.0, 1.0, 1.0, 1.0);
+      _datasets.back()->addSample(sId, _inputPath, dirName, tName, _hname, 1.0, 1.0, 1.0, 1.0);
     else
-      _datasets.back()->addSample(it->second.val, "://"+dirName, "", tName, _hname, 1.0, 1.0, 1.0, 1.0);
+      _datasets.back()->addSample(sId, "://"+dirName, "", tName, _hname, 1.0, 1.0, 1.0, 1.0);
     
     _au->addDataset( dsName );
   }
@@ -545,7 +557,7 @@ void MPAF::loadDb(string key, string dbfile, string hname) {
     return: 
   */
 
-  // ASCII badtabase per definition
+  // ASCII database per definition
   if(hname == "") 
     _dbm->loadDb(key, dbfile);
   else
@@ -561,7 +573,7 @@ bool MPAF::makeCut(bool decision, string cName, string type, int eCateg) {
     parameters: 
     return: 
   */
-  return _au->makeCut(decision, _inds , cName, _weight, type, eCateg, false);
+  return _au->makeCut(decision, _inds , cName, _weight, type, eCateg+_offsetWF, false);
 
 }
 
@@ -573,22 +585,14 @@ void MPAF::counter(string cName, int eCateg) {
     parameters: 
     return: 
   */
-  _au->makeCut(true, _inds , cName, _weight, "=", eCateg, false);
+  //cout<<"categ "<<eCateg<<"   "<<_offsetWF<<"  "<<_curWF<<"  "<<cName<<endl;
+  _au->makeCut(true, _inds , cName, _weight, "=", eCateg+_offsetWF, false);
 
 }
 
 void 
 MPAF::setWorkflow(int wf) {
-  
-  // _itWF = _wfMap.find(wf);
-  // if(_itWF != _wfMap.end() ) {
-  //   _curWF = _itWF->second;
-  // }
-  // else {
-  //   cout<<"Warning, workflow "+wf+"not found, all workflows will be incremented"<<endl;
-  // }
-  _curWF = wf;
-  _au->setCurrentWorkflow(_curWF);
+  _au->setCurrentWorkflow(wf );
 }
 
 

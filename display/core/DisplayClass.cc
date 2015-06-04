@@ -50,6 +50,7 @@ DisplayClass::reset() {
   _gWeights.clear();
   _colors.clear();
   _names.clear();
+  _absNorm.clear();
   _ghosts.clear();
   _iNs.clear();
 
@@ -603,9 +604,10 @@ DisplayClass::configure(string dsname, int col, bool isGhost) {
 }
 
 void
-DisplayClass::setWeight(string dsname, float w) {
+DisplayClass::setWeight(string dsname, float w, bool absNorm) {
   _gWeights[ dsname ] = w;
   _saveWeights[ dsname ] = w;
+  
 }
 
 string
@@ -913,8 +915,7 @@ DisplayClass::prepareHistograms(const hObs* theobs) {
 	  (_sSignal && nh.find("sig")!=(size_t)-1 ) ) {
      
         for(size_t ij=ih+1;ij<(_noStack?min(ih+1,_nhmc):_nhmc);ij++) {
-          
-          string nh2 = (string)( hTmps[ih]->GetName());
+	  string nh2 = (string)( hTmps[ih]->GetName());
           if( nh2.find("sig")==(size_t)-1 )
             _hClones[ih]->Add( (TH1*)hTmps[ij]->Clone(), _itW->second );
           else if( _sSignal )
@@ -2000,11 +2001,12 @@ DisplayClass::drawCumulativeHistos(const hObs* theObs ) {
 
 void
 DisplayClass::drawStatistics(vector<pair<string,vector<vector<float> > > > vals, 
-			vector<string> dsnames) {
+			     vector<string> dsnames,
+			     vector<pair<string,vector<vector<float> > > > vals2) {
   _comSyst = false;
   softReset();
  
-  prepareStatistics( vals, dsnames );
+  prepareStatistics( vals, dsnames, vals2 );
  
   if(_mcOnly || _dOnly) _showRatio=false;
   if(_dOnly) { _showRatio=false; _addSyst=false;}
@@ -2032,9 +2034,10 @@ DisplayClass::drawStatistics(vector<pair<string,vector<vector<float> > > > vals,
 
 void
 DisplayClass::prepareStatistics( vector<pair<string,vector<vector<float> > > > vals, 
-			    vector<string> dsnames) {
+				 vector<string> dsnames,
+				 vector<pair<string,vector<vector<float> > > > vals2 ) {
 
-
+  
 
   vector<string> cNames;
   vector<TH1*> hMC;
@@ -2046,7 +2049,7 @@ DisplayClass::prepareStatistics( vector<pair<string,vector<vector<float> > > > v
   
   vector<int> idx;
   vector<int>::iterator itx = idx.begin();
-  
+
   size_t nDs=vals[0].second.size()-(_mcOnly?0:1);
   for(size_t i=1;i<nDs; i++ ) {
     TH1F* tmp = new TH1F(dsnames[nDs-i].c_str(), dsnames[nDs-i].c_str(),
@@ -2070,7 +2073,18 @@ DisplayClass::prepareStatistics( vector<pair<string,vector<vector<float> > > > v
   mcUncert->SetFillStyle(3001);
   mcUncert->SetFillColor(kGray+1);
   
-  size_t idat=_mcOnly?-1:(vals[0].second.size()-1);
+  size_t idat=(_mcOnly && vals2.size()==0)?-1:(vals[0].second.size()-1);
+  //overwrite data stuff with other simulation if existing===========
+  if(vals2.size()!=0) {
+    for(size_t ic=0;ic<vals.size();ic++) {
+      cout<<vals[ic].second.size()<<"  "<<vals2[ic].second.size()<<"   "<<idat<<endl;
+      vals[ic].second[idat][0] =  vals2[ic].second[0][0];
+      vals[ic].second[idat][1] =  vals2[ic].second[0][1];
+      vals[ic].second[idat][2] =  vals2[ic].second[0][2];
+      vals[ic].second[idat][3] =  vals2[ic].second[0][3];
+    }
+  }
+  //=================================================================
 
   //now fill the plots
   for(size_t ic=0;ic<vals.size();ic++) {

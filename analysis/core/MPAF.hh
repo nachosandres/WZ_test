@@ -101,7 +101,7 @@ protected:
   template <typename T> inline
   bool makeCut(T value, T valcut, string type, string cName, T seccut=0, int eCateg = AUtils::kGlobal) {
     return _au -> makeCut<T>(value, valcut, type, _inds
-			     , cName, _weight, seccut, eCateg, false);
+			     , cName, _weight, seccut, eCateg+_offsetWF, false);
   };
   bool makeCut(bool decision, string cName, string type = "=", int eCateg = AUtils::kGlobal);
   void counter(string cName, int eCateg = AUtils::kGlobal);
@@ -208,6 +208,7 @@ private:
   int _curWF;
   std::map<int, std::string> _wfNames;
   std::map<int, std::string>::const_iterator _itWF;
+  int _offsetWF;
 
   //uncertainties
   string _unc;
