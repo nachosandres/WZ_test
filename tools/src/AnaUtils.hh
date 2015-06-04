@@ -27,6 +27,16 @@ using namespace std;
 namespace AUtils {
   const static int kMC=0;
   const static int kGlobal=0;
+  const static int kNominal=1;
+};
+
+struct categ{
+  int id;
+  string name;
+  string uncTag;
+  bool isUnc;
+  bool isWF;
+  vector<string> effNames;
 };
 
 struct EffST{
@@ -70,10 +80,9 @@ private:
   itMultiEMap _itMEMap;
 
   //workflows
-  std::map<int, bool> _isWF;
   int _nWF;
   int _curWF;
-  std::map<string, int> _uncWorkflow;
+  std::map<string, int> _offsetUnc;
 
   //Acceptance
   bool _inAcc;
@@ -86,8 +95,9 @@ private:
   
   //internal names...
   vector<string> _dsNames;
-  map<int,string> _catNames;
-  map<int, vector<string> > _effNames; //key=categ
+  map<int, categ> _categories;
+  map<int, categ>::const_iterator _itC;
+  //map<int, vector<string> > _effNames; //key=categ
   //map<string, int>::const_iterator _itMSI;
   
   int _kGlobal;
@@ -155,11 +165,13 @@ public:
   //Efficiencies and yields
   void setEfficiency(int ids, string cName, int eCateg, float value, bool acc);
   void setEffFromStat(int ids, string cName, int eCateg, float sw, float esw, int ngen);
-  void setSystematics( int ids, string cName, string sName, bool up, bool down, float w);
-  void getYieldSysts(string ds, string lvl);
+  void setSystematics( int ids, string cName, int iCateg, string sName, bool up, bool down, float w);
+  void getYieldSysts(string ds, string lvl, string categ="");
 
   //workflows
-  void setWFEfficiencies(int ids, string cName, float w, bool acc);
+  void setWFEfficiencies(int ids, string cName, float w, bool acc, string uncName="");
+  void setWFSystematics(int ids, string cName, string sName,
+			bool up, bool down, float w, string uncName="") ;
 
   void saveNumbers(string anName, string conName, std::map<string, int> cnts);
   void printNumbers();
@@ -170,7 +182,9 @@ public:
 // 	vector<string> listFiles(string dir, string files);
   int findElement(vector<string> v, string e);
   //vector< pair<string, vector<vector<float> > > > retrieveNumbers(string anName, string conName, vector<string> snames, vector<string> dsnames, vector<float> weights);
-  vector< pair<string, vector<vector<float> > > > retrieveNumbers(string categ, int mcat, string cname);
+  vector< pair<string, vector<vector<float> > > > retrieveNumbers(string categ, int mcat, 
+								  string cname, string opt="");
+  
   bool getDataCardLines(map<string,string>& lines, vector<string> dsNames, string sigName,
 			string categ, string cname, int bin,
 			map<string,vector<string> > intNuisPars);
@@ -189,13 +203,15 @@ public:
   static hObs cloneHObs(const hObs* o1);
 
   void addDataset(string dsName); 
-  void addCategory(int iCateg, string eCateg); 
-  void addWorkflow(int iCateg, string eCateg); 
+  void addCategory(int iCateg, string nCateg); 
+  void addCategory(int iCateg, string nCateg, string uncTag);
+  void addWorkflow(int iCateg, string nCateg); 
   void addAutoWorkflow(string eCateg);
   void setCurrentWorkflow(int wf);
   int getUncWorkflow(string wf);
 
   int getCategId(string categ);
+  int getNCateg() {return _categories.size(); };
   
 private:
 
@@ -251,29 +267,46 @@ private:
     }  
     
     ids+=1;//0 booked for MC
+    
+    //cout<<_uncSrc<<endl;
 
     if(!noRegister || _dsNames[ids].find("GHO")!=(size_t)-1 ) {
       if(_uncSrc=="") {
     	if(eCateg!=_kGlobal) { //eff categories
-    	  setEfficiency(ids, cName, eCateg, w, accept);
+	  setEfficiency(ids, cName, eCateg, w, accept);
     	}
     	else {
     	  if( _nWF==1 || _curWF!=-100) { //single workflow
-    	    setEfficiency(ids, cName, (_curWF==-100)?eCateg:_curWF , w, accept);
+	    setEfficiency(ids, cName, (_curWF==-100)?eCateg:_curWF , w, accept);
     	  }
     	  else {//multiple workflows
-    	    setWFEfficiencies(ids, cName, w, accept);
+	    setWFEfficiencies(ids, cName, w, accept);
     	  }
     	}
       }
       else {
-    	//separated workflow for uncerrtainty
-    	  setEfficiency(ids, cName, _curWF, w, accept);
-    	//and systematic uncertainties
-    	if(_uncDir==SystUtils::kUp)
-    	  setSystematics( ids, cName,_uncSrc,accept,false, w);
-    	else if(_uncDir==SystUtils::kDown)
-    	  setSystematics( ids, cName,_uncSrc,false,accept, w);
+	string uncName="Unc"+_uncSrc+((_uncDir==SystUtils::kUp)?"Up":"Do");
+	//cout<<uncName<<"  "<<_offsetUnc[uncName]<<endl;
+    	//separated workflow for uncertainty
+	if( _nWF==1 || _curWF!=-100) { //single workflow
+	  setEfficiency(ids, cName, _curWF+_offsetUnc[uncName], w, accept);
+	  //and systematic uncertainties
+	  if(_uncDir==SystUtils::kUp)
+	    setSystematics( ids, cName, _curWF+_offsetUnc[uncName], _uncSrc,accept,false, w);
+	  else if(_uncDir==SystUtils::kDown)
+	    setSystematics( ids, cName, _curWF+_offsetUnc[uncName], _uncSrc,false,accept, w);
+	}
+	else {//multiple workflows
+	 
+	  setWFEfficiencies(ids, cName, w, accept, uncName  );
+	  if(_uncDir==SystUtils::kUp) {
+	    setWFSystematics( ids, cName,_uncSrc,accept,false, w, uncName);
+	  }
+	  else if(_uncDir==SystUtils::kDown) {
+	    setWFSystematics( ids, cName,_uncSrc,false,accept, w, uncName);
+	  }
+	}
+
       } 
     }
     if( _bkgFC.find(cName)!=_bkgFC.end() ) {
@@ -288,7 +321,7 @@ private:
 
   vector<string> prepareDSNames(bool wMC, vector<int>& idxs);
   
-  void internalAddCategory(int iCateg, string eCateg); 
+  void internalAddCategory(int iCateg, string nCateg, string unctag, bool isWF); 
 
 
   ClassDef(AnaUtils,0)

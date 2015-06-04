@@ -7,6 +7,8 @@
 #include <map>
 #include "TROOT.h"
 
+#include "tools/src/Format.cc"
+
 using namespace std;
 
 class Sample {
@@ -14,7 +16,6 @@ class Sample {
 private:
 
   string _name;
-  int _nEvents;
   int _nProcEvents;
   
   float _xSection;
@@ -24,20 +25,19 @@ private:
 
   float _weight; //weight for 1 pb-1
 
-  // bool _isDDriven;
-  // bool _isGhost;
-  // int _csCode;
+  bool _isNorm;
+
+  SampleId _sId;
 
 public:
 
   Sample();
-  Sample(string name, int n, int nProcEvt, 
+  Sample(SampleId sId, int nProcEvt, 
 	 float xSect, float kfact, float eqLumi);
 
   virtual ~Sample();
 
   void setName(string N){ _name=N;};
-  void setNEvts(int n){ _nEvents=n;};
   void setNProcEvts(int n){ _nProcEvents=n;};
 
   void setXSect(float XS) { _xSection=XS;};
@@ -46,19 +46,20 @@ public:
   
   //access functions
   
-  string getName(){ return _name;};
-  int getNEvts(){ return _nEvents;};
-  int getNProcEvts(){ return _nProcEvents;};
+  string getName() const { return _sId.name;};
+  int getNProcEvts() const { return _nProcEvents;};
   
-  float getXSect() {return _xSection;};
-  float getKFact() {return _kFactor;};
-  float getEqLum() {return _eqLumi;};
+  float getXSect() const {return _xSection;};
+  float getKFact() const {return _kFactor;};
+  float getEqLum() const {return _eqLumi;};
 
-  float getLumW() {return _weight;}; //weight for 1 pb-1
+  float getLumW() const {return _weight;}; //weight for 1 pb-1
 
-  // int isCS(){ return _csCode;};
-  // bool isDataDriven(){ return _isDDriven;};
-  // bool isGhost(){ return _isGhost;};
+  float getNorm() const {return _sId.norm;};
+  bool isNorm() const {return _sId.norm!=-1;};
+
+  string getCR() const {return _sId.cr;};
+  bool isDD() const {return _sId.dd;};
 
 private:
 

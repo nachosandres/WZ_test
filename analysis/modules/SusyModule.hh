@@ -15,21 +15,38 @@ public:
   
   bool elMvaSel(int elIdx, int wp) const;
   bool muIdSel(int idx, int wp) const;
-  bool elIdSel(int idx, int wp) const;
+  bool elIdSel(int idx, int wp, int mvaWp) const;
   bool multiIsoSel(int idx, int wp) const;
+  bool multiIsoSelCone(int idx, int wp) const;
+  bool invMultiIsoSel(int idx, int wp) const;
   bool jetSel(int jetIdx) const;
   float HT(const CandList* jets);
+
+  void cleanJets(CandList* leptons, 
+		 CandList& cleanJets, vector<unsigned int>& jetIdxs,
+		 CandList& cleanBJets, vector<unsigned int>& bJetIdxs );
 
   bool mllVetoSelection(const Candidate* l1, const Candidate* l2,
 			const CandList* allLeps) const ;
   bool mllLMGVeto(const Candidate* cand, const Candidate* veto) const;
   bool mllZVeto(const Candidate* cand, const Candidate* veto) const;
   
+  bool passMllSingleVeto(const Candidate* c1, const Candidate* c2, 
+			 float mllm, float mllM, bool ossf);
+  bool passMllMultiVeto(const Candidate* c1, const CandList* cands, 
+			float mllm, float mllM, bool ossf);
+  
+  CandList bestSSPair(const CandList* leps, bool byflav,
+		      bool bypassMV, float pTthr, int& idx1, int& idx2);
+  
+  float conePt(int idx) const;
 
   enum {kDenom=0,
 	kLoose,
 	kMedium,
 	kTight,
+	kSpecFakeEl,
+	kSpecFakeMu,
 	kNWPs};
 
   enum {kMiniIso=0,kPtRatio,kPtRel};

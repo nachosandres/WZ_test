@@ -127,6 +127,7 @@ private:
   map<string, float> _gWeights;
   map<string, float> _saveWeights;
   map<string, float>::const_iterator _itW;
+  map<string, bool> _absNorm;
 
   float _datNorm;
 
@@ -226,19 +227,11 @@ public:
   void showSignificance(const hObs* theObs);
 
   void saveHistos(string hname, const hObs* theObs);
-  void saveHistosSpecLQ(string hname);
- 
-  string fillUpBlank(string line, unsigned int length);
-  string strReplace(string str, string find, string replace);
-  int findElement(vector<pair<string, unsigned int> > groups, string groupname);
-  string findGroupName(string dsname);
-  string findDummySyst(string groupname);
-  string writeRow(string text, unsigned int idx, unsigned int size);
-  void makeDataCard(vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames, string dirname);
-
- 
-  void prepareStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames);
-  void drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames);
+  
+  void prepareStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames,
+			  vector<pair<string,vector<vector<float> > > > vals2);
+  void drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames,
+		       vector<pair<string,vector<vector<float> > > > vals2);
   void drawDetailSystematics(bool cumul);
 
   void addText(float x, float y, float s, string text);
@@ -250,7 +243,7 @@ public:
   void getSystUnc( TGraphAsymmErrors* mcUnc);
 
   void configure(string dsname, int col, bool isGhost);
-  void setWeight(string dsname, float w);
+  void setWeight(string dsname, float w, bool absNorm=false);
   void initWeights(const hObs* theobs);
 
   void loadAutoBinning(string filename);

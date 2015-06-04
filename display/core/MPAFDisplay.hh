@@ -49,6 +49,8 @@ private:
   std::map<std::string, string > _nuisParScheme;
   std::map<std::string, vector<string> >::const_iterator _itNp;
 
+  std::map<std::pair<std::string,std::string>, bool > _sfVals;
+
 public:
 
   AnaConfig anConf;
@@ -69,7 +71,12 @@ private:
   vector<string> split(const string& s, char delim);
   string findDiff(const string& s1, const string& s2,
 		  char delim, size_t& bl, size_t& bh);
-  void readStatFile(string filename, string ctag, int& icat);
+  void readStatFile(string filename, int& icat);
+  void storeStatNums(const Dataset* ds, float yield, float eyield, int gen,
+		     int icat, string cname, string sname, string categ,
+		     string uncTag, int upVar, string ext);
+    
+  void associateSystUncs();
 
 public:
 
@@ -84,8 +91,10 @@ public:
   
   void doPlot();
 
-  void getStatistics(string categ="global");
-  void drawStatistics(string categ="global", string cname="");
+  void getStatistics(string categ="nominal");
+  void drawStatistics(string categ="nominal", string cname="", string optCateg="");
+
+  void getSystematics(string categ, string lvl);
 
   void savePlot(string path, string advname="");
   void producePlots(string path);

@@ -39,7 +39,6 @@ void Dataset::config(string name, int color, int content) {
 
   _name = name;
   _color = color;
-  //_isDataDriven = false;
   _isGhost = false;
   _dsContentType = content;
 }
@@ -57,7 +56,7 @@ void Dataset::freeMemory() {
 
 
 //____________________________________________________________________________
-void Dataset::addSample(string sfullname, string path, string dir, string objName, string hname, float xSect, float kFact, float lumi, float eqLumi, bool loadH) {
+void Dataset::addSample(const SampleId sId, string path, string dir, string objName, string hname, float xSect, float kFact, float lumi, float eqLumi, bool loadH) {
   /*
     adds a sample to the dataset; the sample has a name encoded in sfullname,
     lies in the directory path/dir/, has a tree called objName or a histogram
@@ -68,36 +67,19 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
     return: none
   */
 
-  string sname, stname, optCat="";
-	
-  // decode sfullname to get _isData and sname , MM: HAS TO BE REWRITTEN!!!!!!
-  if(sfullname.find(":") != (size_t) -1){
+  _isData = false;
+  if(sId.dd) _isData=true;  //norm corresponds to a datadriven like stuff
 
-    size_t p = sfullname.rfind(":");
-    stname = sfullname.substr(p + 1, sfullname.size() - p - 1);
+  //store the control region from which the sampleshould come from, if any
+  // _crSamples[ sId.name ] = sId.cr;
 
-    if(sfullname.find("data") != (size_t) -1) {
-      _isData = true;
-      size_t pp = sfullname.find(":");
-      if(pp!=p) { //means we look at a given category in data!
-	optCat = sfullname.substr(pp + 1, p-pp-1);
-      }
-    }
-    else {
-      _isData = false;
-      optCat=sfullname.substr(0, p);
-    }
-    
-    stname += "_"+optCat;
-  }
-  else {
-    stname =  sfullname;
-  }
-  sname = stname;
-  
+  // //store the norm option
+  // _crSamples[ sId.name ] = sId.norm!=-1;
+
+
   //protection against double loading in the same dataset
   for(size_t is=0;is<_samples.size();is++) {
-    if(_samples[is].getName()==sname) {
+    if(_samples[is].getName()==sId.name) {
       return;
     }
   }
@@ -109,76 +91,43 @@ void Dataset::addSample(string sfullname, string path, string dir, string objNam
 
   //======
 	
-  //is Data driven?
-  // if(sname.find("DD")!=(size_t)-1 ) {
-  //   _isDataDriven=true;
-	
-  //   Sample s(sname, 0, xSect, kFact, eqLumi);
-  //    _samples.push_back(s);
-  //    _weights.push_back(1.);
-	
-  //   return;
-  // }
-	
-  //is from Control Sample?
-  _isFromCS=0;
-
-  if(sname.find("CS")!=(size_t)-1 && sname.find("CSA14")==(size_t)-1) {
-    _isFromCS=1;
-    if(sname.find("CSS")!=(size_t)-1)
-      _isFromCS=2;
-    if(sname.find("CSC")!=(size_t)-1)
-      _isFromCS=3;
-    if(sname.find("CSN")!=(size_t)-1)
-      _isFromCS=4;
-	  
-    if(sname.find("OCS")!=(size_t)-1 )
-      _isFromCS+=10;
-	
-    Sample s(sname, 0,0, xSect, kFact, eqLumi);
-    _samples.push_back(s);
-    _weights.push_back(1.);
-	
-    return;
-  }
-	
-  //is ghost?
-  //cout<<sname<<" ghost? "<<(sname.find("ghost")!=(size_t)-1 )<<endl;
-  if(sname.find("ghost")!=(size_t)-1 ) {
-    _isGhost =true;
-    //cout<<" !!! ghost!!! "<<endl;
-    size_t p0=sname.find(" ");
-    sname=sname.substr(p0+1,sname.size()-p0-1) ;
-  }
-	
-	
   //Looking for the tree if not data-driven
-  int nEvent = 0; //MM: not really needed anymore, kept for now
   string tmpPath=isTreeType()?("data/"+path):"root";
-  string tmpFName=isTreeType()?(sname):objName;
+  string tmpFName=isTreeType()?(sId.name):objName;
   int nProcEvt = (hname=="")?-1:getNProcEvents(tmpPath, dir, tmpFName, hname);
   
-  Sample s(sname, nEvent, nProcEvt, xSect, kFact, eqLumi);
+  Sample s(sId, nProcEvt, xSect, kFact, eqLumi);
   _samples.push_back(s);
-  _weights.push_back( s.getLumW() );
   
-	
   //tree analysis 
   if(isTreeType()) {
-    loadTree(path, dir, sname, objName);
+    loadTree(path, dir, sId.name, objName);
 	
-    cout<<" Adding "<<sname<<"  to "<<_name
+    cout<<" Adding "<<sId.name<<"  to "<<_name
 	<<"   :  nEvt "<<_chain->GetEntries()<<" ("<<nProcEvt
 	<<" gen) "<<" / w (/pb-1) = "<<s.getLumW()<<endl;
   }
   else {
     if(loadH) { //reading histograms only when needed (disabled for datacards)
-      loadHistos(path, dir, objName, hname, optCat);
+      loadHistos(path, dir, objName, hname, sId.cr);
     }
+    if(sId.norm==-1) {
+      if(sId.cr=="" && sId.dd==false)
+	cout<<" Adding "<<sId.name<<"  to "<<_name
+	    <<"   : "<<" ("<<nProcEvt
+	    <<" gen) "<<" / w (/pb-1) = "<<s.getLumW()<<endl;
+      else
+	cout<<" Adding "<<sId.name<<" ("<<sId.cr<<")  to "<<_name
+	    <<"   : "<<" ("<<nProcEvt
+	    <<" gen) "<<" / w (/pb-1) = "<<s.getLumW()<<endl; 
     
-    cout<<" Adding "<<sname<<"  to "<<_name
-	<<"   :  nEvt "<<nEvent<<" ("<<nProcEvt
-	<<" gen) "<<" / w (/pb-1) = "<<s.getLumW()<<endl;
+    }
+    else {
+      cout<<" Adding "<<sId.name<<"  to "<<_name
+	  <<"   : "<<" fixed normalization ("<<sId.norm<<")"<<endl;
+
+    }
+
   }
 
 }
@@ -198,9 +147,7 @@ Dataset::getNProcEvents(string path, string dir, string fileName, string hname) 
     NameF="dcap://t3se01.psi.ch:22125/"+dir+"/"+fileName+".root";
   
   TFile* file = TFile::Open( NameF.c_str() );
-  
   TH1* htmp = (TH1*)file->Get( hname.c_str() );
-  
   int nProc=-1;
   if(htmp) {
     nProc = htmp->Integral(0,1001);
@@ -274,6 +221,14 @@ Dataset::getSamples() {
   return snames;
 }
 
+const Sample*
+Dataset::getSample(string sname) const {
+  vector<string> snames;
+  for(size_t is=0;is<_samples.size();is++) {
+    if(sname==_samples[is].getName()) return &(_samples[is]);
+  }
+  return nullptr;
+}
 
 
 void 
@@ -367,6 +322,7 @@ Dataset::loadHistos(string path, string dir, string filename, string hname, stri
 	   
 	//histograms and not normalization file
 	if(varName=="nEvtProc") continue;
+       
 	
 	if(_histos[ varName ].size()==0) { //initialization
 	  tmp[ sName ] = (TH1*)((TH1*)objD->Clone());
@@ -407,7 +363,7 @@ Dataset::getHisto(string varName, string sName) {
 
 
 int
-Dataset::hasSample(string sname) {
+Dataset::hasSample(string sname) const {
 
   for(size_t is=0;is<_samples.size();is++) {
     if(_samples[is].getName()==sname)
@@ -418,7 +374,7 @@ Dataset::hasSample(string sname) {
 }
 
 float
-Dataset::getWeight(string sname) {
+Dataset::getWeight(string sname) const {
   int is = hasSample(sname);
   if(is==-1) return 0;
   return getWeight(is);

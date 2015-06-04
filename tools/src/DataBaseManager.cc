@@ -119,8 +119,8 @@ DataBaseManager::readDb(string key, string dbName) {
       _mDBs[ key ] = new THnSparseF(key.c_str(),key.c_str(),nV,nBins,min,max);
       _mDBEHs[ key ] = new THnSparseF((key+"EH").c_str(),(key+"EH").c_str(),nV,nBins,min,max);
       _mDBELs[ key ] = new THnSparseF((key+"EL").c_str(),(key+"EL").c_str(),nV,nBins,min,max);
-  
-	  //size is registered, now fill the THnSpare
+      
+      //size is registered, now fill the THnSpare
       fDb.clear();
       fDb.seekg (0, fDb.beg);
       
@@ -413,7 +413,6 @@ DataBaseManager::getDBValue(string key, float v1, float v2, float v3, float v4,
       if(vbin[i]==-1) return 1;
     }
   }
-
 
   return _mDBs[ key ]->GetBinContent( vbin );
 }

@@ -8,11 +8,12 @@ ClassImp(Sample)
 Sample::Sample() {
 }
 
-Sample::Sample(string name, int n, int nPE, float xSect,
+Sample::Sample(SampleId sId,
+	       int nPE, float xSect,
 	       float kfact, float eqLumi) {
 
-  _name = name;
-  _nEvents=n;
+  _sId = sId;
+  //_nEvents=n;
   _nProcEvents=nPE;
   _xSection=xSect;
   _kFactor=kfact;
