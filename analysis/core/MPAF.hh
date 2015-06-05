@@ -133,6 +133,8 @@ protected:
   void addWSystSource(string name, int dir, string type, float val);
   void addWSystSource(string name, int dir, string type, string db, string hname);
 
+  bool isInUncProc() {return _uncId;};
+
   // Private Non-Template Methods
 	
 private:

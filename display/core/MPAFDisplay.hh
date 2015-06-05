@@ -92,9 +92,11 @@ public:
   void doPlot();
 
   void getStatistics(string categ="nominal");
-  void drawStatistics(string categ="nominal", string cname="", string optCateg="");
+  void drawStatistics(string categ="nominal", string cname="", 
+		      bool multiScheme=false, string optCateg="");
 
-  void getSystematics(string categ, string lvl);
+  void getDetailSystematics(string categ, string lvl);
+  void getCategSystematic(string src, string categ, string lvl, bool latex=false);
 
   void savePlot(string path, string advname="");
   void producePlots(string path);

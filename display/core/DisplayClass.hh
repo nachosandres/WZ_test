@@ -228,10 +228,8 @@ public:
 
   void saveHistos(string hname, const hObs* theObs);
   
-  void prepareStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames,
-			  vector<pair<string,vector<vector<float> > > > vals2);
-  void drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames,
-		       vector<pair<string,vector<vector<float> > > > vals2);
+  void prepareStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames, bool isMultiScheme);
+  void drawStatistics( vector<pair<string,vector<vector<float> > > > vals, vector<string> dsnames, bool isMultiScheme);
   void drawDetailSystematics(bool cumul);
 
   void addText(float x, float y, float s, string text);

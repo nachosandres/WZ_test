@@ -2001,12 +2001,11 @@ DisplayClass::drawCumulativeHistos(const hObs* theObs ) {
 
 void
 DisplayClass::drawStatistics(vector<pair<string,vector<vector<float> > > > vals, 
-			     vector<string> dsnames,
-			     vector<pair<string,vector<vector<float> > > > vals2) {
+			     vector<string> dsnames, bool isMultiScheme) {
   _comSyst = false;
   softReset();
  
-  prepareStatistics( vals, dsnames, vals2 );
+  prepareStatistics( vals, dsnames, isMultiScheme);
  
   if(_mcOnly || _dOnly) _showRatio=false;
   if(_dOnly) { _showRatio=false; _addSyst=false;}
@@ -2034,8 +2033,7 @@ DisplayClass::drawStatistics(vector<pair<string,vector<vector<float> > > > vals,
 
 void
 DisplayClass::prepareStatistics( vector<pair<string,vector<vector<float> > > > vals, 
-				 vector<string> dsnames,
-				 vector<pair<string,vector<vector<float> > > > vals2 ) {
+				 vector<string> dsnames, bool isMultiScheme ) {
 
   
 
@@ -2043,13 +2041,15 @@ DisplayClass::prepareStatistics( vector<pair<string,vector<vector<float> > > > v
   vector<TH1*> hMC;
   TH1F* hData;
   
-  for(size_t ic=0;ic<vals.size();ic++) {
+  size_t nVals=isMultiScheme?(vals.size()/2):vals.size(); 
+
+  for(size_t ic=0;ic<nVals;ic++) {
     cNames.push_back( vals[ic].first );
   }
   
   vector<int> idx;
   vector<int>::iterator itx = idx.begin();
-
+  
   size_t nDs=vals[0].second.size()-(_mcOnly?0:1);
   for(size_t i=1;i<nDs; i++ ) {
     TH1F* tmp = new TH1F(dsnames[nDs-i].c_str(), dsnames[nDs-i].c_str(),
@@ -2073,21 +2073,19 @@ DisplayClass::prepareStatistics( vector<pair<string,vector<vector<float> > > > v
   mcUncert->SetFillStyle(3001);
   mcUncert->SetFillColor(kGray+1);
   
-  size_t idat=(_mcOnly && vals2.size()==0)?-1:(vals[0].second.size()-1);
-  //overwrite data stuff with other simulation if existing===========
-  if(vals2.size()!=0) {
-    for(size_t ic=0;ic<vals.size();ic++) {
-      cout<<vals[ic].second.size()<<"  "<<vals2[ic].second.size()<<"   "<<idat<<endl;
-      vals[ic].second[idat][0] =  vals2[ic].second[0][0];
-      vals[ic].second[idat][1] =  vals2[ic].second[0][1];
-      vals[ic].second[idat][2] =  vals2[ic].second[0][2];
-      vals[ic].second[idat][3] =  vals2[ic].second[0][3];
+  size_t idat=(_mcOnly)?-1:( vals[0].second.size()-1);
+  if(isMultiScheme) { //overwrite the data plot -> means we have two parallel scheme to looka t in MC
+    for(size_t ic=0;ic<nVals;ic++) {
+    vals[ic].second[0][0] = vals[ic].second[nVals][0]; 
+    vals[ic].second[0][1] = vals[ic].second[nVals][1]; 
+    vals[ic].second[0][2] = vals[ic].second[nVals][2]; 
+    vals[ic].second[0][3] = vals[ic].second[nVals][3]; 
     }
   }
-  //=================================================================
+
 
   //now fill the plots
-  for(size_t ic=0;ic<vals.size();ic++) {
+  for(size_t ic=0;ic<nVals;ic++) {
   
     for(size_t id=0;id<vals[ic].second.size();id++) {
 
