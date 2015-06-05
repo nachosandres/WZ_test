@@ -29,6 +29,7 @@ FakeEstim::initialize(){
   _vc->registerVar("HLT_DoubleMu"                 );
   _vc->registerVar("nVert"                        );
   _vc->registerVar("nTrueInt"                     );
+  _vc->registerVar("nTrueInt"                     );
   _vc->registerVar("nBJetPt40Medium"              );
   _vc->registerVar("puWeight"                     );
   _vc->registerVar("genWeight"                    );
@@ -70,11 +71,17 @@ FakeEstim::initialize(){
   _vc->registerVar("Jet_mass"                     );
   _vc->registerVar("Jet_btagCSV"                  );
 
+  _vc->registerVar("nJetFwd"                      );
+  _vc->registerVar("JetFwd_pt"                    );
+  _vc->registerVar("JetFwd_phi"                   );
+  
+
   _vc->registerVar("htJet40j"                     );
   _vc->registerVar("minMllAFAS"                   );
   _vc->registerVar("minMllAFOS"                   );
   _vc->registerVar("mZ1"                          );
   _vc->registerVar("nLepGood10"                   );
+
  
   //generator informations
   _vc->registerVar("nGenPart"                     );
@@ -89,87 +96,67 @@ FakeEstim::initialize(){
   _vc->registerVar("nSoftBJetMedium25"            );
 
   //minitree variables
-  _vc->registerVar("iL1T_Mini" );
-  _vc->registerVar("iL2T_Mini" );
+  _vc->registerVar("iL1TV_Mini" );
+  _vc->registerVar("iL2TV_Mini" );
   _vc->registerVar("nLepGood10_Mini" );
+  _vc->registerVar("nLepTightVeto10_Mini" );
+  _vc->registerVar("nLepGood_Mini");
+  _vc->registerVar("nLepTightVeto_Mini");
   _vc->registerVar("mZ1cut10TL_Mini" );
   _vc->registerVar("minMllAFOSTL_Mini" );
   _vc->registerVar("minMllAFASTL_Mini" );
   _vc->registerVar("nJet40_Mini" );
   _vc->registerVar("htJet40j_Mini" );
+  // _vc->registerVar("_Mini" );
   _vc->registerVar("nBJetMedium25_Mini" );
-  
+
+
   _susyMod = new SusyModule(_vc);
   
-  
-//  if(_FR=="mIsoCor") {
-//    _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-//    _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
-//    
-//    _dbm->loadDb("AllMuT","v3/FakeRatio_all_cut_mixisoT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoT_none_iso_all_all");
-//    _dbm->loadDb("AllMuVT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-//  }
-//  else if(_FR=="mIsoAlCor") {
-//    _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-//    _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
-//    
-//    _dbm->loadDb("AllMuT","v3/FakeRatio_all_cut_mixisoT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoT_none_iso_all_all");
-//    _dbm->loadDb("AllMuVT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-//  }
-//  else if(_FR=="mIsoptJCor") {
-//    _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-//    _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
-//    
-//    _dbm->loadDb("AllMuT","v3/FakeRatio_all_cut_mixisoT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoT_none_iso_all_all");
-//    _dbm->loadDb("AllMuVT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-//  }
-//  else { //default pt one
-//    _dbm->loadDb("AllElT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-//    _dbm->loadDb("AllElVT","v3/FakeRatio_all_cut_mixisoHT_none_iso_all_all_out.root","MR_RElMapPtMIso_qcd_all_cut_mixisoHT_none_iso_all_all");
-//    
-//    _dbm->loadDb("AllMuT","v3/FakeRatio_all_cut_mixisoT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoT_none_iso_all_all");
-//    _dbm->loadDb("AllMuVT","v3/FakeRatio_all_cut_mixisoVT_none_iso_all_all_out.root","MR_RMuMapPtMIso_qcd_all_cut_mixisoVT_none_iso_all_all");
-//  }
-
-
-  //additional workflow
-  //addWorkflow( kGenMisCharge, "GenMisCharge" );
-  // addWorkflow( kGenFake, "GenFake" );
-  // addWorkflow( kOneIso, "OneFake" );
-  // addWorkflow( kNoIso, "DoubleFake" );
-
-  //addWorkflow( kLowMETMT, "LowMETMT" );
-
-  //_au->addCategory(kSelId,"selection ID");
-
-
-  _fakeEl=0;
-  _fakeMu=0;
-  _nDFake=0;
-  _nSFake=0;
-  _nCharge=0;
-  _nOther=0;
-
-  int nCateg=44; //78
+  int nCateg=156; //78 156
   _categs.resize(nCateg);
-  string srs[44]={ 
+  string srs[156]={ 
 
     "SR1A", "SR2A", "SR3A", "SR4A", "SR5A", "SR6A", "SR7A", "SR8A",
     "SR9A", "SR10A", "SR11A", "SR12A", "SR13A", "SR14A", "SR15A", "SR16A",
     "SR17A", "SR18A", "SR19A", "SR20A", "SR21A", "SR22A", "SR23A", "SR24A",
     "SR25A", "SR26A", "SR27A", "SR28A", "SR29A", "SR30A", "SR31A", "SR32A",
-
-    // "SR1B", "SR2B", "SR3B", "SR4B", "SR5B", "SR6B", "SR7B", "SR8B",
-    // "SR9B", "SR10B", "SR11B", "SR12B", "SR13B", "SR14B", "SR15B", "SR16B",
-    // "SR17B", "SR18B", "SR19B", "SR20B", "SR21B", "SR22B", "SR23B", "SR24B",
-    // "SR25B","SR26B"
     
-    // "SR1C", "SR2C", "SR3C", "SR4C", "SR5C", "SR6C", "SR7C", "SR8C",
- 
-    "BR0H", "BR0M", "BR0L",
+    "SR1B", "SR2B", "SR3B", "SR4B", "SR5B", "SR6B", "SR7B", "SR8B",
+    "SR9B", "SR10B", "SR11B", "SR12B", "SR13B", "SR14B", "SR15B", "SR16B",
+    "SR17B", "SR18B", "SR19B", "SR20B", "SR21B", "SR22B", "SR23B", "SR24B",
+    "SR25B","SR26B",
+    
+    "SR1C", "SR2C", "SR3C", "SR4C", "SR5C", "SR6C", "SR7C", "SR8C",
+
+    //"BR0H", "BR0M", "BR0L",
+
+    "BR00H", "BR00M", "BR00L",
     "BR10H", "BR10M", "BR10L",
     "BR20H", "BR20M", "BR20L",
     "BR30H", "BR30M", "BR30L",
+    
+    // //fake workflows ==================================================
+
+    "SR1A_Fake", "SR2A_Fake", "SR3A_Fake", "SR4A_Fake", "SR5A_Fake", "SR6A_Fake", "SR7A_Fake", "SR8A_Fake",
+    "SR9A_Fake", "SR10A_Fake", "SR11A_Fake", "SR12A_Fake", "SR13A_Fake", "SR14A_Fake", "SR15A_Fake", "SR16A_Fake",
+    "SR17A_Fake", "SR18A_Fake", "SR19A_Fake", "SR20A_Fake", "SR21A_Fake", "SR22A_Fake", "SR23A_Fake", "SR24A_Fake",
+    "SR25A_Fake", "SR26A_Fake", "SR27A_Fake", "SR28A_Fake", "SR29A_Fake", "SR30A_Fake", "SR31A_Fake", "SR32A_Fake",
+    
+    "SR1B_Fake", "SR2B_Fake", "SR3B_Fake", "SR4B_Fake", "SR5B_Fake", "SR6B_Fake", "SR7B_Fake", "SR8B_Fake",
+    "SR9B_Fake", "SR10B_Fake", "SR11B_Fake", "SR12B_Fake", "SR13B_Fake", "SR14B_Fake", "SR15B_Fake", "SR16B_Fake",
+    "SR17B_Fake", "SR18B_Fake", "SR19B_Fake", "SR20B_Fake", "SR21B_Fake", "SR22B_Fake", "SR23B_Fake", "SR24B_Fake",
+    "SR25B_Fake","SR26B_Fake",
+    
+    "SR1C_Fake", "SR2C_Fake", "SR3C_Fake", "SR4C_Fake", "SR5C_Fake", "SR6C_Fake", "SR7C_Fake", "SR8C_Fake",
+
+
+
+    "BR00H_Fake", "BR00M_Fake", "BR00L_Fake",
+    "BR10H_Fake", "BR10M_Fake", "BR10L_Fake",
+    "BR20H_Fake", "BR20M_Fake", "BR20L_Fake",
+    "BR30H_Fake", "BR30M_Fake", "BR30L_Fake",
+
  
   };
   _categs.assign(srs, srs+nCateg);
@@ -180,7 +167,7 @@ FakeEstim::initialize(){
     addWorkflow( ic+1, _categs[ic] );
   }
 
-
+  //addWorkflow( kGlobalFake, "Fake" );
 
   //extra input variables
   _lepflav = getCfgVarS("LEPFLAV");
@@ -188,8 +175,73 @@ FakeEstim::initialize(){
   _SR      = getCfgVarS("SR"     );
   _FR      = getCfgVarS("FR"     );
   _categorization = getCfgVarI("categorization");
- 
 
+  vector<string> jess;
+  jess.push_back("Jet_pt");
+  addSystSource("JES",SystUtils::kNone, "%", jess, "JES8TeV.db", "" );
+
+
+  //FR databases
+  //pt based QCD ================
+  // if(_FR=="FO1") {
+  //   cout<<"loading db"<<endl;
+  //   _dbm->loadDb("El","MaySync/FR_FO1_El_eta_pt.root","FR_FO1_El_eta_pt");
+  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_pt.root","FR_FO1_Mu_eta_pt");
+  // }
+  // else if(_FR=="FO2") {
+  //   cout<<"loading db 2"<<endl;
+  //   _dbm->loadDb("El","MaySync/FR_FO2_El_eta_pt.root","FR_FO2_El_eta_pt");
+  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_pt.root","FR_FO1_Mu_eta_pt");
+  // }
+  // else if(_FR=="FO3") {
+  //   cout<<"loading db 3"<<endl;
+  //   _dbm->loadDb("El","MaySync/FR_FO3_El_eta_pt.root","FR_FO3_El_eta_pt");
+  //   _dbm->loadDb("Mu","MaySync/FR_FO3_Mu_eta_pt.root","FR_FO3_Mu_eta_pt");
+  // }
+  // //conept based QCD ============
+  // else if(_FR=="FO1C") {
+  //   cout<<"loading db"<<endl;
+  //   _dbm->loadDb("El","MaySync/FR_FO1_El_eta_conept.root","FR_FO1_El_eta_conept");
+  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_conept.root","FR_FO1_Mu_eta_conept");
+  // }
+  // else if(_FR=="FO2C") {
+  //   cout<<"loading db 2"<<endl;
+  //   _dbm->loadDb("El","MaySync/FR_FO2_El_eta_conept.root","FR_FO2_El_eta_conept");
+  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_conept.root","FR_FO1_Mu_eta_conept");
+  // }
+  // else if(_FR=="FO3C") {
+  //   cout<<"loading db 3"<<endl;
+  //   _dbm->loadDb("El","MaySync/FR_FO1_El_eta_conept.root","FR_FO1_El_eta_conept");
+  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_conept.root","FR_FO1_Mu_eta_conept");
+  // }
+  // //jetpt based QCD ============
+  // else if(_FR=="FO1J") {
+  //   cout<<"loading db"<<endl;
+  //   _dbm->loadDb("El","MaySync/FR_FO1_El_eta_jetpt.root","FR_FO1_El_eta_jetpt");
+  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_jetpt.root","FR_FO1_Mu_eta_jetpt");
+  // }
+  // else if(_FR=="FO2J") {
+  //   cout<<"loading db 2"<<endl;
+  //   _dbm->loadDb("El","MaySync/FR_FO2_El_eta_jetpt.root","FR_FO2_El_eta_jetpt");
+  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_jetpt.root","FR_FO1_Mu_eta_jetpt");
+  // }
+  // else if(_FR=="FO3J") {
+  //   cout<<"loading db 3"<<endl;
+  //   _dbm->loadDb("El","MaySync/FR_FO1_El_eta_jetpt.root","FR_FO1_El_eta_jetpt");
+  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_jetpt.root","FR_FO1_Mu_eta_jetpt");
+  // }
+
+
+  if(_FR=="FO2C") {
+    //   cout<<"loading db"<<endl;
+    _dbm->loadDb("El","MaySync/CH_FRFile.root","qcdel/none/FRisoidRElPtMIso2");
+    _dbm->loadDb("Mu","MaySync/CH_FRFile.root","qcdmu/none/FRisoRMuPtMIso2");
+  }
+  if(_FR=="FO4C") {
+    //   cout<<"loading db"<<endl;
+    _dbm->loadDb("El","MaySync/CH_FRFile.root","tt/none/FRISisofo4RElPtMIso2");
+    _dbm->loadDb("Mu","MaySync/CH_FRFile.root","tt/none/FRISisofo4RMuPtMIso2");
+  }
 
 }
 
@@ -207,12 +259,12 @@ FakeEstim::modifySkimming() {
 void
 FakeEstim::defineOutput() {
 
-  string leps[2]={"l1","l2"};
-  for(int il=0;il<2;il++) {
-    _hm->addVariable(leps[il]+"Pt", 200, 0., 200.0,"p_{T}("+leps[il]+") [GeV]");
-    // _hm->addVariable(leps[il]+"Eta", 60, -3.0, 3.0,"#eta("+leps[il]+") ");
-    // _hm->addVariable(leps[il]+"Phi", 60, -3.1416, 3.1416,"#phi("+leps[il]+") ");
-  }
+  // string leps[2]={"l1","l2"};
+  // for(int il=0;il<2;il++) {
+  //   _hm->addVariable(leps[il]+"Pt", 200, 0., 200.0,"p_{T}("+leps[il]+") [GeV]");
+  //   // _hm->addVariable(leps[il]+"Eta", 60, -3.0, 3.0,"#eta("+leps[il]+") ");
+  //   // _hm->addVariable(leps[il]+"Phi", 60, -3.1416, 3.1416,"#phi("+leps[il]+") ");
+  // }
 
   _hm->addVariable("pdgId1", 20, 0., 20,"");
   _hm->addVariable("pdgId2", 20, 0., 20,"");
@@ -235,10 +287,20 @@ FakeEstim::defineOutput() {
 
   _hm->addVariable("srcFake", 10, 0,10,"srcFake");
 
-  _hm->addVariable("MET",500,0,1000,"#slash{E}_{T} [GeV]");
-  _hm->addVariable("MTmin",500,0,1000,"min(M_{T,1}, M_{T,2}) [GeV]");
-  _hm->addVariable("METVsMT",100,0,1000,100,0,1000,"#slash{E}_{T} [GeV]",
-		   "min(M_{T,1}, M_{T,2}) [GeV]");
+  // _hm->addVariable("MET",500,0,1000,"#slash{E}_{T} [GeV]");
+  // _hm->addVariable("MTmin",500,0,1000,"min(M_{T,1}, M_{T,2}) [GeV]");
+  // _hm->addVariable("METVsMT",100,0,1000,100,0,1000,"#slash{E}_{T} [GeV]",
+  // 		   "min(M_{T,1}, M_{T,2}) [GeV]");
+
+  //lepton pT(30,0,150), HT(20,0,1000), MET(20,0,200), mTmin(20,0,200) 
+  _hm->addVariable("l1Pt", 30, 0, 150,"p_{T}(l_{1}) [GeV]");
+  _hm->addVariable("l2Pt", 30, 0, 150,"p_{T}(l_{2}) [GeV]");
+
+  _hm->addVariable("HT", 20, 0, 1000,"H_{T} [GeV]");
+  _hm->addVariable("MET", 20, 0, 200,"#slash{E}_{T} [GeV]");
+  _hm->addVariable("MTmin", 20, 0, 200,"min(M_{T,1}, M_{T,2}) [GeV]");
+
+  _hm->addVariable("NBJets", 4, 0, 4,"N_{b-jets} ");
 
 }
 
@@ -251,49 +313,43 @@ FakeEstim::writeOutput() {
 
 void
 FakeEstim::run() {
-   
+  
+  //if(_vc->get("evt") != 9467) return;
+
+  counter("denominator");
+  
   retrieveObjects();
   
-  counter("denominator");
- 
-  // triggers  
-  // if(_isData && !makeCut<int>(_vc->get("HLT_DoubleMu"), 1, "=", "HLT DoubleMu") ) return;	
-  // if(_isData && !makeCut<int>(_vc->get("HLT_DoubleEl"), 1, "=", "HLT DoubleEl") ) return;	
-  // if(_isData && !makeCut<int>(_vc->get("HLT_MuEG")    , 1, "=", "HLT MuEG"    ) ) return;
+  if(!ssLeptonSelection() ) return;
   
-  if(true) {
+  //===============================
+  _mTmin=min( Candidate::create(_l1Cand, _met)->mass(),
+	      Candidate::create(_l2Cand, _met)->mass() );
+  //===============================
 
-    if(!makeCut( _vc->get("nLepGood10_Mini")>=2, "lepMult" ) ) return;
-
-    if(!makeCut( _vc->get("LepGood_charge", _idxL1)*_vc->get("LepGood_charge", _idxL2)>0, "same sign" ) ) return;
-
-    //lepton ID
-    bool l1mu= abs(_l1Cand->pdgId())==13;
-    bool l2mu= abs(_l2Cand->pdgId())==13;
+  //MC check for FR --> one fake only
+  // if(!_isFake) {
+  //   setWorkflow(kGlobal); //MANDATORY (otherwise double counting in other categories)
     
-    if(!makeCut( goodLepton(_idxL1, _l1Cand->pdgId() ), "first lepton" ) ) return;
-    if(!makeCut( goodLepton(_idxL2, _l2Cand->pdgId() ), "second lepton" ) ) return;
-    
-    if(!makeCut<float>( _vc->get("mZ1cut10TL_Mini"), 76 , "]![", "Z veto",  106 ) ) return;
-    if(!makeCut<float>( _vc->get("minMllAFOSTL_Mini"), 0 , "]!]", "g veto OS", 12) ) return;
-    if(!makeCut<float>( _vc->get("minMllAFASTL_Mini"), 8 , ">", "g veto AS" ) ) return;
+  //   if(!genMatchedToFake(_idxL1) && genMatchedToFake(_idxL2) ) {
+  //     _idxFake=_idxL2;
+  //   }
+  //   else if(genMatchedToFake(_idxL1) && !genMatchedToFake(_idxL2)) {
+  //     _idxFake=_idxL1;
+  //   }
+  //   else return; //no only one fake
+  // }
+  // else setWorkflow(kGlobalFake);
   
-  }
-  else {
-    if( !passCERNSelection() ) return;
-  }
-
-  fillSkimTree();
+  
+  counter("lepton baseline");
 
   //default cuts for baseline
   if(_HT<80) return;
   if( (_HT<500 && _metPt < 30) ) return;
   if(_nJets<2) return;
 
- 
-  fill("MET", _met->pt() );
-  fill("MTmin", _mTmin );
-  fill("METVsMT", _met->pt(), _mTmin );
+  counter("std baseline");
   
   if (_leppt=="hh" && _l1Cand->pt()<25.) return;
   if (_leppt=="hh" && _l2Cand->pt()<25.) return;
@@ -302,15 +358,46 @@ FakeEstim::run() {
   if (_leppt=="ll" && _l1Cand->pt()>25.) return;
   if (_leppt=="ll" && _l2Cand->pt()>25.) return;
   
-  int flavortmp = std::abs(_l1Cand->pdgId())+std::abs( _l2Cand->pdgId());
-  if(_lepflav=="mm"  && flavortmp!=26 ) return;
-  if(_lepflav=="ee"  && flavortmp!=22 ) return;
-  if( (_lepflav=="em" || _lepflav=="me")  && flavortmp!=24 ) return;
+  // int flavortmp = std::abs(_l1Cand->pdgId())+std::abs( _l2Cand->pdgId());
+  // if(_lepflav=="mm"  && flavortmp!=26 ) return;
+  // if(_lepflav=="ee"  && flavortmp!=22 ) return;
+  // if( (_lepflav=="em" || _lepflav=="me")  && flavortmp!=24 ) return;
+
+  if(!_isFake) {
+    if(_lepflav=="mm" && std::abs(_vc->get("LepGood_pdgId", _idxFake))!=13) return;
+    if(_lepflav=="ee" && std::abs(_vc->get("LepGood_pdgId", _idxFake))!=11) return;
+  }
+  else {
+    //setWorkflow(kGlobalFake);
+    _idxFake=_idxL2;
+    if(_lepflav=="mm" && std::abs(_l2Cand->pdgId())!=13 ) return;
+    if(_lepflav=="ee" && std::abs(_l2Cand->pdgId())!=11 ) return;
+  }
   
-  counter("change of weigth");
+  counter("ptflav");
+ 
+  if(_isFake) {
+    return;
+    oneIsoSel();
+  }
   
+  counter("weigthing");
+  
+
+  fill("l1Pt", (_idxFake==_idxL2)?(_l1Cand->pt()):_l2Cand->pt(), _weight );
+  fill("l2Pt", (_idxFake==_idxL2)?(_l2Cand->pt()):_l1Cand->pt(), _weight );
+  fill("HT", _HT, _weight);
+  fill("MET", _met->pt(), _weight);
+  fill("MTmin", _mTmin, _weight);
+  fill("NBJets", _nBJets, _weight);
+
   if(_categorization) {
     categorize();
+    
+    if(_isFake) {
+      setWorkflow(getCurrentWorkflow()+kBR30L); //MM to be done in a better way
+    }
+
     counter("region splitting");
   }
   else {
@@ -319,30 +406,24 @@ FakeEstim::run() {
 
   counter("selected");
 
-  fill("NSelPair2Iso", _nSelPair2Iso );
-  fill("NSelPair1Iso", _nSelPair1Iso );
-  fill("NSelPair0Iso", _nSelPair0Iso );
-  
-
-  fill("NIso",_fullIdLeps.size() );
-  fill("NNonIso",_nonFullIdLeps.size() );
   
   if( getCurrentWorkflow()==0) return; //getCurrentWorkflow()==100 ||
 
+  //cout<<_vc->get("evt")<<"   "<<_jets[0]->pt()<<endl;
 
-//  int run=_vc->get("run");
-//  int lumi=_vc->get("lumi");
-//  int event=_vc->get("evt");
-//  int nLep = _vc->get("nLepGood10_Mini");
-//  int id1 = _l1Cand->pdgId();
-//  double pt1 = _l1Cand->pt();
-//  int id2 = _l2Cand->pdgId();
-//  double pt2 = _l2Cand->pt();
-//  int njet = _nJets;
-//  int nbjet = _nBJets;
-//  double met = _met->pt();
-//  double HT = _HT;
-//  int sr = ((getCurrentWorkflow()<kBR0H)?(getCurrentWorkflow()):(0));
+  // int run=_vc->get("run");
+  // int lumi=_vc->get("lumi");
+  // int event=_vc->get("evt");
+  // int nLep = _vc->get("nLepGood_Mini");
+  // int id1 = _l1Cand->pdgId();
+  // double pt1 = _l1Cand->pt();
+  // int id2 = _l2Cand->pdgId();
+  // double pt2 = _l2Cand->pt();
+  // int njet = _nJets;
+  // int nbjet = _nBJets;
+  // double met = _met->pt();
+  // double HT = _HT;
+  // int sr = ((getCurrentWorkflow()<kBR00H)?(getCurrentWorkflow()):(0));
   
   // cout << Form("%1d %9d %12d\t%2d\t%+2d %5.1f\t%+2d %5.1f\t%d\t%2d\t%5.1f\t%6.1f\t%2d",
   // 	       run, lumi, event, nLep,
@@ -355,9 +436,9 @@ FakeEstim::run() {
 bool
 FakeEstim::noIsoSel() {
   
-  if( _fullIdLepsIdx.size()!=0 ) return false;
+  if( _fakableLepsVeto10.size()!=0 ) return false;
   
-  float p=getProbAtLeastNIso( _lepsForFR ,_lepsForFRIdx , 2);
+  float p=getProbAtLeastNIso( _fakableLepsVeto10 ,_fakableLepsVeto10Idx , 2);
   _weight *= p/(1-p);
   return true;
 }
@@ -365,10 +446,11 @@ FakeEstim::noIsoSel() {
 bool
 FakeEstim::oneIsoSel() {
   
-  if( _fullIdLepsIdx.size()!=1 ) return false;
+  if( _fakableLepsVeto10.size()!=1 ) return false;
 
-  float p=getProbAtLeastNIso( _lepsForFR ,_lepsForFRIdx , 1);
+  float p=getProbAtLeastNIso( _fakableLepsVeto10 ,_fakableLepsVeto10Idx , 1);
   _weight *= p/(1-p);
+
   return true;
 }
 
@@ -383,7 +465,7 @@ FakeEstim::getProbAtLeastNIso(CandList fObjs, vector<unsigned int> fObjIdx,
   if(nIso>2) {cout<<"not implemented for nIso>2"<<endl; return 0;}
 
   vector<float> frs(fObjs.size(),0);
-
+ 
   float pNoIso = 1;
   for(size_t io=0;io<fObjs.size(); io++) {
     frs[io] = getFR(fObjs[io], fObjIdx[io]);
@@ -413,256 +495,296 @@ FakeEstim::getProbAtLeastNIso(CandList fObjs, vector<unsigned int> fObjIdx,
 //==================================================================================================
 void 
 FakeEstim::retrieveObjects(){
-
-  //clear collections
-  _allLeps.clear();
-  _looseLeps.clear();
-  _leptons.clear();
-  _nonFullIdLeps.clear();
-  _fullIdLeps.clear();
-  _lepsForFR.clear();
-  _lepsForFRIdx.clear();
   
   _jets.clear();
   
-  _looseLepsIdx.clear();
-  _leptonsIdx.clear();
-  _nonFullIdLepsIdx.clear();
-  _fullIdLepsIdx.clear();
-  _tmpLepIdx.clear();
 
-  //========================
-  // bool isMu = false;
-  // for(int i=0; i<_vc->get("nLepGood"); ++i){
-
-  //   isMu=std::abs(_vc->get("LepGood_pdgId", i))==13;
-    
-  //   Candidate* lepCand= Candidate::create(_vc->get("LepGood_pt",i),
-  // 					  _vc->get("LepGood_eta",i),
-  // 					  _vc->get("LepGood_phi",i),
-  // 					  _vc->get("LepGood_pdgId",i),
-  // 					  _vc->get("LepGood_charge",i),
-  // 					  isMu?0.105:0.0005);
-
-  //   _allLeps.push_back( lepCand );
-
-  //   if( !(isMu?_susyMod->muIdSel(i, SusyModule::kLoose):_susyMod->elIdSel(i, SusyModule::kLoose)) ) continue;
-  //   _looseLeps.push_back(lepCand);
-  //   _looseLepsIdx.push_back(i);
-      
-  //   if( !(isMu?_susyMod->muIdSel(i, SusyModule::kTight):_susyMod->elIdSel(i, SusyModule::kTight)) ) continue;
-  //   _leptons.push_back(lepCand);
-  //   _leptonsIdx.push_back(i);
-
-  //   fill("jetPtRatio", _vc->get("LepGood_jetPtRatio",i) );
-  //   fill("jetPtRel", _vc->get("LepGood_jetPtRel",i) );
-  //   fill("miniIso", _vc->get("LepGood_miniRelIso",i) );
-    
-
-  //   if( ! _susyMod->multiIsoSel(i, isMu?SusyModule::kMedium:SusyModule::kTight) ) {//non fully identified leptons
-  //     _nonFullIdLeps.push_back(lepCand);
-  //     _nonFullIdLepsIdx.push_back(i);
-  //   }
-  //   else {
-  //     _fullIdLeps.push_back(lepCand);
-  //     _tmpLepIdx.push_back(i);
-  //   }
-
-  // }
-
-  _idxL1 = _vc->get("iL1T_Mini");
-  _idxL2 = _vc->get("iL2T_Mini");
-
-  bool isMu=std::abs(_vc->get("LepGood_pdgId", _idxL1))==13;
-  _l1Cand = Candidate::create(_vc->get("LepGood_pt", _idxL1),
-			      _vc->get("LepGood_eta", _idxL1),
-			      _vc->get("LepGood_phi", _idxL1),
-			      _vc->get("LepGood_pdgId", _idxL1),
-			      _vc->get("LepGood_charge", _idxL1),
-			      isMu?0.105:0.0005);
+  _l1Cand=nullptr;
+  _l2Cand=nullptr;
   
-  isMu=std::abs(_vc->get("LepGood_pdgId", _idxL2))==13;
-  _l2Cand = Candidate::create(_vc->get("LepGood_pt", _idxL2),
-			      _vc->get("LepGood_eta",_idxL2),
-			      _vc->get("LepGood_phi",_idxL2),
-			      _vc->get("LepGood_pdgId",_idxL2),
-			      _vc->get("LepGood_charge",_idxL2),
-			      isMu?0.105:0.0005);
+  _looseLeps.clear();
+  _looseLepsIdx.clear();
 
-  _nLooseLeps=_looseLeps.size();
-    
-  // for(int i = 0; i < _vc->get("nJet40"); ++i){
-  //   if(_susyMod->jetSel(i)) {
-  //     _jets.push_back( Candidate::create(_vc->get("Jet_pt", i),
-  // 					 _vc->get("Jet_eta", i),
-  // 					 _vc->get("Jet_phi", i) ) );
-  //   }
-  // }
+  _looseLeps10.clear();
+  _looseLeps10Idx.clear();
 
-  _nJets  = _vc->get("nJet40_Mini");//_jets.size();
-  _nBJets = _vc->get("nBJetMedium25_Mini");
+  _looseLepsVeto.clear();
+  _looseLepsVetoIdx.clear();
 
- 
+  _looseLepsVeto10.clear();
+  _looseLepsVeto10Idx.clear();
 
-  _HT  = _vc->get("htJet40j_Mini");//_susyMod->HT( &(_jets) );
-  _met = Candidate::create(_vc->get("met_pt"), _vc->get("met_phi") );
+  _fakableLeps10.clear();
+  _fakableLeps10Idx.clear();
+
+  _fakableLepsVeto10.clear();
+  _fakableLepsVeto10Idx.clear();
+  
+  _tightLeps10.clear();
+  _tightLeps10Idx.clear();
+
+  _tightLepsVeto10.clear();
+  _tightLepsVeto10Idx.clear();
+
+  selectLeptons();
+
+  
+  _susyMod->cleanJets( &_looseLeps10, _jets, _jetsIdx, _bJets, _bJetsIdx);
+  _nJets=_jets.size();
+  _nBJets=_bJets.size();
+  _HT=_susyMod->HT( &(_jets) );
+
+  // _nJets  = _vc->get("nJet40_Mini");//_jets.size();
+  // _nBJets = _vc->get("nBJetMedium25_Mini");
+  // _HT  = _vc->get("htJet40j_Mini");//_susyMod->HT( &(_jets) );
+
+  if(true) {
+    TVector2 met = varyMET();
+    _met = Candidate::create( met.Mod(), met.Phi() );
+  }
+  else
+    _met = Candidate::create( _vc->get("met_pt"), _vc->get("met_phi") );
+
   _metPt = _met->pt();
 
   //MET and MT
-  _mTmin=min( Candidate::create(_l1Cand, _met)->mass(),
-	      Candidate::create(_l2Cand, _met)->mass() );
+ 
 
 }
 
 //=========================================================
 
 bool
-FakeEstim::alternateSSEventSelection(bool switchWF) {
+FakeEstim::ssLeptonSelection() {
+  _isFake=false;
+ 
+  // 2Tight ===============================
   
-  //MM: could be done in one round, but safer and easier to understand that way 
+  if(_tightLepsVeto10.size()>=2) { //main
+    _isFake=false;
 
-  // SF: CHOOSE a SS PAIR, maximizing the number of muons and then pT
-  int charge = 0;
-  int flavor = 0;
-  int flavortmp = 0;
-  bool isSS = false;
-  _idxL1=-1;
-  _idxL2=-1;
-
-  _nIso=-1;
-  int nOSPairs=0;
-  _nSelPair2Iso=0;
-  _nSelPair1Iso=0;
-  _nSelPair0Iso=0;
-
-  //========================================================================
-  //first fully identified leptons => signal
-  for(unsigned int il1 = 0; il1 < _fullIdLeps.size(); ++il1){
-    for(unsigned int il2 = il1+1; il2 < _fullIdLeps.size(); ++il2){
-
-      // if (_leppt=="hh" && _fullIdLeps[il1]->pt()<25.) continue;
-      // if (_leppt=="hh" && _fullIdLeps[il2]->pt()<25.) continue;
-      // if (_leppt=="hl" && (_leptons[il1]->pt()>25. && _leptons[il2]->pt()>25.) ) continue;
-      // if (_leppt=="hl" && (_leptons[il1]->pt()<25. && _leptons[il2]->pt()<25.) ) continue;
-      // if (_leppt=="ll" && _fullIdLeps[il1]->pt()>25.) continue;
-      // if (_leppt=="ll" && _fullIdLeps[il2]->pt()>25.) continue;
-
-      charge = _fullIdLeps[il1]->charge()*_fullIdLeps[il2]->charge();
-      if(charge<0) continue; // if the pair is OS skip
-      else nOSPairs++;
-
-      flavortmp = std::abs(_fullIdLeps[il1]->pdgId())+std::abs( _fullIdLeps[il2]->pdgId());
-      if(_lepflav=="mm" && flavortmp!=26 ) continue;
-      if(_lepflav=="ee" && flavortmp!=22 ) continue;
-      if( (_lepflav=="em" || _lepflav=="me") && flavortmp!=24 ) continue;
-      //if(flavor>flavortmp) continue; // if the new pair has less muons skip.
-
-      flavor = flavortmp;
+    CandList lepPair=_susyMod->bestSSPair( (&_tightLepsVeto10), true, false, 10, _idxL1, _idxL2);
       
-      _l1Cand = _fullIdLeps[il1];   _idxL1 = _tmpLepIdx[il1];
-      _l2Cand = _fullIdLeps[il2];   _idxL2 = _tmpLepIdx[il2]; 
-      isSS = true;
-      _nSelPair2Iso++;
-    }
-  }
-  
-  if(isSS) {_nIso=2; 
-    if(switchWF) setWorkflow(kGlobal);
-    return true;
-  }
-  
-  return false; //MM: non isolated sideband disabled for now, workflows have to be fully duplicated
-  //if(nOSPairs!=0) return false;
-  //=======================================================================
-  //now, mixing events with isolated and non isolated leptons
-  for(unsigned int il1 = 0; il1 < _fullIdLeps.size(); ++il1){
-    for(unsigned int il2 = 0; il2 < _nonFullIdLeps.size(); ++il2){
-      
-      // if (_leppt=="hh" && _fullIdLeps[il1]->pt()<25.) continue;
-      // if (_leppt=="hh" && _nonFullIdLeps[il2]->pt()<25.) continue;
-      // if (_leppt=="hl" && !(_fullIdLeps[il1]->pt()<25. && _nonFullIdLeps[il2]->pt()>25.) ) continue;
-      // if (_leppt=="hl" && !(_fullIdLeps[il1]->pt()>25. && _nonFullIdLeps[il2]->pt()<25.) ) continue;
-      // if (_leppt=="ll" && _fullIdLeps[il1]->pt()>25.) continue;
-      // if (_leppt=="ll" && _nonFullIdLeps[il2]->pt()>25.) continue;
+    _l1Cand = lepPair[0];
+    _l2Cand = lepPair[1];
 
-      if(!genMatchedToFake(_nonFullIdLepsIdx[il2]) && !genMatchedToFake(_tmpLepIdx[il1]) ) continue;
+    if(_l1Cand==nullptr || _l2Cand==nullptr) return false; //case with less than two leptons or no valid pair
 
-      charge = _fullIdLeps[il1]->charge()*_nonFullIdLeps[il2]->charge();
-      if(charge<0) continue; // if the pair is OS skip
-
-      flavortmp = std::abs(_fullIdLeps[il1]->pdgId())+std::abs( _nonFullIdLeps[il2]->pdgId());
-      if(_lepflav=="mm"  && flavortmp!=26 ) continue;
-      if(_lepflav=="ee"  && flavortmp!=22 ) continue;
-      if( (_lepflav=="em" || _lepflav=="me")  && flavortmp!=24 ) continue;
-  
-      if( find(_lepsForFR.begin(),_lepsForFR.end(),_nonFullIdLeps[il2])==_lepsForFR.end()) {
-	_lepsForFR.push_back(_nonFullIdLeps[il2]);
-	_lepsForFRIdx.push_back(_nonFullIdLepsIdx[il2]);
-      }
-      
-      flavor = flavortmp;
-      
-      _l1Cand = _fullIdLeps[il1];   _idxL1 = _tmpLepIdx[il1];
-      _l2Cand = _nonFullIdLeps[il2];   _idxL2 = _nonFullIdLepsIdx[il2]; 
+    _idxL1 = _tightLepsVeto10Idx[_idxL1];
+    _idxL2 = _tightLepsVeto10Idx[_idxL2];
     
-      isSS = true;
-      _nSelPair1Iso++;
+    if(!makeCut( _l1Cand->charge()*_l2Cand->charge()>0, "same sign" ) ) return false;
+    if(!makeCut(_susyMod->passMllSingleVeto(_l1Cand, _l2Cand, 0, 8, false), "mll veto") ) return false;
 
-    }
-  }
- 
-  if(isSS) { _nIso=1; 
-    if(switchWF) setWorkflow(kOneIso); 
     return true;
-  }
+  } //MM: validated 2T selection -> sync with CB
+   
+  // 1Tight 1Loose ====================================
+  if(_tightLepsVeto10.size()==1 && _fakableLepsVeto10.size()==1) {
+    _isFake=true;
 
-  //=======================================================================
-  //now, mixing events with isolated and non isolated leptons
-  for(unsigned int il1 = 0; il1 < _nonFullIdLeps.size(); ++il1){
-    for(unsigned int il2 = il1+1; il2 < _nonFullIdLeps.size(); ++il2){
 
-      // if (_leppt=="hh" && _nonFullIdLeps[il1]->pt()<25.) continue;
-      // if (_leppt=="hh" && _nonFullIdLeps[il2]->pt()<25.) continue;
-      // if (_leppt=="hl" && !(_nonFullIdLeps[il1]->pt()<25 && _nonFullIdLeps[il2]->pt()>25) ) continue;
-      // if (_leppt=="hl" && !(_nonFullIdLeps[il1]->pt()>25 && _nonFullIdLeps[il2]->pt()<25) ) continue;
-      // if (_leppt=="ll" && _nonFullIdLeps[il1]->pt()>25.) continue;
-      // if (_leppt=="ll" && _nonFullIdLeps[il2]->pt()>25.) continue;
+    _idxL1 = _tightLepsVeto10Idx[0];
+    _idxL2 = _fakableLepsVeto10Idx[0];
 
-      charge = _nonFullIdLeps[il1]->charge()*_nonFullIdLeps[il2]->charge();
-      if(charge<0) continue; // if the pair is OS skip
-
-      flavortmp = std::abs(_nonFullIdLeps[il1]->pdgId())+std::abs( _nonFullIdLeps[il2]->pdgId());
-      if(_lepflav=="mm"  && flavortmp!=26 ) continue;
-      if(_lepflav=="ee"  && flavortmp!=22 ) continue;
-      if( (_lepflav=="em" || _lepflav=="me")  && flavortmp!=24 ) continue;
- 
-      if( find(_lepsForFR.begin(),_lepsForFR.end(),_nonFullIdLeps[il1])==_lepsForFR.end()) {
-	_lepsForFR.push_back(_nonFullIdLeps[il1]);
-      _lepsForFRIdx.push_back(_nonFullIdLepsIdx[il1]);
-    }
-
-      if( find(_lepsForFR.begin(),_lepsForFR.end(),_nonFullIdLeps[il2])==_lepsForFR.end()) {
-	_lepsForFR.push_back(_nonFullIdLeps[il2]);
-	_lepsForFRIdx.push_back(_nonFullIdLepsIdx[il2]);
-      }
-
-      flavor = flavortmp;
+    _l1Cand = _tightLepsVeto10[0];
+    _l2Cand = _fakableLepsVeto10[0];
       
-      _l1Cand = _nonFullIdLeps[il1];   _idxL1 = _nonFullIdLepsIdx[il1];
-      _l2Cand = _nonFullIdLeps[il2];   _idxL2 = _nonFullIdLepsIdx[il2]; 
- 
-      isSS = true;
-      _nSelPair0Iso++;
-    }
-  }
+    if(_l1Cand==nullptr || _l2Cand==nullptr) return false;
+    //cout<<"fake case "<<_idxL1<<"  "<<_idxL2<<"  "<<_l1Cand<<"  "<<_l2Cand<<endl;
+    // if(std::abs(_l2Cand->pdgId())==11)
+    // 	cout<<_vc->get("LepGood_mvaIdPhys14", _idxL2)<<endl;
 
-  if(isSS) {_nIso=0;
-    if(switchWF) setWorkflow(kNoIso);
+    if(genMatchedToFake(_idxL1) || !genMatchedToFake(_idxL2) ) return false;
+
+    if(!makeCut( _l1Cand->charge()*_l2Cand->charge()>0, "same sign" ) ) return false;
+    if(!makeCut(_susyMod->passMllSingleVeto(_l1Cand, _l2Cand, 0, 8, false), "mll veto") ) return false;
+     
     return true;
   }
+
+
+  // for(unsigned int il1 = 0; il1 < _tightLeps10Veto.size(); ++il1) {
+  //   for(unsigned int il2 = 0; il2 < _looseLeps10Veto.size(); ++il2){
+     
+  //     if(
+
+  //     //one of the two is a fake
+  //     if(!genMatchedToFake(_looseLeps10VetoIdx[il2]) || !genMatchedToFake(_tightLeps10VetoIdx[il1]) ) continue;
+      
+  //     if(_tightLeps10Veto[il1]->charge()*_looseLeps10Veto[il2]->charge()<0) continue;
+  //     if(
+
+  //   }
+  // }
+
+
+  //   //only one fake for now MM: to be fixed
+  //   if(!makeCut( _l1Cand!=nullptr, "leading lepton" ) ) return false;
+  //   if(!makeCut(_fakableObjects.size()==1, "trailing lepton" ) ) return false;
+  //   _l2Cand = _fakableObjects[0];
+  //   _idxL2 = _fakableObjectsIdx[0];
+
+  //   //check the vetos MM: to be fixed
+  //   if(!_susyMod->mllLMGVeto(_l1Cand, _l2Cand) ) return false;
+  //   if(!_susyMod->mllZVeto(_l1Cand, _l2Cand) ) return false;
+
+  //   if(!makeCut( _l1Cand->charge()*_l2Cand->charge()>0, "same sign" ) ) return false;
+    
+  //   return true;
+  // }
+  
 
   return false;
 }
+
+// bool
+// FakeEstim::alternateSSEventSelection(bool switchWF) {
+  
+//   // //MM: could be done in one round, but safer and easier to understand that way 
+
+//   // // SF: CHOOSE a SS PAIR, maximizing the number of muons and then pT
+//   // int charge = 0;
+//   // int flavor = 0;
+//   // int flavortmp = 0;
+//   // bool isSS = false;
+//   // _idxL1=-1;
+//   // _idxL2=-1;
+
+//   // _nIso=-1;
+//   // int nOSPairs=0;
+//   // _nSelPair2Iso=0;
+//   // _nSelPair1Iso=0;
+//   // _nSelPair0Iso=0;
+
+//   // //========================================================================
+//   // //first fully identified leptons => signal
+//   // for(unsigned int il1 = 0; il1 < _fullIdLeps.size(); ++il1){
+//   //   for(unsigned int il2 = il1+1; il2 < _fullIdLeps.size(); ++il2){
+
+//   //     // if (_leppt=="hh" && _fullIdLeps[il1]->pt()<25.) continue;
+//   //     // if (_leppt=="hh" && _fullIdLeps[il2]->pt()<25.) continue;
+//   //     // if (_leppt=="hl" && (_leptons[il1]->pt()>25. && _leptons[il2]->pt()>25.) ) continue;
+//   //     // if (_leppt=="hl" && (_leptons[il1]->pt()<25. && _leptons[il2]->pt()<25.) ) continue;
+//   //     // if (_leppt=="ll" && _fullIdLeps[il1]->pt()>25.) continue;
+//   //     // if (_leppt=="ll" && _fullIdLeps[il2]->pt()>25.) continue;
+
+//   //     charge = _fullIdLeps[il1]->charge()*_fullIdLeps[il2]->charge();
+//   //     if(charge<0) continue; // if the pair is OS skip
+//   //     else nOSPairs++;
+
+//   //     flavortmp = std::abs(_fullIdLeps[il1]->pdgId())+std::abs( _fullIdLeps[il2]->pdgId());
+//   //     if(_lepflav=="mm" && flavortmp!=26 ) continue;
+//   //     if(_lepflav=="ee" && flavortmp!=22 ) continue;
+//   //     if( (_lepflav=="em" || _lepflav=="me") && flavortmp!=24 ) continue;
+//   //     //if(flavor>flavortmp) continue; // if the new pair has less muons skip.
+
+//   //     flavor = flavortmp;
+      
+//   //     _l1Cand = _fullIdLeps[il1];   _idxL1 = _tmpLepIdx[il1];
+//   //     _l2Cand = _fullIdLeps[il2];   _idxL2 = _tmpLepIdx[il2]; 
+//   //     isSS = true;
+//   //     _nSelPair2Iso++;
+//   //   }
+//   // }
+  
+//   // if(isSS) {_nIso=2; 
+//   //   if(switchWF) setWorkflow(kGlobal);
+//   //   return true;
+//   // }
+  
+//   // return false; //MM: non isolated sideband disabled for now, workflows have to be fully duplicated
+//   // //if(nOSPairs!=0) return false;
+//   // //=======================================================================
+//   // //now, mixing events with isolated and non isolated leptons
+//   // for(unsigned int il1 = 0; il1 < _fullIdLeps.size(); ++il1){
+//   //   for(unsigned int il2 = 0; il2 < _nonFullIdLeps.size(); ++il2){
+      
+//   //     // if (_leppt=="hh" && _fullIdLeps[il1]->pt()<25.) continue;
+//   //     // if (_leppt=="hh" && _nonFullIdLeps[il2]->pt()<25.) continue;
+//   //     // if (_leppt=="hl" && !(_fullIdLeps[il1]->pt()<25. && _nonFullIdLeps[il2]->pt()>25.) ) continue;
+//   //     // if (_leppt=="hl" && !(_fullIdLeps[il1]->pt()>25. && _nonFullIdLeps[il2]->pt()<25.) ) continue;
+//   //     // if (_leppt=="ll" && _fullIdLeps[il1]->pt()>25.) continue;
+//   //     // if (_leppt=="ll" && _nonFullIdLeps[il2]->pt()>25.) continue;
+
+//   //     if(!genMatchedToFake(_nonFullIdLepsIdx[il2]) && !genMatchedToFake(_tmpLepIdx[il1]) ) continue;
+
+//   //     charge = _fullIdLeps[il1]->charge()*_nonFullIdLeps[il2]->charge();
+//   //     if(charge<0) continue; // if the pair is OS skip
+
+//   //     flavortmp = std::abs(_fullIdLeps[il1]->pdgId())+std::abs( _nonFullIdLeps[il2]->pdgId());
+//   //     if(_lepflav=="mm"  && flavortmp!=26 ) continue;
+//   //     if(_lepflav=="ee"  && flavortmp!=22 ) continue;
+//   //     if( (_lepflav=="em" || _lepflav=="me")  && flavortmp!=24 ) continue;
+  
+//   //     if( find(_lepsForFR.begin(),_lepsForFR.end(),_nonFullIdLeps[il2])==_lepsForFR.end()) {
+//   // 	_lepsForFR.push_back(_nonFullIdLeps[il2]);
+//   // 	_lepsForFRIdx.push_back(_nonFullIdLepsIdx[il2]);
+//   //     }
+      
+//   //     flavor = flavortmp;
+      
+//   //     _l1Cand = _fullIdLeps[il1];   _idxL1 = _tmpLepIdx[il1];
+//   //     _l2Cand = _nonFullIdLeps[il2];   _idxL2 = _nonFullIdLepsIdx[il2]; 
+    
+//   //     isSS = true;
+//   //     _nSelPair1Iso++;
+
+//   //   }
+//   // }
+ 
+//   // if(isSS) { _nIso=1; 
+//   //   if(switchWF) setWorkflow(kOneIso); 
+//   //   return true;
+//   // }
+
+//   // //=======================================================================
+//   // //now, mixing events with isolated and non isolated leptons
+//   // for(unsigned int il1 = 0; il1 < _nonFullIdLeps.size(); ++il1){
+//   //   for(unsigned int il2 = il1+1; il2 < _nonFullIdLeps.size(); ++il2){
+
+//   //     // if (_leppt=="hh" && _nonFullIdLeps[il1]->pt()<25.) continue;
+//   //     // if (_leppt=="hh" && _nonFullIdLeps[il2]->pt()<25.) continue;
+//   //     // if (_leppt=="hl" && !(_nonFullIdLeps[il1]->pt()<25 && _nonFullIdLeps[il2]->pt()>25) ) continue;
+//   //     // if (_leppt=="hl" && !(_nonFullIdLeps[il1]->pt()>25 && _nonFullIdLeps[il2]->pt()<25) ) continue;
+//   //     // if (_leppt=="ll" && _nonFullIdLeps[il1]->pt()>25.) continue;
+//   //     // if (_leppt=="ll" && _nonFullIdLeps[il2]->pt()>25.) continue;
+
+//   //     charge = _nonFullIdLeps[il1]->charge()*_nonFullIdLeps[il2]->charge();
+//   //     if(charge<0) continue; // if the pair is OS skip
+
+//   //     flavortmp = std::abs(_nonFullIdLeps[il1]->pdgId())+std::abs( _nonFullIdLeps[il2]->pdgId());
+//   //     if(_lepflav=="mm"  && flavortmp!=26 ) continue;
+//   //     if(_lepflav=="ee"  && flavortmp!=22 ) continue;
+//   //     if( (_lepflav=="em" || _lepflav=="me")  && flavortmp!=24 ) continue;
+ 
+//   //     if( find(_lepsForFR.begin(),_lepsForFR.end(),_nonFullIdLeps[il1])==_lepsForFR.end()) {
+//   // 	_lepsForFR.push_back(_nonFullIdLeps[il1]);
+//   //     _lepsForFRIdx.push_back(_nonFullIdLepsIdx[il1]);
+//   //   }
+
+//   //     if( find(_lepsForFR.begin(),_lepsForFR.end(),_nonFullIdLeps[il2])==_lepsForFR.end()) {
+//   // 	_lepsForFR.push_back(_nonFullIdLeps[il2]);
+//   // 	_lepsForFRIdx.push_back(_nonFullIdLepsIdx[il2]);
+//   //     }
+
+//   //     flavor = flavortmp;
+      
+//   //     _l1Cand = _nonFullIdLeps[il1];   _idxL1 = _nonFullIdLepsIdx[il1];
+//   //     _l2Cand = _nonFullIdLeps[il2];   _idxL2 = _nonFullIdLepsIdx[il2]; 
+ 
+//   //     isSS = true;
+//   //     _nSelPair0Iso++;
+//   //   }
+//   // }
+
+//   // if(isSS) {_nIso=0;
+//   //   if(switchWF) setWorkflow(kNoIso);
+//   //   return true;
+//   // }
+
+//   return false;
+// }
 
 
 
@@ -691,7 +813,7 @@ FakeEstim::setSignalRegions() {
   else if( _SR== "SR3A" ) {
     setSelLine("LL:=:hh|NB:=:0|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:<:300");
     setSelLine("LL:=:hh|NB:=:0|MT:<:120|MET:[]:200:500|NJ:>=:2|HT:<:300");
-    setSelLine("LL:=:hh|NB:=:0|MT:>=:120|MET:50:[]:500|NJ:>=:2|HT:<:300");
+    setSelLine("LL:=:hh|NB:=:0|MT:>=:120|MET:[]:50:500|NJ:>=:2|HT:<:300");
   }
   else if( _SR== "SR4A" ) {
     setSelLine("LL:=:hh|NB:=:0|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:[]:300:1600");
@@ -720,7 +842,7 @@ FakeEstim::setSignalRegions() {
   else if( _SR== "SR11A" ) {
     setSelLine("LL:=:hh|NB:=:1|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:<:300");
     setSelLine("LL:=:hh|NB:=:1|MT:<:120|MET:[]:200:500|NJ:>=:2|HT:<:300");
-    setSelLine("LL:=:hh|NB:=:1|MT:>=:120|MET:50:[]:500|NJ:>=:2|HT:<:300");
+    setSelLine("LL:=:hh|NB:=:1|MT:>=:120|MET:[]:50:500|NJ:>=:2|HT:<:300");
   }
   else if( _SR== "SR12A" ) {
     setSelLine("LL:=:hh|NB:=:1|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:[]:300:1600");
@@ -749,7 +871,7 @@ FakeEstim::setSignalRegions() {
   else if( _SR== "SR19A" ) {
     setSelLine("LL:=:hh|NB:=:2|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:<:300");
     setSelLine("LL:=:hh|NB:=:2|MT:<:120|MET:[]:200:500|NJ:>=:2|HT:<:300");
-    setSelLine("LL:=:hh|NB:=:2|MT:>=:120|MET:50:[]:500|NJ:>=:2|HT:<:300");
+    setSelLine("LL:=:hh|NB:=:2|MT:>=:120|MET:[]:50:500|NJ:>=:2|HT:<:300");
   }
   else if( _SR== "SR20A" ) {
     setSelLine("LL:=:hh|NB:=:2|MT:<:120|MET:[]:50:200|NJ:>=:5|HT:[]:300:1600");
@@ -939,6 +1061,19 @@ FakeEstim::setSignalRegions() {
     setSelLine("LL:=:ll|NB:>=:0|NJ:>=:2|HT:>=:500");
   }
 
+ else if( _SR== "BR00H" ) {
+    setSelLine("LL:=:hh|NB:=:0|MET:>:30|NJ:>=:2|HT:<:500");
+    setSelLine("LL:=:hh|NB:=:0|NJ:>=:2|HT:>=:500");
+  }
+  else if( _SR== "BR00M" ) {
+    setSelLine("LL:=:hl|NB:=:0|MET:>:30|NJ:>=:2|HT:<:500");
+    setSelLine("LL:=:hl|NB:=:0|NJ:>=:2|HT:>=:500");
+  }
+  else if( _SR== "BR00L" ) {
+    setSelLine("LL:=:ll|NB:=:0|MET:>:30|NJ:>=:2|HT:<:500");
+    setSelLine("LL:=:ll|NB:=:0|NJ:>=:2|HT:>=:500");
+  }
+
  else if( _SR== "BR10H" ) {
     setSelLine("LL:=:hh|NB:=:1|MET:>:30|NJ:>=:2|HT:<:500");
     setSelLine("LL:=:hh|NB:=:1|NJ:>=:2|HT:>=:500");
@@ -1054,30 +1189,29 @@ FakeEstim::genMatchedMisCharge() {
 float 
 FakeEstim::getFR(Candidate* cand, int idx) {
   string db;
-  //  int wp=SusyModule::kTight;
+  //int wp=SusyModule::kTight;
   
-  if( std::abs(cand->pdgId())==13) db="AllMu";
-  else  db="AllEl";
-
-  //  if(_lepiso == "multiIso") db+="T";
-
+  if( std::abs(cand->pdgId())==13) db="Mu";
+  else  db="El";
+  
 
   float ptVal=cand->pt();
-  // if(_extScheme=="mIsoCor") {
-  //   ptVal = cand->pt()*(1+ max((float)0.,_vc->get("LepGood_miniRelIso",idx )-_multiIsoWP[kMiniIso][wp]));
-  // }
-  // if(_extScheme=="mIsoAlCor") {
-  //   ptVal = (_vc->get("LepGood_pTrel",idx)>_multiIsoWP[kPtRel][wp])?(cand->pt()*(1+ max((float)0.,_vc->get("LepGood_miniRelIso",idx )-_multiIsoWP[kMiniIso][wp]))):
-  //     (_vc->get("LepGood_jetPtRatio",idx)/cand->pt()*0.8 );
-  // }
-  // if(_extScheme=="mIsoPtJCor") {
-  //   ptVal = (_vc->get("LepGood_pTrel",idx)>_multiIsoWP[kPtRel][wp])?(cand->pt()*(1+ max((float)0.,_vc->get("LepGood_miniRelIso",idx )-_multiIsoWP[kMiniIso][wp]))):
-  //     ( max(cand->pt(), _vc->get("LepGood_jetPtRatio",idx)/cand->pt()*_multiIsoWP[kPtRatio][wp] ) );
-  // }
-
+  float etaVal=std::abs(cand->eta());
   
-  return _dbm->getDBValue(db, std::min( ptVal,(float)99.9),
-			  std::min(std::abs(cand->eta()),(float)2.39) );
+  if(_FR.find("C")!=string::npos) ptVal=std::max(_susyMod->conePt(idx), (float)10.);
+  if(_FR.find("J")!=string::npos) ptVal/=_vc->get("LepGood_jetPtRatio", idx);
+
+  ptVal=std::max(ptVal, (float)10.);
+  // cout<<" ====> "<<cand->pt()<<" / "<<cand->eta()<<" => "<<_dbm->getDBValue(db, std::min( ptVal,(float)69.9),
+  // 									    std::min(std::abs(cand->eta()),(float)2.49) )<<endl;
+
+  // if(_dbm->getDBValue(db, std::min( ptVal,(float)69.9),
+  // 		      std::min(std::abs(cand->eta()),(float)2.49) ) == 1)
+  //   cout<<cand->pt()<<"  "<<ptVal<<"   "<<_dbm->getDBValue(db, std::min( ptVal,(float)69.9),
+  // 							   std::min(std::abs(cand->eta()),(float)2.49) )<<endl;
+
+  return _dbm->getDBValue(db, std::min( ptVal,(float)69.9),
+			  std::min(etaVal,(float)2.49) );
 }
 
 
@@ -1092,8 +1226,11 @@ FakeEstim::testRegion() {
 
   for(size_t is=0;is<_sels[_SR].size();is++) {
     passSel=true;
+    //cout<<"new region ================== "<<_SR<<endl;
     for(size_t ii=0;ii<_sels[_SR][is].size();ii++) {
     
+      //cout<<_sels[_SR][is][ii][0]<<" >> "<<endl;
+
       if(_sels[_SR][is][ii][0]=="LL") { //lepton pt scheme, specific case 
 	if(_sels[_SR][is][ii][2]=="hh" && 
 	   (_l1Cand->pt()<25 || _l2Cand->pt()<25) ) {passSel=false;break;}
@@ -1105,13 +1242,17 @@ FakeEstim::testRegion() {
       
       }
       else { //all other selections
-	bool dec=(_au->simpleCut<float>( (*(_val[_sels[_SR][is][ii][0] ])) , atof(_sels[_SR][is][ii][2].c_str() ), _sels[_SR][is][ii][1], atof(_sels[_SR][is][ii][3].c_str()) ));
+
+	//cout<<":: "<<_sels[_SR][is][ii][0]<<" :: "<<(*(_val[_sels[_SR][is][ii][0] ]))<<" "<<_sels[_SR][is][ii][1]<<" "<<atof(_sels[_SR][is][ii][2].c_str() )<<"  "<<atof(_sels[_SR][is][ii][3].c_str())<<endl;
+
+	// bool dec=(_au->simpleCut<float>( (*(_val[_sels[_SR][is][ii][0] ])) , atof(_sels[_SR][is][ii][2].c_str() ), _sels[_SR][is][ii][1], atof(_sels[_SR][is][ii][3].c_str()) ));
 	if(!_au->simpleCut<float>( (*(_val[_sels[_SR][is][ii][0] ])) , atof(_sels[_SR][is][ii][2].c_str() ),
 				   _sels[_SR][is][ii][1], atof(_sels[_SR][is][ii][3].c_str()) ) ) 
 	  {passSel=false;break;}
       }
       
     }
+    //cout<<" --> passing selection? "<<passSel<<endl;
     if(passSel) return true;
   }
 
@@ -1133,20 +1274,56 @@ FakeEstim::categorize() {
 
 
 bool 
-FakeEstim::goodLepton(int idx, int pdgId) {
+FakeEstim::looseLepton(int idx, int pdgId) {
+
+  if(abs(pdgId)==13) {//mu case
+    if(!_susyMod->muIdSel(idx, SusyModule::kLoose) ) return false;
+    if(!_susyMod->multiIsoSel(idx, SusyModule::kLoose) ) return false;
+  }
+  else {
+    if(!_susyMod->elIdSel(idx, SusyModule::kLoose, SusyModule::kLoose) ) return false;
+    if(!_susyMod->multiIsoSel(idx, SusyModule::kLoose) ) return false;
+  }
+
+  return true;
+}
+
+bool 
+FakeEstim::tightLepton(int idx, int pdgId) {
 
   if(abs(pdgId)==13) {//mu case
     if(!_susyMod->muIdSel(idx, SusyModule::kTight) ) return false;
     if(!_susyMod->multiIsoSel(idx, SusyModule::kMedium) ) return false;
   }
   else {
-    if(!_susyMod->elIdSel(idx, SusyModule::kTight) ) return false;
+    if(!_susyMod->elIdSel(idx, SusyModule::kTight, SusyModule::kTight) ) return false;
     if(!_susyMod->multiIsoSel(idx, SusyModule::kTight) ) return false;
   }
 
   return true;
-
 }
+
+
+bool 
+FakeEstim::fakableLepton(int idx, int pdgId) {
+
+  if(abs(pdgId)==13) {//mu case
+    if(!_susyMod->muIdSel(idx, SusyModule::kTight) ) return false;
+    if(!_susyMod->multiIsoSel(idx, SusyModule::kLoose) ) return false;
+    
+    if(_FR.find("FO4")!=string::npos && !_susyMod->invMultiIsoSel(idx, SusyModule::kSpecFakeMu) ) return false;
+  }
+  else {
+    if(_FR.find("FO2")==string::npos && !_susyMod->elIdSel(idx, SusyModule::kTight, SusyModule::kTight )) return false;
+    if(_FR.find("FO2")!=string::npos && !_susyMod->elIdSel(idx, SusyModule::kTight, SusyModule::kLoose )) return false;
+    if(!_susyMod->multiIsoSel(idx, SusyModule::kLoose) ) return false;
+    
+    if(_FR.find("FO4")!=string::npos && !_susyMod->invMultiIsoSel(idx, SusyModule::kSpecFakeEl) ) return false;
+  }
+
+  return true;
+}
+
 
 
 
@@ -1204,7 +1381,7 @@ FakeEstim::passCERNSelection() {
 // lep el id: ( LepGood1_mvaIdPhys14 >=0.73+(0.57-0.73)*(abs(LepGood1_eta)>0.8)+(+0.05-0.57)*(abs(LepGood1_eta)>1.479) || abs(LepGood1_pdgId) == 13) && 
 //            ( LepGood2_mvaIdPhys14 >=0.73+(0.57-0.73)*(abs(LepGood2_eta)>0.8)+(+0.05-0.57)*(abs(LepGood2_eta)>1.479) || abs(LepGood2_pdgId) == 13) 
 
-     cout<<_idxL1<<"  "<<_idxL2<<"   "<<_vc->get("LepGood_sip3d",_idxL1)<<"   "<<_vc->get("LepGood_sip3d",_idxL2)<<endl;
+     // cout<<_idxL1<<"  "<<_idxL2<<"   "<<_vc->get("LepGood_sip3d",_idxL1)<<"   "<<_vc->get("LepGood_sip3d",_idxL2)<<endl;
 
      if(!makeCut( max(_vc->get("LepGood_sip3d",_idxL1),_vc->get("LepGood_sip3d",_idxL2)) < 4, "sip") ) return false;
 
@@ -1221,3 +1398,120 @@ FakeEstim::passCERNSelection() {
   return true;
 
 }
+
+
+//===========================================================================
+void
+FakeEstim::selectLeptons() {
+  for(size_t il=0;il<_vc->get("nLepGood"); il++) {
+
+    bool isMu=std::abs(_vc->get("LepGood_pdgId", il))==13;
+
+    Candidate* cand=Candidate::create(_vc->get("LepGood_pt", il),
+				      _vc->get("LepGood_eta", il),
+				      _vc->get("LepGood_phi", il),
+				      _vc->get("LepGood_pdgId", il),
+				      _vc->get("LepGood_charge", il),
+				      isMu?0.105:0.0005);
+
+    if(!looseLepton(il, cand->pdgId() ) ) continue;
+    _looseLeps.push_back(cand);
+    _looseLepsIdx.push_back(il);
+    
+    if(cand->pt()<10) continue;
+    _looseLeps10.push_back(cand);
+    _looseLeps10Idx.push_back(il);
+    
+  }
+
+  //veto on loose leptons =====================
+  for(size_t il=0;il<_looseLeps.size();il++) {
+    if(!_susyMod->passMllMultiVeto( _looseLeps[il], &_looseLeps, 76, 106, true) ||
+       !_susyMod->passMllMultiVeto( _looseLeps[il], &_looseLeps, 0, 12, true) ) continue;
+
+    _looseLepsVeto.push_back( _looseLeps[il]);
+    _looseLepsVetoIdx.push_back(_looseLepsIdx[il]);
+  }
+
+  //veto on loose leptons 10, likely the one to use for the fakes =====================
+  for(size_t il=0;il<_looseLeps10.size();il++) {
+    if(!_susyMod->passMllMultiVeto( _looseLeps10[il], &_looseLeps, 76, 106, true) ||
+       !_susyMod->passMllMultiVeto( _looseLeps10[il], &_looseLeps, 0, 12, true) ) continue;
+
+    _looseLepsVeto10.push_back(_looseLeps10[il]);
+    _looseLepsVeto10Idx.push_back(_looseLeps10Idx[il]);
+  }
+
+  //tight leptons definitions =================
+
+  for(size_t il=0;il<_looseLeps10.size();il++) {
+
+    if(!tightLepton(_looseLeps10Idx[il], _looseLeps10[il]->pdgId()) ) {
+      if(!fakableLepton(_looseLeps10Idx[il], _looseLeps10[il]->pdgId()) ) continue; //not a fakable object
+
+      _fakableLeps10.push_back(_looseLeps10[il]);
+      _fakableLeps10Idx.push_back(_looseLeps10Idx[il]);
+      
+      if(!_susyMod->passMllMultiVeto( _looseLeps10[il], &_looseLeps, 76, 106, true) ||
+	 !_susyMod->passMllMultiVeto( _looseLeps10[il], &_looseLeps, 0, 12, true) ) continue;
+
+      _fakableLepsVeto10.push_back(_looseLeps10[il]);
+      _fakableLepsVeto10Idx.push_back(_looseLeps10Idx[il]);
+
+      continue;
+    }
+    
+    _tightLeps10.push_back(_looseLeps10[il]);
+    _tightLeps10Idx.push_back(_looseLeps10Idx[il]);
+    
+    
+    if(!_susyMod->passMllMultiVeto( _looseLeps10[il], &_looseLeps, 76, 106, true) ||
+       !_susyMod->passMllMultiVeto( _looseLeps10[il], &_looseLeps, 0, 12, true) ) continue;
+    
+    _tightLepsVeto10.push_back(_looseLeps10[il]);
+    _tightLepsVeto10Idx.push_back(_looseLeps10Idx[il]);
+  }
+
+}
+
+
+//==============================================
+//MET uncertainty variation
+TVector2
+FakeEstim::varyMET() {
+
+  unsigned int nJets=_vc->get("nJet");
+  unsigned int nFwdJets=_vc->get("nJetFwd");
+  if(!isInUncProc() ) {//first, store the jets
+    _uncleanJets.clear();
+    _uncleanFwdJets.clear();
+    for(unsigned int ij=0;ij<nJets;ij++) { 
+      TVector2 jet; jet.SetMagPhi( _vc->get("Jet_pt", ij), _vc->get("Jet_phi", ij)   );
+      _uncleanJets.push_back(jet);
+    }
+    for(unsigned int ij=0;ij<nFwdJets;ij++) { 
+      TVector2 jet; jet.SetMagPhi(_vc->get("JetFwd_pt", ij),_vc->get("JetFwd_phi", ij));
+      _uncleanFwdJets.push_back(jet);
+    }
+  }
+  
+  TVector2 met; met.SetMagPhi(_vc->get("met_pt"), _vc->get("met_phi") );
+  for(unsigned int ij=0;ij<nJets;ij++) { 
+    //add back the standard jets
+    met += _uncleanJets[ij];
+    //JES varied jets
+    TVector2 jet; jet.SetMagPhi( _vc->get("Jet_pt", ij), _vc->get("Jet_phi", ij)   );
+    met -= jet;
+  }
+  for(unsigned int ij=0;ij<nFwdJets;ij++) { 
+    //add back the standard jets
+    met += _uncleanFwdJets[ij];
+    //JES varied jets
+    TVector2 jet; jet.SetMagPhi(_vc->get("JetFwd_pt", ij), _vc->get("JetFwd_phi", ij) );
+    met -= jet;
+  }
+  
+  return met;
+}
+
+

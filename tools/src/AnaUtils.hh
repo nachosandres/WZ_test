@@ -166,7 +166,10 @@ public:
   void setEfficiency(int ids, string cName, int eCateg, float value, bool acc);
   void setEffFromStat(int ids, string cName, int eCateg, float sw, float esw, int ngen);
   void setSystematics( int ids, string cName, int iCateg, string sName, bool up, bool down, float w);
-  void getYieldSysts(string ds, string lvl, string categ="");
+  void getSystematics(string ds, string lvl, string categ="");
+  void getCategSystematics(string ds, string src, string lvl, string categ="", bool latex=false);
+  void getYieldSysts(EffST eST, map<string,float>& rU, map<string,float>& rD,
+		     float& totUp, float& totDown, float& central);
 
   //workflows
   void setWFEfficiencies(int ids, string cName, float w, bool acc, string uncName="");
@@ -181,9 +184,8 @@ public:
   // =======
 // 	vector<string> listFiles(string dir, string files);
   int findElement(vector<string> v, string e);
-  //vector< pair<string, vector<vector<float> > > > retrieveNumbers(string anName, string conName, vector<string> snames, vector<string> dsnames, vector<float> weights);
-  vector< pair<string, vector<vector<float> > > > retrieveNumbers(string categ, int mcat, 
-								  string cname, string opt="");
+  vector< pair<string, vector<vector<float> > > > retrieveNumbers(string categ, string cname,
+								  int mcat, string opt="");
   
   bool getDataCardLines(map<string,string>& lines, vector<string> dsNames, string sigName,
 			string categ, string cname, int bin,

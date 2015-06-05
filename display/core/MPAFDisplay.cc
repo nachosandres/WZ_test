@@ -22,8 +22,6 @@ void
 MPAFDisplay::configure() {
   _dsNames = anConf.getDSNames();
  
-  //_au->setDDCuts(anConf.getDDCuts() );
-  
   _hm->configAnalysis(_dsNames );
   
   for(size_t ids=0;ids<_dsNames.size();ids++) {
@@ -48,18 +46,17 @@ MPAFDisplay::reset() {
 
 
 void 
-MPAFDisplay::drawStatistics(string categ, string cname, string opt){
+MPAFDisplay::drawStatistics(string categ, string cname, bool multiScheme, string opt){
 
-  int mcat=AnaUtils::kGeneral;
-  if(opt!="") mcat=AnaUtils::kMulti;
+  int scheme=AnaUtils::kGeneral;
+  if(multiScheme) scheme=AnaUtils::kMulti;
   
-  vector< pair<string, vector<vector<float> > > > numbers1 = _au->retrieveNumbers(categ, mcat, cname);
-  vector< pair<string, vector<vector<float> > > > numbers2 = _au->retrieveNumbers(categ, mcat, cname, opt);
- 
+  vector< pair<string, vector<vector<float> > > > numbers = _au->retrieveNumbers(categ,  cname, scheme, opt);
+  
   vector<string> dsNames = _dsNames;
   dsNames.insert(dsNames.begin(), "MC");
 
-  dp.drawStatistics( numbers1, dsNames, numbers2 );
+  dp.drawStatistics( numbers, dsNames, (multiScheme && opt!="") );
 }
 
 
@@ -70,10 +67,19 @@ MPAFDisplay::getStatistics(string categ) {
 
 
 void
-MPAFDisplay::getSystematics(string categ, string lvl) {
+MPAFDisplay::getDetailSystematics(string categ, string lvl) {
   
   for(size_t id=0;id<_dsNames.size();id++) {
-    _au->getYieldSysts(_dsNames[id], lvl, categ);
+    _au->getSystematics(_dsNames[id], lvl, categ);
+  }
+
+}
+
+void
+MPAFDisplay::getCategSystematic(string src, string categ, string lvl, bool latex) {
+ 
+  for(size_t id=0;id<_dsNames.size();id++) {
+    _au->getCategSystematics(_dsNames[id],src, lvl, categ, latex);
   }
 
 }
@@ -89,8 +95,6 @@ MPAFDisplay::setNumbers() {
   
   vector<string> statFiles = anConf.getObjList();
   string ctag = "";
-  // size_t bl = 0;
-  // size_t bh = 0;
   
   _sfVals.clear();
   _au->init();
@@ -98,15 +102,6 @@ MPAFDisplay::setNumbers() {
   int icat=2; //0 for global, 1 for nominal
   
   for(int i=(int)(statFiles.size())-1; i>=0; i--) {
-    
-    // if(statFiles.size()>1 && i!=0)
-    //   ctag = findDiff(statFiles[0], statFiles[i],'_',bl,bh);
-    // if(statFiles.size()>1 && i==0)
-    //   ctag = statFiles[0].substr(bl,bh-bl);
-
-    // if(ctag.size()>4 && ctag.substr(ctag.size()-4) == ".dat")
-    //   ctag.erase(ctag.size()-4,4);
-    
     readStatFile( statFiles[i], icat);
   }
 
@@ -207,7 +202,6 @@ MPAFDisplay::readStatFile(string filename, int& icat) {
 	  ds=anConf.findDS( sname );
 	  extDs=anConf.findDS( sname, ext );
 	}
-	//cout<<categ<<"  "<<icat<<"  "<<sname<<"  "<<ext<<" ==> "<<ds<<"/"<<extDs<<"   ("<<uncTag<<")  "<<upVar<<"  "<<cname<<endl;
 	if(ds==nullptr) continue;
 
         yield  = atof( tks[n+1].c_str() );
@@ -216,13 +210,10 @@ MPAFDisplay::readStatFile(string filename, int& icat) {
 
 	storeStatNums(ds, yield, eyield, gen, icat, cname, sname,
 		      categ, uncTag, upVar, ext);
-	//delete ds;
 
 	if(extDs==nullptr) continue;
 	storeStatNums(extDs, yield, eyield, gen, icat, cname, sname, categ,
 		      uncTag, upVar, ext);
-	//delete extDs;
-
       }
 
     }
