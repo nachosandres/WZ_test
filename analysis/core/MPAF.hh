@@ -107,10 +107,11 @@ protected:
   void counter(string cName, int eCateg = AUtils::kGlobal);
 
   //workflows
-  void setWorkflow(int wf);
   void addWorkflow(int wfid, string wfName);
   int getCurrentWorkflow() {return _curWF;};
-
+  void setWorkflow(int wf);
+  void setMultiWorkflow(vector<int> wf);
+  
   // virtual functions for the classes
   virtual void defineOutput()=0;
   virtual void modifyWeight()=0;
@@ -185,6 +186,7 @@ private:
 
   unsigned int _nEvtMax; 
   unsigned int _nSkip; 
+  bool _summary;
 
   std::map<std::string, std::string> _sampleOption;
   

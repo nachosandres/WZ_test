@@ -20,7 +20,7 @@ class Parser{
 public:
 
   enum {kNone=0, kDir, kAN, kUsr, kVbs, kSkim, kNMax, kSkip,
-	kVar, kTree, kHisto, kDS, kFT}; 
+	kVar, kTree, kHisto, kDS, kFT, kSummary}; 
 
   static inPar parseLine(std::string line);
   static MIPar parseFile(std::string filename);

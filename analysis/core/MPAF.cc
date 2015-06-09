@@ -69,10 +69,12 @@ void MPAF::initialize(){
   _skim=false;
 
   _nEvtMax=-1;
+  _nSkip=0;
 
   _wfNames[AUtils::kGlobal] = "";
 
   _hname="";
+  _summary=false;
 }
 
 
@@ -207,7 +209,8 @@ void MPAF::analyze(){
   // write all outputs to disk
   internalWriteOutput();
 
-  _au->printNumbers();
+  if(_summary)
+    _au->printNumbers();
   
 }
 
@@ -256,6 +259,9 @@ void MPAF::loadConfigurationFile(std::string cfg){
     if(it->second.type==Parser::kFT){
       _friends.push_back(it->second.val);
     }
+    if(it->second.type==Parser::kSummary){
+      _summary = atoi(it->second.val.c_str());
+  }
     
   }
 
@@ -585,16 +591,21 @@ void MPAF::counter(string cName, int eCateg) {
     parameters: 
     return: 
   */
-  //cout<<"categ "<<eCateg<<"   "<<_offsetWF<<"  "<<_curWF<<"  "<<cName<<endl;
   _au->makeCut(true, _inds , cName, _weight, "=", eCateg+_offsetWF, false);
 
 }
 
 void 
 MPAF::setWorkflow(int wf) {
-  _au->setCurrentWorkflow(wf );
+  _curWF=wf;
+  _au->setCurrentWorkflow(wf);
 }
 
+void 
+MPAF::setMultiWorkflow(vector<int> wf) {
+  //_curWF ?? would need a full loop everywhere...
+  _au->setMultiWorkflow(wf);
+}
 
 // skimming functions ======================================
 void MPAF::initSkimming() {
@@ -660,7 +671,6 @@ MPAF::addWorkflowHistos() {
       if(_itWF->second=="") continue; //protection for global histo
       _hm->addVariableFromTemplate( obs->name+_itWF->second, obs->hs[0], prof, is2D, obs->type );
     }
-    //delete obs;
   }
 
 }
@@ -687,10 +697,7 @@ MPAF::addSystSource(string name, int dir, string type, vector<string> modVar,
 
   _au->addAutoWorkflow( "Unc"+name+"Up");
   _au->addAutoWorkflow( "Unc"+name+"Do");
-  // addWorkflow(_wfNames.size(), "Unc"+name+"Up");
-  // addWorkflow(_wfNames.size(), "Unc"+name+"Do");
   _uType[ name ] = wUnc;
-
 
   //check the direction
   if(dir!=SystUtils::kNone) {

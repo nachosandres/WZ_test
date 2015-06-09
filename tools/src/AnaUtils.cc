@@ -24,6 +24,7 @@ AnaUtils::AnaUtils() {
   //workflows
   _nWF=1;
   _curWF=-100;
+  _isMultiWF=false;
 }
 
 AnaUtils::~AnaUtils() {
@@ -83,13 +84,23 @@ AnaUtils::invCut(string type) {
 void
 AnaUtils::setWFEfficiencies(int ids, string cName, float w, bool acc, string uncName ) {
   
-  for(_itC=_categories.begin();_itC!=_categories.end();_itC++) {
-    bool nsyst=_itC->second.isWF && uncName=="" && !_itC->second.isUnc;
-    bool syst=_itC->second.isUnc && uncName==_itC->second.uncTag ;
-    if( !nsyst && !syst) continue;
-    
-    setEfficiency(ids, cName, _itC->first , w, acc);
+  if(_isMultiWF) {
+    for(unsigned int ic=0;ic<_multiWFs.size();ic++) {
+      bool nsyst=_categories[ic].isWF && uncName=="" && !_categories[ic].isUnc;
+      bool syst=_categories[ic].isUnc && uncName==_categories[ic].uncTag ;
+      setEfficiency(ids, cName, ic, w, acc);
+    }
   }
+  else { //ALL workflows
+    for(_itC=_categories.begin();_itC!=_categories.end();_itC++) {
+      bool nsyst=_itC->second.isWF && uncName=="" && !_itC->second.isUnc;
+      bool syst=_itC->second.isUnc && uncName==_itC->second.uncTag ;
+      if( !nsyst && !syst) continue;
+    
+      setEfficiency(ids, cName, _itC->first , w, acc);
+    }
+  }
+
 }
 
 
@@ -278,10 +289,18 @@ void
 AnaUtils::setWFSystematics(int ids, string cName, string sName, bool up,
 			   bool down, float w, string uncName) {
   
-  for(_itC=_categories.begin();_itC!=_categories.end();_itC++) {
-    if( _itC->second.isWF && (uncName=="" || _itC->second.uncTag!=uncName) )
-      setSystematics(ids, cName, _itC->first, sName, up, down, w);
+ if(_isMultiWF) {
+    for(unsigned int ic=0;ic<_multiWFs.size();ic++) {
+      if( _categories[ic].isWF && (uncName=="" || _categories[ic].uncTag!=uncName) )
+	setSystematics(ids, cName, ic, sName, up, down, w);
+    }
   }
+ else {
+   for(_itC=_categories.begin();_itC!=_categories.end();_itC++) {
+     if( _itC->second.isWF && (uncName=="" || _itC->second.uncTag!=uncName) )
+       setSystematics(ids, cName, _itC->first, sName, up, down, w);
+   }
+ }
 }
 
 
@@ -1254,8 +1273,14 @@ AnaUtils::setSkipCut(vector<string> var, bool invCut) {
 void 
 AnaUtils::setCurrentWorkflow(int wf) {
   _curWF = wf;
+  _isMultiWF=false;
 }
 
+void
+AnaUtils::setMultiWorkflow(vector<int> wfs) {
+  _multiWFs=wfs;
+  _isMultiWF=true;
+}
 
 void AnaUtils::setNumbers(int ids,string cName, int iCateg, float w, bool acc) {
   

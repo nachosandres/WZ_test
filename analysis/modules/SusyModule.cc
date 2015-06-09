@@ -348,7 +348,8 @@ SusyModule::cleanJets(CandList* leptons,
     Candidate* jet=Candidate::create(_vc->get("Jet_pt", ij),
 				     _vc->get("Jet_eta", ij),
 				     _vc->get("Jet_phi", ij) );
-
+    
+    //cout<<" pt: "<<jet->pt()<<"  eta: "<<jet->eta()<<"  phi: "<<jet->phi()<<"  "<<_vc->get("Jet_btagCSV",ij)<<endl;
     //jet->print( cout );
     findLep=false;
     for(unsigned int il=0;il<leptons->size();il++) {
