@@ -47,6 +47,8 @@ Parser::parseLine(string line) {
     type=Parser::kDS;
   if(tks[0]=="ft")
     type=Parser::kFT;
+  if(tks[0]=="summary")
+    type=Parser::kSummary;
 
   string val = tks[1];
 

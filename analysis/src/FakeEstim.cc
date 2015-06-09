@@ -167,7 +167,7 @@ FakeEstim::initialize(){
     addWorkflow( ic+1, _categs[ic] );
   }
 
-  //addWorkflow( kGlobalFake, "Fake" );
+  addWorkflow( kGlobalFake, "Fake" );
 
   //extra input variables
   _lepflav = getCfgVarS("LEPFLAV");
@@ -178,69 +178,15 @@ FakeEstim::initialize(){
 
   vector<string> jess;
   jess.push_back("Jet_pt");
-  addSystSource("JES",SystUtils::kNone, "%", jess, "JES8TeV.db", "" );
-
-
+  
   //FR databases
-  //pt based QCD ================
-  // if(_FR=="FO1") {
-  //   cout<<"loading db"<<endl;
-  //   _dbm->loadDb("El","MaySync/FR_FO1_El_eta_pt.root","FR_FO1_El_eta_pt");
-  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_pt.root","FR_FO1_Mu_eta_pt");
-  // }
-  // else if(_FR=="FO2") {
-  //   cout<<"loading db 2"<<endl;
-  //   _dbm->loadDb("El","MaySync/FR_FO2_El_eta_pt.root","FR_FO2_El_eta_pt");
-  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_pt.root","FR_FO1_Mu_eta_pt");
-  // }
-  // else if(_FR=="FO3") {
-  //   cout<<"loading db 3"<<endl;
-  //   _dbm->loadDb("El","MaySync/FR_FO3_El_eta_pt.root","FR_FO3_El_eta_pt");
-  //   _dbm->loadDb("Mu","MaySync/FR_FO3_Mu_eta_pt.root","FR_FO3_Mu_eta_pt");
-  // }
-  // //conept based QCD ============
-  // else if(_FR=="FO1C") {
-  //   cout<<"loading db"<<endl;
-  //   _dbm->loadDb("El","MaySync/FR_FO1_El_eta_conept.root","FR_FO1_El_eta_conept");
-  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_conept.root","FR_FO1_Mu_eta_conept");
-  // }
-  // else if(_FR=="FO2C") {
-  //   cout<<"loading db 2"<<endl;
-  //   _dbm->loadDb("El","MaySync/FR_FO2_El_eta_conept.root","FR_FO2_El_eta_conept");
-  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_conept.root","FR_FO1_Mu_eta_conept");
-  // }
-  // else if(_FR=="FO3C") {
-  //   cout<<"loading db 3"<<endl;
-  //   _dbm->loadDb("El","MaySync/FR_FO1_El_eta_conept.root","FR_FO1_El_eta_conept");
-  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_conept.root","FR_FO1_Mu_eta_conept");
-  // }
-  // //jetpt based QCD ============
-  // else if(_FR=="FO1J") {
-  //   cout<<"loading db"<<endl;
-  //   _dbm->loadDb("El","MaySync/FR_FO1_El_eta_jetpt.root","FR_FO1_El_eta_jetpt");
-  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_jetpt.root","FR_FO1_Mu_eta_jetpt");
-  // }
-  // else if(_FR=="FO2J") {
-  //   cout<<"loading db 2"<<endl;
-  //   _dbm->loadDb("El","MaySync/FR_FO2_El_eta_jetpt.root","FR_FO2_El_eta_jetpt");
-  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_jetpt.root","FR_FO1_Mu_eta_jetpt");
-  // }
-  // else if(_FR=="FO3J") {
-  //   cout<<"loading db 3"<<endl;
-  //   _dbm->loadDb("El","MaySync/FR_FO1_El_eta_jetpt.root","FR_FO1_El_eta_jetpt");
-  //   _dbm->loadDb("Mu","MaySync/FR_FO1_Mu_eta_jetpt.root","FR_FO1_Mu_eta_jetpt");
-  // }
-
-
   if(_FR=="FO2C") {
-    //   cout<<"loading db"<<endl;
-    _dbm->loadDb("El","MaySync/CH_FRFile.root","qcdel/none/FRisoidRElPtMIso2");
-    _dbm->loadDb("Mu","MaySync/CH_FRFile.root","qcdmu/none/FRisoRMuPtMIso2");
+    _dbm->loadDb("El","MaySync/CH_FRFile_090615.root","qcdel/nosel/FRisoidRElPtMIso2");
+    _dbm->loadDb("Mu","MaySync/CH_FRFile_090615.root","qcdmu/nosel/FRisoRMuPtMIso2");
   }
   if(_FR=="FO4C") {
-    //   cout<<"loading db"<<endl;
-    _dbm->loadDb("El","MaySync/CH_FRFile.root","tt/none/FRISisofo4RElPtMIso2");
-    _dbm->loadDb("Mu","MaySync/CH_FRFile.root","tt/none/FRISisofo4RMuPtMIso2");
+    _dbm->loadDb("El","MaySync/CH_FRFile_090615.root","tt/nosel/FRISisofo4RElPtMIso2");
+    _dbm->loadDb("Mu","MaySync/CH_FRFile_090615.root","tt/nosel/FRISisofo4RMuPtMIso2");
   }
 
 }
@@ -258,13 +204,6 @@ FakeEstim::modifySkimming() {
 
 void
 FakeEstim::defineOutput() {
-
-  // string leps[2]={"l1","l2"};
-  // for(int il=0;il<2;il++) {
-  //   _hm->addVariable(leps[il]+"Pt", 200, 0., 200.0,"p_{T}("+leps[il]+") [GeV]");
-  //   // _hm->addVariable(leps[il]+"Eta", 60, -3.0, 3.0,"#eta("+leps[il]+") ");
-  //   // _hm->addVariable(leps[il]+"Phi", 60, -3.1416, 3.1416,"#phi("+leps[il]+") ");
-  // }
 
   _hm->addVariable("pdgId1", 20, 0., 20,"");
   _hm->addVariable("pdgId2", 20, 0., 20,"");
@@ -314,32 +253,38 @@ FakeEstim::writeOutput() {
 void
 FakeEstim::run() {
   
-  //if(_vc->get("evt") != 9467) return;
-
+  // if(_vc->get("evt")!=75368//  && _vc->get("evt")!=17245 && _vc->get("evt")!=82965 &&
+  //    // _vc->get("evt")!=72951 && _vc->get("evt")!=142649
+  //    ) return;
+  //if(_vc->get("evt")!=62463 ) return;
+  //if(_vc->get("evt")!=103973 )  return;
+  //if(_vc->get("evt")!=142649 && _vc->get("evt")!=72951 ) return;
+  //if(_vc->get("evt")!=72688 && _vc->get("evt")!=49205) return;
+  //cout<<" =================================="<< _vc->get("evt") <<endl;
   counter("denominator");
   
   retrieveObjects();
-  
+
   if(!ssLeptonSelection() ) return;
-  
+  fillSkimTree();
   //===============================
   _mTmin=min( Candidate::create(_l1Cand, _met)->mass(),
 	      Candidate::create(_l2Cand, _met)->mass() );
   //===============================
 
   //MC check for FR --> one fake only
-  // if(!_isFake) {
-  //   setWorkflow(kGlobal); //MANDATORY (otherwise double counting in other categories)
+  if(!_isFake) {
+    setWorkflow(kGlobal); //MANDATORY (otherwise double counting in other categories)
     
-  //   if(!genMatchedToFake(_idxL1) && genMatchedToFake(_idxL2) ) {
-  //     _idxFake=_idxL2;
-  //   }
-  //   else if(genMatchedToFake(_idxL1) && !genMatchedToFake(_idxL2)) {
-  //     _idxFake=_idxL1;
-  //   }
-  //   else return; //no only one fake
-  // }
-  // else setWorkflow(kGlobalFake);
+    if(!genMatchedToFake(_idxL1) && genMatchedToFake(_idxL2) ) {
+      _idxFake=_idxL2;
+    }
+    else if(genMatchedToFake(_idxL1) && !genMatchedToFake(_idxL2)) {
+      _idxFake=_idxL1;
+    }
+    else return; //no only one fake
+  }
+  else setWorkflow(kGlobalFake);
   
   
   counter("lepton baseline");
@@ -358,11 +303,6 @@ FakeEstim::run() {
   if (_leppt=="ll" && _l1Cand->pt()>25.) return;
   if (_leppt=="ll" && _l2Cand->pt()>25.) return;
   
-  // int flavortmp = std::abs(_l1Cand->pdgId())+std::abs( _l2Cand->pdgId());
-  // if(_lepflav=="mm"  && flavortmp!=26 ) return;
-  // if(_lepflav=="ee"  && flavortmp!=22 ) return;
-  // if( (_lepflav=="em" || _lepflav=="me")  && flavortmp!=24 ) return;
-
   if(!_isFake) {
     if(_lepflav=="mm" && std::abs(_vc->get("LepGood_pdgId", _idxFake))!=13) return;
     if(_lepflav=="ee" && std::abs(_vc->get("LepGood_pdgId", _idxFake))!=11) return;
@@ -414,7 +354,8 @@ FakeEstim::run() {
   // int run=_vc->get("run");
   // int lumi=_vc->get("lumi");
   // int event=_vc->get("evt");
-  // int nLep = _vc->get("nLepGood_Mini");
+  // int nLep = _looseLepsVeto.size();//_vc->get("nLepGood_Mini");
+  // // cout<<" <====> "<<_vc->get("nLepGood_Mini")<<"  "<<_looseLepsVeto.size()<<"  "<<_looseLeps.size()<<endl;
   // int id1 = _l1Cand->pdgId();
   // double pt1 = _l1Cand->pt();
   // int id2 = _l2Cand->pdgId();
@@ -538,7 +479,7 @@ FakeEstim::retrieveObjects(){
   // _nBJets = _vc->get("nBJetMedium25_Mini");
   // _HT  = _vc->get("htJet40j_Mini");//_susyMod->HT( &(_jets) );
 
-  if(true) {
+  if(false) {
     TVector2 met = varyMET();
     _met = Candidate::create( met.Mod(), met.Phi() );
   }
@@ -1414,10 +1355,14 @@ FakeEstim::selectLeptons() {
 				      _vc->get("LepGood_charge", il),
 				      isMu?0.105:0.0005);
 
+    // cout<<" pt: "<<cand->pt()<<"  eta: "<<cand->eta()<<"   phi: "<<cand->phi()<<"  pdgId: "<<_vc->get("LepGood_pdgId", il)<<"   dxy: "<<_vc->get("LepGood_dxy",il)<<"  dz: "<<_vc->get("LepGood_dz",il)<<endl;
+
     if(!looseLepton(il, cand->pdgId() ) ) continue;
     _looseLeps.push_back(cand);
     _looseLepsIdx.push_back(il);
     
+    //cout<<" -> selected"<<endl;
+
     if(cand->pt()<10) continue;
     _looseLeps10.push_back(cand);
     _looseLeps10Idx.push_back(il);
@@ -1426,8 +1371,13 @@ FakeEstim::selectLeptons() {
 
   //veto on loose leptons =====================
   for(size_t il=0;il<_looseLeps.size();il++) {
+
+    // cout<<" pt:"<<_looseLeps[il]->pt()<<"  selected"<<"  "<<_susyMod->passMllMultiVeto( _looseLeps[il], &_looseLeps, 76, 106, true)<<"  "<<_susyMod->passMllMultiVeto( _looseLeps[il], &_looseLeps, 0, 12, true)<<endl;
+
     if(!_susyMod->passMllMultiVeto( _looseLeps[il], &_looseLeps, 76, 106, true) ||
        !_susyMod->passMllMultiVeto( _looseLeps[il], &_looseLeps, 0, 12, true) ) continue;
+
+   
 
     _looseLepsVeto.push_back( _looseLeps[il]);
     _looseLepsVetoIdx.push_back(_looseLepsIdx[il]);

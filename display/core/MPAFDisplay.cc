@@ -753,11 +753,12 @@ MPAFDisplay::makeSingleDataCard(string sigName, string categ, string cname, stri
   card<<"---------------------------"<<endl; 
 
   // internal uncertainties ================================
-  // for(map<string,string>::const_iterator itU=lines.begin();itU!=lines.end();++itU) {
-  //   if(itU->first.substr(0,2)!="NP") continue;
-  //   //string name=itU->first.substr(3,itU->first.size()-3);
-  //   card<<itU->second<<endl;
-  // }
+  for(map<string,string>::const_iterator itU=lines.begin();itU!=lines.end();++itU) {
+    if(itU->first.substr(0,2)!="NP") continue;
+    string name=itU->first.substr(3,itU->first.size()-3);
+    cout<<name<<"   "<<itU->second<<endl;
+    //card<<itU->second<<endl;
+  }
   
   //external uncertainties =================================
   vector<string> extNuisParLines=getExternalNuisanceParameters(sigName);
