@@ -213,7 +213,7 @@ public:
   void addAutoWorkflow(string eCateg);
   void setCurrentWorkflow(int wf);
   void setMultiWorkflow(vector<int> wfs);
-  int getUncWorkflow(string wf);
+  //int getUncWorkflow(string wf);
 
   int getCategId(string categ);
   int getNCateg() {return _categories.size(); };
