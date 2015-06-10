@@ -168,7 +168,8 @@ FakeEstim::initialize(){
   }
 
   addWorkflow( kGlobalFake, "Fake" );
-
+  addWorkflow( kWZCR, "WZCR");
+  
   //extra input variables
   _lepflav = getCfgVarS("LEPFLAV");
   _leppt   = getCfgVarS("LEPPT"  );
@@ -226,21 +227,22 @@ FakeEstim::defineOutput() {
 
   _hm->addVariable("srcFake", 10, 0,10,"srcFake");
 
-  // _hm->addVariable("MET",500,0,1000,"#slash{E}_{T} [GeV]");
-  // _hm->addVariable("MTmin",500,0,1000,"min(M_{T,1}, M_{T,2}) [GeV]");
+  _hm->addVariable("MET",1000,0,1000,"#slash{E}_{T} [GeV]");
+  _hm->addVariable("MTmin",1000,0,1000,"min(M_{T,1}, M_{T,2}) [GeV]");
   // _hm->addVariable("METVsMT",100,0,1000,100,0,1000,"#slash{E}_{T} [GeV]",
   // 		   "min(M_{T,1}, M_{T,2}) [GeV]");
 
   //lepton pT(30,0,150), HT(20,0,1000), MET(20,0,200), mTmin(20,0,200) 
-  _hm->addVariable("l1Pt", 30, 0, 150,"p_{T}(l_{1}) [GeV]");
-  _hm->addVariable("l2Pt", 30, 0, 150,"p_{T}(l_{2}) [GeV]");
+  _hm->addVariable("l1Pt", 150, 0, 150,"p_{T}(l_{1}) [GeV]");
+  _hm->addVariable("l2Pt", 150, 0, 150,"p_{T}(l_{2}) [GeV]");
 
-  _hm->addVariable("HT", 20, 0, 1000,"H_{T} [GeV]");
-  _hm->addVariable("MET", 20, 0, 200,"#slash{E}_{T} [GeV]");
-  _hm->addVariable("MTmin", 20, 0, 200,"min(M_{T,1}, M_{T,2}) [GeV]");
-
+  _hm->addVariable("HT", 1000, 0, 1000,"H_{T} [GeV]");
+  //  _hm->addVariable("MET", 20, 0, 200,"#slash{E}_{T} [GeV]");
+  //  _hm->addVariable("MTmin", 20, 0, 200,"min(M_{T,1}, M_{T,2}) [GeV]");
+  
   _hm->addVariable("NBJets", 4, 0, 4,"N_{b-jets} ");
-
+  _hm->addVariable("NJets", 4, 0, 4,"N_{b-jets} ");
+  
 }
 
 
@@ -265,7 +267,13 @@ FakeEstim::run() {
   
   retrieveObjects();
 
-  if(!ssLeptonSelection() ) return;
+  if(!makeCut(ssLeptonSelection(),"SS Selection")) {
+    // failed same-sign lepton selection, fill WZ control region
+    wzCRSelection(); 
+    setWorkflow(kGlobal); //MANDATORY (otherwise double counting in other categories)
+    return;
+  }
+  
   fillSkimTree();
   //===============================
   _mTmin=min( Candidate::create(_l1Cand, _met)->mass(),
@@ -514,9 +522,12 @@ FakeEstim::ssLeptonSelection() {
     _idxL1 = _tightLepsVeto10Idx[_idxL1];
     _idxL2 = _tightLepsVeto10Idx[_idxL2];
     
-    if(!makeCut( _l1Cand->charge()*_l2Cand->charge()>0, "same sign" ) ) return false;
-    if(!makeCut(_susyMod->passMllSingleVeto(_l1Cand, _l2Cand, 0, 8, false), "mll veto") ) return false;
-
+//    if(!makeCut( _l1Cand->charge()*_l2Cand->charge()>0, "same sign" ) ) return false;
+//    if(!makeCut(_susyMod->passMllSingleVeto(_l1Cand, _l2Cand, 0, 8, false), "mll veto") ) return false;
+ 
+    if( _l1Cand->charge()*_l2Cand->charge()<0) return false;
+    if(!_susyMod->passMllSingleVeto(_l1Cand, _l2Cand, 0, 8, false)) return false;
+   
     return true;
   } //MM: validated 2T selection -> sync with CB
    
@@ -538,12 +549,14 @@ FakeEstim::ssLeptonSelection() {
 
     if(genMatchedToFake(_idxL1) || !genMatchedToFake(_idxL2) ) return false;
 
-    if(!makeCut( _l1Cand->charge()*_l2Cand->charge()>0, "same sign" ) ) return false;
-    if(!makeCut(_susyMod->passMllSingleVeto(_l1Cand, _l2Cand, 0, 8, false), "mll veto") ) return false;
+    if( _l1Cand->charge()*_l2Cand->charge()<0) return false;
+    if(!_susyMod->passMllSingleVeto(_l1Cand, _l2Cand, 0, 8, false)) return false;
+//    if(!makeCut( _l1Cand->charge()*_l2Cand->charge()>0, "same sign" ) ) return false;
+//    if(!makeCut(_susyMod->passMllSingleVeto(_l1Cand, _l2Cand, 0, 8, false), "mll veto") ) return false;
      
     return true;
   }
-
+  
 
   // for(unsigned int il1 = 0; il1 < _tightLeps10Veto.size(); ++il1) {
   //   for(unsigned int il2 = 0; il2 < _looseLeps10Veto.size(); ++il2){
@@ -726,7 +739,53 @@ FakeEstim::ssLeptonSelection() {
 
 //   return false;
 // }
+void 
+FakeEstim::wzCRSelection() {
+  
+  setWorkflow(kWZCR);
+  
+  if(!makeCut(_tightLeps10.size()>=2,"Two leptons")) return;
+  _isFake=false;
+    
+  CandList lepPair=_susyMod->bestSSPair( (&_tightLeps10), true, false, 10, _idxL1, _idxL2);
+  _l1Cand = lepPair[0];
+  _l2Cand = lepPair[1];
+      
+  if(_l1Cand==nullptr || _l2Cand==nullptr) return; //case with less than two leptons or no valid pair
+  _idxL1 = _tightLeps10Idx[_idxL1];
+  _idxL2 = _tightLeps10Idx[_idxL2];
+  
+  if(!makeCut( _l1Cand->charge()*_l2Cand->charge()>0, "Same-Sign" ) ) return;
+  
+  if(!_susyMod->passMllMultiVeto( _l1Cand, &_looseLeps, 0, 12, true) ||
+     !_susyMod->passMllMultiVeto( _l2Cand, &_looseLeps, 0, 12, true) ) return;
+  
+  if(!makeCut(_susyMod->passMllSingleVeto(_l1Cand, _l2Cand, 0, 8, false), "Z/g* veto") ) return;
+  
+  if(_susyMod->passMllMultiVeto( _l1Cand, &_looseLeps, 76, 106, true) &&
+     _susyMod->passMllMultiVeto( _l2Cand, &_looseLeps, 76, 106, true) ) return;
+  counter("Z selection");
+  
+  // now apply tighter requirements on MET, HT, MT... 
+  if(!makeCut(_HT > 80., "H_{T} > 80 GeV")) return;
+  if(!makeCut(_nJets>=2, "n_{jets} >= 2")) return;
+  if(!makeCut(_nBJets==0,"n_{bjets} = 0")) return;
 
+  // for the moment is not fully exclusive with 3L but can be easily done by uncommenting these
+  //  if(!makeCut((_HT<200 && _met->pt()>50 && _met->pt()<100) ||
+  //	      (_HT>200 && _met->pt()<50),"MET cut  ")) return;
+  if(!makeCut(_met->pt()>50, "MET > 50 GeV")) return;
+
+  fill("l1Pt", (_idxFake==_idxL2)?(_l1Cand->pt()):_l2Cand->pt(), _weight );
+  fill("l2Pt", (_idxFake==_idxL2)?(_l2Cand->pt()):_l1Cand->pt(), _weight );
+  fill("HT"    , _HT       , _weight);
+  fill("MET"   , _met->pt(), _weight);
+  fill("MTmin" , _mTmin    , _weight);
+  fill("NBJets", _nBJets   , _weight);
+  fill("NJets" , _nJets    , _weight);
+  
+  setWorkflow(kGlobal); 
+}
 
 
 //=====================================================================

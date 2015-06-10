@@ -40,8 +40,9 @@ private:
   void retrieveObjects();
   bool ssLeptonSelection();
   void selectLeptons();
- 
+
   //==============================
+  void wzCRSelection();
   void setSignalRegions();
   void setSelLine(string str);
   //void setCut(string var, float valCut, string cType, float upValCut=0);
@@ -79,7 +80,7 @@ private:
 	kBR10H, kBR10M, kBR10L,
 	kBR20H, kBR20M, kBR20L,
 	kBR30H, kBR30M, kBR30L,
-
+	
 	kSR1A_Fake, kSR2A_Fake, kSR3A_Fake, kSR4A_Fake, kSR5A_Fake, kSR6A_Fake, kSR7A_Fake, kSR8A_Fake,
 	kSR9A_Fake, kSR10A_Fake, kSR11A_Fake, kSR12A_Fake, kSR13A_Fake, kSR14A_Fake, kSR15A_Fake, kSR16A_Fake,
 	kSR17A_Fake, kSR18A_Fake, kSR19A_Fake, kSR20A_Fake, kSR21A_Fake, kSR22A_Fake, kSR23A_Fake, kSR24A_Fake,
@@ -98,7 +99,9 @@ private:
 	kBR20H_Fake, kBR20M_Fake, kBR20L_Fake,
 	kBR30H_Fake, kBR30M_Fake, kBR30L_Fake,
 
-	kGlobalFake
+	kGlobalFake,
+	
+	kWZCR
   };
 
 
