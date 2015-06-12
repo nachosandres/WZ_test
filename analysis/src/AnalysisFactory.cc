@@ -4,7 +4,7 @@
 using namespace std;
 
 //list of analyzers and modules in alphabetical order
-#include "analysis/src/csa14exerc.hh"
+//#include "analysis/src/csa14exerc.hh"
 #include "analysis/src/SSDLBoosted.hh"
 #include "analysis/src/synchECO.hh"
 #include "analysis/src/synchRA5.hh"
@@ -28,12 +28,12 @@ AnalysisFactory::get(const string& analysis, const string& cfg) {
   if(analysis=="SSDLBoosted") {
     return new SSDLBoosted(cfg);
   }
-  if(analysis=="synchECO") {
-    return new synchECO(cfg);
-  }
-  if(analysis=="synchRA5") {
-    return new synchRA5(cfg);
-  }
+//  if(analysis=="synchECO") {
+//    return new synchECO(cfg);
+//  }
+//  if(analysis=="synchRA5") {
+//    return new synchRA5(cfg);
+//  }
   if(analysis=="phys14limits") {
     return new phys14limits(cfg);
   }

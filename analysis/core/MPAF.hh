@@ -102,16 +102,17 @@ protected:
   template <typename T> inline
   bool makeCut(T value, T valcut, string type, string cName, T seccut=0, int eCateg = AUtils::kGlobal) {
     return _au -> makeCut<T>(value, valcut, type, _inds
-			     , cName, _weight, seccut, eCateg, false);
+			     , cName, _weight, seccut, eCateg+_offsetWF, false);
   };
   bool makeCut(bool decision, string cName, string type = "=", int eCateg = AUtils::kGlobal);
   void counter(string cName, int eCateg = AUtils::kGlobal);
 
   //workflows
-  void setWorkflow(int wf);
   void addWorkflow(int wfid, string wfName);
   int getCurrentWorkflow() {return _curWF;};
-
+  void setWorkflow(int wf);
+  void setMultiWorkflow(vector<int> wf);
+  
   // virtual functions for the classes
   virtual void defineOutput()=0;
   virtual void modifyWeight()=0;
@@ -133,6 +134,8 @@ protected:
 		     string db, string hname, bool wUnc=false);
   void addWSystSource(string name, int dir, string type, float val);
   void addWSystSource(string name, int dir, string type, string db, string hname);
+
+  bool isInUncProc() {return _uncId;};
 
   // Private Non-Template Methods
 	
@@ -184,6 +187,7 @@ private:
 
   unsigned int _nEvtMax; 
   unsigned int _nSkip; 
+  bool _summary;
 
   std::map<std::string, std::string> _sampleOption;
   
@@ -209,6 +213,7 @@ private:
   int _curWF;
   std::map<int, std::string> _wfNames;
   std::map<int, std::string>::const_iterator _itWF;
+  int _offsetWF;
 
   //uncertainties
   string _unc;

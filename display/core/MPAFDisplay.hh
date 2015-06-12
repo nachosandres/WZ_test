@@ -12,7 +12,7 @@
 
 
 #include "display/core/AnaConfig.hh"
-#include "display/core/Display.hh"
+#include "display/core/DisplayClass.hh"
 #include "tools/src/AnaUtils.hh"
 #include "tools/src/Dataset.hh"
 #include "tools/src/DataBaseManager.hh"
@@ -49,11 +49,13 @@ private:
   std::map<std::string, string > _nuisParScheme;
   std::map<std::string, vector<string> >::const_iterator _itNp;
 
+  std::map<std::pair<std::string,std::string>, bool > _sfVals;
+
 public:
 
   AnaConfig anConf;
 
-  Display dp;
+  DisplayClass dp;
 
   //===== functions ====
 
@@ -69,13 +71,18 @@ private:
   vector<string> split(const string& s, char delim);
   string findDiff(const string& s1, const string& s2,
 		  char delim, size_t& bl, size_t& bh);
-  void readStatFile(string filename, string ctag, int& icat);
+  void readStatFile(string filename, int& icat);
+  void storeStatNums(const Dataset* ds, float yield, float eyield, int gen,
+		     int icat, string cname, string sname, string categ,
+		     string uncTag, int upVar, string ext);
+    
+  void associateSystUncs();
 
 public:
 
   MPAFDisplay();
-  ~MPAFDisplay();
-
+  virtual ~MPAFDisplay();
+  
   //void unlockStatus();
 
   void refresh();
@@ -84,8 +91,12 @@ public:
   
   void doPlot();
 
-  void getStatistics(string categ="global");
-  void drawStatistics(string categ="global", string cname="");
+  void getStatistics(string categ="nominal");
+  void drawStatistics(string categ="nominal", string cname="", 
+		      bool multiScheme=false, string optCateg="");
+
+  void getDetailSystematics(string categ, string lvl);
+  void getCategSystematic(string src, string categ, string lvl, bool latex=false);
 
   void savePlot(string path, string advname="");
   void producePlots(string path);

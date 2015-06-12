@@ -66,7 +66,7 @@ public:
   //cosntructor & destructor
 
   HistoManager();
-  ~HistoManager();
+  virtual ~HistoManager();
 
   //initilaization
   void configAnalysis(vector<string> datasets);

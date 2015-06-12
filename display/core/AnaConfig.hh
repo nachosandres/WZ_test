@@ -75,7 +75,7 @@ public:
 
   string getDir() {return _dir;};
   vector<string> getObjList() {return _statFileList;};
-  float getLumi() {return _lumi;};
+  float getLumi() const {return _lumi;};
   vector<string> getSampleNames() {return _samplenames;};
   vector<string> getDsNames() {return _dsnames;};
 
@@ -93,8 +93,10 @@ public:
   vector<pair<string, float> > getCSData();
 
   Dataset* findDS(string channel);
+  Dataset* findDS(string channel, string crName);
   string findDS(int channel);
   string findDSName(string channel);
+  string findDSName(string channel, string crName);
   int findChan(string ds);
 
   void addSample(string str, string sname, int col, bool loadH=true );
@@ -112,11 +114,14 @@ public:
   //void setNMax(size_t testNMax);
 
   void isHistoAnalysis();
+  
+
 
 private:
 
   vector<string> listFiles(string dir, string files);
- 
+  
+  SampleId parseSampleId(string str);
 
 
 };

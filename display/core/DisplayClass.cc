@@ -1,10 +1,10 @@
-#include "display/core/Display.hh"
+#include "display/core/DisplayClass.hh"
 
 #include "tools/src/HistoUtils.hh"
 
-ClassImp(Display)
+ClassImp(DisplayClass)
 
-Display::Display():
+DisplayClass::DisplayClass():
 _c(0),_leg(0),_empty(0),_hMC(0),_hData(0),_gData(0)
 {
  
@@ -41,15 +41,16 @@ _c(0),_leg(0),_empty(0),_hMC(0),_hData(0),_gData(0)
 
 }
 
-Display::~Display() {
+DisplayClass::~DisplayClass() {
 
 }
 
 void
-Display::reset() {
+DisplayClass::reset() {
   _gWeights.clear();
   _colors.clear();
   _names.clear();
+  _absNorm.clear();
   _ghosts.clear();
   _iNs.clear();
 
@@ -116,7 +117,7 @@ Display::reset() {
 }
 
 void
-Display::softReset() {
+DisplayClass::softReset() {
   delete _empty;
   delete _hMC;
   delete _hData;
@@ -162,7 +163,7 @@ Display::softReset() {
 }
 
 void
-Display::refreshHistos() {
+DisplayClass::refreshHistos() {
  
   for(size_t ii=0;ii<_hClones.size();ii++)
     delete _hClones[ii];
@@ -187,12 +188,12 @@ Display::refreshHistos() {
 }
 
 void
-Display::setFitStr(string str) {
+DisplayClass::setFitStr(string str) {
   _fitStr=str;
 }
 
 void 
-Display::setNormalization(string str) {
+DisplayClass::setNormalization(string str) {
 
   size_t b=(size_t)-1;
   
@@ -217,7 +218,7 @@ Display::setNormalization(string str) {
 }
 
 void
-Display::loadAutoBinning(string filename) {
+DisplayClass::loadAutoBinning(string filename) {
 
   if(filename=="") return;
 
@@ -257,7 +258,7 @@ Display::loadAutoBinning(string filename) {
 }
 
 void 
-Display::setObservables(string v1, string v2, string v3,
+DisplayClass::setObservables(string v1, string v2, string v3,
 			string v4, string v5, string v6) {
 
   _vars.push_back(v1);
@@ -272,12 +273,12 @@ Display::setObservables(string v1, string v2, string v3,
 }
 
 // void
-// Display::getSystUnc( TGraphAsymmErrors* mcUnc) {
+// DisplayClass::getSystUnc( TGraphAsymmErrors* mcUnc) {
 //   _mcUncert = mcUnc;
 // }
 
 vector<vector<TPad*> > 
-Display::preparePads() {
+DisplayClass::preparePads() {
   
   //  float m=1.3;
 
@@ -339,7 +340,7 @@ Display::preparePads() {
 
 
 vector<vector<TPad*> > 
-Display::preparePadsWithRatio() {
+DisplayClass::preparePadsWithRatio() {
 
 
   float m=1.3;
@@ -434,7 +435,7 @@ Display::preparePadsWithRatio() {
 
 
 void
-Display::preparePadsForSystDetail() {
+DisplayClass::preparePadsForSystDetail() {
   
   _cSyst = new TCanvas("systematics", "systematics",1250,380);
   _cSyst->Range(0,0,1,1);
@@ -480,7 +481,7 @@ Display::preparePadsForSystDetail() {
 
 
 void 
-Display::plotDistributions(vector<const hObs*> theObs) {
+DisplayClass::plotDistributions(vector<const hObs*> theObs) {
 
   //first clean objects
   for(size_t ix=0;ix<_pads.size();ix++)
@@ -529,7 +530,7 @@ Display::plotDistributions(vector<const hObs*> theObs) {
 
 
 void
-Display::plotDistribution(const string& htype, const string& type,
+DisplayClass::plotDistribution(const string& htype, const string& type,
 			  int iobs) {
 
   _c->cd();
@@ -585,7 +586,7 @@ Display::plotDistribution(const string& htype, const string& type,
 
 
 void
-Display::configure(string dsname, int col, bool isGhost) {
+DisplayClass::configure(string dsname, int col, bool isGhost) {
   // if(dsname.find("DD")!=(size_t)-1)
   //   _names.push_back( dsname.substr(0,dsname.size()-2) );
   // else
@@ -603,20 +604,21 @@ Display::configure(string dsname, int col, bool isGhost) {
 }
 
 void
-Display::setWeight(string dsname, float w) {
+DisplayClass::setWeight(string dsname, float w, bool absNorm) {
   _gWeights[ dsname ] = w;
   _saveWeights[ dsname ] = w;
+  
 }
 
 string
-Display::getFitVar() {
+DisplayClass::getFitVar() {
   size_t p=_fitStr.find("::");
   string nvar=_fitStr.substr(0,p);
   return nvar;
 }
 
 void
-Display::initWeights(const hObs* theobs) {
+DisplayClass::initWeights(const hObs* theobs) {
 
   if(_normOpts.find("fit")!=_normOpts.end() ) {
     prepareHistograms(theobs);
@@ -636,7 +638,7 @@ Display::initWeights(const hObs* theobs) {
 }
 
 void
-Display::drawDistribution() {
+DisplayClass::drawDistribution() {
 
   //Drawing now.... (+legend) ============================
   if(_is1D)
@@ -752,7 +754,7 @@ Display::drawDistribution() {
 
 
 void
-Display::changeGeVToTeV(TH1*& h,string xtitle, string ytitle, float xmin, float xmax, float ymin, float ymax, string hType, bool& xAxTeV, bool& yAxTeV) {
+DisplayClass::changeGeVToTeV(TH1*& h,string xtitle, string ytitle, float xmin, float xmax, float ymin, float ymax, string hType, bool& xAxTeV, bool& yAxTeV) {
 
   bool isXTitle=xtitle.find("GeV")!=(size_t)-1;
   bool isYTitle=ytitle.find("GeV")!=(size_t)-1;
@@ -833,7 +835,7 @@ Display::changeGeVToTeV(TH1*& h,string xtitle, string ytitle, float xmin, float 
 }
   
 void
-Display::prepareHistograms(const hObs* theobs) {
+DisplayClass::prepareHistograms(const hObs* theobs) {
 
   // //bypass for ghost datasets =====
   // for(size_t ih=0;ih<_nhmc;ih++) {
@@ -913,8 +915,7 @@ Display::prepareHistograms(const hObs* theobs) {
 	  (_sSignal && nh.find("sig")!=(size_t)-1 ) ) {
      
         for(size_t ij=ih+1;ij<(_noStack?min(ih+1,_nhmc):_nhmc);ij++) {
-          
-          string nh2 = (string)( hTmps[ih]->GetName());
+	  string nh2 = (string)( hTmps[ih]->GetName());
           if( nh2.find("sig")==(size_t)-1 )
             _hClones[ih]->Add( (TH1*)hTmps[ij]->Clone(), _itW->second );
           else if( _sSignal )
@@ -999,7 +1000,7 @@ Display::prepareHistograms(const hObs* theobs) {
 
   //FIXME MM
   // for(size_t ih=0;ih<_nhmc;ih++) {
-  //   cout<<" fixme, line 960 Display.cc "<<endl;
+  //   cout<<" fixme, line 960 DisplayClass.cc "<<endl;
   //   HistoUtils::manualCompleteRebin(_hClones[ih], 15,0,15);
   //   HistoUtils::manualCompleteRebin(_hClonesNoStack[ih],15,0,15);
   // }
@@ -1353,7 +1354,7 @@ Display::prepareHistograms(const hObs* theobs) {
 }
 
 void 
-Display::saveDMCRWeight(string fname, string hname) {
+DisplayClass::saveDMCRWeight(string fname, string hname) {
 
   TFile* file=new TFile(fname.c_str(),"RECREATE");
 
@@ -1370,7 +1371,7 @@ Display::saveDMCRWeight(string fname, string hname) {
 }
 
 void 
-Display::drawDataMCRatio() {
+DisplayClass::drawDataMCRatio() {
   
   //The bidon histo
   TH1* emptyHisto=(TH1*)_hMC->Clone();
@@ -1409,7 +1410,7 @@ Display::drawDataMCRatio() {
   }
 
   //if systematics exists, draw them!
-  bool isTeV = _xtitle.find("TeV")!=(size_t)-1;
+  //  bool isTeV = _xtitle.find("TeV")!=(size_t)-1;
  
   vector<TPolyLine*> sysBand;
   if(_addSyst) {
@@ -1521,7 +1522,7 @@ Display::drawDataMCRatio() {
 }
 
 void
-Display::ratioObservables(vector<const hObs*> theObs) {
+DisplayClass::ratioObservables(vector<const hObs*> theObs) {
 
   softReset();
   
@@ -1644,7 +1645,7 @@ Display::ratioObservables(vector<const hObs*> theObs) {
 }
 
 void
-Display::saveHistos(string o1, const hObs* theObs) {
+DisplayClass::saveHistos(string o1, const hObs* theObs) {
   
   TFile* oFile=new TFile((o1+".root").c_str(), "RECREATE");
   for(size_t ih=0;ih<_nhmc;ih++) {
@@ -1660,7 +1661,7 @@ Display::saveHistos(string o1, const hObs* theObs) {
 }
 
 void
-Display::showSignificance(const hObs* theObs) {
+DisplayClass::showSignificance(const hObs* theObs) {
   
   softReset();
 
@@ -1716,7 +1717,7 @@ Display::showSignificance(const hObs* theObs) {
 }
 
 void
-Display::drawEfficiency(const hObs* theObs) {
+DisplayClass::drawEfficiency(const hObs* theObs) {
 
 
   softReset();
@@ -1777,7 +1778,7 @@ Display::drawEfficiency(const hObs* theObs) {
 }
 
 void
-Display::drawROCCurves(const hObs* theObs) {
+DisplayClass::drawROCCurves(const hObs* theObs) {
 
   softReset();
   
@@ -1828,7 +1829,7 @@ Display::drawROCCurves(const hObs* theObs) {
 
 
 void
-Display::compaROCCurves(vector<const hObs*> obss) {
+DisplayClass::compaROCCurves(vector<const hObs*> obss) {
   
   softReset();
   
@@ -1894,7 +1895,7 @@ Display::compaROCCurves(vector<const hObs*> obss) {
 
 
 void
-Display::residualData(const hObs* theObs) {
+DisplayClass::residualData(const hObs* theObs) {
 
   softReset();
   
@@ -1986,7 +1987,7 @@ Display::residualData(const hObs* theObs) {
 }
 
 void
-Display::drawCumulativeHistos(const hObs* theObs ) {
+DisplayClass::drawCumulativeHistos(const hObs* theObs ) {
  
   softReset();
   _cumulative =true;
@@ -1999,12 +2000,12 @@ Display::drawCumulativeHistos(const hObs* theObs ) {
 }
 
 void
-Display::drawStatistics(vector<pair<string,vector<vector<float> > > > vals, 
-			vector<string> dsnames) {
+DisplayClass::drawStatistics(vector<pair<string,vector<vector<float> > > > vals, 
+			     vector<string> dsnames, bool isMultiScheme) {
   _comSyst = false;
   softReset();
  
-  prepareStatistics( vals, dsnames );
+  prepareStatistics( vals, dsnames, isMultiScheme);
  
   if(_mcOnly || _dOnly) _showRatio=false;
   if(_dOnly) { _showRatio=false; _addSyst=false;}
@@ -2031,16 +2032,18 @@ Display::drawStatistics(vector<pair<string,vector<vector<float> > > > vals,
 }
 
 void
-Display::prepareStatistics( vector<pair<string,vector<vector<float> > > > vals, 
-			    vector<string> dsnames) {
+DisplayClass::prepareStatistics( vector<pair<string,vector<vector<float> > > > vals, 
+				 vector<string> dsnames, bool isMultiScheme ) {
 
-
+  
 
   vector<string> cNames;
   vector<TH1*> hMC;
   TH1F* hData;
   
-  for(size_t ic=0;ic<vals.size();ic++) {
+  size_t nVals=isMultiScheme?(vals.size()/2):vals.size(); 
+
+  for(size_t ic=0;ic<nVals;ic++) {
     cNames.push_back( vals[ic].first );
   }
   
@@ -2070,10 +2073,19 @@ Display::prepareStatistics( vector<pair<string,vector<vector<float> > > > vals,
   mcUncert->SetFillStyle(3001);
   mcUncert->SetFillColor(kGray+1);
   
-  size_t idat=_mcOnly?-1:(vals[0].second.size()-1);
+  size_t idat=(_mcOnly)?-1:( vals[0].second.size()-1);
+  if(isMultiScheme) { //overwrite the data plot -> means we have two parallel scheme to looka t in MC
+    for(size_t ic=0;ic<nVals;ic++) {
+    vals[ic].second[0][0] = vals[ic].second[nVals][0]; 
+    vals[ic].second[0][1] = vals[ic].second[nVals][1]; 
+    vals[ic].second[0][2] = vals[ic].second[nVals][2]; 
+    vals[ic].second[0][3] = vals[ic].second[nVals][3]; 
+    }
+  }
+
 
   //now fill the plots
-  for(size_t ic=0;ic<vals.size();ic++) {
+  for(size_t ic=0;ic<nVals;ic++) {
   
     for(size_t id=0;id<vals[ic].second.size();id++) {
 
@@ -2167,15 +2179,15 @@ Display::prepareStatistics( vector<pair<string,vector<vector<float> > > > vals,
 }
 
 void
-Display::configureDisplay(string YTitle, double rangeY[2], 
-			  double rangeX[2], bool logYscale,
-			  int Xdiv[3], int Ydiv[3], 
-			  int gbin, int bckbin, 
-			  bool OverFlowBin, bool UnderFlowBin,
-			  bool ShowDMCRatio, bool ShowGrid, bool staking,
-			  bool AddSystematics, bool mcStatSyst,
-			  float MarkerSize, float LineWidth, bool sSignal,
-			  bool mcOnly, bool cmsPrel, bool uncDet ) {
+DisplayClass::configureDisplay(string YTitle, double rangeY[2], 
+			       double rangeX[2], bool logYscale,
+			       int Xdiv[3], int Ydiv[3], 
+			       int gbin, int bckbin, 
+			       bool OverFlowBin, bool UnderFlowBin,
+			       bool ShowDMCRatio, bool ShowGrid, bool staking,
+			       bool AddSystematics, bool mcStatSyst,
+			       float MarkerSize, float LineWidth, bool sSignal,
+			       bool mcOnly, bool cmsPrel, bool uncDet ) {
 
   _ytitle = YTitle;
   _ymin = rangeY[0];
@@ -2221,13 +2233,13 @@ Display::configureDisplay(string YTitle, double rangeY[2],
 
 
 void
-Display::checkData() {
+DisplayClass::checkData() {
   if(_mcOnly) _mcOnly=false;
   _lockData=true;
 }
 
 void
-Display::isNoData() {
+DisplayClass::isNoData() {
   if(!_lockData)
     if(!_mcOnly) _mcOnly=true;
 
@@ -2237,7 +2249,7 @@ Display::isNoData() {
 
 
 void
-Display::computeSystematics(bool isProf, bool cumul) {
+DisplayClass::computeSystematics(bool isProf, bool cumul) {
 
   for(size_t ii=0;ii<_mcUncert.size();ii++)
     delete _mcUncert[ii];
@@ -2457,13 +2469,13 @@ Display::computeSystematics(bool isProf, bool cumul) {
 }
 
 void
-Display::setSystematicsUnc( vector<vector<systM> > systs ) {
+DisplayClass::setSystematicsUnc( vector<vector<systM> > systs ) {
   _systMUnc = systs;
 }
 
 
 void
-Display::drawDetailSystematics(bool cumul) {
+DisplayClass::drawDetailSystematics(bool cumul) {
   //turn on detail
   _uncDet=true;
   _csystM = _systMUnc[0];
@@ -2652,13 +2664,13 @@ Display::drawDetailSystematics(bool cumul) {
 
 
 void
-Display::getIntegral(float x1, float x2, float y1, float y2) {
+DisplayClass::getIntegral(float x1, float x2, float y1, float y2) {
   printInteg(x1,x2,y1,y2);
 }
 
 
 void
-Display::printInteg(float x1, float x2, float y1, float y2) {
+DisplayClass::printInteg(float x1, float x2, float y1, float y2) {
 
   vector<double> errors(_nhmc+2,0);
   
@@ -2752,7 +2764,7 @@ Display::printInteg(float x1, float x2, float y1, float y2) {
 //new CMS preliminary (thanks gautier..)
 
 void 
-Display::cmsPrel() {
+DisplayClass::cmsPrel() {
   TLatex latex;
   
   float t = _pads[0][0]->GetTopMargin();
@@ -2825,7 +2837,7 @@ Display::cmsPrel() {
 
 
 void
-Display::addText(float x, float y, float s, string text) {
+DisplayClass::addText(float x, float y, float s, string text) {
   _pads[0][0]->cd();
 
   TLatex t;
@@ -2838,7 +2850,7 @@ Display::addText(float x, float y, float s, string text) {
 
 
 void
-Display::addLine(float x1, float y1, float x2, float y2, int style, int col, int size) {
+DisplayClass::addLine(float x1, float y1, float x2, float y2, int style, int col, int size) {
   _pads[0][0]->cd();
 
   TLine* l=new TLine(x1,y1,x2,y2);
@@ -2850,7 +2862,7 @@ Display::addLine(float x1, float y1, float x2, float y2, int style, int col, int
 }
 
 void
-Display::adjustLegend(int iobs, bool skipCoords) {
+DisplayClass::adjustLegend(int iobs, bool skipCoords) {
   float xd,xu,yd,yu,f=1.;
   
   if(!skipCoords) {
@@ -2935,7 +2947,7 @@ Display::adjustLegend(int iobs, bool skipCoords) {
 }
 
 void
-Display::getLegendCoordinate(TH1*h, float& pxd, float& pyd, float& pxu, float& pyu,float& fo, int iobs) {
+DisplayClass::getLegendCoordinate(TH1*h, float& pxd, float& pyd, float& pxu, float& pyu,float& fo, int iobs) {
 
   //default values
   pxd = 0.5;
@@ -3048,7 +3060,7 @@ Display::getLegendCoordinate(TH1*h, float& pxd, float& pyd, float& pxu, float& p
 
 
 float
-Display::graphVal(float x,int ih, int iobs) {
+DisplayClass::graphVal(float x,int ih, int iobs) {
   
   float X = _pads[0][iobs]->PixeltoX( x*_wpad  );
   size_t bin = StatUtils::findBin<float>(X, _hCoords[ih][0] );
@@ -3062,7 +3074,7 @@ Display::graphVal(float x,int ih, int iobs) {
 }
 
 void
-Display::graphConstraint(size_t ih, int iobs, float& xd, float& xu, float& yd, float& yu,float& f, float dx, float dy) {
+DisplayClass::graphConstraint(size_t ih, int iobs, float& xd, float& xu, float& yd, float& yu,float& f, float dx, float dy) {
 
   bool lCorIP= (yd < graphVal(xd,ih,iobs));
   bool rCorIP= (yd < graphVal(xu,ih,iobs));

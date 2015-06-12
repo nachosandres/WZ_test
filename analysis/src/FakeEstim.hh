@@ -34,98 +34,126 @@ private:
   bool genMatchedToFake(int id);
   float getFR(Candidate* cand, int idx);
 
+  TVector2 varyMET();
+
   //============================
   void retrieveObjects();
-  bool alternateSSEventSelection(bool switchWF=true);
+  bool ssLeptonSelection();
+  void selectLeptons();
  
-//==============================
-  void setSignalRegion();
-  void setCut(string var, float valCut, string cType, float upValCut=0);
+  //==============================
+  void setSignalRegions();
+  void setSelLine(string str);
+  //void setCut(string var, float valCut, string cType, float upValCut=0);
   
   //=============================
   //advanced fast selection
   bool testRegion();
   void categorize();
 
+  bool passCERNSelection();
+  bool looseLepton(int idx, int pdgId);
+  bool tightLepton(int idx, int pdgId);
+  bool fakableLepton(int idx, int pdgId);
 
 private: 
 
   //counter categories, 0 is ALWAYS global (even if not specified later
   //enum {kGlobal=0,kLowMETMT,kGenFake,kGenMisCharge,kOneIso,kNoIso, kSelId};
   enum {kGlobal=0,
-	kSR1A,kSR2A,kSR3A,kSR4A,kSR7A,kSR8A,kSR9A,kSR10A,
-	kSR13A,kSR14A,kSR15A,kSR16A,
-	kSR1B,
-	kSR3B,
-	kSR5B,
-	kSR1AL,kSR2AL,kSR3AL,kSR4AL,kSR1AH,kSR2AH,kSR3AH,kSR4AH,kSR5A,kSR6A,
-	kSR7AL,kSR8AL,kSR9AL,kSR10AL,kSR7AH,kSR8AH,kSR9AH,kSR10AH,kSR11A,kSR12A,
-	kSR13AL,kSR14AL,kSR15AL,kSR16AL,kSR13AH,kSR14AH,kSR15AH,kSR16AH,kSR17A,kSR18A,
-	kSR19AL,kSR19AH,kSR20A,
-	kSR1BL,kSR1BH,kSR2B,kSR2BL,kSR2BH,
-	kSR3BL,kSR3BH,kSR4B,kSR4BL,kSR4BH,
-	kSR5BL,kSR5BH,kSR6B,kSR6BL,kSR6BH,
-	kSR7BL,kSR7BH,kSR8B,
-	kOneIso,kNoIso, kSelId};
+	
+	kSR1A, kSR2A, kSR3A, kSR4A, kSR5A, kSR6A, kSR7A, kSR8A,
+	kSR9A, kSR10A, kSR11A, kSR12A, kSR13A, kSR14A, kSR15A, kSR16A,
+	kSR17A, kSR18A, kSR19A, kSR20A, kSR21A, kSR22A, kSR23A, kSR24A,
+	kSR25A, kSR26A, kSR27A, kSR28A, kSR29A, kSR30A, kSR31A, kSR32A,
+
+	kSR1B, kSR2B, kSR3B, kSR4B, kSR5B, kSR6B, kSR7B, kSR8B,
+	kSR9B, kSR10B, kSR11B, kSR12B, kSR13B, kSR14B, kSR15B, kSR16B,
+	kSR17B, kSR18B, kSR19B, kSR20B, kSR21B, kSR22B, kSR23B, kSR24B,
+	kSR25B, kSR26B,
+
+	kSR1C, kSR2C, kSR3C, kSR4C, kSR5C, kSR6C, kSR7C, kSR8C,
+    
+	//kBR0H, kBR0M, kBR0L,
+	kBR00H, kBR00M, kBR00L,
+	kBR10H, kBR10M, kBR10L,
+	kBR20H, kBR20M, kBR20L,
+	kBR30H, kBR30M, kBR30L,
+
+	kSR1A_Fake, kSR2A_Fake, kSR3A_Fake, kSR4A_Fake, kSR5A_Fake, kSR6A_Fake, kSR7A_Fake, kSR8A_Fake,
+	kSR9A_Fake, kSR10A_Fake, kSR11A_Fake, kSR12A_Fake, kSR13A_Fake, kSR14A_Fake, kSR15A_Fake, kSR16A_Fake,
+	kSR17A_Fake, kSR18A_Fake, kSR19A_Fake, kSR20A_Fake, kSR21A_Fake, kSR22A_Fake, kSR23A_Fake, kSR24A_Fake,
+	kSR25A_Fake, kSR26A_Fake, kSR27A_Fake, kSR28A_Fake, kSR29A_Fake, kSR30A_Fake, kSR31A_Fake, kSR32A_Fake,
+
+	kSR1B_Fake, kSR2B_Fake, kSR3B_Fake, kSR4B_Fake, kSR5B_Fake, kSR6B_Fake, kSR7B_Fake, kSR8B_Fake,
+	kSR9B_Fake, kSR10B_Fake, kSR11B_Fake, kSR12B_Fake, kSR13B_Fake, kSR14B_Fake, kSR15B_Fake, kSR16B_Fake,
+	kSR17B_Fake, kSR18B_Fake, kSR19B_Fake, kSR20B_Fake, kSR21B_Fake, kSR22B_Fake, kSR23B_Fake, kSR24B_Fake,
+	kSR25B_Fake, kSR26B_Fake,
+
+	kSR1C_Fake, kSR2C_Fake, kSR3C_Fake, kSR4C_Fake, kSR5C_Fake, kSR6C_Fake, kSR7C_Fake, kSR8C_Fake,
+
+	
+	kBR00H_Fake, kBR00M_Fake, kBR00L_Fake,
+	kBR10H_Fake, kBR10M_Fake, kBR10L_Fake,
+	kBR20H_Fake, kBR20M_Fake, kBR20L_Fake,
+	kBR30H_Fake, kBR30M_Fake, kBR30L_Fake,
+
+	kGlobalFake
+  };
 
 
   // enum {kLoose=0,kTight,kVTight,kHTight,kNWPs};
   
   SusyModule* _susyMod;
-
-
   
-  CandList _allLeps;
-  CandList _looseLeps;
-  CandList _leptons;
-  CandList _nonFullIdLeps;
-  CandList _fullIdLeps;
-  CandList _lepsForFR;
-  CandList _jets;
-
   Candidate* _met;
-
-  float _mTmin;
   
-  std::vector<unsigned int> _looseLepsIdx;
-  std::vector<unsigned int> _leptonsIdx;
-  std::vector<unsigned int> _nonFullIdLepsIdx;
-  std::vector<unsigned int> _fullIdLepsIdx;
-  std::vector<unsigned int> _tmpLepIdx;
-  std::vector<unsigned int> _lepsForFRIdx;
- 
- 
+  std::map<std::string,float*> _val;
+  float _nBJets;
+  float _mTmin;
+  float _metPt;
+  float _nJets;
+  float _HT;
+  
+  //MM ugly
+  std::map<std::string, std::vector<std::vector<std::vector<std::string> > > > _sels;
+
+  //fakes
+  bool _isFake;
+  int _idxFake;
+
+  CandList _looseLeps;
+  std::vector<unsigned int>  _looseLepsIdx;
+
+  CandList _looseLeps10;
+  std::vector<unsigned int>  _looseLeps10Idx;
+
+  CandList _looseLepsVeto;
+  std::vector<unsigned int>  _looseLepsVetoIdx;
+
+  CandList _looseLepsVeto10;
+  std::vector<unsigned int>  _looseLepsVeto10Idx;
+
+  CandList _fakableLeps10;
+  std::vector<unsigned int>  _fakableLeps10Idx;
+
+  CandList _fakableLepsVeto10;
+  std::vector<unsigned int>  _fakableLepsVeto10Idx;
+  
+  CandList _tightLeps10;
+  std::vector<unsigned int>  _tightLeps10Idx;
+
+  CandList _tightLepsVeto10;
+  std::vector<unsigned int>  _tightLepsVeto10Idx;
+
+  CandList _jets;
+  std::vector<unsigned int>  _jetsIdx;
+  
+  CandList _bJets;
+  std::vector<unsigned int>  _bJetsIdx;
   
   unsigned int _nLooseLeps;
-  unsigned int _nJets;
-
-  float _valCutHTSR;
-  float _valCutMETSR;
-  float _valCutMTSR;
-  float _valCutNJetsSR;
-  float _valCutNBJetsSR;
-
-  float _valCutNJetsCond;
-  float _valCutMETCond;
-
-  std::string _cTypeHTSR;
-  std::string _cTypeMETSR;
-  std::string _cTypeMTSR;
-  std::string _cTypeNJetsSR;
-  std::string _cTypeNBJetsSR;
-
-  std::string _cTypeNJetsCond;
-  std::string _cTypeMETCond;
-
-  float _upValCutHTSR;
-  float _upValCutMETSR;
-  float _upValCutMTSR;
-  float _upValCutNJetsSR;
-  float _upValCutNBJetsSR;
-
-  float _upValCutNJetsCond;
-  float _upValCutMETCond;
-
+ 
 
   int _nIso;
   int _nSelPair2Iso;
@@ -134,26 +162,15 @@ private:
 
   Candidate * _l1Cand;
   Candidate * _l2Cand;
-  int _lep_idx1;
-  int _lep_idx2; 
+  int _idxL1;
+  int _idxL2; 
  
-  float _HT;
 
-
-  string _btag;
-  string _fakes;
   string _lepflav;
-  string _lepId;
-  string _lepiso;
   string _leppt;
   string _leptl;
-  string _extScheme;
   string _SR;
   string _FR;
-
-  float _metCut;
-  int _isoLvl;
-
 
   int _fakeEl;
   int _fakeMu;
@@ -165,6 +182,9 @@ private:
 
   vector<string> _categs;
   bool _categorization;
+
+  vector<TVector2> _uncleanJets;
+  vector<TVector2> _uncleanFwdJets;
 
 };
 

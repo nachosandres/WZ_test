@@ -21,7 +21,7 @@ Parser::parseLine(string line) {
   inPar ip;  
   ip.type=Parser::kNone;
   if(tks.size()==0 || tks[0].substr(0,1)=="#" ) return ip;
-
+  
   int type=Parser::kNone;
   if(tks[0]=="dir")
     type=Parser::kDir;
@@ -45,6 +45,10 @@ Parser::parseLine(string line) {
     type=Parser::kTree;
   if(tks[0]=="ds")
     type=Parser::kDS;
+  if(tks[0]=="ft")
+    type=Parser::kFT;
+  if(tks[0]=="summary")
+    type=Parser::kSummary;
 
   string val = tks[1];
 
@@ -57,7 +61,7 @@ Parser::parseLine(string line) {
   pair<int, string> p(type, val);
   
   string id=tks[0];
-  if(type==Parser::kVar || type==Parser::kDS)
+  if(type==Parser::kVar || type==Parser::kDS || type==Parser::kFT)
     id = val;
   if(type==Parser::kDS) {
     for(size_t i=0;i<opts.size();i++) {
@@ -76,8 +80,8 @@ Parser::parseLine(string line) {
   ip.val = val;
   ip.opts = opts;
 
-  if(type!=Parser::kNone)
-    return ip;
+  //  if(type!=Parser::kNone)
+  return ip;
 }
 
 

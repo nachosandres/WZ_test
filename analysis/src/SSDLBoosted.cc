@@ -442,8 +442,8 @@ void SSDLBoosted::run(){
   counter("denominator");
 
   //cout<<_vc->get("nLepGood")<<endl;
-  for(int i=0;i<_vc->get("nLepGood");i++)
-    float pt=_vc->get("LepGood_pt",i);
+  //  for(int i=0;i<_vc->get("nLepGood");i++)
+  //    float pt=_vc->get("LepGood_pt",i);
 
     //cout<<_vc->get("LepGood_pt",i)<<endl;
   

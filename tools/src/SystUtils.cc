@@ -79,7 +79,10 @@ SystUtils::addSystSource(string name, int dir, string type, vector<string> modVa
 
   
   if(hname!="" && hname!="e" && hname!="E")
-    _dbm->loadDb(db, file , hname);
+    _dbm->loadDb(name, file , hname);
+  else {
+    _dbm->loadDb(name, file);
+  }
 
 
   _uncSrcs[ sName ] = tmp;
