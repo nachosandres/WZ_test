@@ -16,8 +16,8 @@
 
 
 
-    //string signal = "T1t412";
-    string signal = "T1t415";
+    string signal = "T1t412";
+    //string signal = "T1t415";
 
 
     //general parameters ********************* general parameters
@@ -142,8 +142,10 @@
     if(signal=="T1t415"){
         md.anConf.addSample( "SMS_T1tttt_2J_mGl1500_mLSP100"    ,  "T1t415" , kOrange+3  );
     }
-   
-   
+    if(signal=="T5t410"){
+        md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280.root"    ,  "T5t410" , kGreen+3  );
+    }
+    
     md.addNuisanceParameter("fratio","fake","lnN","1.50");
     md.addNuisanceParameter("rNorm1","diboson","lnN","1.20");
     md.addNuisanceParameter("rNorm2","ttZ","lnN","1.20");

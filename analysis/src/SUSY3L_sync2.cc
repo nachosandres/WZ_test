@@ -273,8 +273,8 @@ void SUSY3L_sync2::collectKinematicObjects(){
         //print event information before selection
        
         
-            /*    
-        if(_vc->get("lumi") == 4613 && _vc->get("evt") == 61208 ){
+                
+        if(_vc->get("lumi") == 2995 && _vc->get("evt") == 99457 ){
             cout << "--------------------------------------------------"<< endl; 
             cout << "pt " << _vc->get("LepGood_pt", i) <<endl;
             cout << "eta " << _vc->get("LepGood_eta", i) <<endl;
@@ -293,7 +293,7 @@ void SUSY3L_sync2::collectKinematicObjects(){
                 cout << "convVeto " << _vc->get("LepGood_convVeto", i) <<endl;
                 cout << "lost hits " << _vc->get("LepGood_lostHits", i) <<endl;}
         } 
-        */
+        
         if(std::abs(_vc->get("LepGood_pdgId",i)) == 13){
             //differentiate muons for muon selecton and veto muon selection
             if(muonSelection(i)) {
@@ -484,7 +484,7 @@ bool SUSY3L_sync2::electronSelection(int elIdx){
         if(!makeCut( elTightMvaID, "electron tight mva wp", "=", kElId)) return false;
     //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
     int wp = kMedium;
-    //if(_vc->get("lumi") == 2865  && _vc->get("evt") == 86491){
+    //if(_vc->get("lumi") == 2995  && _vc->get("evt") == 99457){
     //    cout << "electron idx " << elIdx << " with pt " <<  _vc->get("LepGood_pt", elIdx) << endl;
     //}
     bool isolated = multiIsolation(elIdx, _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2]);
@@ -550,7 +550,7 @@ bool SUSY3L_sync2::muonSelection(int muIdx){
     if(!makeCut<float>( std::abs( _vc->get("LepGood_eta", muIdx)), eta_cut, "<", "eta selection", 0, kMuId)) return false;
     //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
     int wp = kLoose;
-    //if(_vc->get("lumi") == 2865  && _vc->get("evt") == 86491){
+    //if(_vc->get("lumi") == 2995  && _vc->get("evt") == 99457){
     //    cout << "muon idx " << muIdx << " with pt " <<  _vc->get("LepGood_pt", muIdx) << endl;
     //}
     bool isolated = multiIsolation(muIdx, _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2]);
@@ -1102,8 +1102,8 @@ bool SUSY3L_sync2::baseSelection(){
     */
     
     //print event information before selection
-   /* 
-    if(_vc->get("lumi") == 4613  && _vc->get("evt") == 61208){
+    
+    if(_vc->get("lumi") ==  2995 && _vc->get("evt") == 99457){
         cout << "--------------------------------------------------"<< endl; 
         cout << "event  " << _vc->get("lumi") << " " << _vc->get("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
         for(int i =0;i<_nEls;i++){
@@ -1122,7 +1122,7 @@ bool SUSY3L_sync2::baseSelection(){
     
 
     }
-    */
+    
 
 
 
@@ -1617,7 +1617,7 @@ bool SUSY3L_sync2::multiIsolation(int idx, float miniRelIso_cut, float ptRatio_c
         return: true (if lepton is isolated), flase (else)
     */
           /* 
-       if(_vc->get("lumi") == 2865  && _vc->get("evt") == 86491){
+       if(_vc->get("lumi") == 2995  && _vc->get("evt") == 99457){
            cout << idx << " miniIso " << _vc->get("LepGood_miniRelIso",idx) << endl;
            cout << idx << " ptratio " << _vc->get("LepGood_jetPtRatio",idx) << endl;
            cout << idx << " ptrel "   << _vc->get("LepGood_jetPtRel",idx) << endl;

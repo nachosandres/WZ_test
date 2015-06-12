@@ -740,7 +740,7 @@ void SUSY3L::setBaselineRegion(){
     */
 
     if(_BR == "BR0"){
-        setCut("LepMultiplicity"    ,    3, ">="  ) ;     //number of isolated leptons
+        setCut("LepMultiplicity"    ,    3, "="  ) ;     //number of isolated leptons
         _pt_cut_hard_leg              = 20          ;     //harsher pT requirement on one of the leptons
         _M_T_3rdLep_MET_cut           =  -1         ;     //minimum transverse mass of 3rd lepton and met in On-Z events
         setCut("NJets"              ,    2, ">=" )  ;     //number of jets in event
@@ -755,228 +755,6 @@ void SUSY3L::setBaselineRegion(){
 
 
 //____________________________________________________________________________
-//void SUSY3L::setSignalRegion() {
-  
-    /*
-        sets the cuts of the signal region (_SR)
-        parameters: none
-        return: none
-    */
-/*
-    if(_SR == "SR00") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 60, "[[", 200 );
-        setCut("METSR", 50, "[[", 100 );
-    }
- 
-    if(_SR == "SR01") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 60, "[[", 200 );
-        setCut("METSR", 100, "[[", 200 );
-    }   
- 
-    if(_SR == "SR02") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 60, "[[", 200 );
-        setCut("METSR", 200, ">=" );
-    } 
-
-    if(_SR == "SR03") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 200, ">=" );
-        setCut("METSR", 50, "[[", 100 );
-    }
- 
-    if(_SR == "SR04") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 200, ">=" );
-        setCut("METSR", 100, "[[", 200 );
-    }   
- 
-    if(_SR == "SR05") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 200, ">=" );
-        setCut("METSR", 200, ">=" );
-    }
-
-    if(_SR == "SR06") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 60, "[[", 200 );
-        setCut("METSR", 50, "[[", 100 );
-    }
- 
-    if(_SR == "SR07") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 60, "[[", 200 );
-        setCut("METSR", 100, "[[", 200 );
-    }   
- 
-    if(_SR == "SR08") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 60, "[[", 200 );
-        setCut("METSR", 200, ">=" );
-    } 
-
-    if(_SR == "SR09") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 200, ">=" );
-        setCut("METSR", 50, "[[", 100 );
-    }
- 
-    if(_SR == "SR10") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 200, ">=" );
-        setCut("METSR", 100, "[[", 200 );
-    }   
- 
-    if(_SR == "SR11") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 200, ">=" );
-        setCut("METSR", 200, ">=" );
-    }
-
-    if(_SR == "SR12") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 60, "[[", 200 );
-        setCut("METSR", 50, "[[", 100 );
-    }
- 
-    if(_SR == "SR13") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 60, "[[", 200 );
-        setCut("METSR", 100, "[[", 200 );
-    }   
- 
-    if(_SR == "SR14") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 60, "[[", 200 );
-        setCut("METSR", 200, ">=" );
-    } 
-
-    if(_SR == "SR15") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 200, ">=" );
-        setCut("METSR", 50, "[[", 100 );
-    }
- 
-    if(_SR == "SR16") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 200, ">=" );
-        setCut("METSR", 100, "[[", 200 );
-    }   
- 
-    if(_SR == "SR17") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", 200, ">=" );
-        setCut("METSR", 200, ">=" );
-    }
-
-    if(_SR == "SR18") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 60, "[[", 200 );
-        setCut("METSR", 50, "[[", 100 );
-    }
- 
-    if(_SR == "SR19") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 60, "[[", 200 );
-        setCut("METSR", 100, "[[", 200 );
-    }   
- 
-    if(_SR == "SR20") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 60, "[[", 200 );
-        setCut("METSR", 200, ">=" );
-    } 
-
-    if(_SR == "SR21") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 200, ">=" );
-        setCut("METSR", 50, "[[", 100 );
-    }
- 
-    if(_SR == "SR22") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 200, ">=" );
-        setCut("METSR", 100, "[[", 200 );
-    }   
- 
-    if(_SR == "SR23") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 4, ">=" );
-        setCut("HTSR", 200, ">=" );
-        setCut("METSR", 200, ">=" );
-    }
-
-    if(_SR == "SR24") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 2, ">=" );
-        setCut("HTSR", 60, "[[", 200 );
-        setCut("METSR", 50, "[[", 100 );
-    }
- 
-    if(_SR == "SR25") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 2, ">=" );
-        setCut("HTSR", 60, "[[", 200 );
-        setCut("METSR", 100, "[[", 200 );
-    }   
- 
-    if(_SR == "SR26") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 2, ">=" );
-        setCut("HTSR", 60, "[[", 200 );
-        setCut("METSR", 200, ">=" );
-    } 
-
-    if(_SR == "SR27") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 2, ">=" );
-        setCut("HTSR", 200, ">=" );
-        setCut("METSR", 50, "[[", 100 );
-    }
- 
-    if(_SR == "SR28") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 2, ">=" );
-        setCut("HTSR", 200, ">=" );
-        setCut("METSR", 100, "[[", 200 );
-    }   
- 
-    if(_SR == "SR29") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 2, ">=" );
-        setCut("HTSR", 200, ">=" );
-        setCut("METSR", 200, ">=" );
-    }
-
-}
-*/
-
-//____________________________________________________________________________
 void SUSY3L::setSignalRegion() {
   
     /*
@@ -985,598 +763,666 @@ void SUSY3L::setSignalRegion() {
         return: none
     */
 
-    int ht_cut1 = 60;
-    int ht_cut2 = 300;
-    int ht_cut3 = 700;
-
-    int met_cut1 = 50;
-    int met_cut2 = 150;
-    int met_cut3 = 400;
-
-// nbjets == 1; njets ==2-3
     if(_SR == "SR00") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 50, "[[", 100 );
     }
-
+ 
     if(_SR == "SR01") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 100, "[[", 200 );
+    }   
+ 
     if(_SR == "SR02") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut3, ">=" );
-    }
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 200, ">=" );
+    } 
 
     if(_SR == "SR03") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 50, "[[", 100 );
     }
-
+ 
     if(_SR == "SR04") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 100, "[[", 200 );
+    }   
+ 
     if(_SR == "SR05") {
         setCut("NBJetsSR", 1, "=" );
         setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut3, ">=" );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 200, ">=" );
     }
 
     if(_SR == "SR06") {
         setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
+        setCut("NJetsSR", 4, ">=" );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 50, "[[", 100 );
     }
-
+ 
     if(_SR == "SR07") {
         setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
+        setCut("NJetsSR", 4, ">=" );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 100, "[[", 200 );
+    }   
+ 
     if(_SR == "SR08") {
         setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut3, ">=" );
-    }
+        setCut("NJetsSR", 4, ">=" );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 200, ">=" );
+    } 
 
-// nbjets == 1; njets == 4
     if(_SR == "SR09") {
         setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
+        setCut("NJetsSR", 4, ">=" );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 50, "[[", 100 );
     }
-
+ 
     if(_SR == "SR10") {
         setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
+        setCut("NJetsSR", 4, ">=" );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 100, "[[", 200 );
+    }   
+ 
     if(_SR == "SR11") {
         setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut3, ">=" );
+        setCut("NJetsSR", 4, ">=" );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 200, ">=" );
     }
 
     if(_SR == "SR12") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
+        setCut("NBJetsSR", 2, "=" );
+        setCut("NJetsSR", 2, "[]", 3 );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 50, "[[", 100 );
     }
-
+ 
     if(_SR == "SR13") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
+        setCut("NBJetsSR", 2, "=" );
+        setCut("NJetsSR", 2, "[]", 3 );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 100, "[[", 200 );
+    }   
+ 
     if(_SR == "SR14") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut3, ">=" );
-    }
+        setCut("NBJetsSR", 2, "=" );
+        setCut("NJetsSR", 2, "[]", 3 );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 200, ">=" );
+    } 
 
     if(_SR == "SR15") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
+        setCut("NBJetsSR", 2, "=" );
+        setCut("NJetsSR", 2, "[]", 3 );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 50, "[[", 100 );
     }
-
+ 
     if(_SR == "SR16") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
+        setCut("NBJetsSR", 2, "=" );
+        setCut("NJetsSR", 2, "[]", 3 );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 100, "[[", 200 );
+    }   
+ 
     if(_SR == "SR17") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut3, ">=" );
+        setCut("NBJetsSR", 2, "=" );
+        setCut("NJetsSR", 2, "[]", 3 );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 200, ">=" );
     }
 
-
-// nbjets == 1; njets >= 5
     if(_SR == "SR18") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
+        setCut("NBJetsSR", 2, "=" );
+        setCut("NJetsSR", 4, ">=" );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 50, "[[", 100 );
     }
-
+ 
     if(_SR == "SR19") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
+        setCut("NBJetsSR", 2, "=" );
+        setCut("NJetsSR", 4, ">=" );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 100, "[[", 200 );
+    }   
+ 
     if(_SR == "SR20") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut3, ">=" );
-    }
+        setCut("NBJetsSR", 2, "=" );
+        setCut("NJetsSR", 4, ">=" );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 200, ">=" );
+    } 
 
     if(_SR == "SR21") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
+        setCut("NBJetsSR", 2, "=" );
+        setCut("NJetsSR", 4, ">=" );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 50, "[[", 100 );
     }
-
+ 
     if(_SR == "SR22") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
+        setCut("NBJetsSR", 2, "=" );
+        setCut("NJetsSR", 4, ">=" );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 100, "[[", 200 );
+    }   
+ 
     if(_SR == "SR23") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut3, ">=" );
+        setCut("NBJetsSR", 2, "=" );
+        setCut("NJetsSR", 4, ">=" );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 200, ">=" );
     }
 
     if(_SR == "SR24") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
+        setCut("NBJetsSR", 3, ">=" );
+        setCut("NJetsSR", 2, ">=" );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 50, "[[", 100 );
     }
-
+ 
     if(_SR == "SR25") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
+        setCut("NBJetsSR", 3, ">=" );
+        setCut("NJetsSR", 2, ">=" );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 100, "[[", 200 );
+    }   
+ 
     if(_SR == "SR26") {
-        setCut("NBJetsSR", 1, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut3, ">=" );
-    }
+        setCut("NBJetsSR", 3, ">=" );
+        setCut("NJetsSR", 2, ">=" );
+        setCut("HTSR", 60, "[[", 200 );
+        setCut("METSR", 200, ">=" );
+    } 
 
-
-// nbjets == 2; njets ==2-3
     if(_SR == "SR27") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
+        setCut("NBJetsSR", 3, ">=" );
+        setCut("NJetsSR", 2, ">=" );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 50, "[[", 100 );
     }
-
+ 
     if(_SR == "SR28") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
+        setCut("NBJetsSR", 3, ">=" );
+        setCut("NJetsSR", 2, ">=" );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 100, "[[", 200 );
+    }   
+ 
     if(_SR == "SR29") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut3, ">=" );
-    }
-
-    if(_SR == "SR30") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
-
-    if(_SR == "SR31") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
-    if(_SR == "SR32") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut3, ">=" );
-    }
-
-    if(_SR == "SR33") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
-
-    if(_SR == "SR34") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
-    if(_SR == "SR35") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut3, ">=" );
-    }
-
-// nbjets == 2; njets == 4
-    if(_SR == "SR36") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
-
-    if(_SR == "SR37") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
-    if(_SR == "SR38") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut3, ">=" );
-    }
-
-    if(_SR == "SR39") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
-
-    if(_SR == "SR40") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
-    if(_SR == "SR41") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut3, ">=" );
-    }
-
-    if(_SR == "SR42") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
-
-    if(_SR == "SR43") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
-    if(_SR == "SR44") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut3, ">=" );
-    }
-
-
-// nbjets == 2; njets >= 5
-    if(_SR == "SR45") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
-
-    if(_SR == "SR46") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
-    if(_SR == "SR47") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut3, ">=" );
-    }
-
-    if(_SR == "SR48") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
-
-    if(_SR == "SR49") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
-    if(_SR == "SR50") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut3, ">=" );
-    }
-
-    if(_SR == "SR51") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
-
-    if(_SR == "SR52") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
-    if(_SR == "SR53") {
-        setCut("NBJetsSR", 2, "=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut3, ">=" );
-    }
-
-// nbjets >=3; njets ==2-3
-    if(_SR == "SR54") {
         setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
+        setCut("NJetsSR", 2, ">=" );
+        setCut("HTSR", 200, ">=" );
+        setCut("METSR", 200, ">=" );
     }
 
-    if(_SR == "SR55") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
+}
 
-    if(_SR == "SR56") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut3, ">=" );
-    }
+/*
+//____________________________________________________________________________
+void SUSY3L::setSignalRegion() {
+if(_SR == "SR00") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 50, "[[", 150 );
+}
 
-    if(_SR == "SR57") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
+if(_SR == "SR01") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 150, "[[", 400 );
+}
 
-    if(_SR == "SR58") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
+if(_SR == "SR02") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 400, ">=" );
+}
 
-    if(_SR == "SR59") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut3, ">=" );
-    }
+if(_SR == "SR03") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 50, "[[", 150 );
+}
 
-    if(_SR == "SR60") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
+if(_SR == "SR04") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 150, "[[", 400 );
+}
 
-    if(_SR == "SR61") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
+if(_SR == "SR05") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 400, ">=" );
+}
 
-    if(_SR == "SR62") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 2, "[]", 3 );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut3, ">=" );
-    }
+if(_SR == "SR06") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 50, "[[", 150 );
+}
 
-// nbjets >=3; njets == 4
-    if(_SR == "SR63") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
+if(_SR == "SR07") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 150, "[[", 400 );
+}
 
-    if(_SR == "SR64") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
+if(_SR == "SR08") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 400, ">=" );
+}
 
-    if(_SR == "SR65") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut3, ">=" );
-    }
+if(_SR == "SR09") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 50, "[[", 150 );
+}
 
-    if(_SR == "SR66") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
+if(_SR == "SR10") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 150, "[[", 400 );
+}
 
-    if(_SR == "SR67") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
+if(_SR == "SR11") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 400, ">=" );
+}
 
-    if(_SR == "SR68") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut3, ">=" );
-    }
+if(_SR == "SR12") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 50, "[[", 150 );
+}
 
-    if(_SR == "SR69") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
+if(_SR == "SR13") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 150, "[[", 400 );
+}
 
-    if(_SR == "SR70") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
+if(_SR == "SR14") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 400, ">=" );
+}
 
-    if(_SR == "SR71") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 4, "=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut3, ">=" );
-    }
+if(_SR == "SR15") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 50, "[[", 150 );
+}
+
+if(_SR == "SR16") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR17") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 400, ">=" );
+}
+
+if(_SR == "SR18") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 50, "[[", 150 );
+}
+
+if(_SR == "SR19") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR20") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 400, ">=" );
+}
+
+if(_SR == "SR21") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 50, "[[", 150 );
+}
+
+if(_SR == "SR22") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR23") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 400, ">=" );
+}
+
+if(_SR == "SR24") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 50, "[[", 150 );
+}
+
+if(_SR == "SR25") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR26") {
+   setCut("NBJetsSR", 1, "[[", 2 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 400, ">=" );
+}
+
+if(_SR == "SR27") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 50, "[[", 150 );
+}
+
+if(_SR == "SR28") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR29") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 400, ">=" );
+}
+
+if(_SR == "SR30") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 50, "[[", 150 );
+}
+
+if(_SR == "SR31") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR32") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 400, ">=" );
+}
+
+if(_SR == "SR33") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 50, "[[", 150 );
+}
+
+if(_SR == "SR34") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR35") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 2, "[[", 4 );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 400, ">=" );
+}
+
+if(_SR == "SR36") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 50, "[[", 150 );
+}
+
+if(_SR == "SR37") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR38") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 400, ">=" );
+}
+
+if(_SR == "SR39") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 50, "[[", 150 );
+}
+if(_SR == "SR40") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR41") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 400, ">=" );
+}
+
+if(_SR == "SR42") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 50, "[[", 150 );
+}
+
+if(_SR == "SR43") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR44") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 4, "[[", 5 );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 400, ">=" );
+}
+if(_SR == "SR45") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 50, "[[", 150 );
+}
+
+if(_SR == "SR46") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR47") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 400, ">=" );
+}
+
+if(_SR == "SR48") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 50, "[[", 150 );
+}
+
+if(_SR == "SR49") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR50") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 400, ">=" );
+}
+
+if(_SR == "SR51") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 50, "[[", 150 );
+}
+
+if(_SR == "SR52") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR53") {
+   setCut("NBJetsSR", 2, "[[", 3 );
+   setCut("NJetsSR", 5, ">=" );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 400, ">=" );
+}
+
+if(_SR == "SR54") {
+   setCut("NBJetsSR", 3, ">=" );
+   setCut("NJetsSR", 2, ">=" );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 50, "[[", 150 );
+}
+
+if(_SR == "SR55") {
+   setCut("NBJetsSR", 3, ">=" );
+   setCut("NJetsSR", 2, ">=" );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR56") {
+   setCut("NBJetsSR", 3, ">=" );
+   setCut("NJetsSR", 2, ">=" );
+   setCut("HTSR", 60, "[[", 300 );
+   setCut("METSR", 400, ">=" );
+}
+
+if(_SR == "SR57") {
+   setCut("NBJetsSR", 3, ">=" );
+   setCut("NJetsSR", 2, ">=" );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 50, "[[", 150 );
+}
+
+if(_SR == "SR58") {
+   setCut("NBJetsSR", 3, ">=" );
+   setCut("NJetsSR", 2, ">=" );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR59") {
+   setCut("NBJetsSR", 3, ">=" );
+   setCut("NJetsSR", 2, ">=" );
+   setCut("HTSR", 300, "[[", 700 );
+   setCut("METSR", 400, ">=" );
+}
+if(_SR == "SR60") {
+   setCut("NBJetsSR", 3, ">=" );
+   setCut("NJetsSR", 2, ">=" );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 50, "[[", 150 );
+}
+
+if(_SR == "SR61") {
+   setCut("NBJetsSR", 3, ">=" );
+   setCut("NJetsSR", 2, ">=" );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 150, "[[", 400 );
+}
+
+if(_SR == "SR62") {
+   setCut("NBJetsSR", 3, ">=" );
+   setCut("NJetsSR", 2, ">=" );
+   setCut("HTSR", 700, ">=" );
+   setCut("METSR", 400, ">=" );
+}
 
 
-// nbjets >=3; njets >= 5
-    if(_SR == "SR72") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
 
-    if(_SR == "SR73") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
-    if(_SR == "SR74") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut1, "[[", ht_cut2 );
-        setCut("METSR", met_cut3, ">=" );
-    }
-
-    if(_SR == "SR75") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
-
-    if(_SR == "SR76") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
-    if(_SR == "SR77") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut2, "[[", ht_cut3 );
-        setCut("METSR", met_cut3, ">=" );
-    }
-
-    if(_SR == "SR78") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut1, "[[", met_cut2 );
-    }
-
-    if(_SR == "SR79") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut2, "[[", met_cut3 );
-    }
-
-    if(_SR == "SR80") {
-        setCut("NBJetsSR", 3, ">=" );
-        setCut("NJetsSR", 5, ">=" );
-        setCut("HTSR", ht_cut3, ">=" );
-        setCut("METSR", met_cut3, ">=" );
-    }
 
 
 }
 
-
+*/
 
 
 //____________________________________________________________________________
@@ -1663,52 +1509,52 @@ bool SUSY3L::baseSelection(){
     
     //select events with certain lepton multiplicity of all flavor combinations
     //leptons are ultra-loose in multiiso
-    if(!makeCut<int>( _nEls + _nMus + _nTaus, _valCutLepMultiplicityBR, _cTypeLepMultiplicityBR, "lepton multiplicity", _upValCutLepMultiplicityBR ) ) return false;
+    if(!makeCut<int>( _nEls + _nMus, _valCutLepMultiplicityBR, _cTypeLepMultiplicityBR, "lepton multiplicity", _upValCutLepMultiplicityBR ) ) return false;
 
     //fill custom plot lepton multiplicity
-    fill("el_multiplicity" , _nEls , _weight);
-    fill("mu_multiplicity" , _nMus , _weight);
-    fill("tau_multiplicity" , _nTaus , _weight);
-    fill("lep_multiplicity" , _nEls + _nMus + _nTaus , _weight);
+    //fill("el_multiplicity" , _nEls , _weight);
+    //fill("mu_multiplicity" , _nMus , _weight);
+    //fill("tau_multiplicity" , _nTaus , _weight);
+    //fill("lep_multiplicity" , _nEls + _nMus + _nTaus , _weight);
     
     //require at least two of the leptons to be tighter in multiiso
     //bool has_two_tighter_leptons = checkMultiIso();
     //if(!makeCut( has_two_tighter_leptons , "multiIso tightening", "=") ) return false;
 
     //require minimum number of jets
-    //if(!makeCut<int>( _nJets, _valCutNJetsBR, _cTypeNJetsBR, "jet multiplicity", _upValCutNJetsBR) ) return false;
+    if(!makeCut<int>( _nJets, _valCutNJetsBR, _cTypeNJetsBR, "jet multiplicity", _upValCutNJetsBR) ) return false;
 
     //require minimum number of b-tagged jets
-    //if(!makeCut<int>( _nBJets, _valCutNBJetsBR, _cTypeNBJetsBR, "b-jet multiplicity", _upValCutNBJetsBR) ) return false;
+    if(!makeCut<int>( _nBJets, _valCutNBJetsBR, _cTypeNBJetsBR, "b-jet multiplicity", _upValCutNBJetsBR) ) return false;
     
     
     //require at least 1 of the leptons to have higher pT than original cut
-    //bool has_hard_leg = hardLegSelection();
-    //if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
+    bool has_hard_leg = hardLegSelection();
+    if(!makeCut( has_hard_leg , "hard leg selection", "=") ) return false;
 
     //require minimum hadronic activity (sum of jet pT's)
-    //if(!makeCut<float>( _HT, _valCutHTBR, _cTypeHTBR, "hadronic activity", _upValCutHTBR) ) return false;
+    if(!makeCut<float>( _HT, _valCutHTBR, _cTypeHTBR, "hadronic activity", _upValCutHTBR) ) return false;
 
     //require minimum missing transvers energy (actually missing momentum)
-    //if(!makeCut<float>( _met->pt(), _valCutMETBR, _cTypeMETBR, "missing transverse energy", _upValCutMETBR) ) return false;
+    if(!makeCut<float>( _met->pt(), _valCutMETBR, _cTypeMETBR, "missing transverse energy", _upValCutMETBR) ) return false;
 
     //reject event if ossf lepton pair with low invariant mass is found
-    //bool has_low_mll = lowMllPair();
-    //if(!makeCut( !has_low_mll , "low mll rejection", "=") ) return false;
+    bool has_low_mll = lowMllPair();
+    if(!makeCut( !has_low_mll , "low mll rejection", "=") ) return false;
     
     //select on or off-Z events according to specification in config file
-    //bool is_reconstructed_Z = ZEventSelectionLoop();
+    bool is_reconstructed_Z = ZEventSelectionLoop();
 
     //if(is_reconstructed_Z){
     //    fill("Zmass" , _Z->mass()        , _weight);
     //}
     
-    //if(_pairmass == "off"){
-    //    if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
-    //}
-    //else if(_pairmass == "on"){
-    //    if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
-    //}
+    if(_pairmass == "off"){
+        if(!makeCut( !is_reconstructed_Z, "mll selection", "=") ) return false;
+    }
+    else if(_pairmass == "on"){
+        if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
+    }
     
     return true;
 }
