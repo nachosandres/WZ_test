@@ -22,9 +22,9 @@ AnalysisFactory::get(const string& analysis, const string& cfg) {
  
 // list of analyzers and modules in alphabetical order 
   
-  if(analysis=="csa14exerc") {
-    return new csa14exerc(cfg);
-  }
+//  if(analysis=="csa14exerc") {
+//    return new csa14exerc(cfg);
+//  }
   if(analysis=="SSDLBoosted") {
     return new SSDLBoosted(cfg);
   }

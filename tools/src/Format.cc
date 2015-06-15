@@ -51,7 +51,7 @@ struct SampleId{
   std::string name;
   std::string cr;
   bool dd;
-  float norm = -1;
+  float norm;
 
 };
 
