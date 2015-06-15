@@ -72,6 +72,7 @@ public:
   void configureNames(string dir, string objName, string objList);
 
   void loadXSDB(string dbname);
+  void loadKFDB(string dbname);
 
   string getDir() {return _dir;};
   vector<string> getObjList() {return _statFileList;};

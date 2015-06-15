@@ -204,6 +204,11 @@ AnaConfig::loadXSDB(string dbname) {
 }
 
 void
+AnaConfig::loadKFDB(string dbname) {
+  _dbm->loadDb("Kfactors",dbname);
+}
+
+void
 AnaConfig::isHistoAnalysis() {
   _skiptree=true;
 }
@@ -276,46 +281,59 @@ AnaConfig::addSample( string str, string sname, int col, bool loadH) {
   }
  
  
-  //histogram analysis
-  if(!_skiptree) {
+    //histogram analysis
+    if(!_skiptree) {
 
-    //find xSect/kFact/eqLumi
-    float xSect=1.,kFact=1.,eqLumi=1.;
+        //find xSect/kFact/eqLumi
+        float xSect=1.,kFact=1.,eqLumi=1.;
    
-    _itXS=_xSecLumis.find(sId.name);
-    if(_itXS==_xSecLumis.end()) {
-      xSect =-1000; eqLumi=-1;
+        _itXS=_xSecLumis.find(sId.name);
+        if(_itXS==_xSecLumis.end()) {
+            xSect =-1000; eqLumi=-1;
       
-      //first, check if a Xsection DB is loaded
-      if(_dbm->exists("Xsections"))
-	xSect = _dbm->getDBValue("Xsections", sId.name);
+            //first, check if a Xsection DB is loaded
+            if(_dbm->exists("Xsections"))
+	            xSect = _dbm->getDBValue("Xsections", sId.name);
       
-      if(xSect==-1000) { //nothing found in DB
-	cout<<" Be careful, no specified "
-	    <<(string)((_useXSect)?" cross section":" equivalent luminosity")
-	    <<" for "<<sId.name<<" , 1 by default *****======== "<<endl;
+            if(xSect==-1000) { //nothing found in DB
+	            cout<<" Be careful, no specified "
+	            <<(string)((_useXSect)?" cross section":" equivalent luminosity")
+	            <<" for "<<sId.name<<" , 1 by default *****======== "<<endl;
     
-	//FIXME, set weight to 1 by compensating with the lumi
-	xSect =1.; eqLumi=1.;
-      }
-    }
-    else {
-      if(_useXSect)
-	{eqLumi=-1; xSect =_itXS->second;}
-      else  
-	{eqLumi=_itXS->second; xSect =-1;}
-    }
-  
-    _itKF=_kFactors.find(sId.name);
-    if(_itKF!=_kFactors.end() ) {
-      kFact = _itKF->second;
-    }
+	            //FIXME, set weight to 1 by compensating with the lumi
+	            xSect =1.; eqLumi=1.;
+            }
+        }
+        else {
+            if(_useXSect)
+	            {eqLumi=-1; xSect =_itXS->second;}
+            else  
+	            {eqLumi=_itXS->second; xSect =-1;}
+        }
 
-    _datasets[ sname ]->addSample(sId, _path, _dir, _rootFile,
+
+        //k factors
+        _itKF=_kFactors.find(sId.name);
+
+        if(_itKF==_kFactors.end()) {
+      
+            //first, check if a kFactor DB is loaded
+            if(_dbm->exists("Kfactors"))
+	            kFact = _dbm->getDBValue("Kfactors", sId.name);
+            if(kFact!=1) { 
+	            cout<<"applying k factor " << kFact << " for dataset " <<  sId.name << endl;
+            }
+        }
+        else {
+	        cout<< "no k factor found in database - using default 1" << endl;
+	        kFact =1;
+        }
+ 
+        _datasets[ sname ]->addSample(sId, _path, _dir, _rootFile,
 				  _hname+"/"+sId.name, xSect, kFact, _lumi,
 				  eqLumi, loadH);
-    //_samplenames.push_back(sId.name);
-    _dsnames.push_back(sname);
+        //_samplenames.push_back(sId.name);
+        _dsnames.push_back(sname);
   }
   else {
     _datasets[ sname ]->addSample(sId, "", "", "", "", 0, 0, 0, 0, loadH);
