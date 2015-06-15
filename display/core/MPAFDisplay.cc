@@ -188,16 +188,10 @@ MPAFDisplay::readStatFile(string filename, int& icat) {
 	
         size_t n=tks.size()-4;
         cname="";
-<<<<<<< HEAD
-        for(size_t i=0;i<n;i++){
-          cname += tks[i]+" ";}
-          
-=======
         for(size_t i=0;i<n-1;i++)
           cname += tks[i]+" ";
-	cname += tks[n-1];
+	    cname += tks[n-1];
 
->>>>>>> 6120115552fd545afbf16ff76d41fe5ef4122585
         sname = tks[n];
 	if(categ.find("global_")!=string::npos) ext = categ.substr(7, categ.size()-7);
     	if(ext=="") {
@@ -214,28 +208,12 @@ MPAFDisplay::readStatFile(string filename, int& icat) {
         gen = atoi( tks[n+2].c_str() );
         eyield = atof( tks[n+3].c_str() );
 
-<<<<<<< HEAD
-        pair<string,string> p(ds->getName(), cname+sname+categ);
-        if(fVal.find(p)==fVal.end() ) {
-          fVal[p]=true;
-	  if(ids!=-1)
-	    _au->setEffFromStat(ids,cname,icat,yield,eyield,gen);
-	  if(modIds!=-1) { //goes to global
-	    int tmpcat=((ctag!="")?(_au->getCategId("global_"+ctag)):0);
-	    _au->setEffFromStat(modIds,cname,tmpcat,yield,eyield,gen);
-	  }
-	}
-	// else
-	//   cout<<"already here: "<<cname+sname<<endl;
-      
-=======
 	storeStatNums(ds, yield, eyield, gen, icat, cname, sname,
 		      categ, uncTag, upVar, ext);
 
 	if(extDs==nullptr) continue;
 	storeStatNums(extDs, yield, eyield, gen, icat, cname, sname, categ,
 		      uncTag, upVar, ext);
->>>>>>> 6120115552fd545afbf16ff76d41fe5ef4122585
       }
 
     }
@@ -760,11 +738,7 @@ MPAFDisplay::makeSingleDataCard(string sigName, string categ, string cname, stri
   //int nNuis=_nuisPars.size();
   
   string dirname_ = (string)(getenv("MPAF"))+"/workdir/datacards/";
-<<<<<<< HEAD
-  ofstream card( (dirname_+cardName+".txt").c_str(), ios::out | ios::trunc );
-=======
   ofstream card( (dirname_+cardName+".txt").c_str() , ios::out | ios::trunc );
->>>>>>> 6120115552fd545afbf16ff76d41fe5ef4122585
   
   card<<"imax 1 number of channels"<<endl; 
   //card<<"jmax "+osB.str()+" number of backgrounds"<<endl; 
