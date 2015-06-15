@@ -273,7 +273,7 @@ void SUSY3L_sync2::collectKinematicObjects(){
         //print event information before selection
        
         
-                
+               /* 
         if(_vc->get("lumi") == 2995 && _vc->get("evt") == 99457 ){
             cout << "--------------------------------------------------"<< endl; 
             cout << "pt " << _vc->get("LepGood_pt", i) <<endl;
@@ -292,7 +292,7 @@ void SUSY3L_sync2::collectKinematicObjects(){
                 cout << "el mva id " << _vc->get("LepGood_mvaIdPhys14", i) <<endl;
                 cout << "convVeto " << _vc->get("LepGood_convVeto", i) <<endl;
                 cout << "lost hits " << _vc->get("LepGood_lostHits", i) <<endl;}
-        } 
+        } */
         
         if(std::abs(_vc->get("LepGood_pdgId",i)) == 13){
             //differentiate muons for muon selecton and veto muon selection
@@ -1102,7 +1102,7 @@ bool SUSY3L_sync2::baseSelection(){
     */
     
     //print event information before selection
-    
+   /* 
     if(_vc->get("lumi") ==  2995 && _vc->get("evt") == 99457){
         cout << "--------------------------------------------------"<< endl; 
         cout << "event  " << _vc->get("lumi") << " " << _vc->get("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
@@ -1122,7 +1122,7 @@ bool SUSY3L_sync2::baseSelection(){
     
 
     }
-    
+   */ 
 
 
 
