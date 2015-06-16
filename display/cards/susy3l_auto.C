@@ -18,6 +18,15 @@
 
     string signal = "T1t412";
     //string signal = "T1t415";
+    //string signal = "T5t410";
+    //string signal = "T5q4WZ315";
+    //string signal = "T5q4WZ325";
+    //string signal = "T5q4WZ12";
+    //string signal = "T5q4WZ15";
+    //string signal = "T5q4ZZ315";
+    //string signal = "T5q4ZZ325";
+    //string signal = "T5q4ZZ12";
+    //string signal = "T5q4ZZ15";
 
 
     //general parameters ********************* general parameters
@@ -96,6 +105,8 @@
     md.anConf.loadXSDB("XSectionsPhys14.db");
 
     map<string,float> LumisXS;
+
+    md.anConf.loadKFDB("kFactorsPhys14.db");
  
     //via XSect
     map<string,float> KFactors;
@@ -112,7 +123,7 @@
     md.anConf.addSample( "TTWJets"                          ,  "ttW"                , kYellow   );
     
     md.anConf.addSample( "TTH"                              ,  "rare"               , kCyan     );
-    //md.anConf.addSample( "GGHZZ4L"                          ,  "rare"               , kCyan     );
+    md.anConf.addSample( "GGHZZ4L"                          ,  "rare"               , kCyan     );
     
     //Drell-Yan
     md.anConf.addSample( "DYJetsToLL_M50_HT100to200"        ,  "fake"   , kRed      );
@@ -132,7 +143,7 @@
     //W+Jets
     md.anConf.addSample( "WJetsToLNu_HT100to200"            ,  "fake"    , kRed      );
     md.anConf.addSample( "WJetsToLNu_HT200to400"            ,  "fake"    , kRed      );
-    //md.anConf.addSample( "WJetsToLNu_HT400to600"            ,  "fake"    , kRed      );
+    md.anConf.addSample( "WJetsToLNu_HT400to600"            ,  "fake"    , kRed      );
     md.anConf.addSample( "WJetsToLNu_HT600toInf"            ,  "fake"    , kRed      );
     
     //signal
@@ -143,9 +154,36 @@
         md.anConf.addSample( "SMS_T1tttt_2J_mGl1500_mLSP100"    ,  "T1t415" , kOrange+3  );
     }
     if(signal=="T5t410"){
-        md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280.root"    ,  "T5t410" , kGreen+3  );
+        md.anConf.addSample( "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"    ,  "T5t410" , kGreen+3  );
     }
-    
+    if(signal=="T5q4WZ315"){
+        md.anConf.addSample( "T5qqqqWZDeg_mGo1000_mCh315_mChi300_dilep"    ,  "T5q4WZ315" , kGreen+3  );
+    }
+    if(signal=="T5q4WZ325"){
+        md.anConf.addSample( "T5qqqqWZDeg_mGo1000_mCh325_mChi300_dilep"    ,  "T5q4WZ325" , kGreen+3  );
+    }
+    if(signal=="T5q4WZ12"){
+        md.anConf.addSample( "T5qqqqWZ_mGo1200_mCh1000_mChi800_dilep"    ,  "T5q4WZ12" , kGreen+3  );
+    }
+    if(signal=="T5q4WZ15"){
+        md.anConf.addSample( "T5qqqqWZ_mGo1500_mCh800_mChi100_dilep"    ,  "T5q4WZ15" , kGreen+3  );
+    }
+    if(signal=="T5q4ZZ315"){
+        md.anConf.addSample( "T5qqqqZZDeg_mGo1000_mCh315_mChi300_dilep"    ,  "T5q4ZZ315" , kGreen+3  );
+    }
+    if(signal=="T5q4ZZ325"){
+        md.anConf.addSample( "T5qqqqZZDeg_mGo1000_mCh325_mChi300_dilep"    ,  "T5q4ZZ325" , kGreen+3  );
+    }
+    if(signal=="T5q4ZZ12"){
+        md.anConf.addSample( "T5qqqqZZ_mGo1200_mCh1000_mChi800_dilep"    ,  "T5q4ZZ12" , kGreen+3  );
+    }
+    if(signal=="T5q4ZZ15"){
+        md.anConf.addSample( "T5qqqqZZ_mGo1500_mCh800_mChi100_dilep"    ,  "T5q4ZZ15" , kGreen+3  );
+    }
+
+
+
+
     md.addNuisanceParameter("fratio","fake","lnN","1.50");
     md.addNuisanceParameter("rNorm1","diboson","lnN","1.20");
     md.addNuisanceParameter("rNorm2","ttZ","lnN","1.20");
