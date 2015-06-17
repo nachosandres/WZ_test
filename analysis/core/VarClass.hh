@@ -290,7 +290,7 @@ public:
   void registerVar(string name, string type);
   bool isUsefulVar(string name);
 
-  float get(string name, int idx=0);
+  double get(string name, int idx=0);
   
   string getS(string name, int idx=0);
 
@@ -333,14 +333,14 @@ private:
 
   //vector<float> getUnivF(string name);
 
-  float findValue(int id, int idx);
+  double findValue(int id, int idx);
   void initIds();
 
   void setIds(string name, int cont, int type, int& id);
 
-  float findSVal(int tType, int key);
-  float findVVal(int tType, int key, int idx);
-  float findAVal(int tType, int key, int idx);
+  double findSVal(int tType, int key);
+  double findVVal(int tType, int key, int idx);
+  double findAVal(int tType, int key, int idx);
 
   vector<float> getUnivF(int id);
 
