@@ -293,16 +293,15 @@ unsigned int VarClass::getSize(string name) {
    return 0;
 }
 void VarClass::buildFriendTree(TTree* tree, bool bypass){ 
-  
-  TObjLink *lnk(0);
-  if (tree->GetListOfFriends()) {
-    lnk = tree->GetListOfFriends()->FirstLink();
-  }
 
+  if(!tree->GetListOfFriends()) return;
+
+  TObjLink *lnk = tree->GetListOfFriends()->FirstLink();
+  
   while (lnk) {
     TTree *ft = (TTree*) tree->GetFriend(lnk->GetObject()->GetName());
 
-    TObjArray* branches =  ft->GetListOfBranches();
+    TObjArray* branches =  ft -> GetListOfBranches();
     string name;
     
     EDataType t;
@@ -315,13 +314,13 @@ void VarClass::buildFriendTree(TTree* tree, bool bypass){
     TLeaf *leafcount;
     int len;
     
-    for(int ib = 0; ib < branches->GetEntries(); ++ib) {
+    for(int ib = 0; ib < branches -> GetEntries(); ++ib) {
       len = -1;
       type = "";
       t = (EDataType) -1;
 
-      name = (string)( ((*branches)[ib])->GetName());
-      ((TBranchSTL*)((*branches)[ib]))->GetExpectedType(cc,t);	
+      name = (string)( ((*branches)[ib]) -> GetName());
+      ((TBranchSTL*)((*branches)[ib])) -> GetExpectedType(cc,t);	
       
       //determine if it is array
       leaf = (TLeaf*)leaves->UncheckedAt(ib);
@@ -329,8 +328,8 @@ void VarClass::buildFriendTree(TTree* tree, bool bypass){
       
       // vector or container 
       if( t == -1 )
-	type = (string)(cc->GetName());
-
+	type = (string)(cc -> GetName());
+      
       if(leafcount) {
 	len = leafcount->GetMaximum();
       }
@@ -339,20 +338,20 @@ void VarClass::buildFriendTree(TTree* tree, bool bypass){
       // if( type == "" ) {
       //   map<string,std::pair<string, int> >::const_iterator it = _varTypes.find( name );
       //   if( it != _varTypes.end() ) {
-      // 	type = it->second.first;
-      // 	t = (EDataType)(it->second.second);
+      // 	type = it -> second.first;
+      // 	t = (EDataType)(it -> second.second);
       // 	//cout << " manual " << type << "  " << t << endl;
       //   }
       // }
       
       // by default, status disabled
       if( !bypass )
-	tree->SetBranchStatus( name.c_str() , 0);
+	tree -> SetBranchStatus( name.c_str() , 0);
       
       // variable to be registered	
       if( isUsefulVar(name) ) {
 	// enable status
-	tree->SetBranchStatus( name.c_str() , 1);
+	tree -> SetBranchStatus( name.c_str() , 1);
 	
 	// register branch
 	registerBranch(tree, name, type, t, len );
@@ -370,7 +369,7 @@ void VarClass::buildTree(TTree* tree, bool bypass) {
     return: none
   */
 
-  TObjArray* branches =  tree->GetListOfBranches();
+  TObjArray* branches =  tree -> GetListOfBranches();
   string name;
 	
   EDataType t;
@@ -383,14 +382,14 @@ void VarClass::buildTree(TTree* tree, bool bypass) {
   TLeaf *leafcount;
   int len;
   
-  for(int ib = 0; ib < branches->GetEntries(); ++ib) {
+  for(int ib = 0; ib < branches -> GetEntries(); ++ib) {
 
     len = -1;
     type = "";
     t = (EDataType) -1;
 
-    name = (string)( ((*branches)[ib])->GetName());
-    ((TBranchSTL*)((*branches)[ib]))->GetExpectedType(cc,t);	
+    name = (string)( ((*branches)[ib]) -> GetName());
+    ((TBranchSTL*)((*branches)[ib])) -> GetExpectedType(cc,t);	
 	
     //determine if it is array
     leaf = (TLeaf*)leaves->UncheckedAt(ib);
@@ -398,7 +397,7 @@ void VarClass::buildTree(TTree* tree, bool bypass) {
     
     // vector or container 
     if( t == -1 )
-      type = (string)(cc->GetName());
+      type = (string)(cc -> GetName());
 	
     if(leafcount) {
       len = leafcount->GetMaximum();
@@ -408,21 +407,21 @@ void VarClass::buildTree(TTree* tree, bool bypass) {
     // if( type == "" ) {
     //   map<string,std::pair<string, int> >::const_iterator it = _varTypes.find( name );
     //   if( it != _varTypes.end() ) {
-    // 	type = it->second.first;
-    // 	t = (EDataType)(it->second.second);
+    // 	type = it -> second.first;
+    // 	t = (EDataType)(it -> second.second);
     // 	//cout << " manual " << type << "  " << t << endl;
     //   }
     // }
 	
     // by default, status disabled
     if( !bypass )
-      tree->SetBranchStatus( name.c_str() , 0);
+      tree -> SetBranchStatus( name.c_str() , 0);
 	
     // variable to be registered	
     if( isUsefulVar(name) ) {
 
       // enable status
-      tree->SetBranchStatus( name.c_str() , 1);
+      tree -> SetBranchStatus( name.c_str() , 1);
 		  
       // register branch
       registerBranch(tree, name, type, t, len );
@@ -454,7 +453,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
       setIds( name, kVector, kInt, key);
       varmVI[ key ] = NULL;
-      tree->SetBranchAddress( name.c_str() , &(varmVI[ key ]) );
+      tree -> SetBranchAddress( name.c_str() , &(varmVI[ key ]) );
     }
 
     // VUI: vector<unsigned int>
@@ -466,7 +465,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
       setIds( name, kVector, kUInt, key);
       varmVUI[ key ] = NULL;
-      tree->SetBranchAddress( name.c_str() , &(varmVUI[ key ]) );
+      tree -> SetBranchAddress( name.c_str() , &(varmVUI[ key ]) );
     }
 
     // VUI: vector<unsigned long>
@@ -490,7 +489,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
       setIds( name, kVector, kFloat, key);
       varmVF[ key ] = NULL;
-      tree->SetBranchAddress( name.c_str() , &(varmVF[ key ]) );
+      tree -> SetBranchAddress( name.c_str() , &(varmVF[ key ]) );
     }
 
     // VD: vector<double> 
@@ -514,7 +513,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
       setIds( name, kVector, kBool, key);
       varmVB[ key ] = NULL;
-      tree->SetBranchAddress( name.c_str() , &(varmVB[ key ]) );
+      tree -> SetBranchAddress( name.c_str() , &(varmVB[ key ]) );
     }
 
     // S: string
@@ -526,7 +525,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
       setIds( name, kScalar, kString, key);
       varmS[ key ] = "";
-      tree->SetBranchAddress( name.c_str() , &(varmS[ key ]) );  
+      tree -> SetBranchAddress( name.c_str() , &(varmS[ key ]) );  
     }
 
     // VS: vector<string>
@@ -538,7 +537,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
       setIds( name, kVector, kString, key);
       varmVS[ key ] = NULL;
-      tree->SetBranchAddress( name.c_str() , &(varmVS[ key ]) );
+      tree -> SetBranchAddress( name.c_str() , &(varmVS[ key ]) );
     }
 
     // AS: arrayString
@@ -550,7 +549,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
       setIds( name, kArray, kString, key);
       varmAS[ key ] = new string[len];
-      tree->SetBranchAddress( name.c_str() , varmAS[ key ] );
+      tree -> SetBranchAddress( name.c_str() , varmAS[ key ] );
     }
 
     // TBits
@@ -560,7 +559,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 	return;
       }
       varmTB[ name ] = NULL;
-      tree->SetBranchAddress( name.c_str() , &(varmTB[ name ]) );
+      tree -> SetBranchAddress( name.c_str() , &(varmTB[ name ]) );
     }
 
   }
@@ -574,7 +573,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
     
     setIds( name, kArray, kInt, key);
     varmAI[ key ] = new int[len];
-    tree->SetBranchAddress( name.c_str() , varmAI[ key ] );
+    tree -> SetBranchAddress( name.c_str() , varmAI[ key ] );
   }
 		
   // AUI: arrayUI
@@ -586,7 +585,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
     setIds( name, kArray, kUInt, key);
     varmAUI[ key ] = new unsigned int[len];
-    tree->SetBranchAddress( name.c_str() , varmAUI[ key ] );
+    tree -> SetBranchAddress( name.c_str() , varmAUI[ key ] );
   }
   // AF: arrayF
   else if(t==5 && len!=-1) {
@@ -597,7 +596,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
     setIds( name, kArray, kFloat, key);
     varmAF[ key ] = new float[len];
-    tree->SetBranchAddress( name.c_str() , varmAF[ key ] );
+    tree -> SetBranchAddress( name.c_str() , varmAF[ key ] );
   }
 		
   // AD: arrayD
@@ -621,7 +620,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
     setIds( name, kArray, kBool, key);
     varmAB[ key ] = new bool[len];
-    tree->SetBranchAddress( name.c_str() , varmAB[ key ] );
+    tree -> SetBranchAddress( name.c_str() , varmAB[ key ] );
   }
 		
 
@@ -636,7 +635,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
     
     setIds( name, kScalar, kInt, key);
     varmI[ key ] =0;
-    tree->SetBranchAddress( name.c_str() , &(varmI[ key ]) );
+    tree -> SetBranchAddress( name.c_str() , &(varmI[ key ]) );
   }
 
   // UI: unsigned int
@@ -648,7 +647,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
     setIds( name, kScalar, kUInt, key);
     varmUI[ key ] =0;
-    tree->SetBranchAddress( name.c_str() , &(varmUI[ key ]) );
+    tree -> SetBranchAddress( name.c_str() , &(varmUI[ key ]) );
   }
 
   // UL: unsigned long
@@ -660,7 +659,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
     setIds( name, kScalar, kULong, key);
     varmUL[ key ] =0;
-    tree->SetBranchAddress( name.c_str() , &(varmUL[ key ]) );
+    tree -> SetBranchAddress( name.c_str() , &(varmUL[ key ]) );
   }
 
   // F: float
@@ -672,7 +671,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
     setIds( name, kScalar, kFloat, key);
     varmF[ key ] =0.;
-    tree->SetBranchAddress( name.c_str() , &(varmF[ key ]) );
+    tree -> SetBranchAddress( name.c_str() , &(varmF[ key ]) );
   }
 
   // B: bool
@@ -684,7 +683,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
     setIds( name, kScalar, kBool, key);
     varmB[ key ] =0;
-    tree->SetBranchAddress( name.c_str() , &(varmB[ key ]) );
+    tree -> SetBranchAddress( name.c_str() , &(varmB[ key ]) );
   }
 
   // D: double
@@ -696,7 +695,7 @@ void VarClass::registerBranch(TTree* tree, string name, string type, EDataType t
 
     setIds( name, kScalar, kDouble,key);
     varmD[ key ] =0.;
-    tree->SetBranchAddress( name.c_str() , &(varmD[ key ]) );
+    tree -> SetBranchAddress( name.c_str() , &(varmD[ key ]) );
   }
 
 }
@@ -720,13 +719,13 @@ VarClass::setIds(string name, int cont, int type, int& id) {
   cnt_[cat]++;
 }
 
-float 
+double
 VarClass::findValue(int id, int idx) {
 
   int cType = (id/oC_);
   int tType = ((id-cType*oC_)/oT_);
   int key = (id-cType*oC_ - tType*oT_);
-  
+ 
   switch(cType) {
   case kScalar: {return findSVal(tType, key ); }
   case kVector: {return findVVal(tType, key, idx );}
@@ -735,50 +734,51 @@ VarClass::findValue(int id, int idx) {
   return 0;
 }
 
-float VarClass::findSVal(int tType, int key) {
+double VarClass::findSVal(int tType, int key) {
 
   switch(tType) {
-  case kInt: {return (float)varmI[key];}
-  case kUInt: {return (float)varmUI[key];}
-  case kULong: {return (float)varmUL[key];}
-  case kDouble: {return (float)varmD[key];}
-  case kFloat: {return (float)varmF[key];}
+  case kInt: {return (double)varmI[key];}
+  case kUInt: {return (double)varmUI[key];}
+  case kULong: {return (double)varmUL[key];}
+  case kDouble: {return (double)varmD[key];}
+  case kFloat: {return (double)varmF[key];}
     //case kString: {return varmS[key];}
-  case kBool: {return (float)varmB[key];}
+  case kBool: {return (double)varmB[key];}
   }
   return 0;
 }
 
-float VarClass::findVVal(int tType, int key, int idx) {
+double VarClass::findVVal(int tType, int key, int idx) {
 
   switch(tType) {
-  case kInt: {return (float)((*varmVI[key])[idx]);}
-  case kUInt: {return (float)((*varmVUI[key])[idx]);}
-  case kULong: {return (float)((*varmVUL[key])[idx]);}
-  case kDouble: {return (float)((*varmVD[key])[idx]);}
-  case kFloat: {return (float)((*varmVF[key])[idx]);}
+  case kInt: {return (double)((*varmVI[key])[idx]);}
+  case kUInt: {return (double)((*varmVUI[key])[idx]);}
+  case kULong: {return (double)((*varmVUL[key])[idx]);}
+  case kDouble: {return (double)((*varmVD[key])[idx]);}
+  case kFloat: {return (double)((*varmVF[key])[idx]);}
     //case kString: {return (*varmVS[key])[idx];}
-  case kBool: {return (float)((*varmVB[key])[idx]);}
+  case kBool: {return (double)((*varmVB[key])[idx]);}
   }
   return 0;
 }
 
-float VarClass::findAVal(int tType, int key, int idx) {
+double VarClass::findAVal(int tType, int key, int idx) {
 
   switch(tType) {
-  case kInt: {return (float)(varmAI[key][idx]);}
-  case kUInt: {return (float)(varmAUI[key][idx]);}
-  case kULong: {return (float)(varmAUL[key][idx]);}
-  case kDouble: {return (float)(varmAD[key][idx]);}
-  case kFloat: {return (float)(varmAF[key][idx]);}
+  case kInt: {return (double)(varmAI[key][idx]);}
+  case kUInt: {return (double)(varmAUI[key][idx]);}
+  case kULong: {return (double)(varmAUL[key][idx]);}
+  case kDouble: {return (double)(varmAD[key][idx]);}
+  case kFloat: {return (double)(varmAF[key][idx]);}
     //case kString: {return varmAS[key][idx];}
-  case kBool: {return (float)(varmAB[key][idx]);}
+  case kBool: {return (double)(varmAB[key][idx]);}
   }
   return 0;
 }
 
 
-float VarClass::get(string name, int idx) {
+double VarClass::get(string name, int idx) {
+  
   itVId_ = varIds_.find(name);
   if(itVId_ == varIds_.end() )
     cout << " error, no such variable " << name << endl;
