@@ -161,10 +161,9 @@ void SUSY3L::run(){
     // do the minimal selection and collect kinematic variables for events passing it
     collectKinematicObjects();
 
-    //printout for RA7 synchronization
-    //int32_t lumi = _vc->get("lumi");
-    //int32_t evt = _vc->get("evt");
-    //cout << "1" << " " << lumi << " " << evt << " " << _nJets << " " << _nBJets << " " << _HT << " " << _met->pt() << endl;
+    int32_t lumi = _vc->get("lumi");
+    int32_t evt = _vc->get("evt");
+    cout << "1" << " " << lumi << " " << evt << " " << _nJets << " " << _nBJets << " " << _HT << " " << _met->pt() << endl;
 
 
     // initialization of baseline region cuts, baseline event selection, and filling of
@@ -177,9 +176,9 @@ void SUSY3L::run(){
     // initialization of signal region cuts, categorization of events passing the baseline 
     // selection into different signal regions, and filling of plots
     
-    setSignalRegion();
-    if(!srSelection()) return;	
-    fillEventPlots("SR");
+    //setSignalRegion();
+    //if(!srSelection()) return;	
+    //fillEventPlots("SR");
    
 }
 
@@ -455,7 +454,7 @@ bool SUSY3L::electronSelection(int elIdx){
     bool elTightMvaID = electronMvaCut(elIdx, 1);
     if(!makeCut( elTightMvaID, "electron tight mva wp", "=", kElId)) return false;
     //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
-    int wp = kMedium;
+    int wp = kTight;
     bool isolated = multiIsolation(elIdx, _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2]);
     if(!makeCut( isolated, "initial multiIso selection", "=", kElId)) return false;
     //replaced by multiIsolation
@@ -518,7 +517,7 @@ bool SUSY3L::muonSelection(int muIdx){
     if(!makeCut<float>( _vc->get("LepGood_pt", muIdx), pt_cut, ">", "pt selection"    , 0, kMuId)) return false;
     if(!makeCut<float>( std::abs( _vc->get("LepGood_eta", muIdx)), eta_cut, "<", "eta selection", 0, kMuId)) return false;
     //3 variable isolation criteria: miniIso < A and (pt ratio > B or pt rel > C)
-    int wp = kLoose;
+    int wp = kMedium;
     bool isolated = multiIsolation(muIdx, _multiIsoWP[wp][0],  _multiIsoWP[wp][1], _multiIsoWP[wp][2]);
     if(!makeCut( isolated, "initial multiIso selection", "=", kMuId)) return false;
     //replaced by multiIsolation
@@ -754,7 +753,7 @@ void SUSY3L::setBaselineRegion(){
         _pt_cut_hard_leg              = 20          ;     //harsher pT requirement on one of the leptons
         _M_T_3rdLep_MET_cut           =  -1         ;     //minimum transverse mass of 3rd lepton and met in On-Z events
         setCut("NJets"              ,    2, ">=" )  ;     //number of jets in event
-        setCut("NBJets"             ,    0, ">=" )  ;     //number of b-tagged jets in event
+        setCut("NBJets"             ,    1, ">=" )  ;     //number of b-tagged jets in event
         _ZMassWindow                  = 15.         ;     //width around Z mass to define on- or off-Z events
         _lowMllCut                    = 12.         ;     //low invariant mass cut for ossf leptoin pairs
         setCut("HT"                 ,   60, ">=" )  ;     //sum of jet pT's
@@ -1885,7 +1884,7 @@ bool SUSY3L::baseSelection(){
     else if(_pairmass == "on"){
         if(!makeCut( is_reconstructed_Z, "mll selection", "=") ) return false;
     }
- 
+/* 
     if(_vc->get("lumi") == 197559 && _vc->get("evt") == 19755831 ){
             cout << "after base--------------------------------------------------"<< endl; 
             cout <<  _vc->get("evt") << endl;
@@ -1914,7 +1913,7 @@ bool SUSY3L::baseSelection(){
             cout << "lep pt " << _vc->get("LepGood_pt",2) <<endl;
 
         } 
-
+*/
    
     return true;
 }

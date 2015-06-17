@@ -325,7 +325,7 @@ SusyModule::conePt(int idx) const {
   if(std::abs(_vc->get("LepGood_pdgId", idx))==11) isoWp=kTight;
 
   if(_vc->get("LepGood_jetPtRel", idx) > _multiIsoWP[kPtRel][isoWp] ) {
-    return _vc->get("LepGood_pt", idx)*(1 + std::max((float)0., _vc->get("LepGood_miniRelIso", idx)- _multiIsoWP[kMiniIso][isoWp] ) );
+    return _vc->get("LepGood_pt", idx)*(1 + std::max((double)0., _vc->get("LepGood_miniRelIso", idx)- _multiIsoWP[kMiniIso][isoWp] ) );
   }
   return std::max(_vc->get("LepGood_pt", idx), _vc->get("LepGood_pt", idx)/_vc->get("LepGood_jetPtRatio",idx) * _multiIsoWP[kPtRatio][isoWp] );  
 }
