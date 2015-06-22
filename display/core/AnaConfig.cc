@@ -136,6 +136,31 @@ AnaConfig::findDSName(string channel, string crName) {
   return "";  
 }
 
+vector<string> 
+AnaConfig::findDSNames(string channel, string crName) {
+  vector<string> names;
+  map<string, Dataset* >::const_iterator itDs;
+  for(itDs=_datasets.begin(); itDs!=_datasets.end();itDs++) {
+    if(itDs->second->hasSample(channel)!=-1 && itDs->second->getSample(channel)->getCR()==crName )
+      names.push_back(itDs->first);
+  }
+  
+  return names; 
+}
+
+
+vector<string> 
+AnaConfig::findDSNames(string channel) {
+  vector<string> names;
+  map<string, Dataset* >::const_iterator itDs;
+  for(itDs=_datasets.begin(); itDs!=_datasets.end();itDs++) {
+    if(itDs->second->hasSample(channel)!=-1 && itDs->second->getSample(channel)->getCR()=="" )
+      names.push_back(itDs->first);
+  }
+  
+  return names; 
+}
+
 
 Dataset* 
 AnaConfig::findDS(string channel) {
@@ -147,6 +172,19 @@ AnaConfig::findDS(string channel) {
     return nullptr;
 }
 
+vector<Dataset*> 
+AnaConfig::findDSS(string channel) {
+  vector<string> dsNames = findDSNames(channel);
+  vector<Dataset*> dss;
+
+  for(unsigned int id=0;id<dsNames.size();id++)
+    if(dsNames[id]!="") dss.push_back( getDataset(dsNames[id]) );
+
+  return dss;
+}
+
+
+
 
 Dataset* 
 AnaConfig::findDS(string channel, string crName) {
@@ -155,6 +193,18 @@ AnaConfig::findDS(string channel, string crName) {
     return getDataset(dsName);
   else
     return nullptr;
+}
+
+
+vector<Dataset*> 
+AnaConfig::findDSS(string channel, string crName) {
+  vector<string> dsNames = findDSNames(channel, crName);
+  vector<Dataset*> dss;
+
+  for(unsigned int id=0;id<dsNames.size();id++)
+    if(dsNames[id]!="") dss.push_back( getDataset(dsNames[id]) );
+
+  return dss;
 }
 
 
@@ -249,6 +299,9 @@ AnaConfig::parseSampleId(string str) {
 void
 AnaConfig::addSample( string str, string sname, int col, bool loadH) {
   
+  string dsName=sname;
+  if(sname=="pseudodata") dsName="data";
+
   //parse the sample name
   SampleId sId=parseSampleId(str);
 
@@ -257,25 +310,24 @@ AnaConfig::addSample( string str, string sname, int col, bool loadH) {
   }
   
   
-  _itDs=_datasets.find(sname);
+  _itDs=_datasets.find(dsName);
   
   if(_itDs==_datasets.end() ) {
-    Dataset* ds=new Dataset(sname,col);
-    _datasets[ sname ] = ds;
-    _numDS[ _numDS.size() ] = sname;
+    Dataset* ds=new Dataset(dsName,col);
+    _datasets[ dsName ] = ds;
+    _numDS[ _numDS.size() ] = dsName;
   }
   
   if(sname=="data" || sname=="Data" || sId.dd ) {
     
-    _datasets[ sname ]->addSample(sId, _path, _dir, _rootFile,
-				  _hname+"/"+sId.name,0., 1., 1., 1., loadH);
+    _datasets[ dsName ]->addSample(sId, _path, _dir, _rootFile,
+				   _hname+"/"+sId.name,0., 1., 1., 1., loadH);
     //_samplenames.push_back(str);
-    _dsnames.push_back(sname);
+    _dsnames.push_back(dsName);
  
     return;
   }
- 
- 
+  
   //histogram analysis
   if(!_skiptree) {
 
@@ -311,16 +363,16 @@ AnaConfig::addSample( string str, string sname, int col, bool loadH) {
       kFact = _itKF->second;
     }
 
-    _datasets[ sname ]->addSample(sId, _path, _dir, _rootFile,
+    _datasets[ dsName ]->addSample(sId, _path, _dir, _rootFile,
 				  _hname+"/"+sId.name, xSect, kFact, _lumi,
 				  eqLumi, loadH);
     //_samplenames.push_back(sId.name);
-    _dsnames.push_back(sname);
+    _dsnames.push_back(dsName);
   }
   else {
-    _datasets[ sname ]->addSample(sId, "", "", "", "", 0, 0, 0, 0, loadH);
+    _datasets[ dsName ]->addSample(sId, "", "", "", "", 0, 0, 0, 0, loadH);
     //_samplenames.push_back(str);
-    _dsnames.push_back(sname);
+    _dsnames.push_back(dsName);
   }
   
 }

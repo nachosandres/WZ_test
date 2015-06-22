@@ -299,6 +299,10 @@ Dataset::loadHistos(string path, string dir, string filename, string hname, stri
       
     string varName(obj->GetName());
     map<string, TH1*> tmp;
+    
+    //MM FIXME, jsut take a too long time to load everything, should be done in a better way thatn disabling everything 
+    if(varName.find("_")!=string::npos || varName.find("SR")!=string::npos) continue;
+  
 
     if(optCat!="") {
       size_t op=varName.find(optCat);
@@ -342,7 +346,7 @@ Dataset::loadHistos(string path, string dir, string filename, string hname, stri
     
   datafile->Close();
   delete datafile;
-
+  
 }
 
 vector<string> 

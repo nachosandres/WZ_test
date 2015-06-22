@@ -1,18 +1,18 @@
-#ifndef FakeEstim_HH
-#define FakeEstim_HH
+#ifndef SSDL2015_HH
+#define SSDL2015_HH
 
 #include "analysis/core/MPAF.hh"
 
 #include "analysis/modules/SusyModule.hh"
 
-class FakeEstim: public MPAF {
+class SSDL2015: public MPAF {
 
 public:
 
   // Member Functions
 
-  FakeEstim(std::string);
-  virtual ~FakeEstim();
+  SSDL2015(std::string);
+  virtual ~SSDL2015();
 
 
 private:
@@ -31,9 +31,13 @@ private:
   bool oneIsoSel();
   float getProbAtLeastNIso(CandList fObjs, vector<unsigned int> idxs, int nIso);
   bool genMatchedMisCharge();
+  int genMatchCateg(const Candidate* cand);
   bool genMatchedToFake(int id);
-  float getFR(Candidate* cand, int idx);
 
+  bool passGenSelection();
+  
+  float getFR(Candidate* cand, int idx);
+  
   TVector2 varyMET();
 
   //============================
@@ -104,7 +108,8 @@ private:
 	kWZCR
   };
 
-
+  enum {kNoGenMatch=0, kMisMatchPdgId,
+	kMisChargePdgId, kGenMatched};
   // enum {kLoose=0,kTight,kVTight,kHTight,kNWPs};
   
   SusyModule* _susyMod;
