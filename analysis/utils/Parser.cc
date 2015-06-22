@@ -51,15 +51,15 @@ Parser::parseLine(string line) {
     type=Parser::kSummary;
 
   string val = tks[1];
-
+  pair<int, string> p(type, val);
+ 
   vector<string> opts;
   for(size_t i=2;i<tks.size();i++) {
     if(tks[i].substr(0,1)!="#")
       opts.push_back(tks[i]);
   }
   
-  pair<int, string> p(type, val);
-  
+ 
   string id=tks[0];
   if(type==Parser::kVar || type==Parser::kDS || type==Parser::kFT)
     id = val;
@@ -67,12 +67,10 @@ Parser::parseLine(string line) {
     for(size_t i=0;i<opts.size();i++) {
       if(opts[i].substr(0,4)=="pfx:") {
         id += opts[i].substr(4, opts[i].size()-4 );
-        val+= opts[i].substr(4, opts[i].size()-4 );
+        //val+= opts[i].substr(4, opts[i].size()-4 );
       }
     }
   }
-
-
 
 
   ip.type = type;
