@@ -1,5 +1,14 @@
 {
+ setTDRStyle();
 
+  gStyle->SetPadColor(0);
+  gStyle->SetCanvasColor(0);
+  //gStyle->SetTitleColor(0);
+  gStyle->SetStatColor(0);
+  gStyle->SetTitleFillColor(0);
+  gStyle->SetPalette(1);
+
+  gStyle->SetFrameBorderMode(0);
   //#include <stdlib.h> 
   //#include <string>
   //#include <map>

@@ -6,5 +6,5 @@ FILES += SSDLBoosted
 #FILES += synchRA5
 FILES += phys14limits
 FILES += FakeRatio
-FILES += FakeEstim
+FILES += SSDL2015
 FILES += UncertaintyTest

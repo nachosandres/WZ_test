@@ -317,6 +317,55 @@ SusyModule::bestSSPair(const CandList* leps, bool byflav,
 }
 
 
+CandList
+SusyModule::bestSSPair(Candidate* c1, const CandList* leps, bool byflav,
+		       bool bypassMV, float pTthr, int& idx1, int& idx2) {
+
+  CandList clist(2,nullptr);
+  int tmpFlav=0;
+  int tmpSt=0;
+
+  idx1=0;
+  idx2=1;
+  if(leps->size()<=1) {
+    clist[0] = c1;
+    clist[1] = leps->at(0);
+    return clist;
+  }
+  
+  for(unsigned int il=0;il<leps->size();il++) {
+      
+      //conditional pt threshold, could evolve in CERN code 
+      if(c1->pt()<pTthr || leps->at(il)->pt()<pTthr) continue; 
+
+      if(!passMllSingleVeto(c1, leps->at(il), 0, 8, false) && !bypassMV) continue;
+
+      if(c1->charge()!=leps->at(il)->charge()) continue;
+
+      int flav= (byflav?(std::abs(c1->pdgId()) + std::abs(leps->at(il)->pdgId())):0);
+      int st=c1->pt()+leps->at(il)->pt();
+
+      if(flav<tmpFlav) continue;
+
+      if(flav>tmpFlav) tmpSt=0;
+      tmpFlav=flav;
+      if(st<tmpSt) continue;
+
+      tmpSt=st;
+      clist[0]=c1;
+      clist[1]=leps->at(il);
+      idx1 = 0;
+      idx2 = il;
+    
+  }//il
+
+  return clist;
+}
+
+
+
+
+
 float 
 SusyModule::conePt(int idx) const {
 

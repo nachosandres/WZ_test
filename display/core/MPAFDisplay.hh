@@ -49,6 +49,8 @@ private:
   std::map<std::string, string > _nuisParScheme;
   std::map<std::string, vector<string> >::const_iterator _itNp;
 
+  std::map<std::string, bool > _nuisParExt;
+
   std::map<std::pair<std::string,std::string>, bool > _sfVals;
 
 public:
@@ -93,7 +95,7 @@ public:
 
   void getStatistics(string categ="nominal");
   void drawStatistics(string categ="nominal", string cname="", 
-		      bool multiScheme=false, string optCateg="");
+		      bool multiScheme=false, bool vetoOpt=false, string optCateg="");
 
   void getDetailSystematics(string categ, string lvl);
   void getCategSystematic(string src, string categ, string lvl, bool latex=false);
@@ -121,7 +123,7 @@ public:
   void saveDataMCRatio(string fname,string hname);
 
   //data cards
-  void addDataCardBkgSample(string sName, string dsName);
+  void addDataCardSample(string sName, string dsName);
   void addDataCardSigSample(string sName, string dsName);
   void addNuisanceParameter(string npName, string dss, string scheme,  string vals) ;
   vector<string> getExternalNuisanceParameters(string sigName);

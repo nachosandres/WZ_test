@@ -1,4 +1,3 @@
-
 #include "analysis/src/AnalysisFactory.hh"
 
 using namespace std;
@@ -10,7 +9,7 @@ using namespace std;
 //#include "analysis/src/synchRA5.hh"
 #include "analysis/src/phys14limits.hh"
 #include "analysis/src/FakeRatio.hh"
-#include "analysis/src/FakeEstim.hh"
+#include "analysis/src/SSDL2015.hh"
 #include "analysis/src/UncertaintyTest.hh"
 
 MPAF*
@@ -35,8 +34,8 @@ AnalysisFactory::get(const string& analysis, const string& cfg) {
   if(analysis=="FakeRatio") {
     return new FakeRatio(cfg);
   }
- if(analysis=="FakeEstim") {
-    return new FakeEstim(cfg);
+ if(analysis=="SSDL2015") {
+    return new SSDL2015(cfg);
   }
  if(analysis=="UncertaintyTest") {
     return new UncertaintyTest(cfg);

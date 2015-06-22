@@ -272,11 +272,15 @@ void MPAF::loadConfigurationFile(std::string cfg){
     if(it->second.type!=Parser::kDS) continue;
     
     string dsName=it->second.val;
+    string pfx="";
     string dirName="";
     bool absdir=false;
     vector<string> opts= it->second.opts;
     if(opts.size()!=0) {
       for(size_t i=0;i<opts.size();i++) {
+	if(opts[i].substr(0,4)=="pfx:") {
+	  pfx=opts[i].substr(4, opts[i].size()-4 );
+	}
         if(opts[i].substr(0,4)=="dir:") {
           dirName=opts[i].substr(4, opts[i].size()-4 );
         }
@@ -289,10 +293,13 @@ void MPAF::loadConfigurationFile(std::string cfg){
 	} 
       }
     }
+    //adding postfix
+    dsName+=pfx;
+
     _datasets.push_back(new Dataset(dsName));
     
     SampleId sId;
-    sId.name = it->second.val;
+    sId.name = it->second.val; //was val
     sId.cr = "";
     sId.dd =false;
     sId.norm = -1; 
