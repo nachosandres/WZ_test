@@ -322,7 +322,7 @@ CandList
 SusyModule::bestSSPair(Candidate* c1, const CandList* leps, bool byflav,
 		       bool bypassMV, float pTthr, int& idx1, int& idx2) {
 
-  CandList clist(2,nullptr);
+  CandList clist(2,NULL);
   int tmpFlav=0;
   int tmpSt=0;
 
