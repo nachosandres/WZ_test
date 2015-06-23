@@ -179,9 +179,9 @@ SSDL2015::initialize(){
   _FR      = getCfgVarS("FR"     );
   _categorization = getCfgVarI("categorization");
 
-  vector<string> jess;
-  jess.push_back("Jet_pt");
-  addSystSource("JES",SystUtils::kNone, "%", jess, "JES8TeV.db", "" );
+//  vector<string> jess;
+//  jess.push_back("Jet_pt");
+//  addSystSource("JES",SystUtils::kNone, "%", jess, "JES8TeV.db", "" );
   
   //FR databases
   if(_FR=="FO2C") {
@@ -231,7 +231,7 @@ SSDL2015::defineOutput() {
   _hm->addVariable("srcFake", 10, 0,10,"srcFake");
 
   _hm->addVariable("MET",1000,0,1000,"#slash{E}_{T} [GeV]");
-  _hm->addVariable("MTmin",1000,0,1000,"min(M_{T,1}, M_{T,2}) [GeV]");
+  _hm->addVariable("MT",1000,0,1000,"M_{T} (W, l) [GeV]");
   // _hm->addVariable("METVsMT",100,0,1000,100,0,1000,"#slash{E}_{T} [GeV]",
   // 		   "min(M_{T,1}, M_{T,2}) [GeV]");
 
@@ -278,6 +278,7 @@ SSDL2015::run() {
   }
   
   fillSkimTree();
+  //  return;
   //cout<<" pouet "<<endl;
   //===============================
   _mTmin=min( Candidate::create(_l1Cand, _met)->mass(),
@@ -286,7 +287,7 @@ SSDL2015::run() {
 
   if(!passGenSelection() ) return;
   counter("genselection");
-
+  
 
   //MC check for FR --> one fake only
   if(!_isFake) {
@@ -344,7 +345,7 @@ SSDL2015::run() {
   fill("l2Pt", (_idxFake==_idxL2)?(_l2Cand->pt()):_l1Cand->pt(), _weight );
   fill("HT", _HT, _weight);
   fill("MET", _met->pt(), _weight);
-  fill("MTmin", _mTmin, _weight);
+  //  fill("MTmin", _mTmin, _weight);
   fill("NBJets", _nBJets, _weight);
 
   if(_categorization) {
@@ -776,7 +777,7 @@ SSDL2015::ssLeptonSelection() {
 //   return false;
 // }
 void 
-FakeEstim::wzCRSelection() {
+SSDL2015::wzCRSelection() {
   
   setWorkflow(kWZCR);
   
@@ -802,6 +803,16 @@ FakeEstim::wzCRSelection() {
      _susyMod->passMllMultiVeto( _l2Cand, &_looseLeps, 76, 106, true) ) return;
   counter("Z selection");
   
+  float MT = 0.;
+  if     (_susyMod->passMllMultiVeto( _l1Cand, &_looseLeps, 76, 106, true)) 
+    MT = Candidate::create(_l1Cand, _met)->mass();
+  else if(_susyMod->passMllMultiVeto( _l2Cand, &_looseLeps, 76, 106, true))
+    MT = Candidate::create(_l2Cand, _met)->mass();
+  else 
+    MT = 0.;
+  //  _mTmin=min( Candidate::create(_l1Cand, _met)->mass(),
+//	      Candidate::create(_l2Cand, _met)->mass() );
+  
   // now apply tighter requirements on MET, HT, MT... 
   if(!makeCut(_HT > 80., "H_{T} > 80 GeV")) return;
   if(!makeCut(_nJets>=2, "n_{jets} >= 2")) return;
@@ -816,7 +827,7 @@ FakeEstim::wzCRSelection() {
   fill("l2Pt", (_idxFake==_idxL2)?(_l2Cand->pt()):_l1Cand->pt(), _weight );
   fill("HT"    , _HT       , _weight);
   fill("MET"   , _met->pt(), _weight);
-  fill("MTmin" , _mTmin    , _weight);
+  fill("MT"    , MT        , _weight);
   fill("NBJets", _nBJets   , _weight);
   fill("NJets" , _nJets    , _weight);
   
