@@ -12,5 +12,5 @@ FILES += SUSY3L_sync2
 FILES += SSDLBoosted
 FILES += phys14limits
 FILES += FakeRatio
-FILES += FakeEstim
+FILES += SSDL2015
 FILES += UncertaintyTest

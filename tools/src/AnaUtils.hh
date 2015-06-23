@@ -111,7 +111,7 @@ private:
 
 public:
 
-  enum {kGeneral=0, kMono=1, kMulti=2};
+  enum {kGeneral=0, kMono=1, kMulti=2, kMultiVeto=3};
 
 
 public:
@@ -191,7 +191,8 @@ public:
   
   bool getDataCardLines(map<string,string>& lines, vector<string> dsNames, string sigName,
 			string categ, string cname, int bin,
-			map<string,vector<string> > intNuisPars);
+			map<string,vector<string> > intNuisPars,
+			map<string,bool > nuisParExt);
  
 
   //void drawNumbers();

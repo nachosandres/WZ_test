@@ -1,22 +1,22 @@
-#include "analysis/src/FakeEstim.hh"
+#include "analysis/src/SSDL2015.hh"
 
 #include <algorithm>
 #include <sstream>
 #include <iostream>
 
-FakeEstim::FakeEstim(std::string cfg){
+SSDL2015::SSDL2015(std::string cfg){
   
   startExecution(cfg);
   initialize();
 
 }
 
-FakeEstim::~FakeEstim(){
+SSDL2015::~SSDL2015(){
  
 }
 
 void
-FakeEstim::initialize(){
+SSDL2015::initialize(){
 
 
   _vc->registerVar("run"                          );
@@ -85,10 +85,12 @@ FakeEstim::initialize(){
  
   //generator informations
   _vc->registerVar("nGenPart"                     );
+  _vc->registerVar("GenPart_pt"                   );
   _vc->registerVar("GenPart_eta"                  );
   _vc->registerVar("GenPart_phi"                  );
   _vc->registerVar("GenPart_pdgId"                );
-  
+  _vc->registerVar("GenPart_motherId"             );
+
   //bjets
   _vc->registerVar("nBJetLoose25"                 );
   _vc->registerVar("nBJetMedium40"                );
@@ -177,8 +179,9 @@ FakeEstim::initialize(){
   _FR      = getCfgVarS("FR"     );
   _categorization = getCfgVarI("categorization");
 
-  vector<string> jess;
-  jess.push_back("Jet_pt");
+//  vector<string> jess;
+//  jess.push_back("Jet_pt");
+//  addSystSource("JES",SystUtils::kNone, "%", jess, "JES8TeV.db", "" );
   
   //FR databases
   if(_FR=="FO2C") {
@@ -193,18 +196,18 @@ FakeEstim::initialize(){
 }
 
 void
-FakeEstim::modifyWeight() {
+SSDL2015::modifyWeight() {
 
 }
 
 void
-FakeEstim::modifySkimming() {
+SSDL2015::modifySkimming() {
 
 }
 
 
 void
-FakeEstim::defineOutput() {
+SSDL2015::defineOutput() {
 
   _hm->addVariable("pdgId1", 20, 0., 20,"");
   _hm->addVariable("pdgId2", 20, 0., 20,"");
@@ -228,7 +231,7 @@ FakeEstim::defineOutput() {
   _hm->addVariable("srcFake", 10, 0,10,"srcFake");
 
   _hm->addVariable("MET",1000,0,1000,"#slash{E}_{T} [GeV]");
-  _hm->addVariable("MTmin",1000,0,1000,"min(M_{T,1}, M_{T,2}) [GeV]");
+  _hm->addVariable("MT",1000,0,1000,"M_{T} (W, l) [GeV]");
   // _hm->addVariable("METVsMT",100,0,1000,100,0,1000,"#slash{E}_{T} [GeV]",
   // 		   "min(M_{T,1}, M_{T,2}) [GeV]");
 
@@ -247,13 +250,13 @@ FakeEstim::defineOutput() {
 
 
 void
-FakeEstim::writeOutput() {
+SSDL2015::writeOutput() {
  
 }
 
 
 void
-FakeEstim::run() {
+SSDL2015::run() {
   
   // if(_vc->get("evt")!=75368//  && _vc->get("evt")!=17245 && _vc->get("evt")!=82965 &&
   //    // _vc->get("evt")!=72951 && _vc->get("evt")!=142649
@@ -262,7 +265,7 @@ FakeEstim::run() {
   //if(_vc->get("evt")!=103973 )  return;
   //if(_vc->get("evt")!=142649 && _vc->get("evt")!=72951 ) return;
   //if(_vc->get("evt")!=72688 && _vc->get("evt")!=49205) return;
-  //cout<<" =================================="<< _vc->get("evt") <<endl;
+  //cout<<" =================================="<< _sampleName <<endl;
   counter("denominator");
   
   retrieveObjects();
@@ -275,22 +278,28 @@ FakeEstim::run() {
   }
   
   fillSkimTree();
+  //  return;
+  //cout<<" pouet "<<endl;
   //===============================
   _mTmin=min( Candidate::create(_l1Cand, _met)->mass(),
 	      Candidate::create(_l2Cand, _met)->mass() );
   //===============================
 
+  if(!passGenSelection() ) return;
+  counter("genselection");
+  
+
   //MC check for FR --> one fake only
   if(!_isFake) {
     setWorkflow(kGlobal); //MANDATORY (otherwise double counting in other categories)
     
-    if(!genMatchedToFake(_idxL1) && genMatchedToFake(_idxL2) ) {
-      _idxFake=_idxL2;
-    }
-    else if(genMatchedToFake(_idxL1) && !genMatchedToFake(_idxL2)) {
-      _idxFake=_idxL1;
-    }
-    else return; //no only one fake
+    // if(!genMatchedToFake(_idxL1) && genMatchedToFake(_idxL2) ) {
+    //   _idxFake=_idxL2;
+    // }
+    // else if(genMatchedToFake(_idxL1) && !genMatchedToFake(_idxL2)) {
+    //   _idxFake=_idxL1;
+    // }
+    // else return; //no only one fake
   }
   else setWorkflow(kGlobalFake);
   
@@ -325,7 +334,7 @@ FakeEstim::run() {
   counter("ptflav");
  
   if(_isFake) {
-    return;
+    //return;
     oneIsoSel();
   }
   
@@ -336,7 +345,7 @@ FakeEstim::run() {
   fill("l2Pt", (_idxFake==_idxL2)?(_l2Cand->pt()):_l1Cand->pt(), _weight );
   fill("HT", _HT, _weight);
   fill("MET", _met->pt(), _weight);
-  fill("MTmin", _mTmin, _weight);
+  //  fill("MTmin", _mTmin, _weight);
   fill("NBJets", _nBJets, _weight);
 
   if(_categorization) {
@@ -383,7 +392,7 @@ FakeEstim::run() {
 }
 
 bool
-FakeEstim::noIsoSel() {
+SSDL2015::noIsoSel() {
   
   if( _fakableLepsVeto10.size()!=0 ) return false;
   
@@ -393,7 +402,7 @@ FakeEstim::noIsoSel() {
 }
 
 bool
-FakeEstim::oneIsoSel() {
+SSDL2015::oneIsoSel() {
   
   if( _fakableLepsVeto10.size()!=1 ) return false;
 
@@ -404,7 +413,7 @@ FakeEstim::oneIsoSel() {
 }
 
 float
-FakeEstim::getProbAtLeastNIso(CandList fObjs, vector<unsigned int> fObjIdx,
+SSDL2015::getProbAtLeastNIso(CandList fObjs, vector<unsigned int> fObjIdx,
 			      int nIso) {
 
   //MM tirage Bernoulli sans remise non ordonne avec probas individuelles
@@ -443,7 +452,7 @@ FakeEstim::getProbAtLeastNIso(CandList fObjs, vector<unsigned int> fObjIdx,
 
 //==================================================================================================
 void 
-FakeEstim::retrieveObjects(){
+SSDL2015::retrieveObjects(){
   
   _jets.clear();
   
@@ -504,7 +513,7 @@ FakeEstim::retrieveObjects(){
 //=========================================================
 
 bool
-FakeEstim::ssLeptonSelection() {
+SSDL2015::ssLeptonSelection() {
   _isFake=false;
  
   // 2Tight ===============================
@@ -513,7 +522,7 @@ FakeEstim::ssLeptonSelection() {
     _isFake=false;
 
     CandList lepPair=_susyMod->bestSSPair( (&_tightLepsVeto10), true, false, 10, _idxL1, _idxL2);
-      
+    if(lepPair.size()<2) return false;
     _l1Cand = lepPair[0];
     _l2Cand = lepPair[1];
 
@@ -532,22 +541,27 @@ FakeEstim::ssLeptonSelection() {
   } //MM: validated 2T selection -> sync with CB
    
   // 1Tight 1Loose ====================================
-  if(_tightLepsVeto10.size()==1 && _fakableLepsVeto10.size()==1) {
+  if(_tightLepsVeto10.size()==1 && _fakableLepsVeto10.size()>=1) { // && _fakableLepsVeto10.size()>=1
     _isFake=true;
 
+    CandList lepPair=_susyMod->bestSSPair(_tightLepsVeto10[0], (&_fakableLepsVeto10), true, false, 10, _idxL1, _idxL2);
+    
+    if(lepPair.size()<2) return false;
+    //cout<<lepPair.size()<<endl;
+    _l1Cand = lepPair[0];
+    _l2Cand = lepPair[1];
 
+    if(_l1Cand==nullptr || _l2Cand==nullptr) return false; //case with less than two leptons or no valid pair
     _idxL1 = _tightLepsVeto10Idx[0];
-    _idxL2 = _fakableLepsVeto10Idx[0];
-
-    _l1Cand = _tightLepsVeto10[0];
-    _l2Cand = _fakableLepsVeto10[0];
+    _idxL2 = _fakableLepsVeto10Idx[_idxL2];
+    
+    // _l1Cand = _tightLepsVeto10[0];
+    // _l2Cand = _fakableLepsVeto10[0];
       
-    if(_l1Cand==nullptr || _l2Cand==nullptr) return false;
-    //cout<<"fake case "<<_idxL1<<"  "<<_idxL2<<"  "<<_l1Cand<<"  "<<_l2Cand<<endl;
-    // if(std::abs(_l2Cand->pdgId())==11)
-    // 	cout<<_vc->get("LepGood_mvaIdPhys14", _idxL2)<<endl;
-
-    if(genMatchedToFake(_idxL1) || !genMatchedToFake(_idxL2) ) return false;
+    // if(_l1Cand==nullptr || _l2Cand==nullptr) return false;
+      
+    if(!genMatchedToFake(_idxL1) && !genMatchedToFake(_idxL2) ) return false;
+    //if(genMatchedToFake(_idxL1) && genMatchedToFake(_idxL2) ) return false;
 
     if( _l1Cand->charge()*_l2Cand->charge()<0) return false;
     if(!_susyMod->passMllSingleVeto(_l1Cand, _l2Cand, 0, 8, false)) return false;
@@ -556,7 +570,30 @@ FakeEstim::ssLeptonSelection() {
      
     return true;
   }
-  
+
+  // 0Tight any loose ====================================
+  if(_tightLepsVeto10.size()==0 && _fakableLepsVeto10.size()>=2) {
+
+    
+    CandList lepPair=_susyMod->bestSSPair( (&_fakableLepsVeto10), true, false, 10, _idxL1, _idxL2);
+    if(lepPair.size()<2) return false;
+    //cout<<lepPair.size()<<endl;
+    _l1Cand = lepPair[0];
+    _l2Cand = lepPair[1];
+
+    if(_l1Cand==nullptr || _l2Cand==nullptr) return false; //case with less than two leptons or no valid pair
+
+    _idxL1 = _tightLepsVeto10Idx[_idxL1];
+    _idxL2 = _tightLepsVeto10Idx[_idxL2];
+    
+    if(!genMatchedToFake(_idxL1) || !genMatchedToFake(_idxL2) ) return false;
+
+    if(!makeCut( _l1Cand->charge()*_l2Cand->charge()>0, "same sign" ) ) return false;
+    if(!makeCut(_susyMod->passMllSingleVeto(_l1Cand, _l2Cand, 0, 8, false), "mll veto") ) return false;
+
+    return true;
+
+  }
 
   // for(unsigned int il1 = 0; il1 < _tightLeps10Veto.size(); ++il1) {
   //   for(unsigned int il2 = 0; il2 < _looseLeps10Veto.size(); ++il2){
@@ -593,7 +630,7 @@ FakeEstim::ssLeptonSelection() {
 }
 
 // bool
-// FakeEstim::alternateSSEventSelection(bool switchWF) {
+// SSDL2015::alternateSSEventSelection(bool switchWF) {
   
 //   // //MM: could be done in one round, but safer and easier to understand that way 
 
@@ -740,7 +777,7 @@ FakeEstim::ssLeptonSelection() {
 //   return false;
 // }
 void 
-FakeEstim::wzCRSelection() {
+SSDL2015::wzCRSelection() {
   
   setWorkflow(kWZCR);
   
@@ -766,6 +803,16 @@ FakeEstim::wzCRSelection() {
      _susyMod->passMllMultiVeto( _l2Cand, &_looseLeps, 76, 106, true) ) return;
   counter("Z selection");
   
+  float MT = 0.;
+  if     (_susyMod->passMllMultiVeto( _l1Cand, &_looseLeps, 76, 106, true)) 
+    MT = Candidate::create(_l1Cand, _met)->mass();
+  else if(_susyMod->passMllMultiVeto( _l2Cand, &_looseLeps, 76, 106, true))
+    MT = Candidate::create(_l2Cand, _met)->mass();
+  else 
+    MT = 0.;
+  //  _mTmin=min( Candidate::create(_l1Cand, _met)->mass(),
+//	      Candidate::create(_l2Cand, _met)->mass() );
+  
   // now apply tighter requirements on MET, HT, MT... 
   if(!makeCut(_HT > 80., "H_{T} > 80 GeV")) return;
   if(!makeCut(_nJets>=2, "n_{jets} >= 2")) return;
@@ -780,7 +827,7 @@ FakeEstim::wzCRSelection() {
   fill("l2Pt", (_idxFake==_idxL2)?(_l2Cand->pt()):_l1Cand->pt(), _weight );
   fill("HT"    , _HT       , _weight);
   fill("MET"   , _met->pt(), _weight);
-  fill("MTmin" , _mTmin    , _weight);
+  fill("MT"    , MT        , _weight);
   fill("NBJets", _nBJets   , _weight);
   fill("NJets" , _nJets    , _weight);
   
@@ -792,7 +839,7 @@ FakeEstim::wzCRSelection() {
 // signal region selection
 
 void 
-FakeEstim::setSignalRegions() {
+SSDL2015::setSignalRegions() {
     
   //objects ===========================================
   _val["NB"]  = &(_nBJets);
@@ -1119,7 +1166,7 @@ FakeEstim::setSignalRegions() {
 }
 
 void
-FakeEstim::setSelLine(string str) {
+SSDL2015::setSelLine(string str) {
 
   //MM could be done in a better way
 
@@ -1152,7 +1199,7 @@ FakeEstim::setSelLine(string str) {
 
 //================================================
 bool 
-FakeEstim::genMatchedToFake(int idx) {
+SSDL2015::genMatchedToFake(int idx) {
 
   int id1  = _vc->get("LepGood_mcMatchId" ,idx); 
   if(id1==0) return true;
@@ -1161,7 +1208,7 @@ FakeEstim::genMatchedToFake(int idx) {
 }
 
 bool
-FakeEstim::genMatchedMisCharge() {
+SSDL2015::genMatchedMisCharge() {
     
   int nGenL=_vc->get("nGenPart");
   int pdgId1=0;
@@ -1186,8 +1233,70 @@ FakeEstim::genMatchedMisCharge() {
   return false;
 }
 
+int 
+SSDL2015::genMatchCateg(const Candidate* cand) {
+
+  // //loop over the number of generated leptons
+  // int nGenL = _vc->get("nGenPart");
+
+  // for(int ig = 0; ig < nGenL; ++ig) {
+	
+  //   if(Tools::dR(cand->eta(), _vc->get("GenPart_eta", ig),
+  // 		 cand->phi(), _vc->get("GenPart_phi", ig) ) < 0.05 ) { //to be tuned
+		  		
+  //     //if( genMatchedToFake(idx) ) return kMisMatchPdgId; //taus are exception to the rule
+  //     else if(cand->pdgId()*_vc->get("GenPart_pdgId",ig) < 0 ) return kMisChargePdgId; //+*- = -...
+  //     else return kGenMatched;
+			
+  //     break;
+  //   } //dr matching
+  // } //gen loop
+	
+  return kNoGenMatch;
+}
+
+bool
+SSDL2015::passGenSelection() {
+
+  if( _sampleName.find("DYJets")!=(size_t)-1 || _sampleName.find("TTJets")!=(size_t)-1 ) {
+    //ugly
+    int lep1Id=genMatchCateg(_l1Cand);
+    int lep2Id=genMatchCateg(_l1Cand);
+    
+    if(_sampleName.find("charge")!=(size_t)-1) {
+      if( !genMatchedMisCharge() )
+	  //( (lep1Id == kMisChargePdgId && lep2Id >= kMisChargePdgId) || 
+	  //  (lep2Id == kMisChargePdgId && lep1Id >= kMisChargePdgId) ) ) 
+	return false;
+    }
+    else if(_sampleName.find("fake")!=(size_t)-1) {
+      // if( lep1Id > kMisMatchPdgId &&
+      // 	  lep2Id > kMisMatchPdgId ) return false;
+      if(!genMatchedToFake(_idxL1) && !genMatchedToFake(_idxL2) ) return false;
+
+    }
+    else {
+      if( (!genMatchedToFake(_idxL1) && !genMatchedToFake(_idxL2) ) && !genMatchedMisCharge() ) {
+	// // cout<<" coincoin "<<"  "<<genMatchedMisCharge()<<endl;
+	// // cout<<_vc->get("LepGood_mcMatchId" ,_idxL1)<<"  "<<_vc->get("LepGood_mcMatchId" ,_idxL2)<<" --> "<<endl;
+	// int nGenL=_vc->get("nGenPart");
+	// for(int ig=0;ig<nGenL;++ig) {
+	//   cout<<_vc->get("GenPart_pdgId",ig)<<"   "<<_vc->get("LepGood_eta",_idxL1)<<" <> "<<_vc->get("LepGood_eta",_idxL2)<<" <> "<<_vc->get("GenPart_eta", ig)<<" : "<<_vc->get("GenPart_pt", ig)<<" -> "<<_vc->get("GenPart_motherId", ig)<<endl;
+	// }
+      }
+    }
+    // if(_sampleName.find("prompt")!=(size_t)-1) {
+    //   if( lep1Id != kGenMatched ||
+    // 	  lep2Id != kGenMatched ) return false;
+    // }
+  }
+
+  return true;
+}
+
+
 float 
-FakeEstim::getFR(Candidate* cand, int idx) {
+SSDL2015::getFR(Candidate* cand, int idx) {
   string db;
   //int wp=SusyModule::kTight;
   
@@ -1220,7 +1329,7 @@ FakeEstim::getFR(Candidate* cand, int idx) {
 //===============================================================
 //===============================================================
 bool
-FakeEstim::testRegion() {
+SSDL2015::testRegion() {
 
   bool passSel=true;
 
@@ -1261,7 +1370,7 @@ FakeEstim::testRegion() {
 
 
 void
-FakeEstim::categorize() {
+SSDL2015::categorize() {
   
   int offset=1;
   string categ="";
@@ -1274,7 +1383,7 @@ FakeEstim::categorize() {
 
 
 bool 
-FakeEstim::looseLepton(int idx, int pdgId) {
+SSDL2015::looseLepton(int idx, int pdgId) {
 
   if(abs(pdgId)==13) {//mu case
     if(!_susyMod->muIdSel(idx, SusyModule::kLoose) ) return false;
@@ -1289,7 +1398,7 @@ FakeEstim::looseLepton(int idx, int pdgId) {
 }
 
 bool 
-FakeEstim::tightLepton(int idx, int pdgId) {
+SSDL2015::tightLepton(int idx, int pdgId) {
 
   if(abs(pdgId)==13) {//mu case
     if(!_susyMod->muIdSel(idx, SusyModule::kTight) ) return false;
@@ -1305,7 +1414,7 @@ FakeEstim::tightLepton(int idx, int pdgId) {
 
 
 bool 
-FakeEstim::fakableLepton(int idx, int pdgId) {
+SSDL2015::fakableLepton(int idx, int pdgId) {
 
   if(abs(pdgId)==13) {//mu case
     if(!_susyMod->muIdSel(idx, SusyModule::kTight) ) return false;
@@ -1328,7 +1437,7 @@ FakeEstim::fakableLepton(int idx, int pdgId) {
 
 
 bool
-FakeEstim::passCERNSelection() {
+SSDL2015::passCERNSelection() {
 
   if(!makeCut( _vc->get("nLepGood10_Mini"), "CERN lepmult" ) ) return false;
   if(!makeCut<float>( _vc->get("mZ1cut10TL_Mini"), 76 , "]![", "CERN Z veto",  106 ) ) return false;
@@ -1402,7 +1511,7 @@ FakeEstim::passCERNSelection() {
 
 //===========================================================================
 void
-FakeEstim::selectLeptons() {
+SSDL2015::selectLeptons() {
   for(size_t il=0;il<_vc->get("nLepGood"); il++) {
 
     bool isMu=std::abs(_vc->get("LepGood_pdgId", il))==13;
@@ -1487,7 +1596,7 @@ FakeEstim::selectLeptons() {
 //==============================================
 //MET uncertainty variation
 TVector2
-FakeEstim::varyMET() {
+SSDL2015::varyMET() {
 
   unsigned int nJets=_vc->get("nJet");
   unsigned int nFwdJets=_vc->get("nJetFwd");
@@ -1522,5 +1631,6 @@ FakeEstim::varyMET() {
   
   return met;
 }
+
 
 

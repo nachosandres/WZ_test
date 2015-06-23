@@ -950,19 +950,32 @@ AnaUtils::retrieveNumbers(string categ, string cname, int scheme, string opt) {
     pair<int, string> p(icat, cname);
     catIds.push_back( p );
   }
-  if(scheme==kMulti) {//several categories, one selection -> yield comparison
+  if(scheme>=kMulti) {//several categories, one selection -> yield comparison
     for(_itC=_categories.begin();_itC!=_categories.end();++_itC) {
+      //cout<<" -> "<<_itC->second.name<<"  "<<(_itC->second.name.find(opt)!=string::npos)<<endl;
       if(_itC->second.name.find(categ)!=string::npos) {
 	int icat= getCategId(_itC->second.name);
 	pair<int, string> p(icat, cname);
-	if(_itC->second.name.find(opt)==string::npos && opt!="")
+	if(_itC->second.name.find(opt)==string::npos && opt!="") {
+	  if(scheme!=kMultiVeto) {
+	    catIdsOpt.push_back(p);
+	    //cout<<"selected 3 "<<endl;
+	  }
+	  else {
+	    if(_itC->second.name.find(opt)!=string::npos) continue;
+	    catIds.push_back(p);
+	    //cout<<"selected 1 "<<endl;
+	  }
+	 
+	}
+	else if(opt=="") { // empty option categ
 	  catIds.push_back(p);
-	else
-	  catIdsOpt.push_back(p);
+	  //cout<<"selected 2 "<<endl;
+	}
       }
     }
     
-    if(opt!="")
+    if(opt!="" && scheme==kMulti)
       catIds.insert (catIds.end(),catIdsOpt.begin(),catIdsOpt.end());
   }
   if(scheme==kGeneral) {//one category, several selections -> yield evolution
@@ -980,12 +993,11 @@ AnaUtils::retrieveNumbers(string categ, string cname, int scheme, string opt) {
   for(size_t id=0;id<catIds.size();id++) {
     int icat = catIds[id].first;
     string sel = catIds[id].second;
-
     pair<string, vector<vector<float> > > p;
     vector<vector<float> > v(dsNames.size(),vector<float>(4,0));
 
     //naming scheme =========================
-    if(scheme==kMulti) { //only the extension
+    if(scheme>=kMulti) { //only the extension
       size_t p0= _categories[icat].name.find(categ);
       p.first=_categories[icat].name.substr(p0+categ.size(), categ.size()-p0-1);
     }
@@ -1000,7 +1012,7 @@ AnaUtils::retrieveNumbers(string categ, string cname, int scheme, string opt) {
       onums.push_back( p );
       continue;
     }
-    
+   
     for(size_t id=0;id<dsNames.size();id++) { //datasets
       int ids = idxs[id];
       
@@ -1154,7 +1166,8 @@ AnaUtils::retrieveNumbers(string categ, string cname, int scheme, string opt) {
 bool
 AnaUtils::getDataCardLines(map<string,string>& lines, vector<string> dsNames, string sigName,
 			   string categ, string cname, int bin,
-			   map<string,vector<string> > intNuisPars) {
+			   map<string,vector<string> > intNuisPars,
+			   map<string,bool > nuisParExt) {
   
   vector<pair<string, vector<vector<float> > > > numbers=retrieveNumbers(categ, cname, kMono);
 
@@ -1175,13 +1188,13 @@ AnaUtils::getDataCardLines(map<string,string>& lines, vector<string> dsNames, st
   for(unsigned int ids=1;ids<dsNames.size()+1;ids++) {//0 is MC
     
     ostringstream osB; osB<<bin;  
-   
-    if(dsNames[ids-1]!=sigName && dsNames[ids-1].find("sig")==string::npos) {
+    if(dsNames[ids-1]!=sigName && dsNames[ids-1].find("sig")==string::npos && 
+       dsNames[ids-1].find("data")==string::npos) {
       sumBkg+= (numbers[0].second[ids][0]);
-    
+      
       binLine += osB.str()+"\t";
       ostringstream os;
-      os<<((numbers[0].second[ids][0]==0)?0.0001:numbers[0].second[ids][0]);
+      os<<setprecision(4)<< ((numbers[0].second[ids][0]==0)?0.0001:numbers[0].second[ids][0]);
       yieldLine += os.str()+"\t";
       procNameLine += dsNames[ids-1]+"\t";
     
@@ -1193,11 +1206,10 @@ AnaUtils::getDataCardLines(map<string,string>& lines, vector<string> dsNames, st
 
     }
     else if(dsNames[ids-1]==sigName) {
-
       binLine += osB.str()+"\t";
       sumSig = numbers[0].second[ids][0];
     }
-    else if(dsNames[ids-1]=="data") {
+    else if(dsNames[ids-1].find("data")!=string::npos) {
       sumData = numbers[0].second[ids][0];
     }
   }
@@ -1209,23 +1221,26 @@ AnaUtils::getDataCardLines(map<string,string>& lines, vector<string> dsNames, st
   lines[ "procNums" ] = "0\t"+procNumLine;
   
   ostringstream os;
-  os<<sumSig;
+  os<<setprecision(4)<<sumSig;
   lines[ "yields" ] = os.str()+"\t"+yieldLine;
   // =================================================================
   // adding the data =================
   ostringstream os2;
-  os2<<sumData;
+  os2<<setprecision(4)<<sumData;
   lines[ "dataYield" ] = os2.str(); 
   // =================================================================
   // and the nuisance parameters
-  
+  //cout<<" cui "<<endl;
   for(map<string,vector<string> >::const_iterator it=intNuisPars.begin();
       it!=intNuisPars.end(); it++) {
     string line;
-    
+    //cout<<it->first<<" \\ "<<endl;
+    if(it->first.find("stat")!=string::npos) continue; //syst from stat ucnertainties
+    if(nuisParExt[ it->first ] == true ) continue;
+
     for(unsigned int ids=1;ids<dsNames.size()+1;ids++) {
-      float vUp = numbers[0].second[ids][0]/numbers[0].second[ids][0]; //MM FIXME -> always 1
-      float vDo = numbers[0].second[ids][0]/numbers[0].second[ids][0];
+      float vUp = numbers[0].second[ids][2]/numbers[0].second[ids][0]; //MM FIXME -> always 1
+      float vDo = numbers[0].second[ids][3]/numbers[0].second[ids][0];
 
       ostringstream osU, osD;
       osU<<vUp;
@@ -1253,7 +1268,58 @@ AnaUtils::getDataCardLines(map<string,string>& lines, vector<string> dsNames, st
     //adding the header ==========================
     lines[ "NP_"+it->first ] = it->first+"\tlnN\t"+line;
   }
+  //cout<<" coin "<<lines.size()<<endl;
+  //=================================================================
+  // and the stat uncertainty
+  for(unsigned int ids=1;ids<dsNames.size()+1;ids++) {
+    float unc= numbers[0].second[ids][1]/numbers[0].second[ids][0];
+    if(numbers[0].second[ids][0]==0) unc=0;
+    // cout<<ids<<"  "<<dsNames[ids-1]<<"  "<<numbers[0].second[ids][1]
+    //   	<<"   "<<numbers[0].second[ids][0]<<"   "<<unc<<endl;
+    stringstream os;
+    os<<setprecision(3)<<unc;
+    string line="";
+    // cout<<os.str()<<"   "<<numbers[0].second[ids][0]<<"  "<<numbers[0].second[ids][1]<<"   "<<unc<<endl;
+   
+    //single case
+    //if(intNuisPars.find(dsNames[ids-1]+"stat")==intNuisPars.end() ) continue;
 
+    //multicase
+    bool exists=false;
+    //cout<<" --> "<<dsNames[ids-1]<<endl;
+    map<string,vector<string> >::const_iterator it;
+    for( it=intNuisPars.begin();it!=intNuisPars.end(); it++) {
+      if(nuisParExt[ it->first ] == true ) continue;
+      // cout<<it->first<<"  "<<dsNames[ids-1]<<"  "
+      //  	  <<(it->first.find("stat")!=string::npos)<<"   "
+      //  	  <<(it->first.find(dsNames[ids-1])!=string::npos)<<endl;
+      if(it->first.find("stat")!=string::npos &&
+	 it->first.find(dsNames[ids-1])!=string::npos ) {exists=true; break;}
+    }
+    // cout<<" coin "<<endl;
+    if(!exists) continue;
+    //cout<<it->first<<"   "<<dsNames[ids-1]<<endl;
+
+    for(unsigned int ids2=1;ids2<dsNames.size()+1;ids2++) {
+    
+      if(dsNames[ids2-1]==dsNames[ids-1]) {
+	if(os.str()!="1" && os.str()!="0")
+	  line+="1."+os.str().substr(2,2)+"\t";
+	else if(os.str()=="1")
+	   line+=os.str()+"\t";
+	else
+	  line+="1.00\t";
+      }
+      else if(dsNames[ids2-1].find("data")==string::npos)
+       	line+="-\t";	
+    }
+    
+    //single case
+    //lines[ "NP_"+dsNames[ids-1]+"stat" ] = dsNames[ids-1]+"stat\tlnN\t"+line;
+    //cout<<it->first<<"   "<<endl;
+    lines[ "NP_"+dsNames[ids-1]+"stat" ] = it->first+"\tlnN\t"+line;
+  }
+  //cout<<" pouet "<<lines.size()<<endl;
   if(sumBkg+sumSig==0) return false;
   return true;
 }

@@ -95,9 +95,13 @@ public:
 
   Dataset* findDS(string channel);
   Dataset* findDS(string channel, string crName);
+  vector<Dataset*> findDSS(string channel);
+  vector<Dataset*> findDSS(string channel, string crName);
   string findDS(int channel);
   string findDSName(string channel);
   string findDSName(string channel, string crName);
+  vector<string> findDSNames(string channel);
+  vector<string> findDSNames(string channel, string crName);
   int findChan(string ds);
 
   void addSample(string str, string sname, int col, bool loadH=true );
