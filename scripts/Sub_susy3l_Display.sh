@@ -11,7 +11,7 @@ for sr in ${SRS[@]}; do
         sregion=$sr
         pairstate=$pair
 
-        cp cards/susy3l_auto.C cards/tmpFiles/susy3l_${sregion}_${pairstate}.C
+        cp cards/tmpFiles/susy3l_auto.C cards/tmpFiles/susy3l_${sregion}_${pairstate}.C
         sed -i 's|SIGNALREGION|'$sregion'|' cards/tmpFiles/susy3l_${sregion}_${pairstate}.C
         sed -i 's|PAIRSTATE|'$pairstate'|' cards/tmpFiles/susy3l_${sregion}_${pairstate}.C
 

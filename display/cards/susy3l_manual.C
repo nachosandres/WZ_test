@@ -26,7 +26,7 @@
     md.anConf.configureData(false, 0, mcOnly);
     //}
  
-    string obs ="met";
+    string obs ="njets";
     if(obs == "njets"){
         md.dp.setObservables("BR_NJets");
         int binning=1;
@@ -148,17 +148,17 @@
     LumisXS[ "TTH"                                      ] =  199700 / (0.5085           );
     
     //signal
-    LumisXS[ "SMS_T1tttt_2J_mGl1200_mLSP800"            ] =  100322 / (0.0856418        * 20.  );
-    LumisXS[ "SMS_T1tttt_2J_mGl1500_mLSP100"            ] =  105679 / (0.0141903        * 20.  );
-    LumisXS[ "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"] =   52499 / (0.3254           * 20.  );
-    LumisXS[ "T5qqqqWZDeg_mGo1000_mCh315_mChi300_dilep" ] =   19688 / (0.012135670848   * 20.  );
-    LumisXS[ "T5qqqqWZDeg_mGo1000_mCh325_mChi300_dilep" ] =   19228 / (0.011385976896   * 20.  );
-    LumisXS[ "T5qqqqWZ_mGo1200_mCh1000_mChi800_dilep"   ] =   24510 / (0.002830290206   * 20.  );
-    LumisXS[ "T5qqqqWZ_mGo1500_mCh800_mChi100_dilep"    ] =   23300 / (0.000468961034   * 20.  );
-    LumisXS[ "T5qqqqZZDeg_mGo1000_mCh315_mChi300_dilep" ] =   40268 / (0.004081667072   * 20.  );
-    LumisXS[ "T5qqqqZZDeg_mGo1000_mCh325_mChi300_dilep" ] =   39202 / (0.003795325632   * 20.  );
-    LumisXS[ "T5qqqqZZ_mGo1200_mCh1000_mChi800_dilep"   ] =   47130 / (0.000891017287   * 20.  );
-    LumisXS[ "T5qqqqZZ_mGo1500_mCh800_mChi100_dilep"    ] =   45307 / (0.000147635881   * 20.  );
+    LumisXS[ "SMS_T1tttt_2J_mGl1200_mLSP800"            ] =  100322 / (0.0856418          );
+    LumisXS[ "SMS_T1tttt_2J_mGl1500_mLSP100"            ] =  105679 / (0.0141903          );
+    LumisXS[ "T5ttttDeg_mGo1000_mStop300_mCh285_mChi280"] =   52499 / (0.3254             );
+    LumisXS[ "T5qqqqWZDeg_mGo1000_mCh315_mChi300_dilep" ] =   19688 / (0.012135670848     );
+    LumisXS[ "T5qqqqWZDeg_mGo1000_mCh325_mChi300_dilep" ] =   19228 / (0.011385976896     );
+    LumisXS[ "T5qqqqWZ_mGo1200_mCh1000_mChi800_dilep"   ] =   24510 / (0.002830290206     );
+    LumisXS[ "T5qqqqWZ_mGo1500_mCh800_mChi100_dilep"    ] =   23300 / (0.000468961034     );
+    LumisXS[ "T5qqqqZZDeg_mGo1000_mCh315_mChi300_dilep" ] =   40268 / (0.004081667072     );
+    LumisXS[ "T5qqqqZZDeg_mGo1000_mCh325_mChi300_dilep" ] =   39202 / (0.003795325632     );
+    LumisXS[ "T5qqqqZZ_mGo1200_mCh1000_mChi800_dilep"   ] =   47130 / (0.000891017287     );
+    LumisXS[ "T5qqqqZZ_mGo1500_mCh800_mChi100_dilep"    ] =   45307 / (0.000147635881     );
    
     //top 
     LumisXS[ "TBarToLeptons_sch"                        ] =  250000 / (1.34784          );  // 4.16*0.108*3

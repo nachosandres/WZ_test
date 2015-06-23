@@ -265,35 +265,19 @@ void SUSY3L_sync2::collectKinematicObjects(){
         parameters: none
         return: none
     */
+   
+    
+    if(_vc->get("lumi") == 4529 && _vc->get("evt") == 52817){
+        cout << "--------------------------------------------------"<< endl; 
+        cout << "event  " << _vc->get("lumi") << " " << _vc->get("evt") << "number of jets: " <<  _vc->get("nJet") << endl;
+    }
+
+
+   
     
     // loop over all nLepGood leptons in this event and select muons
     for(int i = 0; i < _vc->get("nLepGood"); ++i){
         // check which of the nLepGood leptons are muons, identifier 13
-        
-        //print event information before selection
-       
-        
-               /* 
-        if(_vc->get("lumi") == 2995 && _vc->get("evt") == 99457 ){
-            cout << "--------------------------------------------------"<< endl; 
-            cout << "pt " << _vc->get("LepGood_pt", i) <<endl;
-            cout << "eta " << _vc->get("LepGood_eta", i) <<endl;
-            cout << "phi " << _vc->get("LepGood_phi", i) <<endl;
-            cout << "pdgId " << _vc->get("LepGood_pdgId", i) <<endl;
-            cout << "charge " << _vc->get("LepGood_charge", i) <<endl;
-            cout << "relIso " << _vc->get("LepGood_relIso03", i) <<endl;
-            cout << "sip " << _vc->get("LepGood_sip3d", i) <<endl;
-            cout << "miniIso " << _vc->get("LepGood_miniRelIso", i) <<endl;
-            cout << "ptrel " << _vc->get("LepGood_jetPtRel", i) <<endl;
-            cout << "ptratio " << _vc->get("LepGood_jetPtRatio", i) <<endl;
-            if(std::abs(_vc->get("LepGood_pdgId", i))==13){
-                cout << "muon id " << _vc->get("LepGood_mediumMuonId", i) <<endl;}
-            if(std::abs(_vc->get("LepGood_pdgId", i))==11){
-                cout << "el mva id " << _vc->get("LepGood_mvaIdPhys14", i) <<endl;
-                cout << "convVeto " << _vc->get("LepGood_convVeto", i) <<endl;
-                cout << "lost hits " << _vc->get("LepGood_lostHits", i) <<endl;}
-        } */
-        
         if(std::abs(_vc->get("LepGood_pdgId",i)) == 13){
             //differentiate muons for muon selecton and veto muon selection
             if(muonSelection(i)) {
@@ -471,6 +455,8 @@ bool SUSY3L_sync2::electronSelection(int elIdx){
     int kVeryTight = 3;
     int kHyperTight = 4;
  
+    if(_vc->get("lumi") == 4529 && _vc->get("evt") == 52817){cout << "electron pt / eta / phi: " << _vc->get("LepGood_pt", elIdx) << " " << _vc->get("LepGood_eta", elIdx)  << " " << _vc->get("LepGood_phi", elIdx) << endl;}
+    
     //apply the cuts
     //makeCut(variable to cut on, cut value, direction of acception, name, 2nd cut value, counter)
     if(!makeCut<float>( _vc->get("LepGood_pt", elIdx) , pt_cut, ">"  , "pt selection"    , 0    , kElId)) return false;
@@ -545,6 +531,8 @@ bool SUSY3L_sync2::muonSelection(int muIdx){
     int kVeryTight = 3;
     int kHyperTight = 4;
  
+    if(_vc->get("lumi") == 4529 && _vc->get("evt") == 52817){cout << "muon pt / eta / phi: " << _vc->get("LepGood_pt", muIdx) << " " << _vc->get("LepGood_eta", muIdx)  << " " << _vc->get("LepGood_phi", muIdx) << endl;}
+    
     //apply the cuts
     if(!makeCut<float>( _vc->get("LepGood_pt", muIdx), pt_cut, ">", "pt selection"    , 0, kMuId)) return false;
     if(!makeCut<float>( std::abs( _vc->get("LepGood_eta", muIdx)), eta_cut, "<", "eta selection", 0, kMuId)) return false;
@@ -682,12 +670,22 @@ bool SUSY3L_sync2::goodJetSelection(int jetIdx){
     //define cut values
     float pt_cut = 30.;
     float eta_cut = 2.4;
-    float deltaR = 0.3;
+    float deltaR = 0.4;
 
+    if(_vc->get("lumi") == 4529 && _vc->get("evt") == 52817){cout << "entered jet selection with pt" << _vc->get("Jet_pt", jetIdx) << " " << _vc->get("Jet_eta", jetIdx)  << " " << _vc->get("Jet_phi", jetIdx) << endl;}
+    
+    
     if(!makeCut<float>(_vc->get("Jet_pt", jetIdx)       , pt_cut, ">", "pt selection" , 0, kJetId) ) return false;
-    if(!makeCut<float>(std::abs(_vc->get("Jet_eta", jetIdx)),  eta_cut, "<", "eta selection", 0, kJetId) ) return false;
-    if(!makeCut<float>(_vc->get("Jet_id", jetIdx),  1, ">=", "jet id", 0, kJetId) ) return false;
+    if(_vc->get("lumi") == 4529 && _vc->get("evt") == 52817){cout << "survivied pt cut" << endl;}
 
+
+    if(!makeCut<float>(std::abs(_vc->get("Jet_eta", jetIdx)),  eta_cut, "<", "eta selection", 0, kJetId) ) return false;
+    if(_vc->get("lumi") == 4529 && _vc->get("evt") == 52817){cout << "survivied eta cut" << endl;}
+
+
+    if(!makeCut<float>(_vc->get("Jet_id", jetIdx),  1, ">=", "jet id", 0, kJetId) ) return false;
+    if(_vc->get("lumi") == 4529 && _vc->get("evt") == 52817){cout << "survivied jetId cut" << endl;}
+    
     //exclude jets which are within a cone of deltaR around lepton candidates or taus
     //loop over all electron candidates
     bool lepMatch = false;
@@ -1102,8 +1100,8 @@ bool SUSY3L_sync2::baseSelection(){
     */
     
     //print event information before selection
-   /* 
-    if(_vc->get("lumi") ==  2995 && _vc->get("evt") == 99457){
+    
+    if(_vc->get("lumi") ==  4529 && _vc->get("evt") == 52817){
         cout << "--------------------------------------------------"<< endl; 
         cout << "event  " << _vc->get("lumi") << " " << _vc->get("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
         for(int i =0;i<_nEls;i++){
@@ -1120,38 +1118,15 @@ bool SUSY3L_sync2::baseSelection(){
             //cout << "deltaR with electron " << dr << endl;
             }
     
-
-    }
-   */ 
-
-
-
- /* 
-    if(_vc->get("lumi") == 4531 && _vc->get("evt") == 53003){
         cout << "--------------------------------------------------"<< endl; 
-        cout << "event  " << _vc->get("lumi") << " " << _vc->get("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
+
     }
+    
+
+
   
-    if(_vc->get("lumi") == 4674 && _vc->get("evt") == 67311){
-        cout << "--------------------------------------------------"<< endl; 
-        cout << "event  " << _vc->get("lumi") << " " << _vc->get("evt") << " " << _nMus  << " "<<  _nEls << " " << _nTaus << " " << _nJets << " "  << _nBJets << endl;
-    }
-*/
 
-
-
-    /*   for(int i=0;i<3;i++){            
-            cout << "----------------------------------" << endl;
-            cout << "pt: " << _vc->get("LepGood_pt", i) << endl;
-            cout << "eta: " << _vc->get("LepGood_eta", i) << endl;
-            cout << "phi: " << _vc->get("LepGood_phi", i) << endl;
-            cout << "iso: " << _vc->get("LepGood_relIso03", i) << endl;
-            cout << "pdgId: " << _vc->get("LepGood_pdgId", i) << endl;
-            cout << "charge: " << _vc->get("LepGood_charge", i) << endl;
-        }
-        cout << "met pt: " << _met->pt() << endl;
-        cout << "met phi: " << _met->phi() << endl;*/
-   
+  
     
  
     //select events with certain lepton multiplicity of all flavor combinations
