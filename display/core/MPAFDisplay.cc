@@ -191,7 +191,7 @@ MPAFDisplay::readStatFile(string filename, int& icat) {
         cname="";
         for(size_t i=0;i<n-1;i++)
           cname += tks[i]+" ";
-	cname += tks[n-1];
+	    cname += tks[n-1];
 
         sname = tks[n];
 	if(categ.find("global_")!=string::npos) ext = categ.substr(7, categ.size()-7);
@@ -646,7 +646,7 @@ void
 MPAFDisplay::addDataCardSigSample(string sName, string dsName) {
   
   _isSigDs[dsName]=true;
-  anConf.addSample(sName, dsName, 0, false);
+  anConf.addSample(sName, dsName, 0);
 }
 
 
@@ -755,7 +755,8 @@ MPAFDisplay::makeSingleDataCard(string sigName, string categ, string cname, stri
   ofstream card( (dirname_+cardName+".txt").c_str() , ios::out | ios::trunc );
   
   card<<"imax 1 number of channels"<<endl; 
-  card<<"jmax "+osB.str()+" number of backgrounds"<<endl; 
+  //card<<"jmax "+osB.str()+" number of backgrounds"<<endl; 
+  card<<"jmax * number of backgrounds"<<endl; 
   card<<"kmax * number of nuisance parameters"<<endl; 
   card<<"---------------------------"<<endl; 
   card<<"bin\t1"<<endl;

@@ -52,7 +52,6 @@ MODULES    := $(subst /module.mk,,$(wildcard */module.mk))
 
 __dummy := $(shell ./genmak.sh $(MODULES))
 
-
 ifneq (,$(findstring 5.3,$(ROOTSYS)))
 all: lib
 else

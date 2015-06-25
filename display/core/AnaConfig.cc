@@ -303,6 +303,7 @@ AnaConfig::parseSampleId(string str) {
 
 void
 AnaConfig::addSample( string str, string sname, int col, bool loadH) {
+ 
   
   string dsName=sname;
   if(sname=="pseudodata") dsName="data";
@@ -332,6 +333,7 @@ AnaConfig::addSample( string str, string sname, int col, bool loadH) {
  
     return;
   }
+ 
   
     //histogram analysis
     if(!_skiptree) {

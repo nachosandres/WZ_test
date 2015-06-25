@@ -5,8 +5,12 @@ using namespace std;
 //list of analyzers and modules in alphabetical order
 //#include "analysis/src/csa14exerc.hh"
 #include "analysis/src/SSDLBoosted.hh"
-//#include "analysis/src/synchECO.hh"
-//#include "analysis/src/synchRA5.hh"
+#include "analysis/src/synchECO.hh"
+#include "analysis/src/synchRA5.hh"
+#include "analysis/src/phys14exerc.hh"
+#include "analysis/src/SUSY3L.hh"
+#include "analysis/src/SUSY3L_sync.hh"
+#include "analysis/src/SUSY3L_sync2.hh"
 #include "analysis/src/phys14limits.hh"
 #include "analysis/src/FakeRatio.hh"
 #include "analysis/src/SSDL2015.hh"
@@ -14,8 +18,9 @@ using namespace std;
 
 MPAF*
 AnalysisFactory::get(const string& analysis, const string& cfg) {
-
-  // list of analyzers and modules in alphabetical order
+ 
+// list of analyzers and modules in alphabetical order 
+  
 //  if(analysis=="csa14exerc") {
 //    return new csa14exerc(cfg);
 //  }
@@ -30,6 +35,15 @@ AnalysisFactory::get(const string& analysis, const string& cfg) {
 //  }
   if(analysis=="phys14limits") {
     return new phys14limits(cfg);
+  }
+  if(analysis=="SUSY3L") {
+    return new SUSY3L(cfg);
+  }
+  if(analysis=="SUSY3L_sync") {
+    return new SUSY3L_sync(cfg);
+  }
+  if(analysis=="SUSY3L_sync2") {
+    return new SUSY3L_sync2(cfg);
   }
   if(analysis=="FakeRatio") {
     return new FakeRatio(cfg);

@@ -25,6 +25,14 @@ T5ttttDeg_mGo1300_mStop300_mCh285_mChi280	0.0460525
 T5ttttDeg_mGo1300_mStop300_mChi280		0.0460525
 T6ttWW_mSbot600_mCh425_mChi50			0.174599
 T6ttWW_mSbot650_mCh150_mChi50			0.107045
+T5qqqqWZDeg_mGo1000_mCh315_mChi300_dilep    0.012135670848
+T5qqqqWZDeg_mGo1000_mCh325_mChi300_dilep    0.011385976896
+T5qqqqWZ_mGo1200_mCh1000_mChi800_dilep      0.002830290206
+T5qqqqWZ_mGo1500_mCh800_mChi100_dilep       0.000468961034
+T5qqqqZZDeg_mGo1000_mCh315_mChi300_dilep    0.004081667072
+T5qqqqZZDeg_mGo1000_mCh325_mChi300_dilep    0.003795325632
+T5qqqqZZ_mGo1200_mCh1000_mChi800_dilep      0.000891017287
+T5qqqqZZ_mGo1500_mCh800_mChi100_dilep       0.000147635881
 TTH						0.5085
 TTJets						809.1
 TTWJets						0.664
@@ -38,6 +46,14 @@ DYJetsToLL_M50_HT100to200			194.3
 DYJetsToLL_M50_HT200to400			52.24
 DYJetsToLL_M50_HT400to600			6.546
 DYJetsToLL_M50_HT600toInf			2.179
+GGHZZ4L            0.01212192
+TBarToLeptons_sch          1.34784
+TBarToLeptons_tch          26.23428 
+TBar_tWch              35.6
+TToLeptons_sch             2.3328
+TToLeptons_tch             44.0802
+T_tWch                 35.6
+ZZTo4L                 0.3231
 TTJetscharge					809.1
 DYJetsToLL_M50_HT100to200charge			194.3
 DYJetsToLL_M50_HT200to400charge			52.24
@@ -53,6 +69,3 @@ DYJetsToLL_M50_HT200to400fake			52.24
 DYJetsToLL_M50_HT400to600fake			6.546
 DYJetsToLL_M50_HT600toInffake			2.179
 T1ttbbWW_mGo1300_mCh300_mChi290			0.0460525
-T5qqqqWW_mGo1500_mCh800_mChi100			0.0141903
-T6ttWW_mSbot600_mCh425_mChi50			0.174599
-T6ttWW_mSbot650_mCh150_mChi50			0.107045
