@@ -1319,8 +1319,10 @@ SSDL2015::getFR(Candidate* cand, int idx) {
   //   cout<<cand->pt()<<"  "<<ptVal<<"   "<<_dbm->getDBValue(db, std::min( ptVal,(float)69.9),
   // 							   std::min(std::abs(cand->eta()),(float)2.49) )<<endl;
 
-  return _dbm->getDBValue(db, std::min( ptVal,(float)69.9),
-			  std::min(etaVal,(float)2.49) );
+  //return _dbm->getDBValue(db, std::min( ptVal,(float)69.9),
+//			  std::min(etaVal,(float)2.49) );
+
+  return 0.000001;
 }
 
 

@@ -41,6 +41,9 @@ public:
   CandList bestSSPair(Candidate* c1, const CandList* leps, bool byflav,
 		      bool bypassMV, float pTthr, int& idx1, int& idx2);
   
+  CandList bestWZ(const CandList* leps, int& idxZ1, int& idxZ2, int& idxW);
+  CandList bestZ(const CandList* leps, int& idxZ1, int& idxZ2);
+  
   float conePt(int idx) const;
 
   enum {kDenom=0,

@@ -14,3 +14,4 @@ FILES += phys14limits
 FILES += FakeRatio
 FILES += SSDL2015
 FILES += UncertaintyTest
+FILES += WZsynchro

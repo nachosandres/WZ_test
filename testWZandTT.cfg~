@@ -1,0 +1,39 @@
+
+# the analysis
+ans   WZsynchro
+
+#skim, Full or Limited, comment for disabling it
+#skim	Full
+
+#optional
+#nmax	100
+nskip	0
+#nmax	1
+#nskip	3019
+
+#analysis specific variables
+var	  SR	   SRFLAG
+var	  LEPPT	all
+var	  LEPFLAV	all
+var	  FR	   inc
+var	  categorization	1
+var	  LHESYS	1001
+var	  WZstep      1
+
+
+#folder in data to find the files
+dir	Prov	#skims
+
+#tree name
+tree  tree
+
+#histogram name for Ngen event (optional)
+histo	   Count
+
+#friend-trees
+#ft	0_lepMVA_Susy_v1
+#ft	1_lepJetReClean_Susy_v1
+
+#datasets
+ds	WZp8
+ds	TTJets
